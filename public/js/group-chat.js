@@ -268,7 +268,7 @@ class GroupChatManager {
         if (this.currentGroupId !== groupId) {
             this.notifiedMessageIds.clear();
         }
-        
+
         this.currentGroupId = groupId;
         this.currentGroupName = groupName;
         this.currentGroupPhoto = photoUrl;
@@ -313,7 +313,7 @@ class GroupChatManager {
 
             // Load existing messages
             await this.loadGroupMessages(groupId);
-            
+
             // Load media for this group (don't await to avoid blocking)
             if (groupId) {
                 this.loadGroupMedia(groupId).catch(err => {
@@ -323,7 +323,7 @@ class GroupChatManager {
         } finally {
             // Hide loader after everything is loaded
             this.hideLoader();
-            
+
             // Ensure scroll to bottom after loader is hidden and DOM is ready
             setTimeout(() => {
                 this.forceScrollToBottom();
@@ -431,7 +431,7 @@ class GroupChatManager {
                                 if (emptyState) {
                                     emptyState.style.display = 'none';
                                 }
-                                
+
                                 // Check if we need to add a date separator
                                 const lastMessage = container.lastElementChild;
                                 let messageDate;
@@ -443,9 +443,9 @@ class GroupChatManager {
                                 } catch (error) {
                                     messageDate = new Date();
                                 }
-                                
+
                                 const dateStr = this.formatDate(messageDate);
-                                
+
                                 if (lastMessage && lastMessage.classList.contains('chats')) {
                                     const lastMessageDate = lastMessage.getAttribute('data-date');
                                     if (lastMessageDate !== dateStr) {
@@ -468,7 +468,7 @@ class GroupChatManager {
                                     dateSeparator.innerHTML = `<span class="chat-date">${dateStr}</span>`;
                                     container.appendChild(dateSeparator);
                                 }
-                                
+
                                 messageElement.setAttribute('data-date', dateStr);
                                 container.appendChild(messageElement);
                             }
@@ -476,17 +476,17 @@ class GroupChatManager {
                             // Update last message ID
                             this.lastMessageId = messageId;
                         });
-                        
+
                         // Scroll to bottom after all new messages are added (always scroll for new received messages)
                         if (enrichedMessages.length > 0) {
                             // Immediate scroll
                             this.forceScrollToBottom();
-                            
+
                             // Then scroll after DOM updates
                             setTimeout(() => {
                                 this.forceScrollToBottom();
                             }, 50);
-                            
+
                             // Final scroll after layout is complete
                             setTimeout(() => {
                                 this.forceScrollToBottom();
@@ -551,7 +551,7 @@ class GroupChatManager {
 
             if (data.success && data.group) {
                 const group = data.group;
-                
+
                 // Update profile avatar
                 const profileAvatar = document.getElementById('contactProfileAvatar');
                 if (profileAvatar) {
@@ -647,7 +647,7 @@ class GroupChatManager {
             if (showLoader) {
                 this.showLoader();
             }
-            
+
             const response = await fetch(`/api/chat/group/${groupId}/messages`, {
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
@@ -761,7 +761,7 @@ class GroupChatManager {
         if (messages.length > 0) {
             const lastMessage = messages[messages.length - 1];
             this.lastMessageId = String(lastMessage._id || lastMessage.id);
-            
+
             // Mark all loaded messages as already notified (they're old messages)
             messages.forEach(message => {
                 const messageId = String(message._id || message.id);
@@ -781,7 +781,7 @@ class GroupChatManager {
         // Scroll to bottom after rendering (always scroll on initial load)
         // Use forceScrollToBottom to ensure it always scrolls, not conditional
         this.forceScrollToBottom();
-        
+
         // Also scroll after a delay to ensure layout is complete
         setTimeout(() => {
             this.forceScrollToBottom();
@@ -905,7 +905,7 @@ class GroupChatManager {
             messageContent = `
                 <div class="chat-img" style="max-width: 100%; width: 100%;">
                     <div class="img-wrap" style="height: auto !important; min-height: 120px; max-height: 500px; max-width: 100%; flex: none !important;">
-                        <img src="${message.file_url}" alt="Image" style="width: 100% !important; height: auto !important; max-width: 100%; max-height: 500px; object-fit: contain !important; object-position: center;">
+                        <img src="${message.file_url}" alt="Image" style="width: 100% !important; height: auto !important; max-width: 100%; max-height: 500px; object-fit: contain !important; object-position: center;" onload="if(window.groupChatManager) window.groupChatManager.forceScrollToBottom()" onerror="if(window.groupChatManager) window.groupChatManager.forceScrollToBottom()">
                         <div class="img-overlay">
                             <a class="gallery-img" data-fancybox="gallery-img" href="${message.file_url}" title="Image">
                                 <i class="ti ti-eye"></i>
@@ -1293,19 +1293,19 @@ class GroupChatManager {
 
             messageElement.setAttribute('data-date', dateStr);
             container.appendChild(messageElement);
-            
+
             // Update last message ID
             this.lastMessageId = String(messageData._id || messageData.id || '');
-            
+
             // Force scroll immediately when adding new messages
             // Multiple scroll attempts to ensure it works
             this.forceScrollToBottom();
-            
+
             // Also scroll after DOM updates
             setTimeout(() => {
                 this.forceScrollToBottom();
             }, 10);
-            
+
             // Final scroll after layout is complete
             setTimeout(() => {
                 this.forceScrollToBottom();
@@ -1382,7 +1382,7 @@ class GroupChatManager {
                         to: this.currentGroupId,
                         chatType: 'groupChat',
                     };
-                    
+
                     // Handle file messages differently
                     if (messageType === 'img' && messageData.file_url) {
                         msgOptions.url = messageData.file_url;
@@ -1651,7 +1651,7 @@ class GroupChatManager {
             this.renderGroupMedia({ photos: [], videos: [], documents: [], links: [] }, { photos: 0, videos: 0, documents: 0, links: 0 });
             return;
         }
-        
+
         try {
             const response = await fetch(`/api/chat/group/${groupId}/media`, {
                 headers: {
@@ -1664,7 +1664,7 @@ class GroupChatManager {
             }
 
             const data = await response.json();
-            
+
             if (data.success && data.media) {
                 this.renderGroupMedia(data.media, data.counts);
             } else {
@@ -1884,12 +1884,12 @@ class GroupChatManager {
     scrollToBottom(smooth = true) {
         const container = document.querySelector('.chat-body');
         if (!container) return;
-        
+
         // Use requestAnimationFrame to ensure DOM is updated
         requestAnimationFrame(() => {
             // Check if user is near bottom (within 100px) - if so, auto-scroll
             const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
-            
+
             // Always scroll if it's a new message from current user, or if user is already near bottom
             if (isNearBottom || !smooth) {
                 if (smooth) {
@@ -1903,7 +1903,7 @@ class GroupChatManager {
             }
         });
     }
-    
+
     /**
      * Force scroll to bottom (used when sending messages or receiving new messages)
      */
@@ -1911,7 +1911,7 @@ class GroupChatManager {
         // Slimscroll wraps elements in .slimScrollDiv, so we need to find that
         // Try to find the slimScrollDiv wrapper first, then fallback to direct container
         let container = null;
-        
+
         // First, try to find the slimScrollDiv that contains the chat-body
         const chatBody = document.querySelector('.chat-body');
         if (chatBody) {
@@ -1923,40 +1923,48 @@ class GroupChatManager {
                 container = chatBody;
             }
         }
-        
+
         // Fallback selectors
         if (!container) {
             container = document.querySelector('.slimScrollDiv') ||
-                       document.querySelector('.chat-page-group') ||
-                       document.querySelector('.slimscroll') ||
-                       document.getElementById('chatMessagesContainer')?.parentElement;
+                document.querySelector('.chat-page-group') ||
+                document.querySelector('.slimscroll') ||
+                document.getElementById('chatMessagesContainer')?.parentElement;
         }
-        
+
         if (!container) {
             console.warn('Scroll container not found');
             return;
         }
-        
+
         // Function to perform the actual scroll - ALWAYS scroll, no conditions
         const performScroll = () => {
             try {
                 const scrollHeight = container.scrollHeight;
-                
+
                 // Always scroll to bottom - no conditions
                 // Try smooth scroll first
                 if (container.scrollTo) {
                     container.scrollTo({
                         top: scrollHeight,
-                        behavior: 'smooth'
+                        behavior: 'auto' // Use auto for immediate jumps in forceScroll
                     });
                 }
-                
+
                 // Immediate hard scroll (always execute, no conditions)
                 container.scrollTop = scrollHeight;
-                
+
                 // Also try jQuery slimscroll API if available
-                if (typeof $ !== 'undefined' && $(container).data('slimScroll')) {
-                    $(container).slimScroll({ scrollTo: scrollHeight });
+                if (typeof $ !== 'undefined') {
+                    const $container = $(container);
+                    const $chatBody = $('.chat-body');
+
+                    if ($container.data('slimScroll')) {
+                        $container.slimScroll({ scrollTo: scrollHeight + 'px' });
+                    }
+                    if ($chatBody.data('slimScroll')) {
+                        $chatBody.slimScroll({ scrollTo: $chatBody[0].scrollHeight + 'px' });
+                    }
                 }
             } catch (error) {
                 console.error('Error scrolling:', error);
@@ -1968,35 +1976,29 @@ class GroupChatManager {
                 }
             }
         };
-        
+
         // Immediate scroll first
         performScroll();
-        
-        // Then use requestAnimationFrame to ensure DOM is updated
+
+        // Then use multiple requestAnimationFrame and timeouts to ensure DOM is updated and layout is settled
         requestAnimationFrame(() => {
             performScroll();
-            
+
             // Double RAF to ensure layout is complete
             requestAnimationFrame(() => {
                 performScroll();
-                
-                // Final check after a delay to ensure we're at bottom
-                setTimeout(() => {
-                    const scrollHeight = container.scrollHeight;
-                    const currentScrollTop = container.scrollTop;
-                    const clientHeight = container.clientHeight;
-                    const maxScroll = scrollHeight - clientHeight;
-                    
-                    // Force scroll if not at bottom (with small tolerance)
-                    if (Math.abs(maxScroll - currentScrollTop) > 5) {
-                        container.scrollTop = scrollHeight;
-                        
-                        // Try jQuery slimscroll API one more time
-                        if (typeof $ !== 'undefined' && $(container).data('slimScroll')) {
-                            $(container).slimScroll({ scrollTo: scrollHeight });
+
+                // Sequence of timeouts to handle different loading stages
+                [50, 100, 200, 500].forEach(delay => {
+                    setTimeout(() => {
+                        performScroll();
+
+                        // Extra check for slimscroll
+                        if (typeof $ !== 'undefined' && $('.chat-body').data('slimScroll')) {
+                            $('.chat-body').slimScroll({ scrollTo: $('.chat-body')[0].scrollHeight + 'px' });
                         }
-                    }
-                }, 150);
+                    }, delay);
+                });
             });
         });
     }
@@ -2009,7 +2011,7 @@ class GroupChatManager {
      */
     getFileTypeInfo(fileName) {
         const extension = fileName.split('.').pop()?.toLowerCase() || 'file';
-        
+
         const fileTypes = {
             // Code files
             'php': { icon: 'ti ti-brand-php', color: '#777BB4', bgColor: '#E8E9F0', badgeColor: '#777BB4', badgeTextColor: '#fff' },
@@ -2032,7 +2034,7 @@ class GroupChatManager {
             'vue': { icon: 'ti ti-brand-vue', color: '#4FC08D', bgColor: '#E8F5E9', badgeColor: '#4FC08D', badgeTextColor: '#fff' },
             'json': { icon: 'ti ti-code', color: '#000000', bgColor: '#F5F5F5', badgeColor: '#000000', badgeTextColor: '#fff' },
             'xml': { icon: 'ti ti-code', color: '#FF6600', bgColor: '#FFF3E0', badgeColor: '#FF6600', badgeTextColor: '#fff' },
-            
+
             // Documents
             'pdf': { icon: 'ti ti-file-type-pdf', color: '#DC143C', bgColor: '#FFEBEE', badgeColor: '#DC143C', badgeTextColor: '#fff' },
             'doc': { icon: 'ti ti-file-type-doc', color: '#2B579A', bgColor: '#E3F2FD', badgeColor: '#2B579A', badgeTextColor: '#fff' },
@@ -2043,18 +2045,18 @@ class GroupChatManager {
             'pptx': { icon: 'ti ti-file-type-ppt', color: '#D04423', bgColor: '#FFEBEE', badgeColor: '#D04423', badgeTextColor: '#fff' },
             'txt': { icon: 'ti ti-file-type-txt', color: '#6c757d', bgColor: '#F5F5F5', badgeColor: '#6c757d', badgeTextColor: '#fff' },
             'rtf': { icon: 'ti ti-file-text', color: '#6c757d', bgColor: '#F5F5F5', badgeColor: '#6c757d', badgeTextColor: '#fff' },
-            
+
             // Archives
             'zip': { icon: 'ti ti-file-zip', color: '#FF9800', bgColor: '#FFF3E0', badgeColor: '#FF9800', badgeTextColor: '#fff' },
             'rar': { icon: 'ti ti-file-zip', color: '#FF9800', bgColor: '#FFF3E0', badgeColor: '#FF9800', badgeTextColor: '#fff' },
             '7z': { icon: 'ti ti-file-zip', color: '#FF9800', bgColor: '#FFF3E0', badgeColor: '#FF9800', badgeTextColor: '#fff' },
             'tar': { icon: 'ti ti-file-zip', color: '#FF9800', bgColor: '#FFF3E0', badgeColor: '#FF9800', badgeTextColor: '#fff' },
             'gz': { icon: 'ti ti-file-zip', color: '#FF9800', bgColor: '#FFF3E0', badgeColor: '#FF9800', badgeTextColor: '#fff' },
-            
+
             // Default
             'file': { icon: 'ti ti-file', color: '#6c757d', bgColor: '#F5F5F5', badgeColor: '#6c757d', badgeTextColor: '#fff' }
         };
-        
+
         return {
             ...fileTypes[extension] || fileTypes['file'],
             extension: extension
@@ -2092,7 +2094,7 @@ class GroupChatManager {
         // Stop at space, newline, punctuation (except @), or end of string
         // This matches: @username, @John Doe, @user.name, etc.
         const mentionRegex = /@([\w\s\-\.]+?)(?=\s|$|@|[^\w\s\-\.]|[\n\r])/g;
-        
+
         return escaped.replace(mentionRegex, (match, name) => {
             // Trim the name and create highlighted mention
             const trimmedName = name.trim();
@@ -2120,13 +2122,13 @@ class GroupChatManager {
             if (data.success && data.members) {
                 // Filter out current user from mentions list
                 const currentUserIdStr = String(this.currentUserId || window.currentUserId || '').trim();
-                
+
                 this.groupMembers = data.members.filter(member => {
                     const memberId = String(member.id || member._id || '').trim();
                     // Keep if member ID is not empty and not equal to current user ID
                     return memberId !== '' && memberId !== currentUserIdStr;
                 });
-                
+
                 console.log('✅ Loaded group members for mentions:', this.groupMembers.length);
             }
         } catch (error) {
@@ -2269,7 +2271,7 @@ class GroupChatManager {
      */
     showMentionDropdown(searchQuery, input) {
         console.log('Showing mention dropdown, query:', searchQuery, 'members:', this.groupMembers.length);
-        
+
         // Filter members based on search query
         const filteredMembers = this.groupMembers.filter(member => {
             const name = (member.name || '').toLowerCase();
@@ -2422,12 +2424,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                     // Let mention handler deal with it
                     return;
                 }
-                
+
                 e.preventDefault();
                 const content = messageInput.value.trim();
                 const selectedFile = window.selectedFile || null;
                 const selectedFileType = window.selectedFileType || null;
-                
+
                 // Send message if there's content or a file
                 if (content || selectedFile) {
                     // If file is selected, send it with text content
@@ -2441,7 +2443,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 selectedFileType,
                                 selectedFile
                             );
-                            
+
                             // Clear file selection
                             window.selectedFile = null;
                             window.selectedFileType = null;
@@ -2450,7 +2452,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             if (window.removeFilePreview) {
                                 window.removeFilePreview();
                             }
-                            
+
                             // Clear message input
                             if (messageInput) messageInput.value = '';
                         } catch (error) {
@@ -2481,7 +2483,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const selectedFile = window.selectedFile || null;
             const selectedFileType = window.selectedFileType || null;
             const fileInput = document.getElementById('files');
-            
+
             // Send message if there's content or a file
             if (content || selectedFile) {
                 // If file is selected, send it with text content
@@ -2490,7 +2492,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         sendButton.disabled = true;
                         const originalContent = sendButton.innerHTML;
                         sendButton.innerHTML = '<i class="ti ti-loader-2"></i>';
-                        
+
                         // Send image with text content (if user typed something)
                         // If no text, use default caption
                         const messageContent = content.trim() || (selectedFileType === 'img' ? 'Image' : selectedFile.name);
@@ -2499,7 +2501,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             selectedFileType,
                             selectedFile
                         );
-                        
+
                         // Clear file selection
                         window.selectedFile = null;
                         window.selectedFileType = null;
@@ -2507,10 +2509,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                         if (window.removeFilePreview) {
                             window.removeFilePreview();
                         }
-                        
+
                         // Clear message input
                         if (messageInput) messageInput.value = '';
-                        
+
                         sendButton.disabled = false;
                         sendButton.innerHTML = originalContent;
                     } catch (error) {
