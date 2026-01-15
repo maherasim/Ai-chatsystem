@@ -1301,8 +1301,10 @@ class ChatController extends Controller
             // Get all users (excluding superadmin if needed)
             $users = User::where('email', '!=', 'admin@gmail.com')->get();
 
-            // Get active sessions (users active in last 5 minutes)
-            $activeThreshold = now()->subMinutes(5)->timestamp;
+            // Get active sessions (users active in last 10 minutes)
+            // Users are considered online if they were active in the last 10 minutes
+            $onlineThresholdMinutes = 2; // Adjust this value to change online status duration
+            $activeThreshold = now()->subMinutes($onlineThresholdMinutes)->timestamp;
             
             // Check Laravel sessions table for active sessions
             $activeUserIds = [];
@@ -1336,7 +1338,7 @@ class ChatController extends Controller
                 $isCurrentUser = Auth::check() && (string)Auth::id() === $userId;
                 
                 // Consider online if:
-                // 1. Has active session in last 5 minutes, OR
+                // 1. Has active session in last 10 minutes, OR
                 // 2. Is the current logged-in user, OR
                 // 3. User is marked as active (fallback)
                 $isOnline = $hasActiveSession || $isCurrentUser || ($user->active ?? false);
