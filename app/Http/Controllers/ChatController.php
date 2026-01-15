@@ -11,6 +11,7 @@ use App\Services\AgoraService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ChatController extends Controller
@@ -941,7 +942,7 @@ class ChatController extends Controller
     /**
      * Get group members for mentions
      */
-    public function getGroupMembers($groupId)
+    public function getGroupMembersForMentions($groupId)
     {
         try {
             $user = Auth::user();
@@ -1287,6 +1288,83 @@ class ChatController extends Controller
                 'success' => false,
                 'message' => 'Failed to retrieve unread counts',
                 'unread_counts' => [],
+            ], 500);
+        }
+    }
+
+    /**
+     * Get all users with online status
+     */
+    public function getAllUsers(Request $request)
+    {
+        try {
+            // Get all users (excluding superadmin if needed)
+            $users = User::where('email', '!=', 'admin@gmail.com')->get();
+
+            // Get active sessions (users active in last 5 minutes)
+            $activeThreshold = now()->subMinutes(5)->timestamp;
+            
+            // Check Laravel sessions table for active sessions
+            $activeUserIds = [];
+            try {
+                // Access sessions from database (assuming default Laravel session driver)
+                $sessions = \DB::table('sessions')
+                    ->where('last_activity', '>', $activeThreshold)
+                    ->whereNotNull('user_id')
+                    ->get();
+                
+                $activeUserIds = $sessions->pluck('user_id')->map(function($userId) {
+                    // Convert to string for MongoDB ObjectId comparison
+                    return (string)$userId;
+                })->toArray();
+            } catch (\Exception $e) {
+                // If sessions table doesn't exist or is MongoDB, fall back to active field
+                \Log::warning('Could not access sessions table, using active field', [
+                    'error' => $e->getMessage(),
+                ]);
+            }
+            
+            // Map all users with online status
+            $usersList = $users->map(function($user) use ($activeThreshold, $activeUserIds) {
+                $avatarUrl = $this->getAvatarUrl($user);
+                $userId = (string)$user->_id;
+                
+                // Check if user has active session
+                $hasActiveSession = !empty($activeUserIds) && in_array($userId, $activeUserIds);
+                
+                // Also check if user is currently logged in (check current session)
+                $isCurrentUser = Auth::check() && (string)Auth::id() === $userId;
+                
+                // Consider online if:
+                // 1. Has active session in last 5 minutes, OR
+                // 2. Is the current logged-in user, OR
+                // 3. User is marked as active (fallback)
+                $isOnline = $hasActiveSession || $isCurrentUser || ($user->active ?? false);
+                
+                return [
+                    'id' => $userId,
+                    'name' => $user->name ?? $user->email,
+                    'email' => $user->email,
+                    'avatar' => $avatarUrl,
+                    'is_online' => $isOnline,
+                    'type' => $user->type ?? 'user',
+                ];
+            })->values();
+
+            return response()->json([
+                'success' => true,
+                'members' => $usersList,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to get all users', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve users',
+                'members' => [],
             ], 500);
         }
     }

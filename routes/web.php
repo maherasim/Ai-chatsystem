@@ -216,7 +216,7 @@ Route::middleware('auth')->group(function () {
     // Group chat routes
     Route::get('/api/chat/group/{groupId}/messages', [ChatController::class, 'getGroupMessages'])->name('chat.group.messages');
     Route::post('/api/chat/group/message', [ChatController::class, 'saveGroupMessage'])->name('chat.group.message.save');
-    Route::get('/api/chat/group/{groupId}/members', [ChatController::class, 'getGroupMembers'])->name('chat.group.members');
+    Route::get('/api/chat/group/{groupId}/members', [ChatController::class, 'getGroupMembersForMentions'])->name('chat.group.members.mentions');
     Route::get('/api/chat/group/{groupId}/media', [ChatController::class, 'getGroupMedia'])->name('chat.group.media');
     Route::post('/api/chat/favorite/toggle', [ChatController::class, 'toggleFavorite'])->name('chat.favorite.toggle');
     Route::get('/api/chat/favorites', [ChatController::class, 'getFavorites'])->name('chat.favorites');
@@ -227,6 +227,7 @@ Route::middleware('auth')->group(function () {
     // Group profile API
     Route::get('/api/chat/group/{groupId}/profile', [ChatController::class, 'getGroupProfile'])->name('api.group.profile');
     Route::get('/api/chat/groups/unread-counts', [ChatController::class, 'getGroupsUnreadCounts'])->name('chat.groups.unread.counts');
+    Route::get('/api/chat/all-users', [ChatController::class, 'getAllUsers'])->name('chat.all.users');
 });
 // new editor save endpoints
 Route::post('/settings/policy/save', [App\Http\Controllers\SettingController::class, 'savePolicy'])->name('settings.policy.save');
