@@ -158,10 +158,10 @@ class GroupChatManager {
                 this.setupEventListeners();
 
                 console.log('Agora Chat initialized successfully');
-                
+
                 // Start updating unread badges periodically
                 this.startUnreadBadgePolling();
-                
+
                 return true;
             } else {
                 console.warn('Agora Chat SDK not loaded. Using fallback mode.');
@@ -321,7 +321,7 @@ class GroupChatManager {
 
             // Load existing messages (this will mark them as read on backend)
             await this.loadGroupMessages(groupId);
-            
+
             // Update unread badges after loading messages (count should be 0 now)
             this.updateAllGroupUnreadBadges();
 
@@ -381,10 +381,10 @@ class GroupChatManager {
         if (this.unreadBadgeInterval) {
             clearInterval(this.unreadBadgeInterval);
         }
-        
+
         // Update immediately
         this.updateAllGroupUnreadBadges();
-        
+
         // Then update every 10 seconds
         this.unreadBadgeInterval = setInterval(() => {
             this.updateAllGroupUnreadBadges();
@@ -431,7 +431,7 @@ class GroupChatManager {
                 if (data.success && data.messages && data.messages.length > 0) {
                     // Update unread badges immediately when new messages are received via polling
                     this.updateAllGroupUnreadBadges();
-                    
+
                     // Filter out messages we already have
                     const newMessages = data.messages.filter(msg => {
                         const msgId = String(msg._id || msg.id);
@@ -1572,16 +1572,16 @@ class GroupChatManager {
 
                     const messageElement = this.createMessageElement(sentMessageData);
                     messageElement.setAttribute('data-date', dateStr);
-            container.appendChild(messageElement);
-            // Force scroll when sending messages
-            this.forceScrollToBottom();
-            
-            // Update unread badges immediately after sending a message
-            // If sent to current group, badge should stay at 0 (we're viewing it)
-            // If sent to different group, update all badges
-            setTimeout(() => {
-                this.updateAllGroupUnreadBadges();
-            }, 300); // Small delay to ensure message is saved on backend
+                    container.appendChild(messageElement);
+                    // Force scroll when sending messages
+                    this.forceScrollToBottom();
+
+                    // Update unread badges immediately after sending a message
+                    // If sent to current group, badge should stay at 0 (we're viewing it)
+                    // If sent to different group, update all badges
+                    setTimeout(() => {
+                        this.updateAllGroupUnreadBadges();
+                    }, 300); // Small delay to ensure message is saved on backend
                 }
 
                 // Also reload messages to ensure consistency (but UI already updated)
@@ -1604,14 +1604,14 @@ class GroupChatManager {
         if (!groupCard) return;
 
         let badge = groupCard.querySelector('.group-unread-badge');
-        
+
         if (count > 0) {
             if (!badge) {
                 // Create badge if it doesn't exist
                 badge = document.createElement('span');
                 badge.className = 'group-unread-badge';
                 badge.style.cssText = 'position: absolute; top: -5px; right: -5px; background: #dc3545; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 10;';
-                
+
                 // Find the profile image container to attach badge
                 const profileImg = groupCard.querySelector('div[style*="margin-top: -20px"]');
                 if (profileImg) {
@@ -2584,7 +2584,8 @@ class GroupChatManager {
      * Scroll to bottom with smooth animation
      */
     scrollToBottom(smooth = true) {
-        const container = document.querySelector('.chat-body');
+        // Use more specific selector to avoid sidebar conflict
+        const container = document.querySelector('.chat-page-group');
         if (!container) return;
 
         // Use requestAnimationFrame to ensure DOM is updated
@@ -2610,15 +2611,40 @@ class GroupChatManager {
      * Force scroll to bottom (used when sending messages or receiving new messages)
      */
     forceScrollToBottom(smooth = true) {
-        const container = document.querySelector('.chat-body');
+        // Use more specific selector to avoid sidebar conflict
+        const container = document.querySelector('.chat-page-group');
         if (container) {
-            // Use setTimeout to ensure message is rendered
-            setTimeout(() => {
+            const performScroll = () => {
+                const scrollHeight = container.scrollHeight;
+
+                // Try standard scrollTo
                 container.scrollTo({
-                    top: container.scrollHeight,
+                    top: scrollHeight,
                     behavior: smooth ? 'smooth' : 'auto'
                 });
-            }, 100);
+
+                // Fallback for some browsers/scrollers
+                container.scrollTop = scrollHeight;
+
+                // If jQuery and slimScroll are available, use them as well
+                if (window.jQuery && jQuery.fn.slimScroll) {
+                    jQuery(container).slimScroll({
+                        scrollTo: scrollHeight + 'px',
+                        animate: smooth
+                    });
+                }
+            };
+
+            // Initial attempt
+            setTimeout(performScroll, 100);
+
+            // Multiple attempts to handle late-rendering content (images, etc)
+            // Only do multiple attempts for initial load (smooth=false)
+            if (!smooth) {
+                [300, 600, 1000, 2000].forEach(delay => {
+                    setTimeout(performScroll, delay);
+                });
+            }
         }
     }
 
