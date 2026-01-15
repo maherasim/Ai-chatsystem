@@ -35,6 +35,14 @@ public function customLogin(Request $request)
     if (Auth::attempt($credentials)) {
         // ✅ Authentication passed
         $request->session()->regenerate(); // Prevent session fixation
+        
+        // Set last_activity when user logs in
+        $user = Auth::user();
+        if ($user) {
+            $user->last_activity = now();
+            $user->save();
+        }
+        
         return redirect()->intended('home')->with('success', 'Signed in');
     }
 
@@ -103,6 +111,13 @@ public function customLogin(Request $request)
 
     public function signOut(Request $request)
 {
+    // Clear last_activity when user logs out
+    if (Auth::check()) {
+        $user = Auth::user();
+        $user->last_activity = null;
+        $user->save();
+    }
+    
     Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();

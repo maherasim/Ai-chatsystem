@@ -1301,47 +1301,29 @@ class ChatController extends Controller
             // Get all users (excluding superadmin if needed)
             $users = User::where('email', '!=', 'admin@gmail.com')->get();
 
-            // Get active sessions (users active in last 10 minutes)
-            // Users are considered online if they were active in the last 10 minutes
+            // Users are considered online if they were active in the last X minutes
             $onlineThresholdMinutes = 2; // Adjust this value to change online status duration
-            $activeThreshold = now()->subMinutes($onlineThresholdMinutes)->timestamp;
+            $activeThreshold = now()->subMinutes($onlineThresholdMinutes);
             
-            // Check Laravel sessions table for active sessions
-            $activeUserIds = [];
-            try {
-                // Access sessions from database (assuming default Laravel session driver)
-                $sessions = \DB::table('sessions')
-                    ->where('last_activity', '>', $activeThreshold)
-                    ->whereNotNull('user_id')
-                    ->get();
-                
-                $activeUserIds = $sessions->pluck('user_id')->map(function($userId) {
-                    // Convert to string for MongoDB ObjectId comparison
-                    return (string)$userId;
-                })->toArray();
-            } catch (\Exception $e) {
-                // If sessions table doesn't exist or is MongoDB, fall back to active field
-                \Log::warning('Could not access sessions table, using active field', [
-                    'error' => $e->getMessage(),
-                ]);
-            }
-            
-            // Map all users with online status
-            $usersList = $users->map(function($user) use ($activeThreshold, $activeUserIds) {
+            // Map all users with online status based on last_activity field
+            $usersList = $users->map(function($user) use ($activeThreshold) {
                 $avatarUrl = $this->getAvatarUrl($user);
                 $userId = (string)$user->_id;
                 
-                // Check if user has active session
-                $hasActiveSession = !empty($activeUserIds) && in_array($userId, $activeUserIds);
-                
-                // Also check if user is currently logged in (check current session)
+                // Check if user is currently logged in
                 $isCurrentUser = Auth::check() && (string)Auth::id() === $userId;
                 
+                // Check if user has recent activity (last_activity within threshold)
+                $hasRecentActivity = false;
+                if ($user->last_activity) {
+                    $hasRecentActivity = $user->last_activity->isAfter($activeThreshold);
+                }
+                
                 // Consider online if:
-                // 1. Has active session in last 10 minutes, OR
-                // 2. Is the current logged-in user, OR
-                // 3. User is marked as active (fallback)
-                $isOnline = $hasActiveSession || $isCurrentUser || ($user->active ?? false);
+                // 1. Has recent activity (last_activity within threshold), OR
+                // 2. Is the current logged-in user (always online), OR
+                // 3. User is marked as active AND has last_activity (fallback)
+                $isOnline = $hasRecentActivity || $isCurrentUser || ($user->active && $user->last_activity);
                 
                 return [
                     'id' => $userId,

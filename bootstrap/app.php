@@ -14,6 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         // Enforce screen lock on the server side for authenticated users
         $middleware->append(\App\Http\Middleware\ScreenLockMiddleware::class);
+        // Update user last activity on each request
+        $middleware->append(\App\Http\Middleware\UpdateLastActivity::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

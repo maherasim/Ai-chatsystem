@@ -48,6 +48,12 @@ class User extends Authenticatable implements MustVerifyEmail
         'screen_lock_minutes',
         'two_factor_auth', 
         'user_id',
+        'last_activity',
+    ];
+
+    protected $casts = [
+        'last_activity' => 'datetime',
+        'active' => 'boolean',
     ];
 
     public function attachments()
