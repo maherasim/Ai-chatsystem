@@ -26,7 +26,16 @@ public function customLogin(Request $request)
         return response()->json(['success' => false, 'message' => 'Invalid credentials']);
     }
 
+    // ✅ Authentication passed
+    $request->session()->regenerate();
+
     $user = Auth::user();
+
+    // ✅ Set last_activity when user logs in
+    if ($user) {
+        $user->last_activity = now();
+        $user->save();
+    }
 
     //Check if user already completed profile & accepted policy
     if ($user->policy_accepted  && $user->profile_image && $user->card_image) {
@@ -159,6 +168,13 @@ public function customLogin_old(Request $request)
 
     public function signOut(Request $request)
 {
+    // ✅ Clear last_activity when user logs out
+    if (Auth::check()) {
+        $user = Auth::user();
+        $user->last_activity = null;
+        $user->save();
+    }
+
     Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();

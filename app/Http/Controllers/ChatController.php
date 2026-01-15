@@ -799,5 +799,57 @@ class ChatController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
+
+    /**
+     * Get all users with online status
+     */
+    public function getAllUsers(Request $request)
+    {
+        // Get all users
+        $users = User::where('email', '!=', 'admin@gmail.com')->get();
+
+        // Users are considered online if they were active in the last X minutes
+        $onlineThresholdMinutes = 2; // Adjust this value
+        $activeThreshold = now()->subMinutes($onlineThresholdMinutes);
+
+        $usersList = $users->map(function($user) use ($activeThreshold) {
+            $userId = (string)$user->_id;
+
+            // Check if user is currently logged in
+            $isCurrentUser = Auth::check() && (string)Auth::id() === $userId;
+
+            // Check if user has recent activity
+            $hasRecentActivity = false;
+            if ($user->last_activity) {
+                $hasRecentActivity = $user->last_activity->isAfter($activeThreshold);
+            }
+
+            // Consider online if:
+            // 1. Has recent activity (within threshold), OR
+            // 2. Is the current logged-in user, OR
+            // 3. User is active AND has last_activity
+            $isOnline = $hasRecentActivity || $isCurrentUser || ($user->active && $user->last_activity);
+
+            // Get avatar URL
+            $avatarUrl = null;
+            if (isset($user->image) && !empty(trim($user->image))) {
+                $avatarUrl = $this->getImageUrl(ltrim($user->image, '/'));
+            } elseif (isset($user->profile_image) && !empty(trim($user->profile_image))) {
+                $avatarUrl = $this->getImageUrl('storage/' . ltrim($user->profile_image, '/'));
+            }
+
+            return [
+                'id' => $userId,
+                'name' => $user->name ?? $user->email,
+                'avatar' => $avatarUrl,
+                'is_online' => $isOnline,  // ✅ This determines green indicator
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'users' => $usersList->values(),
+        ]);
+    }
 }
 

@@ -50,7 +50,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'card_image',
         'description',
         'group_read_timestamps',
+        'last_activity',
     ];
 
- 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'last_activity' => 'datetime',
+        'active' => 'boolean',
+    ];
 }
