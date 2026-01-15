@@ -107,26 +107,76 @@ class AgoraService
             $payload['avatarurl'] = $avatar;
         }
 
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->authToken,
-            'Content-Type' => 'application/json',
-        ])->post($url, $payload);
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => 'Basic ' . $this->authToken,
+                'Content-Type' => 'application/json',
+            ])->timeout(10)->post($url, $payload);
 
-        if ($response->successful() || $response->status() === 200) {
-            return $response->json();
+            $statusCode = $response->status();
+            $responseBody = $response->body();
+            $responseJson = $response->json();
+
+            // If user already exists (400 or 409), try to get existing user
+            if ($statusCode === 400 || $statusCode === 409) {
+                Log::info('Agora User Already Exists', [
+                    'user_id' => $userId,
+                    'status' => $statusCode,
+                ]);
+                try {
+                    return $this->getUser($userId);
+                } catch (\Exception $e) {
+                    // If we can't get the user, log but don't fail - token generation might still work
+                    Log::warning('Could not retrieve existing Agora user, but continuing', [
+                        'user_id' => $userId,
+                        'error' => $e->getMessage(),
+                    ]);
+                    // Return a minimal success response to allow token generation to proceed
+                    return ['entities' => [['uuid' => $userId, 'username' => $username]]];
+                }
+            }
+
+            if ($response->successful() || $statusCode === 200 || $statusCode === 201) {
+                return $responseJson ?: ['entities' => [['uuid' => $userId, 'username' => $username]]];
+            }
+
+            Log::error('Agora User Creation Failed', [
+                'user_id' => $userId,
+                'status' => $statusCode,
+                'response_body' => $responseBody,
+                'response_json' => $responseJson,
+                'url' => $url,
+                'payload' => $payload,
+            ]);
+
+            // If creation fails but we can still generate a token, log warning instead of throwing
+            // This allows the chat to work even if user creation has issues
+            Log::warning('Agora user creation failed, but continuing with token generation', [
+                'user_id' => $userId,
+            ]);
+            
+            // Return a minimal response to allow token generation to proceed
+            return ['entities' => [['uuid' => $userId, 'username' => $username]]];
+            
+        } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            Log::error('Agora API Connection Failed', [
+                'user_id' => $userId,
+                'error' => $e->getMessage(),
+                'url' => $url,
+            ]);
+            
+            // Return minimal response to allow token generation to proceed
+            return ['entities' => [['uuid' => $userId, 'username' => $username]]];
+        } catch (\Exception $e) {
+            Log::error('Agora User Creation Exception', [
+                'user_id' => $userId,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            
+            // Return minimal response to allow token generation to proceed
+            return ['entities' => [['uuid' => $userId, 'username' => $username]]];
         }
-
-        // If user already exists, return existing user
-        if ($response->status() === 400) {
-            return $this->getUser($userId);
-        }
-
-        Log::error('Agora User Creation Failed', [
-            'user_id' => $userId,
-            'response' => $response->body(),
-        ]);
-
-        throw new \Exception('Failed to create Agora user');
     }
 
     /**

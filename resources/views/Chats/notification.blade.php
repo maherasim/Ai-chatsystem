@@ -283,9 +283,10 @@
                             @forelse($groups as $group)
                                 <!-- Dynamic Group Card -->
                                 <div onclick="openGroupChat('{{ $group['id'] }}', '{{ addslashes($group['name']) }}', '{{ $group['team_photo'] }}')" 
-                                     style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px; cursor: pointer; transition: transform 0.2s;"
+                                     style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 115px; cursor: pointer; transition: transform 0.2s; position: relative;"
                                      onmouseover="this.style.transform='scale(1.05)'"
-                                     onmouseout="this.style.transform='scale(1)'">
+                                     onmouseout="this.style.transform='scale(1)'"
+                                     data-group-id="{{ $group['id'] }}">
                                 <div style="position: relative; height: 50px; overflow: hidden; border-top-left-radius: 16px; border-top-right-radius: 16px;">
                                         <img src="{{ $group['team_banner'] }}" alt="Background"
                                             style="width: 100%; height: 100%; object-fit: cover;">
@@ -293,6 +294,11 @@
                                 <div style="position: relative; margin-top: -20px;">
                                         <img src="{{ $group['team_photo'] }}" alt="Profile"
                                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid limegreen; background: white;">
+                                        @if(isset($group['unread_count']) && $group['unread_count'] > 0)
+                                            <span class="group-unread-badge" style="position: absolute; top: -5px; right: -5px; background: #dc3545; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                                                {{ $group['unread_count'] > 99 ? '99+' : $group['unread_count'] }}
+                                            </span>
+                                        @endif
                                  </div>
                                 <div style="padding: 8px;">
                                         <h6 style="font-weight: 600; font-size: 11px; color: #000; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $group['name'] }}</h6>

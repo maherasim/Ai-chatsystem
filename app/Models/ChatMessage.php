@@ -91,6 +91,31 @@ class ChatMessage extends Model
     }
 
     /**
+     * Get unread messages count for a group (messages not read by the user)
+     */
+    public static function getGroupUnreadCount($groupId, $userId): int
+    {
+        // Get the last time user viewed this group's messages
+        // For now, we'll count messages where user is not the sender and is_read is false or null
+        // In a group, we need to track which messages the user has seen
+        // This is a simplified version - you might want to track last_read_message_id per group per user
+        
+        return static::where(function($q) use ($groupId) {
+                $q->where('group_id', $groupId)
+                  ->orWhere('conversation_id', 'group_' . $groupId);
+            })
+            ->where('is_deleted', false)
+            ->where(function($q) use ($userId) {
+                $q->where('from_user_id', '!=', $userId)
+                  ->where(function($q2) {
+                      $q2->where('is_read', false)
+                         ->orWhereNull('is_read');
+                  });
+            })
+            ->count();
+    }
+
+    /**
      * Mark messages as read
      */
     public static function markAsRead($conversationId, $userId): void
@@ -98,6 +123,27 @@ class ChatMessage extends Model
         static::where('conversation_id', $conversationId)
             ->where('to_user_id', $userId)
             ->where('is_read', false)
+            ->update([
+                'is_read' => true,
+                'read_at' => now(),
+            ]);
+    }
+
+    /**
+     * Mark group messages as read for a user
+     */
+    public static function markGroupMessagesAsRead($groupId, $userId): void
+    {
+        static::where(function($q) use ($groupId) {
+                $q->where('group_id', $groupId)
+                  ->orWhere('conversation_id', 'group_' . $groupId);
+            })
+            ->where('from_user_id', '!=', $userId)
+            ->where(function($q) {
+                $q->where('is_read', false)
+                  ->orWhereNull('is_read');
+            })
+            ->where('is_deleted', false)
             ->update([
                 'is_read' => true,
                 'read_at' => now(),

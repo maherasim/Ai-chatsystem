@@ -62,7 +62,7 @@ class ChatController extends Controller
             $allGroups = collect([]);
         }
         
-        $groups = $allGroups->map(function($group) {
+        $groups = $allGroups->map(function($group) use ($user) {
             // Load team separately
             $team = null;
             if ($group->team_id) {
@@ -81,6 +81,9 @@ class ChatController extends Controller
             }
             $memberCount = count($memberIds) + 1; // +1 for admin
             
+            // Get unread message count for this group
+            $unreadCount = ChatMessage::getGroupUnreadCount((string)$group->_id, (string)$user->_id);
+            
             return [
                 'id' => (string) $group->_id,
                 'name' => $group->name ?? 'Untitled Group',
@@ -92,6 +95,7 @@ class ChatController extends Controller
                     ? asset('storage/' . ltrim($team->banner_path, '/'))
                     : asset('build/img/bgractangle.svg'),
                 'member_count' => $memberCount,
+                'unread_count' => $unreadCount,
             ];
         })
         ->values();
@@ -113,25 +117,52 @@ class ChatController extends Controller
         $userId = (string)$user->_id;
 
         try {
-            // Create or get Agora user
+            // Create or get Agora user (non-blocking - continue even if it fails)
             $avatarUrl = $this->getAvatarUrl($user);
-            $this->agoraService->createUser($userId, $user->name ?? $user->email, $avatarUrl);
+            try {
+                $this->agoraService->createUser($userId, $user->name ?? $user->email, $avatarUrl);
+            } catch (\Exception $e) {
+                // Log but continue - user might already exist or API might be temporarily unavailable
+                \Log::warning('Agora user creation had issues, but continuing', [
+                    'user_id' => $userId,
+                    'error' => $e->getMessage(),
+                ]);
+            }
 
-            // Generate chat token
+            // Generate chat token (this is the critical part)
             $tokenResponse = $this->agoraService->generateChatToken($userId);
+
+            $token = $tokenResponse['token'] ?? $tokenResponse['accessToken'] ?? $tokenResponse['rtmToken'] ?? null;
+            
+            if (!$token) {
+                \Log::error('Agora token generation returned no token', [
+                    'user_id' => $userId,
+                    'response' => $tokenResponse,
+                ]);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to generate chat token',
+                ], 500);
+            }
 
             return response()->json([
                 'success' => true,
                 'app_id' => config('agora.app_id'),
                 'user_id' => $userId,
-                'token' => $tokenResponse['token'] ?? $tokenResponse['accessToken'] ?? null,
+                'token' => $token,
                 'username' => $user->name ?? $user->email,
                 'avatar' => $avatarUrl,
             ]);
         } catch (\Exception $e) {
+            \Log::error('Agora token generation failed', [
+                'user_id' => $userId,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage(),
+                'message' => $e->getMessage() ?: 'Failed to generate Agora token',
             ], 500);
         }
     }
@@ -482,6 +513,10 @@ class ChatController extends Controller
             $messages = $query->orderBy('created_at', 'asc')
                 ->limit(100)
                 ->get();
+
+            // Mark messages as read when user opens the group
+            $userId = (string)$user->_id;
+            ChatMessage::markGroupMessagesAsRead($groupId, $userId);
 
             // Format messages
             $formattedMessages = $messages->map(function($message) use ($user) {
@@ -874,11 +909,15 @@ class ChatController extends Controller
                 return false;
             });
 
-            $formattedGroups = $userGroups->map(function($group) {
+            $formattedGroups = $userGroups->map(function($group) use ($userId) {
+                // Get unread message count for this group
+                $unreadCount = ChatMessage::getGroupUnreadCount((string)$group->_id, $userId);
+                
                 return [
                     '_id' => (string)$group->_id,
                     'id' => (string)$group->_id,
                     'name' => $group->name ?? 'Untitled Group',
+                    'unread_count' => $unreadCount,
                 ];
             })->values();
 
@@ -1186,6 +1225,68 @@ class ChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to get favorites',
+            ], 500);
+        }
+    }
+
+    /**
+     * Get unread message counts for all user groups
+     */
+    public function getGroupsUnreadCounts()
+    {
+        try {
+            $user = Auth::user();
+            $userId = (string)$user->_id;
+
+            // Get all groups
+            $allGroups = Group::all();
+
+            // Filter groups where user is admin or member
+            $userGroups = $allGroups->filter(function($group) use ($userId) {
+                // Check if user is admin
+                if ((string)$group->admin_id === $userId) {
+                    return true;
+                }
+
+                // Check if user is in member_ids
+                $memberIds = $group->member_ids ?? [];
+                if (is_string($memberIds)) {
+                    $decoded = json_decode($memberIds, true);
+                    $memberIds = is_array($decoded) ? $decoded : [];
+                }
+
+                if (is_array($memberIds)) {
+                    foreach ($memberIds as $memberId) {
+                        if ((string)$memberId === $userId) {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            });
+
+            // Get unread counts for each group
+            $unreadCounts = [];
+            foreach ($userGroups as $group) {
+                $groupId = (string)$group->_id;
+                $unreadCount = ChatMessage::getGroupUnreadCount($groupId, $userId);
+                $unreadCounts[$groupId] = $unreadCount;
+            }
+
+            return response()->json([
+                'success' => true,
+                'unread_counts' => $unreadCounts,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to get groups unread counts', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve unread counts',
+                'unread_counts' => [],
             ], 500);
         }
     }

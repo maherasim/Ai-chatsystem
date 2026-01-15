@@ -20,6 +20,7 @@ class GroupChatManager {
         this.mentionStartPos = null; // Track @ mention start position
         this.mentionDropdown = null; // Mention dropdown element
         this.selectedMentionIndex = -1; // Selected mention index
+        this.unreadBadgeInterval = null; // Interval for polling unread counts
         this.initNotificationSound();
     }
 
@@ -157,6 +158,10 @@ class GroupChatManager {
                 this.setupEventListeners();
 
                 console.log('Agora Chat initialized successfully');
+                
+                // Start updating unread badges periodically
+                this.startUnreadBadgePolling();
+                
                 return true;
             } else {
                 console.warn('Agora Chat SDK not loaded. Using fallback mode.');
@@ -273,6 +278,9 @@ class GroupChatManager {
         this.currentGroupName = groupName;
         this.currentGroupPhoto = photoUrl;
 
+        // Clear unread count badge for this group
+        this.updateGroupUnreadBadge(groupId, 0);
+
         // Show loader
         this.showLoader();
 
@@ -311,8 +319,11 @@ class GroupChatManager {
                 await this.initializeUserIdFallback();
             }
 
-            // Load existing messages
+            // Load existing messages (this will mark them as read on backend)
             await this.loadGroupMessages(groupId);
+            
+            // Update unread badges after loading messages (count should be 0 now)
+            this.updateAllGroupUnreadBadges();
 
             // Load media for this group (don't await to avoid blocking)
             if (groupId) {
@@ -363,6 +374,34 @@ class GroupChatManager {
     }
 
     /**
+     * Start polling for unread badge counts
+     */
+    startUnreadBadgePolling() {
+        // Update badges every 10 seconds
+        if (this.unreadBadgeInterval) {
+            clearInterval(this.unreadBadgeInterval);
+        }
+        
+        // Update immediately
+        this.updateAllGroupUnreadBadges();
+        
+        // Then update every 10 seconds
+        this.unreadBadgeInterval = setInterval(() => {
+            this.updateAllGroupUnreadBadges();
+        }, 10000);
+    }
+
+    /**
+     * Stop polling for unread badge counts
+     */
+    stopUnreadBadgePolling() {
+        if (this.unreadBadgeInterval) {
+            clearInterval(this.unreadBadgeInterval);
+            this.unreadBadgeInterval = null;
+        }
+    }
+
+    /**
      * Start polling for new messages (fallback if Agora fails)
      */
     startMessagePolling() {
@@ -390,6 +429,9 @@ class GroupChatManager {
                 const data = await response.json();
 
                 if (data.success && data.messages && data.messages.length > 0) {
+                    // Update unread badges immediately when new messages are received via polling
+                    this.updateAllGroupUnreadBadges();
+                    
                     // Filter out messages we already have
                     const newMessages = data.messages.filter(msg => {
                         const msgId = String(msg._id || msg.id);
@@ -409,6 +451,9 @@ class GroupChatManager {
 
                     if (newMessages.length > 0) {
                         console.log(`📥 Polling found ${newMessages.length} new messages`);
+
+                        // Update unread badges immediately when new messages are found via polling
+                        this.updateAllGroupUnreadBadges();
 
                         // Enrich with sender info
                         const enrichedMessages = await this.enrichMessagesWithSenderInfo(newMessages);
@@ -1303,6 +1348,24 @@ class GroupChatManager {
             // Force scroll when adding new messages
             this.forceScrollToBottom();
 
+            // Update unread badges immediately when message is received
+            // If message is for current group (user is viewing it), badge should be 0
+            // If message is for different group, badge should increment
+            if (messageGroupId) {
+                if (messageGroupId === this.currentGroupId || messageGroupId === `group_${this.currentGroupId}`) {
+                    // Message is for current group - update to ensure badge is 0 (messages are marked as read when viewing)
+                    setTimeout(() => {
+                        this.updateAllGroupUnreadBadges();
+                    }, 200);
+                } else {
+                    // Message is for different group - update immediately to show new count
+                    this.updateAllGroupUnreadBadges();
+                }
+            } else {
+                // No group ID, update all badges
+                this.updateAllGroupUnreadBadges();
+            }
+
             console.log('✅ Message added to UI successfully');
         } else {
             console.error('❌ Chat messages container not found');
@@ -1509,9 +1572,16 @@ class GroupChatManager {
 
                     const messageElement = this.createMessageElement(sentMessageData);
                     messageElement.setAttribute('data-date', dateStr);
-                    container.appendChild(messageElement);
-                    // Force scroll when sending messages
-                    this.forceScrollToBottom();
+            container.appendChild(messageElement);
+            // Force scroll when sending messages
+            this.forceScrollToBottom();
+            
+            // Update unread badges immediately after sending a message
+            // If sent to current group, badge should stay at 0 (we're viewing it)
+            // If sent to different group, update all badges
+            setTimeout(() => {
+                this.updateAllGroupUnreadBadges();
+            }, 300); // Small delay to ensure message is saved on backend
                 }
 
                 // Also reload messages to ensure consistency (but UI already updated)
@@ -1523,6 +1593,97 @@ class GroupChatManager {
         } catch (error) {
             console.error('Failed to send message:', error);
             alert('Failed to send message. Please try again.');
+        }
+    }
+
+    /**
+     * Update unread count badge for a group in the sidebar
+     */
+    updateGroupUnreadBadge(groupId, count) {
+        const groupCard = document.querySelector(`[data-group-id="${groupId}"]`);
+        if (!groupCard) return;
+
+        let badge = groupCard.querySelector('.group-unread-badge');
+        
+        if (count > 0) {
+            if (!badge) {
+                // Create badge if it doesn't exist
+                badge = document.createElement('span');
+                badge.className = 'group-unread-badge';
+                badge.style.cssText = 'position: absolute; top: -5px; right: -5px; background: #dc3545; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 10;';
+                
+                // Find the profile image container to attach badge
+                const profileImg = groupCard.querySelector('div[style*="margin-top: -20px"]');
+                if (profileImg) {
+                    profileImg.appendChild(badge);
+                } else {
+                    // Fallback: attach to group card
+                    groupCard.appendChild(badge);
+                }
+            }
+            badge.textContent = count > 99 ? '99+' : count;
+            badge.style.display = 'flex';
+        } else {
+            // Remove badge if count is 0
+            if (badge) {
+                badge.remove();
+            }
+        }
+    }
+
+    /**
+     * Update all group unread badges
+     */
+    async updateAllGroupUnreadBadges() {
+        try {
+            const response = await fetch('/api/chat/groups/unread-counts', {
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                },
+                cache: 'no-cache', // Ensure fresh data
+            });
+
+            if (!response.ok) {
+                return;
+            }
+
+            const data = await response.json();
+            if (data.success && data.unread_counts) {
+                // Update each group's badge
+                Object.keys(data.unread_counts).forEach(groupId => {
+                    const count = data.unread_counts[groupId];
+                    this.updateGroupUnreadBadge(groupId, count);
+                });
+            }
+        } catch (error) {
+            console.error('Failed to update unread badges:', error);
+        }
+    }
+
+    /**
+     * Update unread badge for a specific group immediately
+     * This is called when we know a message was received for a specific group
+     */
+    async updateGroupUnreadBadgeImmediate(groupId) {
+        try {
+            const response = await fetch('/api/chat/groups/unread-counts', {
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                },
+                cache: 'no-cache',
+            });
+
+            if (!response.ok) {
+                return;
+            }
+
+            const data = await response.json();
+            if (data.success && data.unread_counts && data.unread_counts[groupId] !== undefined) {
+                const count = data.unread_counts[groupId];
+                this.updateGroupUnreadBadge(groupId, count);
+            }
+        } catch (error) {
+            console.error('Failed to update unread badge for group:', error);
         }
     }
 

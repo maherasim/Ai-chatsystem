@@ -354,6 +354,11 @@ class GlobalNotificationManager {
             });
 
             if (newMessages.length > 0) {
+                // Update unread badge immediately when new messages are detected
+                if (window.groupChatManager && typeof window.groupChatManager.updateAllGroupUnreadBadges === 'function') {
+                    window.groupChatManager.updateAllGroupUnreadBadges();
+                }
+                
                 // Check if we're on the chat page and viewing this group
                 const isViewingThisGroup = window.location.pathname === '/chat' &&
                     window.groupChatManager &&

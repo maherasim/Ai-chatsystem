@@ -154,11 +154,17 @@
 
     .favorite-btn.favorited {
         background: rgba(220, 53, 69, 0.1);
-        color: #dc3545;
+        color: #dc3545 !important;
     }
 
     .favorite-btn.favorited:hover {
         background: rgba(220, 53, 69, 0.2);
+        color: #dc3545 !important;
+    }
+
+    .favorite-btn.favorited i {
+        color: #dc3545 !important;
+        font-size: 16px;
     }
 
     .favorite-btn i {
@@ -185,6 +191,16 @@
         border-color: #dc3545;
     }
 
+    .document-item .favorite-btn.favorited {
+        background: rgba(220, 53, 69, 0.1);
+        border-color: #dc3545;
+        color: #dc3545 !important;
+    }
+
+    .document-item .favorite-btn.favorited i {
+        color: #dc3545 !important;
+    }
+
     /* Favorite button in link item */
     .link-item .favorite-btn {
         width: 28px;
@@ -197,6 +213,16 @@
     .link-item .favorite-btn:hover {
         background: #fff;
         border-color: #dc3545;
+    }
+
+    .link-item .favorite-btn.favorited {
+        background: rgba(220, 53, 69, 0.1);
+        border-color: #dc3545;
+        color: #dc3545 !important;
+    }
+
+    .link-item .favorite-btn.favorited i {
+        color: #dc3545 !important;
     }
 
     .chat-dropdown {
@@ -980,7 +1006,7 @@
                                         <span class="link-icon"><i class="ti ti-chevron-right"></i></span>
                                     </div>
                                 </a>
-                                <a href="javascript:void(0);" class="list-group-item">
+                                {{-- <a href="javascript:void(0);" class="list-group-item">
                                     <div class="profile-info">
                                         <h6><i class="ti ti-user-off me-2 text-info"></i>Block Users</h6>
                                     </div>
@@ -1003,7 +1029,7 @@
                                     <div>
                                         <span class="link-icon"><i class="ti ti-chevron-right"></i></span>
                                     </div>
-                                </a>
+                                </a> --}}
                             </div>
                         </div>
                     </div>
@@ -1505,6 +1531,11 @@
 
         // Initialize Agora Chat
         if (window.groupChatManager) {
+            // Start unread badge polling immediately (even before Agora initializes)
+            if (typeof window.groupChatManager.startUnreadBadgePolling === 'function') {
+                window.groupChatManager.startUnreadBadgePolling();
+            }
+            
             window.groupChatManager.initAgora().then(() => {
                 // Check if group ID is in URL parameter
                 const urlParams = new URLSearchParams(window.location.search);
@@ -1600,9 +1631,28 @@
             // Remove existing preview if any
             removeFilePreview();
             
-            const formWrap = document.querySelector('.chat-footer-wrap .form-wrap');
-            if (!formWrap) return;
-            
+            // Wait a bit to ensure DOM is ready
+            setTimeout(() => {
+                const formWrap = document.querySelector('.chat-footer-wrap .form-wrap');
+                if (!formWrap) {
+                    console.warn('Form wrap not found, retrying...');
+                    // Retry after a short delay
+                    setTimeout(() => {
+                        const retryFormWrap = document.querySelector('.chat-footer-wrap .form-wrap');
+                        if (!retryFormWrap) {
+                            console.error('Form wrap not found after retry');
+                            return;
+                        }
+                        insertPreview(retryFormWrap, file, messageType);
+                    }, 200);
+                    return;
+                }
+                
+                insertPreview(formWrap, file, messageType);
+            }, 50);
+        }
+        
+        function insertPreview(formWrap, file, messageType) {
             const preview = document.createElement('div');
             preview.id = 'filePreview';
             preview.className = 'file-preview mb-2 p-2 bg-light rounded d-flex align-items-center justify-content-between';
@@ -1610,9 +1660,33 @@
             
             // For images, show thumbnail preview (WhatsApp style - just image, no filename)
             if (messageType === 'img') {
+                // Show loading placeholder immediately
+                preview.innerHTML = `
+                    <div class="d-flex align-items-center justify-content-between" style="position: relative;">
+                        <div style="width: 50px; height: 50px; border-radius: 4px; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                            <i class="ti ti-photo" style="font-size: 24px; color: #999;"></i>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-link text-danger p-0" onclick="removeFilePreview(); document.getElementById('files').value = ''; window.selectedFile = null; window.selectedFileType = null;" style="font-size: 12px; position: absolute; top: -3px; right: -3px; background: white; border-radius: 50%; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2); padding: 0;">
+                            <i class="ti ti-x" style="font-size: 9px;"></i>
+                        </button>
+                    </div>
+                `;
+                
+                // Insert preview immediately so it doesn't disappear
+                if (formWrap && formWrap.parentNode) {
+                    formWrap.parentNode.insertBefore(preview, formWrap);
+                }
+                
+                // Then load the actual image
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    preview.innerHTML = `
+                    // Check if preview still exists before updating
+                    const existingPreview = document.getElementById('filePreview');
+                    if (!existingPreview) {
+                        console.warn('Preview was removed before FileReader completed');
+                        return;
+                    }
+                    existingPreview.innerHTML = `
                         <div class="d-flex align-items-center justify-content-between" style="position: relative;">
                             <img src="${e.target.result}" alt="Preview" style="width: 50px; height: 50px; border-radius: 4px; object-fit: cover;">
                             <button type="button" class="btn btn-sm btn-link text-danger p-0" onclick="removeFilePreview(); document.getElementById('files').value = ''; window.selectedFile = null; window.selectedFileType = null;" style="font-size: 12px; position: absolute; top: -3px; right: -3px; background: white; border-radius: 50%; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2); padding: 0;">
@@ -1620,6 +1694,22 @@
                             </button>
                         </div>
                     `;
+                };
+                reader.onerror = function() {
+                    console.error('FileReader error');
+                    const existingPreview = document.getElementById('filePreview');
+                    if (existingPreview) {
+                        existingPreview.innerHTML = `
+                            <div class="d-flex align-items-center justify-content-between" style="position: relative;">
+                                <div style="width: 50px; height: 50px; border-radius: 4px; background: #fee; display: flex; align-items: center; justify-content: center;">
+                                    <i class="ti ti-alert-circle" style="font-size: 24px; color: #dc3545;"></i>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-link text-danger p-0" onclick="removeFilePreview(); document.getElementById('files').value = ''; window.selectedFile = null; window.selectedFileType = null;" style="font-size: 12px; position: absolute; top: -3px; right: -3px; background: white; border-radius: 50%; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2); padding: 0;">
+                                    <i class="ti ti-x" style="font-size: 9px;"></i>
+                                </button>
+                            </div>
+                        `;
+                    }
                 };
                 reader.readAsDataURL(file);
             } else {
@@ -1642,9 +1732,14 @@
                         </button>
                     </div>
                 `;
+                
+                // Insert preview before formWrap for non-image files
+                if (formWrap && formWrap.parentNode) {
+                    formWrap.parentNode.insertBefore(preview, formWrap);
+                } else {
+                    console.error('Cannot insert preview: formWrap or parentNode not found');
+                }
             }
-            
-            formWrap.parentNode.insertBefore(preview, formWrap);
         }
         
         // Function to remove file preview
