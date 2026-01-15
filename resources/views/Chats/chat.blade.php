@@ -129,6 +129,76 @@
         height: 30px;
     }
 
+    /* Favorite button styling */
+    .favorite-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.9);
+        color: #6c757d;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+    }
+
+    .favorite-btn:hover {
+        background: rgba(255, 255, 255, 1);
+        color: #dc3545;
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .favorite-btn.favorited {
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+    }
+
+    .favorite-btn.favorited:hover {
+        background: rgba(220, 53, 69, 0.2);
+    }
+
+    .favorite-btn i {
+        font-size: 16px;
+    }
+
+    /* Favorite button in image overlay */
+    .img-wrap .img-overlay .favorite-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+    }
+
+    /* Favorite button in document item */
+    .document-item .favorite-btn {
+        width: 28px;
+        height: 28px;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+    }
+
+    .document-item .favorite-btn:hover {
+        background: #fff;
+        border-color: #dc3545;
+    }
+
+    /* Favorite button in link item */
+    .link-item .favorite-btn {
+        width: 28px;
+        height: 28px;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        margin-left: 8px;
+    }
+
+    .link-item .favorite-btn:hover {
+        background: #fff;
+        border-color: #dc3545;
+    }
+
     .chat-dropdown {
         display: block !important;
         opacity: 1 !important;
@@ -1267,12 +1337,14 @@
     const toggleIcon = document.getElementById("toggleIcon");
     const chevron = document.getElementById("chevronIcon");
 
-    toggleIcon.addEventListener("click", () => {
-        setTimeout(() => {
-            chevron.classList.toggle("ti-chevron-down");
-            chevron.classList.toggle("ti-chevron-up");
-        }, 150);
-    });
+    if (toggleIcon && chevron) {
+        toggleIcon.addEventListener("click", () => {
+            setTimeout(() => {
+                chevron.classList.toggle("ti-chevron-down");
+                chevron.classList.toggle("ti-chevron-up");
+            }, 150);
+        });
+    }
 </script>
 
 
@@ -1283,19 +1355,21 @@
         const darkBtn = document.getElementById('dark-mode-toggle');
         const lightBtn = document.getElementById('light-mode-toggle');
 
-        darkBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            body.classList.add('dark-mode');
-            darkBtn.style.display = 'none';
-            lightBtn.style.display = 'inline';
-        });
+        if (darkBtn && lightBtn) {
+            darkBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                body.classList.add('dark-mode');
+                darkBtn.style.display = 'none';
+                lightBtn.style.display = 'inline';
+            });
 
-        lightBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            body.classList.remove('dark-mode');
-            lightBtn.style.display = 'none';
-            darkBtn.style.display = 'inline';
-        });
+            lightBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                body.classList.remove('dark-mode');
+                lightBtn.style.display = 'none';
+                darkBtn.style.display = 'inline';
+            });
+        }
     });
 </script>
 
@@ -1338,8 +1412,97 @@
 <script src="{{ asset('js/group-chat.js') }}"></script>
 
 <script>
+    // CRITICAL: Prevent default browser behavior for file drops (opening in new tab)
+    // Must be set up IMMEDIATELY and at multiple levels
+    (function() {
+        // Function to check if dragging files
+        function hasFiles(e) {
+            if (!e.dataTransfer || !e.dataTransfer.types) return false;
+            const types = Array.from(e.dataTransfer.types);
+            return types.some(type => 
+                type === 'Files' || 
+                type === 'application/x-moz-file' ||
+                type.indexOf('File') !== -1
+            );
+        }
+        
+        // Prevent default on dragover - CRITICAL: must be called for drop to work
+        function preventFileDrag(e) {
+            if (hasFiles(e)) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                if (e.dataTransfer) {
+                    e.dataTransfer.dropEffect = 'none';
+                }
+                return false;
+            }
+        }
+        
+        // Prevent default on drop - CRITICAL: stops browser from opening file
+        // But don't stop propagation so dropZone handler can process it
+        function preventFileDrop(e) {
+            if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                // Always prevent default to stop browser from opening file
+                e.preventDefault();
+                // Don't stop propagation - let dropZone handler process it
+                return false;
+            }
+        }
+        
+        // Add handlers at document level with capture phase (catches events first)
+        document.addEventListener('dragover', preventFileDrag, true);
+        document.addEventListener('dragenter', preventFileDrag, true);
+        document.addEventListener('drop', preventFileDrop, true);
+        
+        // Also add at window level
+        window.addEventListener('dragover', preventFileDrag, true);
+        window.addEventListener('dragenter', preventFileDrag, true);
+        window.addEventListener('drop', preventFileDrop, true);
+        
+        // Additional: Add to body as soon as it exists
+        if (document.body) {
+            document.body.addEventListener('dragover', preventFileDrag, true);
+            document.body.addEventListener('dragenter', preventFileDrag, true);
+            document.body.addEventListener('drop', preventFileDrop, true);
+        } else {
+            // Wait for body to be ready
+            const observer = new MutationObserver(function(mutations) {
+                if (document.body) {
+                    document.body.addEventListener('dragover', preventFileDrag, true);
+                    document.body.addEventListener('dragenter', preventFileDrag, true);
+                    document.body.addEventListener('drop', preventFileDrop, true);
+                    observer.disconnect();
+                }
+            });
+            observer.observe(document.documentElement, { childList: true });
+        }
+        
+        // Prevent navigation that might be triggered by file drops
+        window.addEventListener('beforeunload', function(e) {
+            // This won't prevent the drop, but helps with debugging
+        }, false);
+        
+        // Additional: Prevent any link-like behavior from file drops
+        document.addEventListener('click', function(e) {
+            // If clicking happened right after a drop, prevent default navigation
+            if (window.justDroppedFile) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.justDroppedFile = false;
+            }
+        }, true);
+    })();
+
     // Initialize group chat on page load
     document.addEventListener('DOMContentLoaded', () => {
+        // Pre-define common elements to avoid scoping issues
+        const chatFooter = document.querySelector('.chat-footer');
+        const chatBody = document.querySelector('.chat-body');
+        const chatContainer = document.querySelector('.main-chat-blk') || document.querySelector('.chat');
+        const messageInput = document.querySelector('.chat-footer-wrap .form-control');
+        const fileInput = document.getElementById('files');
+
         // Initialize Agora Chat
         if (window.groupChatManager) {
             window.groupChatManager.initAgora().then(() => {
@@ -1391,7 +1554,6 @@
         window.selectedFileType = null;
         
         // Handle file input for file sharing
-        const fileInput = document.getElementById('files');
         if (fileInput) {
             fileInput.addEventListener('change', function(e) {
                 const file = e.target.files[0];
@@ -1493,89 +1655,120 @@
             }
         }
 
-        // Drag and Drop functionality for chat area
-        // Prevent default browser behavior for file drops (opening in new tab)
-        document.addEventListener('dragover', function(e) {
-            // Only prevent if dragging files
-            if (e.dataTransfer && e.dataTransfer.types) {
-                const hasFiles = Array.from(e.dataTransfer.types).some(type => type === 'Files' || type === 'application/x-moz-file');
-                if (hasFiles) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
+        // Set up drop zone for chat area
+        function setupDropZone() {
+            // Use body as primary drop zone to catch all drops
+            const dropZone = document.body;
+            
+            if (!dropZone) {
+                // Retry after a short delay if body isn't ready
+                setTimeout(setupDropZone, 500);
+                return;
             }
-        }, false);
-
-        document.addEventListener('drop', function(e) {
-            // Only prevent if dropping files
-            if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-        }, false);
-
-        const chatFooter = document.querySelector('.chat-footer');
-        const chatBody = document.querySelector('.chat-body');
-        const chatContainer = document.querySelector('.main-chat-blk') || document.querySelector('.chat');
-        const messageInput = document.querySelector('.chat-footer-wrap .form-control');
-        
-        // Use the entire chat container as drop zone, or fallback to chat body/footer
-        const dropZone = chatContainer || chatBody || chatFooter;
-        
-        if (dropZone) {
+            
             let dragCounter = 0;
             
             // CRITICAL: Prevent default on dragover - this is required for drop to work
             dropZone.addEventListener('dragover', function(e) {
-                // Only handle file drags
                 if (e.dataTransfer && e.dataTransfer.types) {
-                    const hasFiles = Array.from(e.dataTransfer.types).some(type => type === 'Files' || type === 'application/x-moz-file');
+                    const types = Array.from(e.dataTransfer.types);
+                    const hasFiles = types.some(type => 
+                        type === 'Files' || 
+                        type === 'application/x-moz-file' ||
+                        type.indexOf('File') !== -1
+                    );
+                    
                     if (hasFiles) {
                         e.preventDefault();
                         e.stopPropagation();
-                        dragCounter++;
-                        dropZone.classList.add('drag-over');
+                        e.dataTransfer.dropEffect = 'copy';
+                        
+                        // Visual feedback only if over chat area
+                        const chatArea = e.target.closest('.chat-body, .chat-footer, .main-chat-blk, .chat, .chat-page-group');
+                        if (chatArea) {
+                            chatArea.classList.add('drag-over');
+                            if (chatContainer) chatContainer.classList.add('drag-over');
+                        }
+                        return false;
                     }
                 }
             }, false);
             
             dropZone.addEventListener('dragenter', function(e) {
                 if (e.dataTransfer && e.dataTransfer.types) {
-                    const hasFiles = Array.from(e.dataTransfer.types).some(type => type === 'Files' || type === 'application/x-moz-file');
+                    const types = Array.from(e.dataTransfer.types);
+                    const hasFiles = types.some(type => 
+                        type === 'Files' || 
+                        type === 'application/x-moz-file' ||
+                        type.indexOf('File') !== -1
+                    );
+                    
                     if (hasFiles) {
                         e.preventDefault();
                         e.stopPropagation();
                         dragCounter++;
-                        dropZone.classList.add('drag-over');
+                        
+                        // Visual feedback only if over chat area
+                        const chatArea = e.target.closest('.chat-body, .chat-footer, .main-chat-blk, .chat, .chat-page-group');
+                        if (chatArea) {
+                            chatArea.classList.add('drag-over');
+                            if (chatContainer) chatContainer.classList.add('drag-over');
+                        }
+                        return false;
                     }
                 }
             }, false);
             
             dropZone.addEventListener('dragleave', function(e) {
                 if (e.dataTransfer && e.dataTransfer.types) {
-                    const hasFiles = Array.from(e.dataTransfer.types).some(type => type === 'Files' || type === 'application/x-moz-file');
+                    const types = Array.from(e.dataTransfer.types);
+                    const hasFiles = types.some(type => 
+                        type === 'Files' || 
+                        type === 'application/x-moz-file' ||
+                        type.indexOf('File') !== -1
+                    );
+                    
                     if (hasFiles) {
                         dragCounter--;
-                        if (dragCounter === 0) {
-                            dropZone.classList.remove('drag-over');
+                        if (dragCounter <= 0) {
+                            dragCounter = 0;
+                            document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
                         }
                     }
                 }
             }, false);
             
             // Handle dropped files
+            // Use capture phase to handle before other handlers
             dropZone.addEventListener('drop', function(e) {
-                dragCounter = 0;
-                dropZone.classList.remove('drag-over');
-                
-                // CRITICAL: Prevent default to stop browser from opening file
-                e.preventDefault();
-                e.stopPropagation();
-                
+                // CRITICAL: Check for files FIRST and prevent default IMMEDIATELY
                 const dt = e.dataTransfer;
+                if (dt && dt.files && dt.files.length > 0) {
+                    // PREVENT DEFAULT IMMEDIATELY - before anything else
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    
+                    // Mark that we just dropped a file to prevent any navigation
+                    window.justDroppedFile = true;
+                    setTimeout(function() {
+                        window.justDroppedFile = false;
+                    }, 1000);
+                }
+                
+                dragCounter = 0;
+                document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+                
+                if (!dt || !dt.files || dt.files.length === 0) {
+                    return;
+                }
+                
                 const files = dt.files;
                 
-                if (!files || files.length === 0) {
+                // Only handle if drop is in chat area (when using body as drop zone)
+                const chatArea = e.target.closest('.chat-body, .chat-footer, .main-chat-blk, .chat, .chat-page-group');
+                if (!chatArea) {
+                    // Not in chat area, just prevent default and return
                     return;
                 }
                 
@@ -1585,18 +1778,23 @@
                     return;
                 }
                 
-                // Handle the first file (or all files if you want to support multiple)
+                // Handle the first file
                 const file = files[0];
+                
+                if (!file) {
+                    return;
+                }
                 
                 // Determine message type based on file type
                 let messageType = 'file';
-                const fileType = file.type.toLowerCase();
+                const fileType = file.type ? file.type.toLowerCase() : '';
+                const fileName = file.name ? file.name.toLowerCase() : '';
                 
-                if (fileType.startsWith('image/')) {
+                if (fileType.startsWith('image/') || /\.(jpg|jpeg|png|gif|bmp|webp|svg)$/i.test(fileName)) {
                     messageType = 'img';
-                } else if (fileType.startsWith('audio/')) {
+                } else if (fileType.startsWith('audio/') || /\.(mp3|wav|ogg|m4a)$/i.test(fileName)) {
                     messageType = 'audio';
-                } else if (fileType.startsWith('video/')) {
+                } else if (fileType.startsWith('video/') || /\.(mp4|avi|mov|wmv|flv|webm)$/i.test(fileName)) {
                     messageType = 'video';
                 } else {
                     messageType = 'file';
@@ -1607,7 +1805,9 @@
                 window.selectedFileType = messageType;
                 
                 // Show file preview
-                showFilePreview(file, messageType);
+                if (typeof showFilePreview === 'function') {
+                    showFilePreview(file, messageType);
+                }
                 
                 // Focus on message input so user can type a message with the file
                 if (messageInput) {
@@ -1615,6 +1815,9 @@
                 }
             }, false);
         }
+        
+        // Initialize drop zone
+        setupDropZone();
         
         // Also prevent default drag behavior on the message input to allow text selection
         if (messageInput) {
@@ -1634,8 +1837,9 @@
                 if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
                     e.preventDefault();
                     e.stopPropagation();
+                    e.stopImmediatePropagation();
                     // The parent drop handler will handle the file
-                    return;
+                    return false;
                 }
                 
                 // Allow text drag and drop within the input
@@ -1654,8 +1858,7 @@
         // Make removeFilePreview available globally
         window.removeFilePreview = removeFilePreview;
         
-        // Handle paste event for images
-        const messageInput = document.querySelector('.chat-footer-wrap .form-control');
+        // Handle paste event for images (messageInput already defined above)
         if (messageInput) {
             messageInput.addEventListener('paste', async function(e) {
                 // Check if clipboard contains image
@@ -1774,6 +1977,21 @@
                 });
             }
         });
+
+        // Load favorites when favorites offcanvas is opened
+        // Use setTimeout to ensure DOM is ready
+        setTimeout(() => {
+            const favoritesOffcanvas = document.getElementById('contact-favourite');
+            if (favoritesOffcanvas) {
+                favoritesOffcanvas.addEventListener('show.bs.offcanvas', () => {
+                    if (window.groupChatManager && typeof window.groupChatManager.loadFavorites === 'function') {
+                        window.groupChatManager.loadFavorites(window.groupChatManager.currentGroupId).catch(err => {
+                            console.error('Failed to load favorites:', err);
+                        });
+                    }
+                });
+            }
+        }, 500);
     });
 </script>
 
@@ -1786,5 +2004,36 @@
         </filter>
     </defs>
 </svg>
+
+<!-- Favourites Offcanvas -->
+<div class="chat-offcanvas fav-canvas offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="contact-favourite">
+    <div class="offcanvas-header">
+        <h4 class="offcanvas-title">
+            <a href="javascript:void(0);" data-bs-toggle="offcanvas" data-bs-target="#contact-profile" data-bs-dismiss="offcanvas">
+                <i class="ti ti-arrow-left me-2"></i>
+            </a>Favourites
+        </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
+            <i class="ti ti-x"></i>
+        </button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="favourite-chats">
+            <div class="text-end mb-4">
+                <a href="javascript:void(0);" class="btn btn-light" onclick="window.groupChatManager.clearAllFavorites();">
+                    <i class="ti ti-heart-minus me-2"></i>Mark all Unfavourite
+                </a>
+            </div>
+            <div id="favoritesContainer">
+                <div class="text-center p-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-muted">Loading favorites...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection

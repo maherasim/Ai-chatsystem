@@ -6,6 +6,7 @@ use App\Models\ChatMessage;
 use App\Models\User;
 use App\Models\Group;
 use App\Models\Team;
+use App\Models\Favorite;
 use App\Services\AgoraService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -680,6 +681,17 @@ class ChatController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->get();
 
+            // Add message_id to all media items for favorite functionality
+            foreach ($photos as &$photo) {
+                $photo['message_id'] = $photo['id'];
+            }
+            foreach ($videos as &$video) {
+                $video['message_id'] = $video['id'];
+            }
+            foreach ($documents as &$doc) {
+                $doc['message_id'] = $doc['id'];
+            }
+
             // Simple URL regex pattern
             $urlPattern = '/(https?:\/\/[^\s]+)/i';
             foreach ($textMessages as $message) {
@@ -1063,6 +1075,117 @@ class ChatController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to retrieve group profile',
+            ], 500);
+        }
+    }
+
+    /**
+     * Toggle favorite status for a media item
+     */
+    public function toggleFavorite(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized',
+                ], 401);
+            }
+
+            $userId = (string)$user->_id;
+            $messageId = $request->input('message_id');
+            $groupId = $request->input('group_id');
+            $mediaType = $request->input('media_type'); // 'photo', 'video', 'document', 'link', 'audio'
+            $fileUrl = $request->input('file_url');
+            $fileName = $request->input('file_name');
+            $url = $request->input('url'); // For links
+
+            if (!$messageId || !$mediaType) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Missing required fields',
+                ], 400);
+            }
+
+            // Check if already favorited
+            $existing = Favorite::where('user_id', $userId)
+                ->where('message_id', $messageId)
+                ->first();
+
+            if ($existing) {
+                // Remove favorite
+                $existing->delete();
+                return response()->json([
+                    'success' => true,
+                    'is_favorite' => false,
+                    'message' => 'Removed from favorites',
+                ]);
+            } else {
+                // Add favorite
+                $favorite = Favorite::create([
+                    'user_id' => $userId,
+                    'message_id' => $messageId,
+                    'group_id' => $groupId,
+                    'media_type' => $mediaType,
+                    'file_url' => $fileUrl,
+                    'file_name' => $fileName,
+                    'url' => $url,
+                ]);
+
+                return response()->json([
+                    'success' => true,
+                    'is_favorite' => true,
+                    'message' => 'Added to favorites',
+                    'favorite' => $favorite,
+                ]);
+            }
+        } catch (\Exception $e) {
+            \Log::error('Error toggling favorite: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to toggle favorite',
+            ], 500);
+        }
+    }
+
+    /**
+     * Get all favorites for the current user
+     */
+    public function getFavorites(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized',
+                ], 401);
+            }
+
+            $userId = (string)$user->_id;
+            $groupId = $request->input('group_id');
+
+            $query = Favorite::where('user_id', $userId);
+            if ($groupId) {
+                $query->where('group_id', $groupId);
+            }
+
+            $favorites = $query->get();
+
+            // Get favorite message IDs for quick lookup
+            $favoriteMessageIds = $favorites->pluck('message_id')->toArray();
+
+            return response()->json([
+                'success' => true,
+                'favorites' => $favorites,
+                'favorite_message_ids' => $favoriteMessageIds,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error getting favorites: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to get favorites',
             ], 500);
         }
     }

@@ -319,6 +319,14 @@ class GroupChatManager {
                 this.loadGroupMedia(groupId).catch(err => {
                     console.error('Failed to load group media:', err);
                 });
+                // Load favorites when opening a group (non-blocking, optional)
+                if (typeof this.loadFavorites === 'function') {
+                    setTimeout(() => {
+                        this.loadFavorites(groupId).catch(err => {
+                            console.error('Failed to load favorites:', err);
+                        });
+                    }, 500); // Delay to not interfere with main loading
+                }
             }
         } finally {
             // Hide loader after everything is loaded
@@ -762,8 +770,8 @@ class GroupChatManager {
             }
         }
 
-        // Scroll to bottom after rendering
-        this.forceScrollToBottom();
+        // Scroll to bottom after rendering - use instant scroll for initial load
+        this.forceScrollToBottom(false);
     }
 
     /**
@@ -1717,46 +1725,65 @@ class GroupChatManager {
     async loadGroupMedia(groupId) {
         if (!groupId) {
             // Clear media containers if no group selected
-            this.renderGroupMedia({ photos: [], videos: [], documents: [], links: [] }, { photos: 0, videos: 0, documents: 0, links: 0 });
+            this.renderGroupMedia({ photos: [], videos: [], documents: [], links: [] }, { photos: 0, videos: 0, documents: 0, links: 0 }, []);
             return;
         }
 
         try {
-            const response = await fetch(`/api/chat/group/${groupId}/media`, {
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
-                },
-            });
+            // Fetch media and favorites in parallel
+            const [mediaResponse, favoritesResponse] = await Promise.all([
+                fetch(`/api/chat/group/${groupId}/media`, {
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    },
+                }),
+                fetch(`/api/chat/favorites?group_id=${groupId}`, {
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    },
+                })
+            ]);
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            if (!mediaResponse.ok) {
+                throw new Error(`HTTP error! status: ${mediaResponse.status}`);
             }
 
-            const data = await response.json();
+            const data = await mediaResponse.json();
+            let favoriteMessageIds = [];
+
+            if (favoritesResponse.ok) {
+                const favoritesData = await favoritesResponse.json();
+                if (favoritesData.success && favoritesData.favorite_message_ids) {
+                    favoriteMessageIds = favoritesData.favorite_message_ids;
+                }
+            }
 
             if (data.success && data.media) {
-                this.renderGroupMedia(data.media, data.counts);
+                this.renderGroupMedia(data.media, data.counts, favoriteMessageIds);
             } else {
                 console.warn('Failed to load group media:', data);
-                this.renderGroupMedia({ photos: [], videos: [], documents: [], links: [] }, { photos: 0, videos: 0, documents: 0, links: 0 });
+                this.renderGroupMedia({ photos: [], videos: [], documents: [], links: [] }, { photos: 0, videos: 0, documents: 0, links: 0 }, []);
             }
         } catch (error) {
             console.error('Failed to load group media:', error);
             // Show empty state on error
-            this.renderGroupMedia({ photos: [], videos: [], documents: [], links: [] }, { photos: 0, videos: 0, documents: 0, links: 0 });
+            this.renderGroupMedia({ photos: [], videos: [], documents: [], links: [] }, { photos: 0, videos: 0, documents: 0, links: 0 }, []);
         }
     }
 
     /**
      * Render group media in Media Details section
      */
-    renderGroupMedia(media, counts) {
+    renderGroupMedia(media, counts, favoriteMessageIds = []) {
         // Render Photos
         const photosContainer = document.getElementById('mediaPhotosContainer');
         if (photosContainer) {
             if (media.photos && media.photos.length > 0) {
                 let photosHtml = '<div class="chat-img contact-gallery">';
                 media.photos.slice(0, 12).forEach((photo) => {
+                    const isFavorite = favoriteMessageIds.includes(photo.id || photo._id);
+                    const favoriteClass = isFavorite ? 'favorited' : '';
+                    const favoriteIcon = isFavorite ? 'ti-heart-filled' : 'ti-heart';
                     photosHtml += `
                         <div class="img-wrap">
                             <img src="${photo.file_url}" alt="${photo.file_name}" style="width: 100%; height: 100%; object-fit: cover;">
@@ -1766,6 +1793,15 @@ class GroupChatManager {
                                 </a>
                                 <a href="${photo.file_url}" download="${photo.file_name}">
                                     <i class="ti ti-download"></i>
+                                </a>
+                                <a href="#" class="favorite-btn ${favoriteClass}" 
+                                   data-message-id="${photo.id || photo._id}" 
+                                   data-media-type="photo" 
+                                   data-file-url="${photo.file_url}" 
+                                   data-file-name="${photo.file_name}"
+                                   data-group-id="${this.currentGroupId || ''}"
+                                   onclick="event.preventDefault(); window.groupChatManager.toggleFavorite(this);">
+                                    <i class="ti ${favoriteIcon}"></i>
                                 </a>
                             </div>
                         </div>
@@ -1789,11 +1825,26 @@ class GroupChatManager {
             if (media.videos && media.videos.length > 0) {
                 let videosHtml = '';
                 media.videos.slice(0, 6).forEach((video) => {
+                    const isFavorite = favoriteMessageIds.includes(video.id || video._id);
+                    const favoriteClass = isFavorite ? 'favorited' : '';
+                    const favoriteIcon = isFavorite ? 'ti-heart-filled' : 'ti-heart';
                     videosHtml += `
-                        <a href="${video.file_url}" data-fancybox="gallery-videos" class="fancybox video-img mb-3" style="display: block;">
-                            <img src="${video.file_url}" alt="${video.file_name}" style="width: 100%; height: auto; border-radius: 8px;">
-                            <span><i class="ti ti-player-play-filled"></i></span>
-                        </a>
+                        <div class="video-item-wrapper mb-3" style="position: relative;">
+                            <a href="${video.file_url}" data-fancybox="gallery-videos" class="fancybox video-img" style="display: block;">
+                                <img src="${video.file_url}" alt="${video.file_name}" style="width: 100%; height: auto; border-radius: 8px;">
+                                <span><i class="ti ti-player-play-filled"></i></span>
+                            </a>
+                            <a href="#" class="favorite-btn ${favoriteClass}" 
+                               data-message-id="${video.id || video._id}" 
+                               data-media-type="video" 
+                               data-file-url="${video.file_url}" 
+                               data-file-name="${video.file_name}"
+                               data-group-id="${this.currentGroupId || ''}"
+                               onclick="event.preventDefault(); window.groupChatManager.toggleFavorite(this);"
+                               style="position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.5); padding: 6px; border-radius: 50%; color: white; z-index: 10;">
+                                <i class="ti ${favoriteIcon}"></i>
+                            </a>
+                        </div>
                     `;
                 });
                 if (media.videos.length > 6) {
@@ -1815,6 +1866,9 @@ class GroupChatManager {
                 media.documents.forEach((doc) => {
                     const fileSize = this.formatFileSize(doc.file_size || 0);
                     const fileIcon = this.getFileIcon(doc.file_name || 'file');
+                    const isFavorite = favoriteMessageIds.includes(doc.id || doc._id);
+                    const favoriteClass = isFavorite ? 'favorited' : '';
+                    const favoriteIcon = isFavorite ? 'ti-heart-filled' : 'ti-heart';
                     documentsHtml += `
                         <div class="document-item mb-3">
                             <div class="d-flex align-items-center">
@@ -1826,9 +1880,20 @@ class GroupChatManager {
                                     <p class="mb-0 text-muted small">${fileSize}</p>
                                 </div>
                             </div>
-                            <a href="${doc.file_url}" download="${doc.file_name}" class="download-icon">
-                                <i class="ti ti-download"></i>
-                            </a>
+                            <div class="d-flex align-items-center gap-2">
+                                <a href="#" class="favorite-btn ${favoriteClass}" 
+                                   data-message-id="${doc.id || doc._id}" 
+                                   data-media-type="document" 
+                                   data-file-url="${doc.file_url}" 
+                                   data-file-name="${doc.file_name}"
+                                   data-group-id="${this.currentGroupId || ''}"
+                                   onclick="event.preventDefault(); window.groupChatManager.toggleFavorite(this);">
+                                    <i class="ti ${favoriteIcon}"></i>
+                                </a>
+                                <a href="${doc.file_url}" download="${doc.file_name}" class="download-icon">
+                                    <i class="ti ti-download"></i>
+                                </a>
+                            </div>
                         </div>
                     `;
                 });
@@ -1844,6 +1909,9 @@ class GroupChatManager {
             if (media.links && media.links.length > 0) {
                 let linksHtml = '';
                 media.links.forEach((link) => {
+                    const isFavorite = favoriteMessageIds.includes(link.id || link._id || link.message_id);
+                    const favoriteClass = isFavorite ? 'favorited' : '';
+                    const favoriteIcon = isFavorite ? 'ti-heart-filled' : 'ti-heart';
                     try {
                         const urlObj = new URL(link.url);
                         const domain = urlObj.hostname.replace('www.', '');
@@ -1858,6 +1926,14 @@ class GroupChatManager {
                                         <p class="mb-0" style="color: #8A8D93; word-break: break-all; font-size: 14px;">${link.url}</p>
                                     </a>
                                 </div>
+                                <a href="#" class="favorite-btn ${favoriteClass}" 
+                                   data-message-id="${link.id || link._id || link.message_id}" 
+                                   data-media-type="link" 
+                                   data-url="${link.url}"
+                                   data-group-id="${this.currentGroupId || ''}"
+                                   onclick="event.preventDefault(); window.groupChatManager.toggleFavorite(this);">
+                                    <i class="ti ${favoriteIcon}"></i>
+                                </a>
                             </div>
                         `;
                     } catch (e) {
@@ -1872,6 +1948,14 @@ class GroupChatManager {
                                         <p class="mb-0" style="color: #8A8D93; word-break: break-all; font-size: 14px;">${link.url}</p>
                                     </a>
                                 </div>
+                                <a href="#" class="favorite-btn ${favoriteClass}" 
+                                   data-message-id="${link.id || link._id || link.message_id}" 
+                                   data-media-type="link" 
+                                   data-url="${link.url}"
+                                   data-group-id="${this.currentGroupId || ''}"
+                                   onclick="event.preventDefault(); window.groupChatManager.toggleFavorite(this);">
+                                    <i class="ti ${favoriteIcon}"></i>
+                                </a>
                             </div>
                         `;
                     }
@@ -1948,6 +2032,394 @@ class GroupChatManager {
     }
 
     /**
+     * Toggle favorite status for a media item
+     */
+    async toggleFavorite(buttonElement) {
+        const messageId = buttonElement.getAttribute('data-message-id');
+        const mediaType = buttonElement.getAttribute('data-media-type');
+        const groupId = buttonElement.getAttribute('data-group-id');
+        const fileUrl = buttonElement.getAttribute('data-file-url');
+        const fileName = buttonElement.getAttribute('data-file-name');
+        const url = buttonElement.getAttribute('data-url');
+
+        if (!messageId || !mediaType) {
+            console.error('Missing required data for favorite toggle');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/chat/favorite/toggle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                },
+                body: JSON.stringify({
+                    message_id: messageId,
+                    media_type: mediaType,
+                    group_id: groupId,
+                    file_url: fileUrl,
+                    file_name: fileName,
+                    url: url,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Update UI
+                const icon = buttonElement.querySelector('i');
+                if (data.is_favorite) {
+                    buttonElement.classList.add('favorited');
+                    icon.classList.remove('ti-heart');
+                    icon.classList.add('ti-heart-filled');
+                } else {
+                    buttonElement.classList.remove('favorited');
+                    icon.classList.remove('ti-heart-filled');
+                    icon.classList.add('ti-heart');
+                }
+
+                // Reload favorites if favorites offcanvas is open
+                const favoritesOffcanvas = document.getElementById('contact-favourite');
+                if (favoritesOffcanvas && favoritesOffcanvas.classList.contains('show')) {
+                    if (typeof this.loadFavorites === 'function') {
+                        this.loadFavorites(this.currentGroupId).catch(err => {
+                            console.error('Failed to reload favorites:', err);
+                        });
+                    }
+                }
+
+                // Update favorites count
+                const allFavoritesResponse = await fetch('/api/chat/favorites', {
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    },
+                });
+                if (allFavoritesResponse.ok) {
+                    const allFavoritesData = await allFavoritesResponse.json();
+                    if (allFavoritesData.success && allFavoritesData.favorites) {
+                        this.updateFavoritesCount(allFavoritesData.favorites.length);
+                    }
+                }
+            } else {
+                console.error('Failed to toggle favorite:', data.message);
+                alert(data.message || 'Failed to toggle favorite');
+            }
+        } catch (error) {
+            console.error('Error toggling favorite:', error);
+            alert('Failed to toggle favorite. Please try again.');
+        }
+    }
+
+    /**
+     * Load and render favorites
+     */
+    async loadFavorites(groupId = null) {
+        try {
+            const url = groupId ? `/api/chat/favorites?group_id=${groupId}` : '/api/chat/favorites';
+            const response = await fetch(url, {
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (data.success && data.favorites) {
+                this.renderFavorites(data.favorites);
+                // Update favorites count badge
+                this.updateFavoritesCount(data.favorites.length);
+            } else {
+                this.renderFavorites([]);
+                this.updateFavoritesCount(0);
+            }
+        } catch (error) {
+            console.error('Failed to load favorites:', error);
+            this.renderFavorites([]);
+            this.updateFavoritesCount(0);
+        }
+    }
+
+    /**
+     * Render favorites in the favorites offcanvas
+     */
+    renderFavorites(favorites) {
+        const container = document.getElementById('favoritesContainer');
+        if (!container) return;
+
+        if (!favorites || favorites.length === 0) {
+            container.innerHTML = '<div class="text-center p-4 text-muted">No favorites yet</div>';
+            return;
+        }
+
+        // Group favorites by media type
+        const grouped = {
+            photo: [],
+            video: [],
+            document: [],
+            link: [],
+            audio: [],
+        };
+
+        favorites.forEach(fav => {
+            const type = fav.media_type || 'document';
+            if (grouped[type]) {
+                grouped[type].push(fav);
+            }
+        });
+
+        let html = '';
+
+        // Render Photos
+        if (grouped.photo.length > 0) {
+            html += '<div class="mb-4"><h6 class="mb-3"><i class="ti ti-photo-shield me-2"></i>Photos</h6>';
+            html += '<div class="chat-img contact-gallery">';
+            grouped.photo.forEach(fav => {
+                html += `
+                    <div class="img-wrap">
+                        <img src="${fav.file_url}" alt="${fav.file_name || 'Photo'}" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="img-overlay">
+                            <a class="gallery-img" data-fancybox="gallery-favorites-photos" href="${fav.file_url}" title="${fav.file_name || 'Photo'}">
+                                <i class="ti ti-eye"></i>
+                            </a>
+                            <a href="${fav.file_url}" download="${fav.file_name || 'photo'}">
+                                <i class="ti ti-download"></i>
+                            </a>
+                            <a href="#" class="favorite-btn favorited" 
+                               data-message-id="${fav.message_id}" 
+                               data-media-type="${fav.media_type}" 
+                               data-file-url="${fav.file_url}" 
+                               data-file-name="${fav.file_name}"
+                               data-group-id="${fav.group_id || ''}"
+                               onclick="event.preventDefault(); window.groupChatManager.toggleFavorite(this);">
+                                <i class="ti ti-heart-filled"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div></div>';
+        }
+
+        // Render Videos
+        if (grouped.video.length > 0) {
+            html += '<div class="mb-4"><h6 class="mb-3"><i class="ti ti-video me-2"></i>Videos</h6>';
+            grouped.video.forEach(fav => {
+                html += `
+                    <div class="video-item-wrapper mb-3" style="position: relative;">
+                        <a href="${fav.file_url}" data-fancybox="gallery-favorites-videos" class="fancybox video-img" style="display: block;">
+                            <img src="${fav.file_url}" alt="${fav.file_name || 'Video'}" style="width: 100%; height: auto; border-radius: 8px;">
+                            <span><i class="ti ti-player-play-filled"></i></span>
+                        </a>
+                        <a href="#" class="favorite-btn favorited" 
+                           data-message-id="${fav.message_id}" 
+                           data-media-type="${fav.media_type}" 
+                           data-file-url="${fav.file_url}" 
+                           data-file-name="${fav.file_name}"
+                           data-group-id="${fav.group_id || ''}"
+                           onclick="event.preventDefault(); window.groupChatManager.toggleFavorite(this);"
+                           style="position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.5); padding: 6px; border-radius: 50%; color: white; z-index: 10;">
+                            <i class="ti ti-heart-filled"></i>
+                        </a>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+
+        // Render Documents
+        if (grouped.document.length > 0) {
+            html += '<div class="mb-4"><h6 class="mb-3"><i class="ti ti-file me-2"></i>Documents</h6>';
+            grouped.document.forEach(fav => {
+                const fileSize = this.formatFileSize(0); // Size not stored in favorites
+                const fileIcon = this.getFileIcon(fav.file_name || 'file');
+                html += `
+                    <div class="document-item mb-3">
+                        <div class="d-flex align-items-center">
+                            <span class="document-icon">
+                                <i class="${fileIcon}"></i>
+                            </span>
+                            <div class="ms-2 flex-grow-1">
+                                <h6 class="mb-0">${fav.file_name || 'Untitled'}</h6>
+                                <p class="mb-0 text-muted small">${fileSize}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <a href="#" class="favorite-btn favorited" 
+                               data-message-id="${fav.message_id}" 
+                               data-media-type="${fav.media_type}" 
+                               data-file-url="${fav.file_url}" 
+                               data-file-name="${fav.file_name}"
+                               data-group-id="${fav.group_id || ''}"
+                               onclick="event.preventDefault(); window.groupChatManager.toggleFavorite(this);">
+                                <i class="ti ti-heart-filled"></i>
+                            </a>
+                            <a href="${fav.file_url}" download="${fav.file_name || 'file'}" class="download-icon">
+                                <i class="ti ti-download"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+
+        // Render Links
+        if (grouped.link.length > 0) {
+            html += '<div class="mb-4"><h6 class="mb-3"><i class="ti ti-unlink me-2"></i>Links</h6>';
+            grouped.link.forEach(fav => {
+                try {
+                    const urlObj = new URL(fav.url);
+                    const domain = urlObj.hostname.replace('www.', '');
+                    const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+                    html += `
+                        <div class="link-item">
+                            <span class="link-icon">
+                                <img src="${faviconUrl}" alt="${domain}" style="width: 20px; height: 20px; object-fit: contain;" onerror="this.src='${window.baseUrl || ''}/build/img/icons/info-icon.svg'">
+                            </span>
+                            <div class="ms-2" style="flex: 1; overflow: hidden;">
+                                <a href="${fav.url}" target="_blank" rel="noopener noreferrer" class="text-decoration-none" style="color: inherit;">
+                                    <p class="mb-0" style="color: #8A8D93; word-break: break-all; font-size: 14px;">${fav.url}</p>
+                                </a>
+                            </div>
+                            <a href="#" class="favorite-btn favorited" 
+                               data-message-id="${fav.message_id}" 
+                               data-media-type="${fav.media_type}" 
+                               data-url="${fav.url}"
+                               data-group-id="${fav.group_id || ''}"
+                               onclick="event.preventDefault(); window.groupChatManager.toggleFavorite(this);">
+                                <i class="ti ti-heart-filled"></i>
+                            </a>
+                        </div>
+                    `;
+                } catch (e) {
+                    html += `
+                        <div class="link-item">
+                            <span class="link-icon">
+                                <img src="${window.baseUrl || ''}/build/img/icons/info-icon.svg" alt="link" style="width: 20px; height: 20px;">
+                            </span>
+                            <div class="ms-2" style="flex: 1; overflow: hidden;">
+                                <a href="${fav.url}" target="_blank" rel="noopener noreferrer" class="text-decoration-none" style="color: inherit;">
+                                    <p class="mb-0" style="color: #8A8D93; word-break: break-all; font-size: 14px;">${fav.url}</p>
+                                </a>
+                            </div>
+                            <a href="#" class="favorite-btn favorited" 
+                               data-message-id="${fav.message_id}" 
+                               data-media-type="${fav.media_type}" 
+                               data-url="${fav.url}"
+                               data-group-id="${fav.group_id || ''}"
+                               onclick="event.preventDefault(); window.groupChatManager.toggleFavorite(this);">
+                                <i class="ti ti-heart-filled"></i>
+                            </a>
+                        </div>
+                    `;
+                }
+            });
+            html += '</div>';
+        }
+
+        // Render Audio
+        if (grouped.audio.length > 0) {
+            html += '<div class="mb-4"><h6 class="mb-3"><i class="ti ti-music me-2"></i>Audio</h6>';
+            grouped.audio.forEach(fav => {
+                html += `
+                    <div class="document-item mb-3">
+                        <div class="d-flex align-items-center">
+                            <span class="document-icon">
+                                <i class="ti ti-music"></i>
+                            </span>
+                            <div class="ms-2 flex-grow-1">
+                                <h6 class="mb-0">${fav.file_name || 'Audio File'}</h6>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <a href="#" class="favorite-btn favorited" 
+                               data-message-id="${fav.message_id}" 
+                               data-media-type="${fav.media_type}" 
+                               data-file-url="${fav.file_url}" 
+                               data-file-name="${fav.file_name}"
+                               data-group-id="${fav.group_id || ''}"
+                               onclick="event.preventDefault(); window.groupChatManager.toggleFavorite(this);">
+                                <i class="ti ti-heart-filled"></i>
+                            </a>
+                            <a href="${fav.file_url}" download="${fav.file_name || 'audio'}" class="download-icon">
+                                <i class="ti ti-download"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+
+        container.innerHTML = html || '<div class="text-center p-4 text-muted">No favorites yet</div>';
+    }
+
+    /**
+     * Update favorites count badge
+     */
+    updateFavoritesCount(count) {
+        const badge = document.querySelector('[data-bs-target="#contact-favourite"] .badge');
+        if (badge) {
+            badge.textContent = count;
+            badge.style.display = count > 0 ? 'inline-block' : 'none';
+        }
+    }
+
+    /**
+     * Clear all favorites (mark all as unfavorite)
+     */
+    async clearAllFavorites() {
+        if (!confirm('Are you sure you want to remove all favorites?')) {
+            return;
+        }
+
+        try {
+            // Get all favorites first
+            const response = await fetch('/api/chat/favorites', {
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                },
+            });
+
+            const data = await response.json();
+            if (!data.success || !data.favorites) {
+                return;
+            }
+
+            // Remove each favorite
+            for (const favorite of data.favorites) {
+                await fetch('/api/chat/favorite/toggle', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    },
+                    body: JSON.stringify({
+                        message_id: favorite.message_id,
+                        media_type: favorite.media_type,
+                        group_id: favorite.group_id,
+                    }),
+                });
+            }
+
+            // Reload favorites
+            await this.loadFavorites(this.currentGroupId);
+            // Reload media to update heart icons
+            if (this.currentGroupId) {
+                await this.loadGroupMedia(this.currentGroupId);
+            }
+        } catch (error) {
+            console.error('Failed to clear favorites:', error);
+            alert('Failed to clear favorites. Please try again.');
+        }
+    }
+
+    /**
      * Scroll to bottom with smooth animation
      */
     scrollToBottom(smooth = true) {
@@ -1976,14 +2448,14 @@ class GroupChatManager {
     /**
      * Force scroll to bottom (used when sending messages or receiving new messages)
      */
-    forceScrollToBottom() {
+    forceScrollToBottom(smooth = true) {
         const container = document.querySelector('.chat-body');
         if (container) {
             // Use setTimeout to ensure message is rendered
             setTimeout(() => {
                 container.scrollTo({
                     top: container.scrollHeight,
-                    behavior: 'smooth'
+                    behavior: smooth ? 'smooth' : 'auto'
                 });
             }, 100);
         }
