@@ -2499,12 +2499,30 @@
             if (data.success && data.members && Array.isArray(data.members) && data.members.length > 0) {
                 if (emptyState) emptyState.style.display = 'none';
                 
-                // Clear current list
+                // Clear current list completely to prevent duplicates
                 listWrapper.innerHTML = '';
+                
+                // Remove any existing member cards to ensure clean state
+                const existingCards = listWrapper.querySelectorAll('div[data-member-id]');
+                existingCards.forEach(card => card.remove());
+                
                 const fragment = document.createDocumentFragment();
                 
+                // Use a Set to track added member IDs to prevent duplicates
+                const addedMemberIds = new Set();
+                
                 data.members.forEach(member => {
+                    const memberId = member.id || member._id || member.email;
+                    
+                    // Skip if already added (prevent duplicates)
+                    if (addedMemberIds.has(memberId)) {
+                        console.warn(`Duplicate member skipped: ${memberId}`);
+                        return;
+                    }
+                    addedMemberIds.add(memberId);
+                    
                     const memberCard = document.createElement('div');
+                    memberCard.setAttribute('data-member-id', memberId);
                     memberCard.style.cssText = 'flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; cursor: pointer; min-width: 50px;';
                     
                     const onlineIndicator = member.is_online 
@@ -2529,7 +2547,7 @@
                     fragment.appendChild(memberCard);
                 });
                 listWrapper.appendChild(fragment);
-                console.log(`Loaded ${data.members.length} users`);
+                console.log(`Loaded ${addedMemberIds.size} unique users (total received: ${data.members.length})`);
             } else {
                 listWrapper.innerHTML = '';
                 if (emptyState) {
@@ -2552,9 +2570,11 @@
 
     // Initialize logic - merge with existing DOMContentLoaded
     document.addEventListener('DOMContentLoaded', function() {
-        // Load online users
-        loadAllUsers();
-        setInterval(loadAllUsers, 30000);
+        // Load online users (only set up interval once)
+        if (!window.onlineUsersInterval) {
+            loadAllUsers();
+            window.onlineUsersInterval = setInterval(loadAllUsers, 30000);
+        }
         
         // Initialize selectedUsers if not exists
         // Initialize selectedUsers if not exists
