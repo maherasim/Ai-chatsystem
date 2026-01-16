@@ -1043,19 +1043,29 @@ class GroupChatManager {
             // Text message with reply support
             let replySection = '';
             if (message.replied_to_message) {
+                // WhatsApp-like reply UI with boxed view
+                // Different styles for sent (own) vs received messages
+                const isOwn = isOwnMessage;
+                const barColor = isOwn ? '#4FC3F7' : '#4FC3F7'; // Teal/cyan bar for both
+                const senderNameColor = isOwn ? '#4FC3F7' : '#4FC3F7'; // Lighter green for sent, blue for received
+                const contentColor = isOwn ? '#212529' : '#212529'; // White for sent, dark for received
+                const bgColor = isOwn ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'; // Subtle background
+                
                 replySection = `
-                    <div class="chat-profile-name">
-                        <h6>${message.replied_to_message.sender_name || 'User'}</h6>
-                    </div>
-                    <div class="message-reply">
-                        ${this.formatMessageWithMentions(message.replied_to_message.content || '')}
+                    <div class="message-reply-container" style="border-left: 3px solid ${barColor}; background: ${bgColor}; padding: 6px 8px; margin-bottom: 6px; border-radius: 4px; text-align: left; max-width: 280px;">
+                        <div style="font-weight: 600; font-size: 13px; color: ${senderNameColor}; margin-bottom: 2px; line-height: 1.3;">
+                            ${this.escapeHtml(message.replied_to_message.sender_name || 'User')}
+                        </div>
+                        <div style="font-size: 13px; color: ${contentColor}; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.3;">
+                            ${this.formatMessageWithMentions(message.replied_to_message.content || '')}
+                        </div>
                     </div>
                 `;
             }
 
             messageContent = `
                 ${replySection}
-                <div class="message-content-wrapper" style="position: relative; display: inline-block;">
+                <div class="message-content-wrapper" style="position: relative; display: inline-block; width: 100%;">
                     <div class="message-content">
                         ${this.formatMessageWithMentions(message.content || '')}
                     </div>
