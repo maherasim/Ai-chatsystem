@@ -1058,10 +1058,10 @@
                 </div>
                 <div class="messages" id="chatMessagesContainer" style="position: relative; z-index: 1; padding-bottom: 80px;">
                     <!-- Dynamic messages will be rendered here -->
-                    <div id="emptyChatState" style="display: flex; align-items: center; justify-content: center; height: 100%; min-height: 400px; flex-direction: column; color: #7f8ea3;">
+                    {{-- <div id="emptyChatState" style="display: flex; align-items: center; justify-content: center; height: 100%; min-height: 400px; flex-direction: column; color: #7f8ea3;">
                         <i class="ti ti-message-circle" style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;"></i>
                         <p style="font-size: 16px; margin: 0;">Select a group to start chatting</p>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -1152,7 +1152,7 @@
                         <h6 id="contactProfileName">Select a group</h6>
                         <p id="contactProfileStatus">Last seen at 07:15 PM</p>
                     </div>
-                    <div class="row gx-3">
+                    {{-- <div class="row gx-3">
                         <div class="col">
                             <a class="action-wrap">
                                 <i class="ti ti-phone"></i>
@@ -1177,7 +1177,7 @@
                                 <p>Search</p>
                             </a>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="content-wrapper">
                         <h5 class="sub-title">Profile Info</h5>
                         <div class="card">
@@ -1305,45 +1305,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="content-wrapper other-info">
-                        <h5 class="sub-title">Common in 4 Groups</h5>
-                        <div class="card">
-                            <div class="card-body list-group profile-item">
-                                <a href="javascript:void(0);" class="list-group-item">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar avatar-lg bg-skyblue rounded-circle me-2">
-                                            GU
-                                        </div>
-                                        <div class="chat-user-info">
-                                            <h6>Gustov _family</h6>
-                                            <p>Mark, Elizabeth, Aaron, <span class="text-primary">More...</span></p>
-                                        </div>
-                                    </div>
-                                    <span class="link-icon"><i class="ti ti-chevron-right"></i></span>
-                                </a>
-                                <a href="javascript:void(0);" class="list-group-item border-0">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar avatar-lg bg-info rounded-circle me-2">
-                                            AM
-                                        </div>
-                                        <div class="chat-user-info">
-                                            <h6>AM Technology</h6>
-                                            <p>Roper, Deborah, David, <span class="text-primary">More..
-
-
-                                                    .</span></p>
-                                        </div>
-                                    </div>
-                                    <span class="link-icon"><i class="ti ti-chevron-right"></i></span>
-                                </a>
-                                <div class="text-center">
-                                    <a href="javascript:void(0);" class="view-all link-primary d-inline-flex align-items-center justify-content-center">
-                                        More Groups<i class="ti ti-arrow-right ms-2"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="content-wrapper other-info mb-0">
                         <h5 class="sub-title">Others</h5>
                         <div class="card mb-0">
@@ -1357,14 +1319,7 @@
                                         <span class="link-icon"><i class="ti ti-chevron-right"></i></span>
                                     </div>
                                 </a>
-                                <a href="javascript:void(0);" class="list-group-item">
-                                    <div class="profile-info">
-                                        <h6><i class="ti ti-volume-off me-2 text-warning"></i>Mute Notifications</h6>
-                                    </div>
-                                    <div>
-                                        <span class="link-icon"><i class="ti ti-chevron-right"></i></span>
-                                    </div>
-                                </a>
+                                
                                 {{-- <a href="javascript:void(0);" class="list-group-item">
                                     <div class="profile-info">
                                         <h6><i class="ti ti-user-off me-2 text-info"></i>Block Users</h6>
