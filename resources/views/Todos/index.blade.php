@@ -2670,7 +2670,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                 <button class="btn" data-bs-dismiss="modal" type="button" style="background-color: #f7f7f7; float:left; margin-bottom:10px; color:#64748b; border:  border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
                     Close
                 </button>
-                <button class="btn" style="background-color: #f7f7f7; float:right; margin-bottom:10px; color:#64748b; border:  border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
+                <button type="submit" id="saveDoneBtn" class="btn" style="background-color: #f7f7f7; float:right; margin-bottom:10px; color:#64748b; border:  border-radius: 8px; padding: 6px 20px; font-size: 14px; font-weight: 500;">
                     Save &amp; Close
                 </button>
             </div>
@@ -4467,6 +4467,10 @@ if (files.length > 0) {
         }
         if (['mp4','mov','avi','mkv'].includes(ext)) icon = "https://cdn-icons-png.flaticon.com/512/711/711245.png";
 
+        // Build download URL using current domain
+        const baseUrl = window.location.origin;
+        const downloadUrl = baseUrl + '/download/' + id;
+
         // File item markup
         let fileHtml = `
             <div class="col-md-6 mb-2">
@@ -4482,7 +4486,7 @@ if (files.length > 0) {
                             <div style="font-size:12px; color:#6b7280;">${size}</div>
                         </div>
                     </div>
-                    <a href="https://team.onlinesystems.info/download/${id}" target="_blank" download 
+                    <a href="${downloadUrl}" download 
                        style="color:#1d4ed8; text-decoration:none;">
                         <i class="fa fa-arrow-down" style="font-size:16px;"></i>
                     </a>
@@ -5209,58 +5213,151 @@ document.getElementById('markDoneBtn').addEventListener('click', function () {
     markModal.show();
 });
 
-// Handle "Save" button inside modal
-/*
-document.getElementById('markDoneForm').addEventListener('submit', function (e) {
+// Handle form submission for "Mark as Done"
+document.getElementById('markDoneForm1').addEventListener('submit', function (e) {
     e.preventDefault();
 
-    const todoId = document.getElementById('doneTodoId').value;
-    const url = `/todos/complete/${todoId}`;
+    // Set completed status
+    const setCompleteInput = document.getElementById('setcomplete');
+    if (setCompleteInput) {
+        setCompleteInput.value = '1';
+    }
 
-    fetch(url, {
+    // Verify todo ID is set
+    const todoId = document.getElementById('doneTodoId').value;
+    if (!todoId) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Todo ID is missing. Please close and reopen the modal.'
+        });
+        return;
+    }
+
+    // Collect all ratings - check both sections (dev_finish and forshared)
+    const ratings = {};
+    const ratingGroups = document.querySelectorAll('#markDoneModal .rating-group');
+    
+    ratingGroups.forEach(group => {
+        // Find the category label (first span in the group)
+        const categorySpan = group.querySelector('span:first-child');
+        if (categorySpan) {
+            const category = categorySpan.textContent.trim();
+            // Find checked radio input in this group
+            const checkedInput = group.querySelector('input[type="radio"]:checked');
+            if (checkedInput && checkedInput.value) {
+                ratings[category] = checkedInput.value;
+            }
+        }
+    });
+
+    console.log('Collected ratings:', ratings);
+    console.log('Todo ID:', todoId);
+
+    // Create FormData from the form
+    const formData = new FormData(this);
+    
+    // Ensure ratings are added to formData (FormData should auto-collect radio buttons, but let's be explicit)
+    Object.keys(ratings).forEach(category => {
+        formData.append(`ratings[${category}]`, ratings[category]);
+    });
+
+    // Log form data for debugging
+    console.log('Form data entries:');
+    for (let pair of formData.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+    }
+
+    // Disable submit button
+    const saveBtn = document.getElementById('saveDoneBtn');
+    if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Saving...';
+    }
+
+    // Submit form
+    fetch(this.action, {
         method: 'POST',
         headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Content-Type': 'application/json'
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}',
         },
-        body: JSON.stringify({ id: todoId })
+        body: formData
     })
-    .then(res => res.json())
+    .then(response => {
+        console.log('Response status:', response.status);
+        if (response.redirected) {
+            // Success - redirect happened
+            Swal.fire({
+                icon: 'success',
+                title: 'Marked as Done!',
+                text: 'Todo successfully marked as completed with ratings.'
+            }).then(() => {
+                // Close modals
+                const doneModal = bootstrap.Modal.getInstance(document.getElementById('markDoneModal'));
+                if (doneModal) doneModal.hide();
+
+                const mainModal = bootstrap.Modal.getInstance(document.querySelector('#inreject'));
+                if (mainModal) mainModal.hide();
+
+                // Reload page
+                location.reload();
+            });
+        } else {
+            return response.text().then(text => {
+                try {
+                    return JSON.parse(text);
+                } catch {
+                    // If not JSON, check if it's HTML (redirect response)
+                    if (text.includes('success')) {
+                        return { success: true };
+                    }
+                    return { success: false, message: 'Unknown response' };
+                }
+            });
+        }
+    })
     .then(data => {
-        if (data.success) {
+        if (data && data.success) {
             Swal.fire({
                 icon: 'success',
                 title: 'Marked as Done!',
                 text: 'Todo successfully marked as completed.'
+            }).then(() => {
+                // Close modals
+                const doneModal = bootstrap.Modal.getInstance(document.getElementById('markDoneModal'));
+                if (doneModal) doneModal.hide();
+
+                const mainModal = bootstrap.Modal.getInstance(document.querySelector('#inreject'));
+                if (mainModal) mainModal.hide();
+
+                // Reload page
+                location.reload();
             });
-
-            // Close both modals
-            const doneModal = bootstrap.Modal.getInstance(document.getElementById('markDoneModal'));
-            if (doneModal) doneModal.hide();
-
-            const mainModal = bootstrap.Modal.getInstance(document.querySelector('#inreject'));
-            if (mainModal) mainModal.hide();
-
-            // Fade out or refresh
-            setTimeout(() => location.reload(), 1000);
-        } else {
+        } else if (data) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error!',
                 text: data.message || 'Unable to mark as done.'
             });
+            if (saveBtn) {
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save & Close';
+            }
         }
     })
     .catch(err => {
-        console.error(err);
+        console.error('Error:', err);
         Swal.fire({
             icon: 'error',
             title: 'Request Failed',
-            text: 'Could not reach the server.'
+            text: 'Could not reach the server. Please try again.'
         });
+        if (saveBtn) {
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'Save & Close';
+        }
     });
 });
-*/
 
 function showContent(tab) {
         // Show/hide content
