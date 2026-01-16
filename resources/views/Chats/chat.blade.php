@@ -1004,7 +1004,7 @@
  
 
                 <!-- RIGHT: Settings, Theme Toggle, Logout -->
-                <div class="right-icons d-flex align-items-center gap-3">
+                <div class="right-icons d-flex align-items-center gap-1" style="margin-left: auto;">
                     <a href="javascript:void(0)" class="btn chat-search-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Search">
                         <img src="{{ asset('/build/img/Search-Black.svg') }}" alt="Search" width="18px">
                         <img src="{{ asset('/build/img/Search-White.svg') }}" alt="Search" width="18px">
