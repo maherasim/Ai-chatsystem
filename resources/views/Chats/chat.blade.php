@@ -986,7 +986,7 @@
 
                 <!-- CENTER: Online Members -->
                 <div class="chat-options" style="flex: 1; display: flex; justify-content: center; overflow: hidden; border-left: none;">
-                    <div id="onlineAdminsContainer" style="display: flex; gap: 12px; overflow-x: auto; padding: 4px 0; -ms-overflow-style: none; scrollbar-width: none; max-width: 100%;">
+                    <div id="onlineAdminsContainer" style="display: flex; gap: 12px; overflow-x: auto; padding: 4px 0; -ms-overflow-style: none; scrollbar-width: none; max-width: 100%; position: relative;">
                         <style>
                             #onlineAdminsContainer::-webkit-scrollbar {
                                 display: none;
@@ -996,8 +996,8 @@
                         <div id="onlineAdminsEmpty" style="text-align: center; padding: 5px; width: 100%; display: none; color: #7f8ea3; font-size: 11px; white-space: nowrap;">
                             No admins online
                         </div>
-                        <!-- Members List Wrapper -->
-                        <div id="onlineAdminsList" style="display: flex; gap: 12px;"></div>
+                        <!-- Members List Wrapper - SINGLE INSTANCE ONLY -->
+                        <div id="onlineAdminsList" style="display: flex; gap: 12px; flex-wrap: nowrap;"></div>
                     </div>
                 </div>
 
@@ -2453,13 +2453,68 @@
     /**
      * Load and display all users with online/offline status in the header
      */
+    // Prevent concurrent executions
+    let isLoadingUsers = false;
+    
     async function loadAllUsers() {
-        const listWrapper = document.getElementById('onlineAdminsList');
-        const emptyState = document.getElementById('onlineAdminsEmpty');
+        // Prevent concurrent calls
+        if (isLoadingUsers) {
+            console.log('loadAllUsers already in progress, skipping...');
+            return;
+        }
         
-        if (!listWrapper) return;
-
+        isLoadingUsers = true;
+        
         try {
+            // CRITICAL: Check for duplicate containers FIRST (before getting reference)
+            const allContainers = document.querySelectorAll('#onlineAdminsContainer');
+            if (allContainers.length > 1) {
+                console.error(`CRITICAL ERROR: Found ${allContainers.length} onlineAdminsContainer elements! Removing all duplicates.`);
+                // Keep only the first one, remove all others
+                for (let i = 1; i < allContainers.length; i++) {
+                    console.error(`Removing duplicate container #${i + 1}`);
+                    allContainers[i].remove();
+                }
+            }
+            
+            // Get container after cleanup
+            const container = document.getElementById('onlineAdminsContainer');
+            if (!container) {
+                console.warn('onlineAdminsContainer not found');
+                return;
+            }
+            
+            // Get list wrapper - check for duplicates
+            let listWrapper = document.getElementById('onlineAdminsList');
+            if (!listWrapper) {
+                console.warn('onlineAdminsList not found');
+                return;
+            }
+            
+            // Check for duplicate list wrappers
+            const allLists = container.querySelectorAll('#onlineAdminsList');
+            if (allLists.length > 1) {
+                console.error(`ERROR: Found ${allLists.length} onlineAdminsList elements! Removing duplicates.`);
+                for (let i = 1; i < allLists.length; i++) {
+                    allLists[i].remove();
+                }
+                // Re-get the reference
+                listWrapper = document.getElementById('onlineAdminsList');
+                if (!listWrapper) {
+                    console.error('onlineAdminsList not found after cleanup');
+                    return;
+                }
+            }
+            
+            const emptyState = document.getElementById('onlineAdminsEmpty');
+            
+            // Remove ALL member cards from anywhere in the container before starting
+            const allMemberCards = container.querySelectorAll('div[data-member-id]');
+            if (allMemberCards.length > 0) {
+                console.warn(`Removing ${allMemberCards.length} existing member cards before loading`);
+                allMemberCards.forEach(card => card.remove());
+            }
+
             const response = await fetch('/api/chat/all-users', {
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
@@ -2470,16 +2525,40 @@
             if (!response.ok) throw new Error('Failed to fetch users');
             const data = await response.json();
             
-            if (data.success && data.members && data.members.length > 0) {
+            if (data.success && data.members && Array.isArray(data.members) && data.members.length > 0) {
                 if (emptyState) emptyState.style.display = 'none';
                 
-                listWrapper.innerHTML = '';
+                // CRITICAL: Remove ALL existing children completely
+                // Use replaceChildren for modern browsers, fallback to manual removal
+                if (typeof listWrapper.replaceChildren === 'function') {
+                    listWrapper.replaceChildren();
+                } else {
+                    listWrapper.textContent = '';
+                    listWrapper.innerHTML = '';
+                    // Remove any remaining children manually
+                    while (listWrapper.firstChild) {
+                        listWrapper.removeChild(listWrapper.firstChild);
+                    }
+                }
+                
+                // Double-check: remove any member cards that might still exist
+                const remainingCards = listWrapper.querySelectorAll('div[data-member-id]');
+                if (remainingCards.length > 0) {
+                    console.warn(`Removing ${remainingCards.length} remaining cards after clear`);
+                    remainingCards.forEach(card => card.remove());
+                }
+                
                 const fragment = document.createDocumentFragment();
                 const addedMemberIds = new Set();
                 
                 data.members.forEach(member => {
-                    const memberId = member.id || member._id || member.email;
-                    if (addedMemberIds.has(memberId)) return;
+                    const memberId = String(member.id || member._id || member.email || '').trim();
+                    if (!memberId || addedMemberIds.has(memberId)) {
+                        if (memberId) {
+                            console.warn(`Skipping duplicate member: ${memberId}`);
+                        }
+                        return;
+                    }
                     addedMemberIds.add(memberId);
                     
                     const memberCard = document.createElement('div');
@@ -2506,7 +2585,33 @@
                     `;
                     fragment.appendChild(memberCard);
                 });
+                
+                // Append fragment to list (single append operation)
                 listWrapper.appendChild(fragment);
+                
+                // Final verification: count actual children and remove any duplicates
+                const actualChildren = Array.from(listWrapper.children);
+                const seenIds = new Set();
+                let duplicatesRemoved = 0;
+                
+                actualChildren.forEach(child => {
+                    const memberId = child.getAttribute('data-member-id');
+                    if (memberId) {
+                        if (seenIds.has(memberId)) {
+                            console.error(`DUPLICATE FOUND: Removing duplicate child with ID: ${memberId}`);
+                            child.remove();
+                            duplicatesRemoved++;
+                        } else {
+                            seenIds.add(memberId);
+                        }
+                    }
+                });
+                
+                console.log(`Loaded ${seenIds.size} unique users (total received: ${data.members.length}, actual DOM children: ${actualChildren.length}, duplicates removed: ${duplicatesRemoved})`);
+                
+                if (duplicatesRemoved > 0) {
+                    console.error(`ERROR: ${duplicatesRemoved} duplicates were found and removed!`);
+                }
             } else {
                 listWrapper.innerHTML = '';
                 if (emptyState) {
