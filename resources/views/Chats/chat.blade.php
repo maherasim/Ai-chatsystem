@@ -2468,15 +2468,27 @@
     /**
      * Load and display all users with online/offline status in the header
      */
+    // Prevent concurrent executions
+    let isLoadingUsers = false;
+    
     async function loadAllUsers() {
-        const listWrapper = document.getElementById('onlineAdminsList');
-        const loader = document.getElementById('onlineAdminsLoader');
-        const emptyState = document.getElementById('onlineAdminsEmpty');
-        
-        if (!listWrapper) {
-            console.warn('onlineAdminsList element not found');
+        // Prevent concurrent calls
+        if (isLoadingUsers) {
+            console.log('loadAllUsers already in progress, skipping...');
             return;
         }
+        
+        isLoadingUsers = true;
+        
+        try {
+            let listWrapper = document.getElementById('onlineAdminsList');
+            const loader = document.getElementById('onlineAdminsLoader');
+            const emptyState = document.getElementById('onlineAdminsEmpty');
+            
+            if (!listWrapper) {
+                console.warn('onlineAdminsList element not found');
+                return;
+            }
 
         try {
             const response = await fetch('/api/chat/all-users', {
@@ -2499,12 +2511,53 @@
             if (data.success && data.members && Array.isArray(data.members) && data.members.length > 0) {
                 if (emptyState) emptyState.style.display = 'none';
                 
-                // Clear current list completely to prevent duplicates
+                // CRITICAL: Check for and remove any duplicate onlineAdminsList elements
+                const container = document.getElementById('onlineAdminsContainer');
+                if (container) {
+                    // Check for duplicate list elements
+                    const allLists = container.querySelectorAll('#onlineAdminsList');
+                    if (allLists.length > 1) {
+                        console.error(`ERROR: Found ${allLists.length} onlineAdminsList elements! Removing duplicates.`);
+                        // Remove duplicate lists, keep only the first one
+                        for (let i = 1; i < allLists.length; i++) {
+                            allLists[i].remove();
+                        }
+                        // Re-get the listWrapper reference after removing duplicates
+                        const updatedListWrapper = document.getElementById('onlineAdminsList');
+                        if (updatedListWrapper && updatedListWrapper !== listWrapper) {
+                            // Update reference if needed
+                            listWrapper = updatedListWrapper;
+                        }
+                    }
+                    
+                    // Remove ANY member cards that might be anywhere in the container (safety check)
+                    const allMemberCards = container.querySelectorAll('div[data-member-id]');
+                    if (allMemberCards.length > 0) {
+                        console.warn(`Removing ${allMemberCards.length} stray member cards from container`);
+                        allMemberCards.forEach(card => card.remove());
+                    }
+                }
+                
+                // CRITICAL: Get fresh reference to listWrapper to ensure we have the correct one
+                const currentListWrapper = document.getElementById('onlineAdminsList');
+                if (!currentListWrapper) {
+                    console.error('onlineAdminsList not found after cleanup!');
+                    return;
+                }
+                
+                // Update the reference to use the correct one
+                listWrapper = currentListWrapper;
+                
+                // CRITICAL: Clear current list completely - use both methods for safety
+                listWrapper.textContent = '';
                 listWrapper.innerHTML = '';
                 
-                // Remove any existing member cards to ensure clean state
+                // Double-check: Remove any existing member cards to ensure clean state
                 const existingCards = listWrapper.querySelectorAll('div[data-member-id]');
-                existingCards.forEach(card => card.remove());
+                if (existingCards.length > 0) {
+                    console.warn(`Removing ${existingCards.length} existing cards from listWrapper`);
+                    existingCards.forEach(card => card.remove());
+                }
                 
                 const fragment = document.createDocumentFragment();
                 
@@ -2546,6 +2599,8 @@
                     
                     fragment.appendChild(memberCard);
                 });
+                
+                // Append to the correct list wrapper
                 listWrapper.appendChild(fragment);
                 console.log(`Loaded ${addedMemberIds.size} unique users (total received: ${data.members.length})`);
             } else {
@@ -2565,6 +2620,9 @@
             if (listWrapper) {
                 listWrapper.innerHTML = '';
             }
+        } finally {
+            // Always reset the flag
+            isLoadingUsers = false;
         }
     }
 
