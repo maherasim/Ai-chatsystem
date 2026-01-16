@@ -443,6 +443,45 @@ class ChatController extends Controller
     }
 
     /**
+     * Get users who reacted with a specific emoji
+     */
+    public function getReactionUsers($messageId, $emoji)
+    {
+        $message = ChatMessage::find($messageId);
+        if (!$message) {
+            return response()->json(['success' => false, 'message' => 'Message not found'], 404);
+        }
+
+        $reactions = $message->reactions ?? [];
+        $userIds = [];
+
+        // Find all user IDs who reacted with this emoji
+        foreach ($reactions as $reaction) {
+            if (isset($reaction['emoji']) && $reaction['emoji'] === $emoji) {
+                $userIds[] = $reaction['user_id'] ?? null;
+            }
+        }
+
+        // Remove nulls and duplicates
+        $userIds = array_filter(array_unique($userIds));
+
+        // Fetch user details
+        $users = User::whereIn('_id', $userIds)->get()->map(function ($user) {
+            return [
+                'id' => (string)$user->_id,
+                'name' => $user->name ?? null,
+                'email' => $user->email ?? null,
+                'avatar' => $this->getAvatarUrl($user),
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'users' => $users->values()->all(),
+        ]);
+    }
+
+    /**
      * Format message for API response
      */
     private function formatMessage($message)

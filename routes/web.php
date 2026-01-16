@@ -212,6 +212,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/api/chat/conversation/{conversationId}/read', [ChatController::class, 'markAsRead'])->name('chat.mark.read');
     Route::delete('/api/chat/message/{messageId}', [ChatController::class, 'deleteMessage'])->name('chat.message.delete');
     Route::post('/api/chat/message/{messageId}/reaction', [ChatController::class, 'addReaction'])->name('chat.message.reaction');
+    Route::get('/api/chat/message/{messageId}/reactions/{emoji}', [ChatController::class, 'getReactionUsers'])->name('chat.message.reaction.users');
     
     // Group chat routes
     Route::get('/api/chat/group/{groupId}/messages', [ChatController::class, 'getGroupMessages'])->name('chat.group.messages');

@@ -934,14 +934,16 @@ class GroupChatManager {
         // Handle different message types
         if (message.message_type === 'img' && message.file_url) {
             messageContent = `
-                <div class="chat-img" style="max-width: 100%; width: 100%;">
-                    <div class="img-wrap" style="height: auto !important; min-height: 120px; max-height: 500px; max-width: 100%; flex: none !important;">
-                        <img src="${message.file_url}" alt="Image" style="width: 100% !important; height: auto !important; max-width: 100%; max-height: 500px; object-fit: contain !important; object-position: center;">
-                        <div class="img-overlay">
-                            <a class="gallery-img" data-fancybox="gallery-img" href="${message.file_url}" title="Image">
-                                <i class="ti ti-eye"></i>
-                            </a>
-                            <a href="${message.file_url}" download><i class="ti ti-download"></i></a>
+                <div class="message-content-wrapper" style="position: relative; display: inline-block;">
+                    <div class="chat-img" style="max-width: 100%; width: 100%;">
+                        <div class="img-wrap" style="height: auto !important; min-height: 120px; max-height: 500px; max-width: 100%; flex: none !important;">
+                            <img src="${message.file_url}" alt="Image" style="width: 100% !important; height: auto !important; max-width: 100%; max-height: 500px; object-fit: contain !important; object-position: center;">
+                            <div class="img-overlay">
+                                <a class="gallery-img" data-fancybox="gallery-img" href="${message.file_url}" title="Image">
+                                    <i class="ti ti-eye"></i>
+                                </a>
+                                <a href="${message.file_url}" download><i class="ti ti-download"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -949,7 +951,8 @@ class GroupChatManager {
         } else if (message.message_type === 'file' && message.file_url) {
             const fileInfo = this.getFileTypeInfo(message.file_name || 'file');
             messageContent = `
-                <div class="file-attach-professional" style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 16px; max-width: 400px; transition: all 0.3s ease;">
+                <div class="message-content-wrapper" style="position: relative; display: inline-block;">
+                    <div class="file-attach-professional" style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 16px; max-width: 400px; transition: all 0.3s ease;">
                     <div class="file-icon-wrapper" style="width: 56px; height: 56px; border-radius: 12px; background: ${fileInfo.bgColor}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                         <i class="${fileInfo.icon}" style="font-size: 28px; color: ${fileInfo.color};"></i>
                     </div>
@@ -973,15 +976,18 @@ class GroupChatManager {
                         </a>
                     </div>
                 </div>
+                </div>
             `;
         } else if (message.message_type === 'audio' && message.file_url) {
             messageContent = `
-                <div class="message-content bg-transparent p-0">
-                    <div class="message-audio">
-                        <audio controls>
-                            <source src="${message.file_url}" type="audio/mpeg">
-                            Your browser does not support the audio element.
-                        </audio>
+                <div class="message-content-wrapper" style="position: relative; display: inline-block;">
+                    <div class="message-content bg-transparent p-0">
+                        <div class="message-audio">
+                            <audio controls>
+                                <source src="${message.file_url}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
                     </div>
                 </div>
             `;
@@ -1001,36 +1007,45 @@ class GroupChatManager {
 
             messageContent = `
                 ${replySection}
-                <div class="message-content">
-                    ${this.formatMessageWithMentions(message.content || '')}
+                <div class="message-content-wrapper" style="position: relative; display: inline-block;">
+                    <div class="message-content">
+                        ${this.formatMessageWithMentions(message.content || '')}
+                    </div>
                 </div>
             `;
         }
 
-        // Reactions - handle both array and object formats
+        // Reactions - handle array format: [{user_id, emoji, created_at}, ...]
+        // Group reactions by emoji and store full data for "who reacted" feature
         let reactionsHtml = '';
-        if (message.reactions) {
-            let reactionCounts = {};
+        let reactionsByEmoji = {}; // Store full reaction data grouped by emoji
+        
+        if (message.reactions && Array.isArray(message.reactions) && message.reactions.length > 0) {
+            // Group reactions by emoji and store full data
+            message.reactions.forEach(reaction => {
+                const emoji = reaction.emoji || reaction;
+                if (!reactionsByEmoji[emoji]) {
+                    reactionsByEmoji[emoji] = [];
+                }
+                reactionsByEmoji[emoji].push(reaction);
+            });
 
-            // Handle array format: [{user_id, emoji, created_at}, ...]
-            if (Array.isArray(message.reactions) && message.reactions.length > 0) {
-                message.reactions.forEach(reaction => {
-                    const emoji = reaction.emoji || reaction;
-                    reactionCounts[emoji] = (reactionCounts[emoji] || 0) + 1;
-                });
-            }
-            // Handle object format: {emoji: count, ...}
-            else if (typeof message.reactions === 'object' && Object.keys(message.reactions).length > 0) {
-                reactionCounts = message.reactions;
-            }
-
-            // Build reactions HTML if we have any
-            if (Object.keys(reactionCounts).length > 0) {
-                reactionsHtml = '<div class="emonji-wrap">';
-                Object.entries(reactionCounts).forEach(([emoji, count]) => {
-                    reactionsHtml += `<a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '${this.escapeHtml(emoji)}')">
-                        <span class="me-2">${emoji}</span>${count}
-                    </a>`;
+            // Build reactions HTML - positioned ON the message bubble (WhatsApp style)
+            if (Object.keys(reactionsByEmoji).length > 0) {
+                const isOwn = isOwnMessage;
+                const positionStyle = isOwn 
+                    ? 'bottom: -8px; right: 8px;' 
+                    : 'bottom: -8px; left: 8px;';
+                
+                reactionsHtml = `<div class="message-reactions" style="position: absolute; ${positionStyle} display: flex; gap: 4px; flex-wrap: wrap; align-items: center; z-index: 10; max-width: 200px;">`;
+                Object.entries(reactionsByEmoji).forEach(([emoji, reactions]) => {
+                    const count = reactions.length;
+                    const escapedEmoji = this.escapeHtml(emoji);
+                    const messageId = message._id || message.id;
+                    reactionsHtml += `<div class="reaction-item" style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 2px 6px; display: flex; align-items: center; gap: 4px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.1); transition: all 0.2s;" onclick="window.groupChatManager.showReactionUsers('${messageId}', '${escapedEmoji}')" title="Click to see who reacted">
+                        <span style="font-size: 14px;">${emoji}</span>
+                        <span style="font-size: 11px; color: #666; font-weight: 500;">${count}</span>
+                    </div>`;
                 });
                 reactionsHtml += '</div>';
             }
@@ -1101,7 +1116,6 @@ class GroupChatManager {
                             <span class="chat-time">${time}</span>
                         </div>
                     </div>
-                    ${reactionsHtml}
                 </div>
                 <div class="chat-avatar">
                     <img src="${window.currentUserAvatar || (window.baseUrl || 'https://logiteam.it-supportline.de') + '/storage/'}" 
@@ -1130,7 +1144,10 @@ class GroupChatManager {
                         </h6>
                     </div>
                     <div class="chat-info" style="display: flex; flex-direction: row; align-items: center; gap: 8px;">
-                        ${messageContent}
+                        <div style="position: relative; display: inline-block;">
+                            ${messageContent}
+                            ${reactionsHtml}
+                        </div>
                         <div class="emoj-group">
                             <ul>
                                 <li class="emoj-action">
@@ -1740,37 +1757,41 @@ class GroupChatManager {
     }
 
     /**
-     * Update reactions display for a specific message
+     * Update reactions display for a specific message (WhatsApp style - on message bubble)
      */
     updateMessageReactions(messageId, reactions) {
         const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
         if (!messageElement) return;
 
-        // Count reactions by emoji
-        const reactionCounts = {};
-        if (Array.isArray(reactions)) {
+        // Group reactions by emoji (store full data)
+        const reactionsByEmoji = {};
+        if (Array.isArray(reactions) && reactions.length > 0) {
             reactions.forEach(reaction => {
                 const emoji = reaction.emoji || reaction;
-                reactionCounts[emoji] = (reactionCounts[emoji] || 0) + 1;
-            });
-        } else if (typeof reactions === 'object' && reactions !== null) {
-            // Handle object format
-            Object.entries(reactions).forEach(([emoji, count]) => {
-                reactionCounts[emoji] = count;
+                if (!reactionsByEmoji[emoji]) {
+                    reactionsByEmoji[emoji] = [];
+                }
+                reactionsByEmoji[emoji].push(reaction);
             });
         }
 
         // Find or create reactions container
-        let reactionsContainer = messageElement.querySelector('.emonji-wrap');
+        let reactionsContainer = messageElement.querySelector('.message-reactions');
+        const isOwnMessage = messageElement.classList.contains('chats-right');
+        const positionStyle = isOwnMessage 
+            ? 'bottom: -8px; right: 8px;' 
+            : 'bottom: -8px; left: 8px;';
 
-        if (Object.keys(reactionCounts).length > 0) {
-            // Build reactions HTML
-            let reactionsHtml = '<div class="emonji-wrap">';
-            Object.entries(reactionCounts).forEach(([emoji, count]) => {
+        if (Object.keys(reactionsByEmoji).length > 0) {
+            // Build reactions HTML - WhatsApp style
+            let reactionsHtml = `<div class="message-reactions" style="position: absolute; ${positionStyle} display: flex; gap: 4px; flex-wrap: wrap; align-items: center; z-index: 10; max-width: 200px;">`;
+            Object.entries(reactionsByEmoji).forEach(([emoji, reactionList]) => {
+                const count = reactionList.length;
                 const escapedEmoji = this.escapeHtml(emoji);
-                reactionsHtml += `<a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${messageId}', '${escapedEmoji}')">
-                    <span class="me-2">${emoji}</span>${count}
-                </a>`;
+                reactionsHtml += `<div class="reaction-item" style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 2px 6px; display: flex; align-items: center; gap: 4px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.1); transition: all 0.2s;" onclick="window.groupChatManager.showReactionUsers('${messageId}', '${escapedEmoji}')" title="Click to see who reacted">
+                    <span style="font-size: 14px;">${emoji}</span>
+                    <span style="font-size: 11px; color: #666; font-weight: 500;">${count}</span>
+                </div>`;
             });
             reactionsHtml += '</div>';
 
@@ -1778,16 +1799,26 @@ class GroupChatManager {
             if (reactionsContainer) {
                 reactionsContainer.outerHTML = reactionsHtml;
             } else {
-                // Find the chat-info div and append reactions (for both sent and received messages)
-                const chatInfo = messageElement.querySelector('.chat-info');
-                if (chatInfo) {
-                    chatInfo.insertAdjacentHTML('beforeend', reactionsHtml);
-                } else {
-                    // Fallback to chat-content if chat-info not found
-                    const chatContent = messageElement.querySelector('.chat-content');
-                    if (chatContent) {
-                        chatContent.insertAdjacentHTML('beforeend', reactionsHtml);
+                // Find the message-content-wrapper or create one
+                let wrapper = messageElement.querySelector('.message-content-wrapper');
+                if (!wrapper) {
+                    // Try to find message-content and wrap it
+                    const messageContent = messageElement.querySelector('.message-content, .chat-img, .file-attach-professional');
+                    if (messageContent) {
+                        wrapper = messageContent.parentElement;
+                        if (!wrapper || !wrapper.classList.contains('message-content-wrapper')) {
+                            // Wrap it
+                            const newWrapper = document.createElement('div');
+                            newWrapper.className = 'message-content-wrapper';
+                            newWrapper.style.cssText = 'position: relative; display: inline-block;';
+                            messageContent.parentNode.insertBefore(newWrapper, messageContent);
+                            newWrapper.appendChild(messageContent);
+                            wrapper = newWrapper;
+                        }
                     }
+                }
+                if (wrapper) {
+                    wrapper.insertAdjacentHTML('beforeend', reactionsHtml);
                 }
             }
         } else {
@@ -1796,6 +1827,89 @@ class GroupChatManager {
                 reactionsContainer.remove();
             }
         }
+    }
+
+    /**
+     * Show who reacted to a message (WhatsApp style)
+     */
+    async showReactionUsers(messageId, emoji) {
+        try {
+            const response = await fetch(`/api/chat/message/${messageId}/reactions/${encodeURIComponent(emoji)}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                },
+            });
+
+            const data = await response.json();
+            if (data.success && data.users) {
+                // Show modal/popup with users who reacted
+                this.showReactionUsersModal(emoji, data.users);
+            } else {
+                console.error('Failed to fetch reaction users:', data.message);
+            }
+        } catch (error) {
+            console.error('Error fetching reaction users:', error);
+        }
+    }
+
+    /**
+     * Show modal with users who reacted
+     */
+    showReactionUsersModal(emoji, users) {
+        // Create modal HTML
+        let usersHtml = '';
+        users.forEach(user => {
+            const avatar = user.avatar || '/build/img/profiles/avatar-06.jpg';
+            const name = user.name || user.email || 'Unknown User';
+            usersHtml += `
+                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid #f0f0f0;">
+                    <img src="${avatar}" alt="${name}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 500; color: #212529;">${this.escapeHtml(name)}</div>
+                        ${user.email && user.email !== name ? `<div style="font-size: 12px; color: #6c757d;">${this.escapeHtml(user.email)}</div>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+
+        const modalHtml = `
+            <div class="modal fade" id="reactionUsersModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                <span style="font-size: 20px; margin-right: 8px;">${emoji}</span>
+                                ${users.length} ${users.length === 1 ? 'person' : 'people'} reacted
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body" style="max-height: 400px; overflow-y: auto; padding: 0;">
+                            ${usersHtml}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Remove existing modal if any
+        const existingModal = document.getElementById('reactionUsersModal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+
+        // Add modal to body
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('reactionUsersModal'));
+        modal.show();
+
+        // Remove modal from DOM when hidden
+        document.getElementById('reactionUsersModal').addEventListener('hidden.bs.modal', function() {
+            this.remove();
+        });
     }
 
     /**
