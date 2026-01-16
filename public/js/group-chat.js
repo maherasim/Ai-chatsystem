@@ -1083,7 +1083,7 @@ class GroupChatManager {
                     const escapedEmoji = this.escapeHtml(emoji);
                     const messageId = message._id || message.id;
                     const messageIdStr = String(messageId);
-                    reactionsHtml += `<div class="reaction-item" data-message-id="${messageIdStr}" data-emoji="${escapedEmoji}" style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 2px 6px; display: flex; align-items: center; gap: 4px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.1); transition: all 0.2s; position: relative; z-index: 1001;" title="Click to see who reacted">
+                    reactionsHtml += `<div class="reaction-item" data-message-id="${messageIdStr}" data-emoji="${escapedEmoji}" style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 0px 6px; display: flex; align-items: center; gap: 4px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.1); transition: all 0.2s; position: relative; z-index: 1001;" title="Click to see who reacted">
                         <span style="font-size: 14px;">${emoji}</span>
                         <span style="font-size: 11px; color: #666; font-weight: 500;">${count}</span>
                     </div>`;
@@ -1695,6 +1695,7 @@ class GroupChatManager {
         document.querySelectorAll('.emoj-group-list').forEach(list => {
             if (list.closest('[data-message-id]')?.getAttribute('data-message-id') !== messageId) {
                 list.style.display = 'none';
+                list.classList.remove('emoji-picker-shown');
             }
         });
 
@@ -1719,24 +1720,24 @@ class GroupChatManager {
             emojiList = document.createElement('div');
             emojiList.className = 'emoj-group-list';
             emojiList.setAttribute('data-message-id', messageId);
-            emojiList.style.cssText = 'z-index: 10000 !important; position: absolute; bottom: calc(100% + 5px); right: 0; background: #fff; border: 1px solid #eee; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 8px; display: none; margin-bottom: 5px;';
+            emojiList.style.cssText = 'z-index: 10000 !important; position: absolute; bottom: calc(100% + 8px); right: 0; background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.15); padding: 12px 10px; display: none; margin-bottom: 5px; opacity: 1 !important; visibility: visible !important; width: fit-content; min-width: fit-content; box-sizing: border-box;';
             
             emojiList.innerHTML = `
-                <ul style="display: flex; padding: 0; margin: 0; list-style: none; gap: 4px; align-items: center;">
-                    <li style="list-style: none;"><a href="javascript:void(0);" onclick="event.stopPropagation(); window.groupChatManager.addReaction('${messageId}', '👍'); return false;" style="display: block; padding: 4px; border-radius: 4px; transition: background 0.2s;">
-                        <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px; cursor: pointer;">👍</span>
+                <ul style="display: flex; padding: 0; margin: 0; list-style: none; gap: 6px; align-items: center; justify-content: center; width: 100%; flex-wrap: nowrap; box-sizing: border-box;">
+                    <li style="list-style: none; margin: 0; padding: 0;"><a href="javascript:void(0);" onclick="event.stopPropagation(); window.groupChatManager.addReaction('${messageId}', '👍'); return false;" class="emoji-picker-item" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; border-radius: 8px; transition: all 0.2s ease; background: transparent; text-decoration: none; cursor: pointer;">
+                        <span style="font-size: 28px; display: inline-block; line-height: 1; user-select: none;">👍</span>
                     </a></li>
-                    <li style="list-style: none;"><a href="javascript:void(0);" onclick="event.stopPropagation(); window.groupChatManager.addReaction('${messageId}', '❤️'); return false;" style="display: block; padding: 4px; border-radius: 4px; transition: background 0.2s;">
-                        <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px; cursor: pointer;">❤️</span>
+                    <li style="list-style: none; margin: 0; padding: 0;"><a href="javascript:void(0);" onclick="event.stopPropagation(); window.groupChatManager.addReaction('${messageId}', '❤️'); return false;" class="emoji-picker-item" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; border-radius: 8px; transition: all 0.2s ease; background: transparent; text-decoration: none; cursor: pointer;">
+                        <span style="font-size: 28px; display: inline-block; line-height: 1; user-select: none;">❤️</span>
                     </a></li>
-                    <li style="list-style: none;"><a href="javascript:void(0);" onclick="event.stopPropagation(); window.groupChatManager.addReaction('${messageId}', '😄'); return false;" style="display: block; padding: 4px; border-radius: 4px; transition: background 0.2s;">
-                        <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px; cursor: pointer;">😄</span>
+                    <li style="list-style: none; margin: 0; padding: 0;"><a href="javascript:void(0);" onclick="event.stopPropagation(); window.groupChatManager.addReaction('${messageId}', '😄'); return false;" class="emoji-picker-item" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; border-radius: 8px; transition: all 0.2s ease; background: transparent; text-decoration: none; cursor: pointer;">
+                        <span style="font-size: 28px; display: inline-block; line-height: 1; user-select: none;">😄</span>
                     </a></li>
-                    <li style="list-style: none;"><a href="javascript:void(0);" onclick="event.stopPropagation(); window.groupChatManager.addReaction('${messageId}', '😮'); return false;" style="display: block; padding: 4px; border-radius: 4px; transition: background 0.2s;">
-                        <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px; cursor: pointer;">😮</span>
+                    <li style="list-style: none; margin: 0; padding: 0;"><a href="javascript:void(0);" onclick="event.stopPropagation(); window.groupChatManager.addReaction('${messageId}', '😮'); return false;" class="emoji-picker-item" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; border-radius: 8px; transition: all 0.2s ease; background: transparent; text-decoration: none; cursor: pointer;">
+                        <span style="font-size: 28px; display: inline-block; line-height: 1; user-select: none;">😮</span>
                     </a></li>
-                    <li style="list-style: none;"><a href="javascript:void(0);" onclick="event.stopPropagation(); window.groupChatManager.addReaction('${messageId}', '😢'); return false;" style="display: block; padding: 4px; border-radius: 4px; transition: background 0.2s;">
-                        <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px; cursor: pointer;">😢</span>
+                    <li style="list-style: none; margin: 0; padding: 0;"><a href="javascript:void(0);" onclick="event.stopPropagation(); window.groupChatManager.addReaction('${messageId}', '😢'); return false;" class="emoji-picker-item" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; border-radius: 8px; transition: all 0.2s ease; background: transparent; text-decoration: none; cursor: pointer;">
+                        <span style="font-size: 28px; display: inline-block; line-height: 1; user-select: none;">😢</span>
                     </a></li>
                 </ul>
             `;
@@ -1750,13 +1751,15 @@ class GroupChatManager {
             
             // Add hover effect to emoji links
             setTimeout(() => {
-                const emojiLinks = emojiList.querySelectorAll('a');
+                const emojiLinks = emojiList.querySelectorAll('.emoji-picker-item');
                 emojiLinks.forEach(link => {
                     link.addEventListener('mouseenter', () => {
-                        link.style.backgroundColor = '#f0f0f0';
+                        link.style.backgroundColor = '#f5f5f5';
+                        link.style.transform = 'scale(1.1)';
                     });
                     link.addEventListener('mouseleave', () => {
                         link.style.backgroundColor = 'transparent';
+                        link.style.transform = 'scale(1)';
                     });
                 });
             }, 0);
@@ -1774,7 +1777,13 @@ class GroupChatManager {
             
             // Show emoji picker after dropdown closes
             setTimeout(() => {
-                emojiList.style.display = 'flex';
+                // Add class to indicate emoji picker is shown
+                emojiList.classList.add('emoji-picker-shown');
+                // Set display and visibility with !important using setProperty
+                emojiList.style.setProperty('display', 'flex', 'important');
+                emojiList.style.setProperty('opacity', '1', 'important');
+                emojiList.style.setProperty('visibility', 'visible', 'important');
+                emojiList.style.setProperty('z-index', '10000', 'important');
                 
                 // Position it properly
                 const chatActions = messageElement.querySelector('.chat-actions');
@@ -1798,6 +1807,7 @@ class GroupChatManager {
                 const emojiList = messageElement.querySelector('.emoj-group-list');
                 if (emojiList) {
                     emojiList.style.display = 'none';
+                    emojiList.classList.remove('emoji-picker-shown');
                 }
             }
 
@@ -1863,7 +1873,7 @@ class GroupChatManager {
                 const count = reactionList.length;
                 const escapedEmoji = this.escapeHtml(emoji);
                 const messageIdStr = String(messageId);
-                reactionsHtml += `<div class="reaction-item" data-message-id="${messageIdStr}" data-emoji="${escapedEmoji}" style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 2px 6px; display: flex; align-items: center; gap: 4px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.1); transition: all 0.2s; position: relative; z-index: 1001;" title="Click to see who reacted">
+                reactionsHtml += `<div class="reaction-item" data-message-id="${messageIdStr}" data-emoji="${escapedEmoji}" style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 0px 6px; display: flex; align-items: center; gap: 4px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.1); transition: all 0.2s; position: relative; z-index: 1001;" title="Click to see who reacted">
                     <span style="font-size: 14px;">${emoji}</span>
                     <span style="font-size: 11px; color: #666; font-weight: 500;">${count}</span>
                 </div>`;

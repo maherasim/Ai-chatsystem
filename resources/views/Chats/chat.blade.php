@@ -632,12 +632,31 @@
         left: 50%;
         transform: translateX(-50%);
         background: #fff;
-        border: 1px solid #eee;
-        border-radius: 8px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        padding: 5px;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        padding: 12px 10px;
         display: none;
         z-index: 2000 !important;
+        width: fit-content;
+        min-width: fit-content;
+        box-sizing: border-box;
+        overflow: visible;
+    }
+    
+    /* When emoji picker is shown, it should always be visible - override any hover rules */
+    .emoj-group-list.emoji-picker-shown {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    /* Ensure emoji picker is always visible when shown, regardless of parent hover state */
+    .chats:hover .emoj-group-list.emoji-picker-shown,
+    .chats .emoj-group-list.emoji-picker-shown {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
 
     .emoj-group-list ul {
@@ -645,10 +664,49 @@
         padding: 0;
         margin: 0;
         list-style: none;
+        gap: 6px;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        flex-wrap: nowrap;
+        box-sizing: border-box;
     }
 
     .emoj-group-list ul li {
-        padding: 0 2px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    
+    /* Emoji picker item hover effects */
+    .emoj-group-list .emoji-picker-item {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 40px !important;
+        height: 40px !important;
+        padding: 0 !important;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        background: transparent;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    
+    .emoj-group-list .emoji-picker-item:hover {
+        background: #f5f5f5 !important;
+        transform: scale(1.1);
+    }
+    
+    .emoj-group-list .emoji-picker-item:active {
+        transform: scale(0.95);
+    }
+    
+    .emoj-group-list .emoji-picker-item span {
+        font-size: 28px !important;
+        line-height: 1 !important;
+        user-select: none;
+        display: inline-block;
     }
 
     .emoj-group ul {
@@ -2186,6 +2244,7 @@
             if (!e.target.closest('.emoj-action') && !e.target.closest('.emoj-group-list')) {
                 document.querySelectorAll('.emoj-group-list').forEach(list => {
                     list.style.display = 'none';
+                    list.classList.remove('emoji-picker-shown');
                 });
             }
         });
