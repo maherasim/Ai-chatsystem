@@ -216,7 +216,7 @@
                     </div>
 
                     <!-- Icon 2 -->
-                    <div class="icon-wrapper" onclick="showTab('bell')" id="icon-bell">
+                    <div class="icon-wrapper" onclick="showTab('bell')" id="icon-bell" style="position: relative;">
                         <img src="{{ asset('assets/img/icons/notificationIconInactive.svg') }}" class="notification-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;">
                         <img src="{{ asset('assets/img/icons/notificationIconActive.svg') }}" class="notification-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
                     </div>
@@ -228,7 +228,7 @@
                     </div>
 
                     <!-- Icon 4 -->
-                    <div class="icon-wrapper" onclick="showTab('message')" id="icon-message">
+                    <div class="icon-wrapper" onclick="showTab('message')" id="icon-message" style="position: relative;">
                         <img src="{{ asset('assets/img/icons/messageIconInactive.svg') }}" class="message-icon-inactive" style="width: 30px; height: 30px; object-fit: contain;">
                         <img src="{{ asset('assets/img/icons/messgeIconActive.svg') }}" class="message-icon-active" style="width: 30px; height: 30px; object-fit: contain;">
                         @php
@@ -2960,16 +2960,23 @@
 
 <script>
     function showTab(tabName) {
+        console.log('📑 [Tab Switch] Switching to tab:', tabName);
         const tabs = ['layers', 'bell', 'notifi', 'message'];
 
         tabs.forEach(name => {
             // Show/hide content
-            document.getElementById(`tab-${name}`).style.display = (name === tabName) ? 'block' : 'none';
+            const tabElement = document.getElementById(`tab-${name}`);
+            if (tabElement) {
+                tabElement.style.display = (name === tabName) ? 'block' : 'none';
+                console.log(`📑 [Tab Switch] Tab ${name} display:`, tabElement.style.display);
+            }
 
             // Add/remove 'selected' class
             const icon = document.getElementById(`icon-${name}`);
             if (icon) {
-                icon.classList.toggle('selected', name === tabName);
+                const isSelected = name === tabName;
+                icon.classList.toggle('selected', isSelected);
+                console.log(`📑 [Tab Switch] Icon ${name} selected:`, isSelected);
             }
         });
 
@@ -2990,12 +2997,20 @@
 
         // Load notifications when bell tab is opened
         if (tabName === 'bell') {
+            console.log('🔔 [Tab Switch] Bell tab opened, loading notifications...');
             loadNotifications();
+        }
+
+        // Check for new messages when message tab is opened
+        if (tabName === 'message') {
+            console.log('💬 [Tab Switch] Message tab opened, checking for new messages...');
+            checkForNewMessages();
         }
     }
 
     // Load notifications from API
     function loadNotifications() {
+        console.log('📥 [Notifications] Loading notifications...');
         fetch('{{ route("notifications.index") }}', {
             method: 'GET',
             headers: {
@@ -3005,36 +3020,51 @@
             },
             credentials: 'same-origin'
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('📥 [Notifications] Response received:', response.status);
+            return response.json();
+        })
         .then(data => {
+            console.log('📥 [Notifications] Data received:', data);
             if (data.success) {
+                console.log('📥 [Notifications] Success! Unread count:', data.unread_count);
                 updateNotificationBadge(data.unread_count || 0);
                 renderNotifications(data.notifications);
+            } else {
+                console.warn('📥 [Notifications] Request succeeded but data.success is false');
             }
         })
         .catch(error => {
-            console.error('Error loading notifications:', error);
+            console.error('❌ [Notifications] Error loading notifications:', error);
             updateNotificationBadge(0);
         });
     }
 
     // Render notifications in the UI
     function renderNotifications(notifications) {
+        console.log('🎨 [Render Notifications] Rendering', notifications?.length || 0, 'notifications');
         const wrapper = document.getElementById('notificationWrapper');
-        if (!wrapper) return;
+        if (!wrapper) {
+            console.warn('🎨 [Render Notifications] Notification wrapper not found');
+            return;
+        }
 
         // Clear existing notifications
         wrapper.innerHTML = '';
 
         if (!notifications || notifications.length === 0) {
+            console.log('🎨 [Render Notifications] No notifications to render');
             wrapper.innerHTML = '<div style="text-align: center; padding: 40px; color: #7f8ea3; font-size: 14px;">No notifications yet</div>';
             return;
         }
 
-        notifications.forEach(notification => {
+        console.log('🎨 [Render Notifications] Creating notification cards...');
+        notifications.forEach((notification, index) => {
+            console.log(`🎨 [Render Notifications] Creating card ${index + 1}/${notifications.length}:`, notification);
             const card = createNotificationCard(notification);
             wrapper.appendChild(card);
         });
+        console.log('✅ [Render Notifications] All notifications rendered successfully');
     }
 
     // Create notification card HTML
@@ -3149,19 +3179,27 @@
     }
 
     function updateNotificationBadge(unreadCount) {
+        console.log('🔔 [Notification Badge] Updating badge with count:', unreadCount);
         const bellIcon = document.getElementById('icon-bell');
-        if (!bellIcon) return;
+        if (!bellIcon) {
+            console.warn('🔔 [Notification Badge] Bell icon not found');
+            return;
+        }
 
         const count = Number(unreadCount) || 0;
         bellIcon.style.position = 'relative';
 
         let dot = bellIcon.querySelector('.notification-dot');
         if (count <= 0) {
-            if (dot) dot.remove();
+            if (dot) {
+                console.log('🔔 [Notification Badge] Removing dot (count is 0)');
+                dot.remove();
+            }
             return;
         }
 
         if (!dot) {
+            console.log('🔔 [Notification Badge] Creating new dot');
             dot = document.createElement('span');
             dot.className = 'notification-dot';
             bellIcon.appendChild(dot);
@@ -3170,6 +3208,44 @@
         dot.style.cssText =
             'position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;border:2px solid rgb(255,255,255);' +
             'background:rgb(241,65,68);z-index:2;';
+        console.log('🔔 [Notification Badge] Dot updated successfully, count:', count);
+    }
+
+    // Update message icon badge when there are new messages
+    function updateMessageIconBadge(hasNewMessages, count = 0) {
+        console.log('💬 [Message Icon Badge] Updating badge, hasNewMessages:', hasNewMessages, 'count:', count);
+        const messageIcon = document.getElementById('icon-message');
+        if (!messageIcon) {
+            console.warn('💬 [Message Icon Badge] Message icon not found');
+            return;
+        }
+
+        messageIcon.style.position = 'relative';
+
+        let dot = messageIcon.querySelector('.notification-dot');
+        if (!hasNewMessages || count <= 0) {
+            if (dot) {
+                console.log('💬 [Message Icon Badge] Removing dot (no new messages)');
+                dot.remove();
+            }
+            return;
+        }
+
+        if (!dot) {
+            console.log('💬 [Message Icon Badge] Creating new dot');
+            dot = document.createElement('span');
+            dot.className = 'notification-dot';
+            messageIcon.appendChild(dot);
+        }
+
+        // Show red dot (simple version) or badge with count
+        if (count > 0) {
+            dot.style.cssText =
+                'position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;border:2px solid rgb(255,255,255);' +
+                'background:rgb(241,65,68);z-index:2;';
+        }
+        
+        console.log('💬 [Message Icon Badge] Dot updated successfully');
     }
 
     // Helper function to get time ago
@@ -3259,9 +3335,30 @@
     });
 
     function openGroupChat(groupId, groupName, photoUrl) {
+        console.log('📂 [Open Group Chat] Opening group:', groupId, groupName);
         // Navigate to chat page with group ID parameter
         window.location.href = '{{ route("chat.index") }}?group=' + encodeURIComponent(groupId);
     }
+
+    // Refresh badges when page becomes visible (user returns to tab)
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+            console.log('👁️ [Visibility] Page became visible, refreshing badges...');
+            setTimeout(() => {
+                checkForNewMessages();
+                refreshGroupBadges();
+            }, 500);
+        }
+    });
+
+    // Refresh badges when page regains focus
+    window.addEventListener('focus', function() {
+        console.log('🎯 [Focus] Window regained focus, refreshing badges...');
+        setTimeout(() => {
+            checkForNewMessages();
+            refreshGroupBadges();
+        }, 500);
+    });
 
     /**
      * Load and display all users with online/offline status
@@ -3340,4 +3437,394 @@
         // Refresh users every 30 seconds
         setInterval(loadAllUsers, 30000);
     });
+
+    // ============================================
+    // TEST SCRIPT: Generate Chat Messages
+    // ============================================
+    let testMessageInterval = null;
+    let testMessageGroups = [];
+    let testMessageCounter = 0;
+
+    // Test messages pool
+    const testMessages = [
+        "Hello! This is a test message.",
+        "How are you doing today?",
+        "Testing notification system...",
+        "New message received!",
+        "This is message #COUNTER_PLACEHOLDER",
+        "Testing chat notifications",
+        "Another test message",
+        "Notification test in progress",
+        "Message generation working!",
+        "Testing interval messages"
+    ];
+
+    /**
+     * Start generating test messages
+     */
+    function startTestMessageGeneration() {
+        console.log('🚀 [Test Script] Starting test message generation...');
+        
+        if (testMessageInterval) {
+            console.warn('⚠️ [Test Script] Test generation already running');
+            return;
+        }
+
+        // Get user's groups
+        fetch('/api/chat/groups', {
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('📋 [Test Script] Groups fetched:', data);
+            if (data.success && data.groups && data.groups.length > 0) {
+                testMessageGroups = data.groups;
+                console.log('✅ [Test Script] Found', testMessageGroups.length, 'groups');
+                
+                // Start generating messages
+                generateTestMessage();
+                testMessageInterval = setInterval(() => {
+                    generateTestMessage();
+                }, getRandomInterval(5000, 10000)); // 5-10 seconds
+                
+                console.log('✅ [Test Script] Test message generation started!');
+            } else {
+                console.error('❌ [Test Script] No groups found. Please create a group first.');
+                alert('No groups found. Please create a group first to test messages.');
+            }
+        })
+        .catch(error => {
+            console.error('❌ [Test Script] Error fetching groups:', error);
+            // Try alternative endpoint
+            fetch('{{ route("chat.index") }}', {
+                method: 'GET',
+                credentials: 'same-origin'
+            })
+            .then(() => {
+                console.log('ℹ️ [Test Script] Using alternative method - you may need to manually specify group IDs');
+            });
+        });
+    }
+
+    /**
+     * Stop generating test messages
+     */
+    function stopTestMessageGeneration() {
+        console.log('🛑 [Test Script] Stopping test message generation...');
+        if (testMessageInterval) {
+            clearInterval(testMessageInterval);
+            testMessageInterval = null;
+            console.log('✅ [Test Script] Test message generation stopped');
+        } else {
+            console.warn('⚠️ [Test Script] No test generation running');
+        }
+    }
+
+    /**
+     * Generate a single test message
+     */
+    async function generateTestMessage() {
+        if (testMessageGroups.length === 0) {
+            console.warn('⚠️ [Test Script] No groups available');
+            return;
+        }
+
+        // Pick a random group
+        const randomGroup = testMessageGroups[Math.floor(Math.random() * testMessageGroups.length)];
+        const groupId = randomGroup._id || randomGroup.id;
+        const groupName = randomGroup.name || 'Unknown Group';
+        
+        // Pick a random message
+        const messageText = testMessages[Math.floor(Math.random() * testMessages.length)]
+            .replace('COUNTER_PLACEHOLDER', ++testMessageCounter);
+
+        console.log(`📤 [Test Script] Generating message #${testMessageCounter} to group: ${groupName} (${groupId})`);
+        console.log(`📝 [Test Script] Message content: "${messageText}"`);
+
+        try {
+            // Use test endpoint to create message as another user (so notifications will trigger)
+            const response = await fetch('/api/chat/test/message-as-other-user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    group_id: groupId,
+                    content: messageText,
+                    message_type: 'txt'
+                })
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                console.log('✅ [Test Script] Message sent successfully as another user!', data);
+                console.log(`👤 [Test Script] Message sent by: ${data.sender?.name || 'Unknown'}`);
+                
+                // Update notification badge and check for new messages
+                setTimeout(() => {
+                    loadNotifications();
+                    checkForNewMessages();
+                    // Also refresh groups to update their badges
+                    refreshGroupBadges();
+                }, 1500); // Slightly longer delay to ensure message is saved
+            } else {
+                console.error('❌ [Test Script] Failed to send message:', data);
+            }
+        } catch (error) {
+            console.error('❌ [Test Script] Error sending message:', error);
+        }
+    }
+
+    /**
+     * Check for new messages and update message icon badge
+     */
+    async function checkForNewMessages() {
+        console.log('🔍 [Message Check] Checking for new messages...');
+        try {
+            let totalUnreadCount = 0;
+            let hasUnread = false;
+
+            // Check conversations for unread messages
+            try {
+                const response = await fetch('/api/chat/conversations', {
+                    method: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    },
+                    credentials: 'same-origin'
+                });
+
+                const conversations = await response.json();
+                console.log('🔍 [Message Check] Conversations:', conversations);
+
+                if (Array.isArray(conversations)) {
+                    conversations.forEach(conv => {
+                        const count = parseInt(conv.unread_count || 0);
+                        totalUnreadCount += count;
+                        if (count > 0) hasUnread = true;
+                    });
+                }
+            } catch (error) {
+                console.warn('⚠️ [Message Check] Error fetching conversations:', error);
+            }
+
+            // Check groups for unread messages
+            try {
+                const groupsResponse = await fetch('/api/chat/groups', {
+                    method: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    },
+                    credentials: 'same-origin'
+                });
+
+                const groupsData = await groupsResponse.json();
+                console.log('🔍 [Message Check] Groups data:', groupsData);
+                
+                if (groupsData.success && Array.isArray(groupsData.groups)) {
+                    groupsData.groups.forEach(group => {
+                        const count = parseInt(group.unread_count || 0);
+                        totalUnreadCount += count;
+                        if (count > 0) {
+                            hasUnread = true;
+                            // Update group badge dynamically
+                            updateGroupBadge(group.id || group._id, count);
+                        }
+                    });
+                }
+            } catch (error) {
+                console.warn('⚠️ [Message Check] Error fetching groups:', error);
+            }
+
+            console.log('🔍 [Message Check] Total unread count:', totalUnreadCount);
+            console.log('🔍 [Message Check] Has unread messages:', hasUnread);
+            
+            // Update message icon badge with count
+            updateMessageIconBadge(hasUnread, totalUnreadCount);
+            
+            // Update sidebar chat badge
+            updateSidebarChatBadge(totalUnreadCount);
+        } catch (error) {
+            console.error('❌ [Message Check] Error checking for new messages:', error);
+        }
+    }
+
+    /**
+     * Update group badge in team chat section
+     */
+    function updateGroupBadge(groupId, count) {
+        console.log(`🏷️ [Group Badge] Updating badge for group ${groupId} with count: ${count}`);
+        const groupCard = document.querySelector(`[data-group-id="${groupId}"]`);
+        if (!groupCard) {
+            console.warn(`🏷️ [Group Badge] Group card not found for ID: ${groupId}`);
+            return;
+        }
+
+        // Find or create badge
+        let badge = groupCard.querySelector('.group-unread-badge');
+        
+        if (count <= 0) {
+            if (badge) {
+                console.log(`🏷️ [Group Badge] Removing badge for group ${groupId}`);
+                badge.remove();
+            }
+            return;
+        }
+
+        if (!badge) {
+            console.log(`🏷️ [Group Badge] Creating new badge for group ${groupId}`);
+            badge = document.createElement('span');
+            badge.className = 'group-unread-badge';
+            badge.style.cssText = 'position: absolute; top: -5px; right: -5px; background: #dc3545; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 10;';
+            
+            // Find the profile image container to append badge
+            const profileContainer = groupCard.querySelector('div[style*="position: relative; margin-top"]');
+            if (profileContainer) {
+                profileContainer.style.position = 'relative';
+                profileContainer.appendChild(badge);
+            } else {
+                console.warn(`🏷️ [Group Badge] Profile container not found for group ${groupId}`);
+            }
+        }
+
+        badge.textContent = count > 99 ? '99+' : count.toString();
+        console.log(`✅ [Group Badge] Badge updated for group ${groupId}`);
+    }
+
+    /**
+     * Update sidebar chat link badge
+     */
+    function updateSidebarChatBadge(count) {
+        console.log(`📱 [Sidebar Badge] Updating sidebar chat badge with count: ${count}`);
+        
+        // Find sidebar chat link - try multiple selectors
+        const sidebarLinks = [
+            document.querySelector('a[href*="/chat"]'),
+            document.querySelector('a[href*="chat.index"]'),
+            ...Array.from(document.querySelectorAll('a')).filter(a => 
+                a.href && (a.href.includes('/chat') || a.getAttribute('href')?.includes('chat'))
+            )
+        ].filter(Boolean);
+
+        sidebarLinks.forEach(link => {
+            if (!link) return;
+            
+            // Check if it's the chat link by checking for Chat icon
+            const hasChatIcon = link.querySelector('img[src*="Chat"]') || 
+                              link.querySelector('img[alt*="Chat"]') ||
+                              link.querySelector('img[alt*="White Icon"]');
+            
+            if (!hasChatIcon) return;
+
+            // Make link position relative if not already
+            const linkParent = link.closest('li');
+            if (linkParent) {
+                linkParent.style.position = 'relative';
+            }
+
+            // Find or create badge
+            let badge = linkParent?.querySelector('.sidebar-chat-badge') || 
+                       link.querySelector('.sidebar-chat-badge');
+
+            if (count <= 0) {
+                if (badge) {
+                    console.log('📱 [Sidebar Badge] Removing sidebar badge');
+                    badge.remove();
+                }
+                return;
+            }
+
+            if (!badge) {
+                console.log('📱 [Sidebar Badge] Creating new sidebar badge');
+                badge = document.createElement('span');
+                badge.className = 'sidebar-chat-badge';
+                badge.style.cssText = 'position: absolute; top: -5px; right: -5px; background: #dc3545; color: white; border-radius: 50%; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 10; padding: 0 4px;';
+                
+                if (linkParent) {
+                    linkParent.appendChild(badge);
+                } else {
+                    link.style.position = 'relative';
+                    link.appendChild(badge);
+                }
+            }
+
+            badge.textContent = count > 99 ? '99+' : count.toString();
+            console.log(`✅ [Sidebar Badge] Sidebar badge updated with count: ${count}`);
+        });
+    }
+
+    /**
+     * Get random interval between min and max (in milliseconds)
+     */
+    function getRandomInterval(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    // Expose functions to window for console access
+    window.startTestMessages = startTestMessageGeneration;
+    window.stopTestMessages = stopTestMessageGeneration;
+    window.checkNewMessages = checkForNewMessages;
+
+    /**
+     * Refresh all group badges
+     */
+    async function refreshGroupBadges() {
+        console.log('🔄 [Refresh Badges] Refreshing all group badges...');
+        try {
+            const groupsResponse = await fetch('/api/chat/groups', {
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                },
+                credentials: 'same-origin'
+            });
+
+            const groupsData = await groupsResponse.json();
+            if (groupsData.success && Array.isArray(groupsData.groups)) {
+                groupsData.groups.forEach(group => {
+                    const count = parseInt(group.unread_count || 0);
+                    updateGroupBadge(group.id || group._id, count);
+                });
+                console.log('✅ [Refresh Badges] All group badges refreshed');
+            }
+        } catch (error) {
+            console.error('❌ [Refresh Badges] Error refreshing badges:', error);
+        }
+    }
+
+    // Auto-check for new messages periodically
+    setInterval(() => {
+        checkForNewMessages();
+        refreshGroupBadges();
+    }, 5000); // Check every 5 seconds (more frequent)
+
+    // Initial check on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            checkForNewMessages();
+            refreshGroupBadges();
+        }, 2000);
+    });
+
+    console.log('✅ [Test Script] Test message functions loaded!');
+    console.log('💡 [Test Script] Use startTestMessages() to begin generating test messages');
+    console.log('💡 [Test Script] Use stopTestMessages() to stop generating test messages');
+    console.log('💡 [Test Script] Use checkNewMessages() to manually check for new messages');
 </script>

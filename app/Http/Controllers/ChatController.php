@@ -554,9 +554,18 @@ class ChatController extends Controller
                 ->limit(100)
                 ->get();
 
-            // Mark messages as read when user opens the group
-            $userId = (string)$user->_id;
-            ChatMessage::markGroupMessagesAsRead($groupId, $userId);
+            // Only mark messages as read if explicitly requested (when user actually opens the chat)
+            // Don't mark as read when just checking messages or polling
+            $markAsRead = $request->input('mark_as_read', false);
+            if ($markAsRead === true || $markAsRead === 'true' || $markAsRead === '1') {
+                $userId = (string)$user->_id;
+                ChatMessage::markGroupMessagesAsRead($groupId, $userId);
+                \Log::info('Marking group messages as read', [
+                    'group_id' => $groupId,
+                    'user_id' => $userId,
+                    'reason' => 'mark_as_read parameter was true'
+                ]);
+            }
 
             // Format messages
             $formattedMessages = $messages->map(function($message) use ($user) {
@@ -1388,6 +1397,103 @@ class ChatController extends Controller
                 'success' => false,
                 'message' => 'Failed to retrieve users',
                 'members' => [],
+            ], 500);
+        }
+    }
+
+    /**
+     * Test endpoint: Create a message as if sent by another user
+     * This is for testing notifications - creates messages from other users
+     */
+    public function createTestMessageAsOtherUser(Request $request)
+    {
+        try {
+            $currentUser = Auth::user();
+            $currentUserId = (string)$currentUser->_id;
+            
+            $request->validate([
+                'group_id' => 'required|string',
+                'content' => 'required|string',
+                'message_type' => 'required|in:txt,img,file,audio,video',
+            ]);
+
+            // Get all users except current user
+            $otherUsers = User::where('_id', '!=', $currentUserId)
+                ->where('email', '!=', 'admin@gmail.com')
+                ->get();
+            
+            if ($otherUsers->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No other users found to simulate message from',
+                ], 404);
+            }
+
+            // Pick a random other user
+            $senderUser = $otherUsers->random();
+            $senderUserId = (string)$senderUser->_id;
+
+            // Verify group exists
+            $group = Group::find($request->group_id);
+            if (!$group) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Group not found',
+                ], 404);
+            }
+
+            // Create message as if sent by the other user
+            $message = new ChatMessage();
+            $message->sender_id = $senderUserId;
+            $message->from_user_id = $senderUserId;
+            $message->group_id = $request->group_id;
+            $message->conversation_id = 'group_' . $request->group_id;
+            $message->message_type = $request->message_type;
+            $message->content = $request->content;
+            $message->file_url = $request->file_url ?? null;
+            $message->file_name = $request->file_name ?? null;
+            $message->file_size = $request->file_size ?? null;
+            $message->replied_to_message_id = $request->replied_to_message_id ?? null;
+            $message->reply_to_message_id = $request->replied_to_message_id ?? null;
+            $message->message_id = 'test_' . uniqid(); // Test message ID
+            $message->reactions = [];
+            $message->is_read = false; // Mark as unread so it triggers notifications
+            $message->is_deleted = false; // Explicitly mark as not deleted
+            $message->save();
+
+            // Verify the message was saved correctly
+            $savedMessage = ChatMessage::find($message->_id);
+            $unreadCount = ChatMessage::getGroupUnreadCount($request->group_id, $currentUserId);
+
+            \Log::info('Test message created', [
+                'message_id' => (string)$message->_id,
+                'sender_id' => $senderUserId,
+                'sender_name' => $senderUser->name ?? $senderUser->email,
+                'group_id' => $request->group_id,
+                'current_user_id' => $currentUserId,
+                'is_read' => $message->is_read,
+                'saved_is_read' => $savedMessage ? $savedMessage->is_read : 'not found',
+                'saved_sender_id' => $savedMessage ? (string)($savedMessage->sender_id ?? $savedMessage->from_user_id) : 'not found',
+                'unread_count_after_save' => $unreadCount,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => $this->formatGroupMessage($message),
+                'sender' => [
+                    'id' => $senderUserId,
+                    'name' => $senderUser->name ?? $senderUser->email,
+                ],
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to create test message', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create test message: ' . $e->getMessage(),
             ], 500);
         }
     }

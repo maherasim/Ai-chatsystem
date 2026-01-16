@@ -95,24 +95,49 @@ class ChatMessage extends Model
      */
     public static function getGroupUnreadCount($groupId, $userId): int
     {
-        // Get the last time user viewed this group's messages
-        // For now, we'll count messages where user is not the sender and is_read is false or null
-        // In a group, we need to track which messages the user has seen
-        // This is a simplified version - you might want to track last_read_message_id per group per user
+        // Convert IDs to strings for proper MongoDB comparison
+        $groupIdStr = (string)$groupId;
+        $userIdStr = (string)$userId;
         
-        return static::where(function($q) use ($groupId) {
-                $q->where('group_id', $groupId)
-                  ->orWhere('conversation_id', 'group_' . $groupId);
+        // Get all messages for this group that are not deleted
+        $messages = static::where(function($q) use ($groupIdStr) {
+                $q->where('group_id', $groupIdStr)
+                  ->orWhere('conversation_id', 'group_' . $groupIdStr);
             })
-            ->where('is_deleted', false)
-            ->where(function($q) use ($userId) {
-                $q->where('from_user_id', '!=', $userId)
-                  ->where(function($q2) {
-                      $q2->where('is_read', false)
-                         ->orWhereNull('is_read');
-                  });
+            ->where(function($q) {
+                $q->where('is_deleted', false)
+                  ->orWhereNull('is_deleted');
             })
-            ->count();
+            ->get();
+        
+        // Filter messages where:
+        // 1. User is NOT the sender (check both sender_id and from_user_id)
+        // 2. is_read is false or null
+        $unreadCount = 0;
+        foreach ($messages as $message) {
+            $senderId = (string)($message->sender_id ?? $message->from_user_id ?? '');
+            
+            // Skip if user is the sender
+            if ($senderId === $userIdStr) {
+                continue;
+            }
+            
+            // Count if unread (is_read is false, null, 0, or '0')
+            $isRead = $message->is_read;
+            if ($isRead === false || $isRead === null || $isRead === 0 || $isRead === '0') {
+                $unreadCount++;
+            }
+        }
+        
+        // Log for debugging
+        \Log::info('Group unread count', [
+            'group_id' => $groupIdStr,
+            'user_id' => $userIdStr,
+            'total_messages' => $messages->count(),
+            'unread_count' => $unreadCount
+        ]);
+        
+        return $unreadCount;
     }
 
     /**
@@ -134,20 +159,42 @@ class ChatMessage extends Model
      */
     public static function markGroupMessagesAsRead($groupId, $userId): void
     {
-        static::where(function($q) use ($groupId) {
-                $q->where('group_id', $groupId)
-                  ->orWhere('conversation_id', 'group_' . $groupId);
+        // Convert IDs to strings for proper MongoDB comparison
+        $groupIdStr = (string)$groupId;
+        $userIdStr = (string)$userId;
+        
+        // Get all unread messages for this group
+        $messages = static::where(function($q) use ($groupIdStr) {
+                $q->where('group_id', $groupIdStr)
+                  ->orWhere('conversation_id', 'group_' . $groupIdStr);
             })
-            ->where('from_user_id', '!=', $userId)
+            ->where(function($q) {
+                $q->where('is_deleted', false)
+                  ->orWhereNull('is_deleted');
+            })
             ->where(function($q) {
                 $q->where('is_read', false)
                   ->orWhereNull('is_read');
             })
-            ->where('is_deleted', false)
-            ->update([
-                'is_read' => true,
-                'read_at' => now(),
-            ]);
+            ->get();
+        
+        // Mark messages as read where user is NOT the sender
+        foreach ($messages as $message) {
+            $senderId = (string)($message->sender_id ?? $message->from_user_id ?? '');
+            
+            // Only mark as read if user is not the sender
+            if ($senderId !== $userIdStr && $senderId !== '') {
+                $message->is_read = true;
+                $message->read_at = now();
+                $message->save();
+            }
+        }
+        
+        \Log::info('Group messages marked as read', [
+            'group_id' => $groupIdStr,
+            'user_id' => $userIdStr,
+            'messages_updated' => $messages->count()
+        ]);
     }
 
     /**

@@ -218,6 +218,7 @@ Route::middleware('auth')->group(function () {
     // Group chat routes
     Route::get('/api/chat/group/{groupId}/messages', [ChatController::class, 'getGroupMessages'])->name('chat.group.messages');
     Route::post('/api/chat/group/message', [ChatController::class, 'saveGroupMessage'])->name('chat.group.message.save');
+    Route::post('/api/chat/test/message-as-other-user', [ChatController::class, 'createTestMessageAsOtherUser'])->name('chat.test.message.other.user');
     Route::get('/api/chat/group/{groupId}/members', [ChatController::class, 'getGroupMembersForMentions'])->name('chat.group.members.mentions');
     Route::get('/api/chat/group/{groupId}/media', [ChatController::class, 'getGroupMedia'])->name('chat.group.media');
     Route::post('/api/chat/favorite/toggle', [ChatController::class, 'toggleFavorite'])->name('chat.favorite.toggle');

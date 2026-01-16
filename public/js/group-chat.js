@@ -451,7 +451,8 @@ class GroupChatManager {
             }
 
             try {
-                const response = await fetch(`/api/chat/group/${this.currentGroupId}/messages?last_id=${this.lastMessageId || ''}`, {
+                // When polling, mark new messages as read since user is actively viewing the chat
+                const response = await fetch(`/api/chat/group/${this.currentGroupId}/messages?last_id=${this.lastMessageId || ''}&mark_as_read=true`, {
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
                     },
@@ -716,7 +717,8 @@ class GroupChatManager {
                 this.showLoader();
             }
 
-            const response = await fetch(`/api/chat/group/${groupId}/messages`, {
+            // Add mark_as_read parameter to mark messages as read when user opens the chat
+            const response = await fetch(`/api/chat/group/${groupId}/messages?mark_as_read=true`, {
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
                 },
