@@ -1042,7 +1042,7 @@ class GroupChatManager {
             // RIGHT SIDE: Sent messages (content first, avatar last)
             messageDiv.innerHTML = `
                 <div class="chat-content">
-                    <div class="chat-info">
+                    <div class="chat-info" style="display: flex; flex-direction: row; align-items: center; gap: 8px; justify-content: flex-end;">
                         <div class="chat-actions">
                             <a class="#" href="#" data-bs-toggle="dropdown">
                                 <i class="ti ti-dots-vertical"></i>
@@ -1064,37 +1064,38 @@ class GroupChatManager {
                         </div>
                         ${messageContent}
                         <div class="emoj-group">
-                                <ul>
-                                    <li class="emoj-action">
-                                        <a href="javascript:void(0);" onclick="window.groupChatManager.showEmojiPicker('${message._id || message.id}')">
-                                            <i class="ti ti-mood-smile"></i>
-                                        </a>
-                                        <div class="emoj-group-list">
-                                            <ul>
-                                                <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '👍')">
-                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">👍</span>
-                                                </a></li>
-                                                <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '❤️')">
-                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">❤️</span>
-                                                </a></li>
-                                                <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😄')">
-                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😄</span>
-                                                </a></li>
-                                                <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😮')">
-                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😮</span>
-                                                </a></li>
-                                                <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😢')">
-                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😢</span>
-                                                </a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li><a href="javascript:void(0);" onclick="window.groupChatManager.forwardMessage('${message._id || message.id}')">
-                                        <i class="ti ti-arrow-forward-up"></i>
-                                    </a></li>
-                                </ul>
-                            </div>
+                            <ul>
+                                <li class="emoj-action">
+                                    <a href="javascript:void(0);" onclick="window.groupChatManager.showEmojiPicker('${message._id || message.id}')">
+                                        <i class="ti ti-mood-smile"></i>
+                                    </a>
+                                    <div class="emoj-group-list">
+                                        <ul>
+                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '👍')">
+                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">👍</span>
+                                            </a></li>
+                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '❤️')">
+                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">❤️</span>
+                                            </a></li>
+                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😄')">
+                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😄</span>
+                                            </a></li>
+                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😮')">
+                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😮</span>
+                                            </a></li>
+                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😢')">
+                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😢</span>
+                                            </a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li><a href="javascript:void(0);" onclick="window.groupChatManager.forwardMessage('${message._id || message.id}')">
+                                    <i class="ti ti-arrow-forward-up"></i>
+                                </a></li>
+                            </ul>
                         </div>
+                    </div>
+                </div>
                         <div class="chat-time-status" style="text-align: right; margin-top: 4px; font-size: 11px; color: #adb5bd; display: flex; align-items: center; justify-content: flex-end; gap: 4px;">
                             <span class="msg-read success"><i class="ti ti-checks"></i></span>
                             <span class="chat-time">${time}</span>
@@ -1128,40 +1129,38 @@ class GroupChatManager {
                             <span class="msg-read success" style="margin-left: 4px;"><i class="ti ti-checks" style="font-size: 12px;"></i></span>
                         </h6>
                     </div>
-                    <div class="chat-info">
-                        <div class="message-content">
-                            ${messageContent}
-                            <div class="emoj-group">
-                                <ul>
-                                    <li class="emoj-action">
-                                        <a href="javascript:void(0);" onclick="window.groupChatManager.showEmojiPicker('${message._id || message.id}')">
-                                            <i class="ti ti-mood-smile"></i>
-                                        </a>
-                                        <div class="emoj-group-list">
-                                            <ul>
-                                                <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '👍')">
-                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">👍</span>
-                                                </a></li>
-                                                <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '❤️')">
-                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">❤️</span>
-                                                </a></li>
-                                                <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😄')">
-                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😄</span>
-                                                </a></li>
-                                                <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😮')">
-                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😮</span>
-                                                </a></li>
-                                                <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😢')">
-                                                    <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😢</span>
-                                                </a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li><a href="javascript:void(0);" onclick="window.groupChatManager.forwardMessage('${message._id || message.id}')">
-                                        <i class="ti ti-arrow-forward-up"></i>
-                                    </a></li>
-                                </ul>
-                            </div>
+                    <div class="chat-info" style="display: flex; flex-direction: row; align-items: center; gap: 8px;">
+                        ${messageContent}
+                        <div class="emoj-group">
+                            <ul>
+                                <li class="emoj-action">
+                                    <a href="javascript:void(0);" onclick="window.groupChatManager.showEmojiPicker('${message._id || message.id}')">
+                                        <i class="ti ti-mood-smile"></i>
+                                    </a>
+                                    <div class="emoj-group-list">
+                                        <ul>
+                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '👍')">
+                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">👍</span>
+                                            </a></li>
+                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '❤️')">
+                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">❤️</span>
+                                            </a></li>
+                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😄')">
+                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😄</span>
+                                            </a></li>
+                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😮')">
+                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😮</span>
+                                            </a></li>
+                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😢')">
+                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😢</span>
+                                            </a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li><a href="javascript:void(0);" onclick="window.groupChatManager.forwardMessage('${message._id || message.id}')">
+                                    <i class="ti ti-arrow-forward-up"></i>
+                                </a></li>
+                            </ul>
                         </div>
                         <div class="chat-actions">
                             <a class="#" href="#" data-bs-toggle="dropdown">

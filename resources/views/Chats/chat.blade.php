@@ -535,9 +535,10 @@
 
     .chats.chats-right .chat-info {
         display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-end !important;
-        gap: 0 !important;
+        flex-direction: row !important; /* Changed from column to row */
+        align-items: center !important; /* Center items vertically */
+        justify-content: flex-end !important; /* Align to the right */
+        gap: 8px !important; /* Space between dots and bubble */
     }
 
     /* Target ONLY the inner message content to avoid double bubbles */
@@ -547,7 +548,7 @@
         color: inherit !important;
     }
 
-    .chats    .chats-right .chat-info > .message-content {
+    .chats.chats-right .chat-info > .message-content {
         background: linear-gradient(135deg, #0d6efd 0%, #0052cc 100%) !important;
         color: #ffffff !important;
         border-radius: 16px 16px 2px 16px !important;
@@ -557,8 +558,7 @@
         min-width: fit-content !important; /* Ensure minimum width fits content */
         max-width: 75% !important; /* Optimal max-width for message bubbles */
         flex: 0 1 auto !important;
-        margin-left: auto !important;
-        text-align: left !important;
+        text-align: left !important; /* Keep text left aligned inside bubble */
         box-shadow: 0 2px 5px rgba(13, 110, 253, 0.2) !important;
         word-wrap: break-word !important; /* Break long words if they exceed container */
         overflow-wrap: break-word !important; /* Break words if they're too long */
