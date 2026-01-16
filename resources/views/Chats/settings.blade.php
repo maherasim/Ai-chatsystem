@@ -460,11 +460,22 @@
                                                     @csrf
                                                     <input type="hidden" name="index" id="selectLoginBgIndex" value="">
                                                 </form>
+                                                <form id="selectChatBgForm" action="{{ route('select.chat.background') }}" method="POST" style="display:none;">
+                                                    @csrf
+                                                    <input type="hidden" name="index" id="selectChatBgIndex" value="">
+                                                </form>
                                                 <script>
                                                     function submitLoginBgSelect(idx){
                                                         try{
                                                             var input = document.getElementById('selectLoginBgIndex');
                                                             var form = document.getElementById('selectLoginBgForm');
+                                                            if(input && form){ input.value = String(idx); form.submit(); }
+                                                        }catch(e){}
+                                                    }
+                                                    function submitChatBgSelect(idx){
+                                                        try{
+                                                            var input = document.getElementById('selectChatBgIndex');
+                                                            var form = document.getElementById('selectChatBgForm');
                                                             if(input && form){ input.value = String(idx); form.submit(); }
                                                         }catch(e){}
                                                     }
@@ -516,13 +527,13 @@
                                                                                     alt="Chat Background {{ $i }}"
                                                                                     style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
 
-                                                                                <div class="img-overlay-1 position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-                                                                                    style="background: rgba(0, 0, 0, 0.4); opacity: 0; transition: opacity 0.3s ease-in-out; border-radius: 10px;"
-                                                                                    onmouseover="this.style.opacity='1'"
-                                                                                    onmouseout="this.style.opacity='0'">
-                                                                                    <a href="javascript:void(0);"
-                                                                                        onclick="document.getElementById('imageUploadChat{{ $i }}').click();"
-                                                                                        style="text-decoration: none; font-size: 40px; color: #fff;">+</a>
+                                                                                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-between p-2"
+                                                                                    style="background: rgba(0, 0, 0, 0.25); opacity: 0; transition: opacity 0.2s ease-in-out; border-radius: 10px;"
+                                                                                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                                                                    <button type="button" class="btn btn-sm btn-light"
+                                                                                        onclick="document.getElementById('imageUploadChat{{ $i }}').click();">Upload</button>
+                                                                                    <button type="button" class="btn btn-sm {{ (isset($selected_chat_background) && $selected_chat_background === ($i - 1)) ? 'btn-success' : 'btn-outline-light' }}"
+                                                                                        onclick="submitChatBgSelect({{ $i - 1 }})">Select</button>
                                                                                 </div>
                                                                             </div>
 

@@ -198,6 +198,7 @@ Route::post('/settings/toggle-reaction-notification', [App\Http\Controllers\Sett
 Route::post('/settings/login-background', [App\Http\Controllers\SettingController::class, 'uploadLoginBackground'])->name('upload.login.backgrounds');
 Route::post('/settings/login-background/select', [App\Http\Controllers\SettingController::class, 'selectLoginBackground'])->name('select.login.background');
 Route::post('/settings/chat-background', [App\Http\Controllers\SettingController::class, 'uploadchatBackground'])->name('upload.chat.backgrounds');
+Route::post('/settings/chat-background/select', [App\Http\Controllers\SettingController::class, 'selectChatBackground'])->name('select.chat.background');
 Route::post('/upload-chat-sounds', [App\Http\Controllers\SettingController::class, 'uploadChatSounds'])->name('upload.chat.sounds');
 Route::post('/upload-notification-sounds', [App\Http\Controllers\SettingController::class, 'uploadNotificationSounds'])->name('upload.notification.sounds');
 

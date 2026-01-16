@@ -24,8 +24,9 @@ public function showSettingsForm()
     $chat_backgrounds = $setting && $setting->chat_backgrounds
         ? json_decode($setting->chat_backgrounds, true)
         : [];
+    $selected_chat_background = $setting->selected_chat_background ?? null;
 
-    return view('Chats.settings', compact('setting', 'images', 'chat_backgrounds','chat_sounds','selected_login_background'));
+    return view('Chats.settings', compact('setting', 'images', 'chat_backgrounds','chat_sounds','selected_login_background', 'selected_chat_background'));
 }
 public function indexsetting()
 {
@@ -397,6 +398,19 @@ public function selectLoginBackground(Request $request)
     $setting->selected_login_background = $idx;
     $setting->save();
     return back()->with('success', 'Login background selected.');
+}
+
+public function selectChatBackground(Request $request)
+{
+    $request->validate([
+        'index' => 'required|integer|min:0|max:5',
+    ]);
+    $userId = auth()->id();
+    $setting = Setting::firstOrNew(['user_id' => $userId]);
+    $idx = (int)$request->input('index');
+    $setting->selected_chat_background = $idx;
+    $setting->save();
+    return back()->with('success', 'Chat background selected.');
 }
  public function uploadchatBackground(Request $request)
 {

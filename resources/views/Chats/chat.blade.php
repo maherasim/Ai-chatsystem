@@ -398,6 +398,19 @@
     .messages {
         flex: 1;
     }
+    
+    /* Chat background overlay for readability - only show when background is set */
+    .chat-body.has-background::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.3);
+        z-index: 0;
+        pointer-events: none;
+    }
 
     /* Drag and Drop Styles */
     .chat-footer.drag-over,
@@ -748,6 +761,8 @@
                     <ul class="d-flex align-items-center gap-3 list-unstyled mb-0">      </ul>
                 </div>
 
+ 
+
                 <!-- RIGHT: Settings, Theme Toggle, Logout -->
                 <div class="right-icons d-flex align-items-center gap-4">
                       <a href="javascript:void(0)" class="btn chat-search-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Search">
@@ -779,7 +794,18 @@
 
             </div>
 
-            <div class="chat-body chat-page-group slimscroll" style="position: relative;">
+            @php
+                $chatBgSetting = \App\Models\Setting::where('user_id', auth()->id())->first();
+                $chatBackgrounds = $chatBgSetting && $chatBgSetting->chat_backgrounds
+                    ? json_decode($chatBgSetting->chat_backgrounds, true)
+                    : [];
+                $selectedChatBgIndex = $chatBgSetting->selected_chat_background ?? null;
+                $chatBackgroundUrl = null;
+                if ($selectedChatBgIndex !== null && isset($chatBackgrounds[$selectedChatBgIndex])) {
+                    $chatBackgroundUrl = asset($chatBackgrounds[$selectedChatBgIndex]);
+                }
+            @endphp
+            <div class="chat-body chat-page-group slimscroll {{ $chatBackgroundUrl ? 'has-background' : '' }}" id="chatBody" style="position: relative; @if($chatBackgroundUrl) background-image: url('{{ $chatBackgroundUrl }}'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; @endif">
                 <!-- Chat Loader -->
                 <div class="chat-loader-container" id="chatLoader">
                     <div class="chat-loader-wrapper">
@@ -788,7 +814,7 @@
                         <div class="chat-loader-dot dot-3"></div>
                     </div>
                 </div>
-                <div class="messages" id="chatMessagesContainer">
+                <div class="messages" id="chatMessagesContainer" style="position: relative; z-index: 1;">
                     <!-- Dynamic messages will be rendered here -->
                     <div id="emptyChatState" style="display: flex; align-items: center; justify-content: center; height: 100%; min-height: 400px; flex-direction: column; color: #7f8ea3;">
                         <i class="ti ti-message-circle" style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;"></i>
