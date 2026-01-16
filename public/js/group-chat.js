@@ -338,23 +338,25 @@ class GroupChatManager {
             await this.updateContactInfo(groupId);
             
             // Refresh online members periodically (every 30 seconds)
-            if (this.onlineMembersInterval) {
-                clearInterval(this.onlineMembersInterval);
-            }
-            // Load immediately
-            this.loadOnlineMembersInHeader();
-            // Then refresh periodically
-            this.onlineMembersInterval = setInterval(() => {
-                if (this.currentGroupId) {
-                    this.loadOnlineMembersInHeader();
-                } else {
-                    // Clear interval if no group is open
-                    if (this.onlineMembersInterval) {
-                        clearInterval(this.onlineMembersInterval);
-                        this.onlineMembersInterval = null;
-                    }
-                }
-            }, 30000);
+            // NOTE: Online members are now handled by loadAllUsers() in chat.blade.php
+            // Disabled to prevent duplicate display
+            // if (this.onlineMembersInterval) {
+            //     clearInterval(this.onlineMembersInterval);
+            // }
+            // // Load immediately
+            // this.loadOnlineMembersInHeader();
+            // // Then refresh periodically
+            // this.onlineMembersInterval = setInterval(() => {
+            //     if (this.currentGroupId) {
+            //         this.loadOnlineMembersInHeader();
+            //     } else {
+            //         // Clear interval if no group is open
+            //         if (this.onlineMembersInterval) {
+            //             clearInterval(this.onlineMembersInterval);
+            //             this.onlineMembersInterval = null;
+            //         }
+            //     }
+            // }, 30000);
 
             // Initialize user ID and Agora if not already done
             if (!this.currentUserId) {
@@ -644,7 +646,9 @@ class GroupChatManager {
         }
 
         // Load and display online members in the header
-        this.loadOnlineMembersInHeader();
+        // NOTE: Online members are now handled by loadAllUsers() in chat.blade.php
+        // Disabled to prevent duplicate display
+        // this.loadOnlineMembersInHeader();
     }
 
     /**
@@ -741,13 +745,13 @@ class GroupChatManager {
                         const onlineIndicator = '<div style="position: absolute; bottom: -2px; right: -2px; width: 12px; height: 12px; background: #00c853; border: 2px solid white; border-radius: 50%; z-index: 10;"></div>';
                         
                         memberElement.innerHTML = `
-                            <div style="position: relative; margin-bottom: 4px;">
+                            <!-- <div style="position: relative; margin-bottom: 4px;">
                                 <img src="${member.avatar || '/build/img/profile.svg'}" 
                                      alt="${member.name || member.email}" 
                                      style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e0e0;"
                                      onerror="this.onerror=null; this.src='/build/img/profile.svg';">
                                 ${onlineIndicator}
-                            </div>
+                            </div> -->
                             <span style="font-size: 11px; color: #2e3a59; font-weight: 500; text-align: center; max-width: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.2;">
                                 ${this.escapeHtml(member.name || member.email || 'User')}
                             </span>
