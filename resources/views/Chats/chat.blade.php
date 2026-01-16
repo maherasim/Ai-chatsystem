@@ -992,8 +992,8 @@
                                 display: none;
                             }
                         </style>
-                        <!-- Loader (shown initially) -->
-                        <div id="onlineAdminsLoader" style="text-align: center; padding: 5px; width: 100%;">
+                        <!-- Loader (hidden - removed per user request) -->
+                        <div id="onlineAdminsLoader" style="display: none !important;">
                             <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading..." style="width: 25px;">
                         </div>
                         <!-- Empty state (hidden initially) -->
@@ -2505,8 +2505,11 @@
             const data = await response.json();
             console.log('Users data received:', data);
             
-            // Hide loader
-            if (loader) loader.style.display = 'none';
+            // Hide loader (permanently hidden per user request)
+            if (loader) {
+                loader.style.display = 'none';
+                loader.style.visibility = 'hidden';
+            }
 
             if (data.success && data.members && Array.isArray(data.members) && data.members.length > 0) {
                 if (emptyState) emptyState.style.display = 'none';
