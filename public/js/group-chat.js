@@ -1116,6 +1116,9 @@ class GroupChatManager {
                                 <li><a class="dropdown-item" href="javascript:void(0);" onclick="window.groupChatManager.copyMessage('${message._id || message.id}')">
                                     <i class="ti ti-file-export me-2"></i>Copy
                                 </a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); event.stopPropagation(); window.groupChatManager.createTodoFromMessage('${message._id || message.id}', '${this.escapeHtml(message.content || '')}'); return false;">
+                                    <i class="ti ti-checklist me-2"></i>Todo
+                                </a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0);" onclick="window.groupChatManager.deleteMessage('${message._id || message.id}')" data-bs-toggle="modal" data-bs-target="#message-delete">
                                     <i class="ti ti-trash me-2"></i>Delete
                                 </a></li>
@@ -1176,6 +1179,9 @@ class GroupChatManager {
                                 </a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0);" onclick="window.groupChatManager.copyMessage('${message._id || message.id}')">
                                     <i class="ti ti-file-export me-2"></i>Copy
+                                </a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); event.stopPropagation(); window.groupChatManager.createTodoFromMessage('${message._id || message.id}', '${this.escapeHtml(message.content || '')}'); return false;">
+                                    <i class="ti ti-checklist me-2"></i>Todo
                                 </a></li>
                             </ul>
                         </div>
@@ -2531,6 +2537,156 @@ class GroupChatManager {
                 alert('Message copied to clipboard');
             });
         }
+    }
+
+    /**
+     * Create todo from message
+     */
+    async createTodoFromMessage(messageId, messageContent) {
+        // Check if todo modal exists on the page
+        let todoModal = document.getElementById('todomodel');
+        
+        if (!todoModal) {
+            // Modal doesn't exist, redirect to todos page
+            sessionStorage.setItem('todoFromMessage', JSON.stringify({
+                content: messageContent,
+                messageId: messageId
+            }));
+            window.location.href = '/todos';
+            return;
+        }
+        
+        // Get the message element to access message data
+        const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
+        let message = null;
+        
+        if (messageElement) {
+            // Try to get message data from DOM element
+            message = messageElement.__messageData;
+            
+            // If not found, try to get from current group messages
+            if (!message && this.currentGroupMessages) {
+                message = this.currentGroupMessages.find(m => 
+                    (m._id || m.id) === messageId
+                );
+            }
+        }
+        
+        // Modal exists, open it and pre-fill
+        const bsModal = new bootstrap.Modal(todoModal);
+        
+        // Pre-fill the todo title with message content
+        const todoNameInput = document.getElementById('todo_name');
+        if (todoNameInput) {
+            const content = messageContent.replace(/<[^>]*>/g, ''); // Remove HTML tags
+            todoNameInput.value = content.length > 100 ? content.substring(0, 100) + '...' : content;
+        }
+        
+        // Reset form state
+        document.getElementById('todo_id').value = '';
+        document.getElementById('todo_heading').innerText = 'Create new ToDo';
+        
+        // Clear any previous selections
+        document.querySelectorAll('.user_div.user_active').forEach(el => {
+            el.classList.remove('user_active');
+        });
+        if (window.selectedUsers) {
+            window.selectedUsers = [];
+        }
+        const selectedUserInput = document.getElementById('selected_user');
+        if (selectedUserInput) {
+            selectedUserInput.value = '';
+        }
+        
+        // Clear previous file uploads
+        const createPdfList = document.getElementById('createPdfList');
+        if (createPdfList) {
+            const existingTiles = createPdfList.querySelectorAll('.d-flex.align-items-center.gap-2.px-2');
+            existingTiles.forEach(tile => {
+                if (tile._fileInput) {
+                    tile._fileInput.remove();
+                }
+                tile.remove();
+            });
+        }
+        const createPdfInputs = document.getElementById('createPdfInputs');
+        if (createPdfInputs) {
+            createPdfInputs.innerHTML = '';
+        }
+        
+        // Check if message has an image and auto-add it
+        if (message && message.message_type === 'img' && message.file_url) {
+            try {
+                // Download the image and convert to File object
+                const response = await fetch(message.file_url);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch image');
+                }
+                const blob = await response.blob();
+                const fileName = message.file_name || 'image_' + Date.now() + '.jpg';
+                const file = new File([blob], fileName, { type: blob.type || 'image/jpeg' });
+                
+                // Create file input using DataTransfer to properly set the file
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.name = 'attachments[]';
+                fileInput.style.display = 'none';
+                fileInput.accept = 'application/pdf, video/mp4, image/png, image/jpeg';
+                
+                // Use DataTransfer to set the file
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                fileInput.files = dataTransfer.files;
+                
+                // Add to hidden inputs container (inside the form)
+                // The createPdfInputs is inside the form, so the file will be submitted
+                if (createPdfInputs) {
+                    createPdfInputs.appendChild(fileInput);
+                } else {
+                    // Fallback: add directly to form if createPdfInputs doesn't exist
+                    const todoForm = document.getElementById('todoForm');
+                    if (todoForm) {
+                        todoForm.appendChild(fileInput);
+                    }
+                }
+                
+                // Add visual tile to the file list
+                if (createPdfList) {
+                    const addTile = createPdfList.querySelector('.pdf-add-tile');
+                    const imageURL = URL.createObjectURL(blob);
+                    
+                    const tile = document.createElement('div');
+                    tile.className = 'd-flex align-items-center gap-2 px-2';
+                    tile.style.cssText = 'border:1px solid #e5e7eb;border-radius:10px;height:60px;background:#fff;';
+                    tile.innerHTML = `
+                        <img src="${imageURL}" alt="Image" style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
+                        <div class="d-flex flex-column" style="min-width:100px;">
+                            <small style="font-weight:600;">${fileName}</small>
+                            <small style="color:#6b7280;">${Math.round(file.size / 1024)} KB</small>
+                        </div>
+                        <button type="button" class="btn" style="color:#ef4444;" onclick="if (typeof window.removePdfTile === 'function') { window.removePdfTile(this); }">
+                            <i class="ti ti-trash"></i>
+                        </button>
+                    `;
+                    
+                    if (addTile) {
+                        createPdfList.insertBefore(tile, addTile);
+                    } else {
+                        createPdfList.appendChild(tile);
+                    }
+                    
+                    // Store file input reference for removal
+                    tile._fileInput = fileInput;
+                }
+            } catch (error) {
+                console.error('Failed to add image to todo:', error);
+                // Show user-friendly error
+                alert('Failed to add image from message to todo. You can manually upload it.');
+            }
+        }
+        
+        // Open the modal
+        bsModal.show();
     }
 
     /**

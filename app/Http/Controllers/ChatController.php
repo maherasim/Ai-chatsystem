@@ -6,6 +6,7 @@ use App\Models\ChatMessage;
 use App\Models\User;
 use App\Models\Group;
 use App\Models\Team;
+use App\Models\Project;
 use App\Models\Favorite;
 use App\Services\AgoraService;
 use Illuminate\Http\Request;
@@ -106,7 +107,15 @@ class ChatController extends Controller
             'groups' => $groups->toArray()
         ]);
         
-        return view('Chats.chat', compact('headers', 'setting', 'conversations', 'groups'));
+        // Get projects, teams, and users for todo modal
+        $projects = Project::all();
+        $teams = Team::all();
+        $users = User::whereIn('type', ['employee', 'developer'])
+                     ->where('_id', '!=', $user->_id)
+                     ->where('completed', '!=', '1')
+                     ->get();
+        
+        return view('Chats.chat', compact('headers', 'setting', 'conversations', 'groups', 'projects', 'teams', 'users'));
     }
 
     /**

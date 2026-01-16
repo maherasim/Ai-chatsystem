@@ -709,6 +709,129 @@
         display: inline-block;
     }
 
+    /* Todo Modal Styles */
+    .required {
+        border-color: red;
+    }
+
+    .invit-img img {
+        max-height: 80px;
+    }
+
+    .user_div {
+        flex: 0 0 auto;
+        width: 160px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background: #fff;
+        padding: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .user_div.user_active {
+        border: 2px solid #22c55e;
+        background: #f0fdf4;
+        box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+        transform: scale(1.02);
+    }
+
+    .priority {
+        border: medium;
+        background-color: white;
+        color: rgb(100, 116, 139);
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .priority.active,
+    .priority.active1 {
+        background-color: rgb(34, 197, 94);
+        color: white;
+    }
+
+    .reminder-btn, .time-btn {
+        border: none;
+        background-color: white;
+        color: #64748b;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        width: 80px;
+        cursor: pointer;
+    }
+
+    .reminder-btn.active {
+        background-color: #22c55e;
+        color: white;
+    }
+
+    .time-btn.active {
+        background-color: #22c55e;
+        color: white;
+    }
+
+    .btn-plus {
+        background-color: #22c55e;
+        border: 1px solid #22c55e;
+        color: #FFF;
+    }
+
+    .btn-plus span {
+        border: solid 1px;
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+        display: block;
+    }
+
+    .btn-minus {
+        background-color: #FD3A55;
+        border: 1px solid #FD3A55;
+        color: #FFF;
+    }
+
+    .btn-minus span {
+        border: solid 1px;
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+        display: block;
+    }
+
+    .d-flex1 {
+        display: flex;
+        gap: 8px;
+    }
+
+    #timeToday {
+        display: flex;
+    }
+
+    #endTimeSelect {
+        border: none;
+        font-size: 13px;
+        color: #333;
+        background: transparent;
+        width: 100%;
+        outline: none;
+        padding-right: 25px;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url('https://cdn-icons-png.flaticon.com/512/2088/2088617.png');
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        background-size: 15px;
+        cursor: pointer;
+    }
+
+    .selection {
+        color: #64748b;
+    }
+
     .emoj-group ul {
         display: flex;
         align-items: center;
@@ -2264,6 +2387,368 @@
             }
         }, 500);
     });
+
+    // Todo Modal JavaScript Handlers
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize selectedUsers if not exists
+        if (!window.selectedUsers) {
+            window.selectedUsers = [];
+        }
+
+        // Priority buttons
+        const priorityLow = document.getElementById('priorityLow');
+        const priorityMiddle = document.getElementById('priorityMiddle');
+        const priorityHigh = document.getElementById('priorityHigh');
+        
+        if (priorityLow) {
+            priorityLow.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('priorityHidden').value = 'low';
+                document.querySelector('#priorityMiddle')?.classList.remove('active', 'active1');
+                document.querySelector('#priorityHigh')?.classList.remove('active', 'active1');
+                document.querySelector('#priorityLow')?.classList.add('active', 'active1');
+                document.querySelectorAll('#priorityLow, #priorityMiddle, #priorityHigh').forEach(b => {
+                    b.style.backgroundColor = '';
+                    b.style.color = '';
+                });
+                if (this) {
+                    this.style.backgroundColor = '#22c55e';
+                    this.style.color = 'white';
+                }
+            });
+        }
+        
+        if (priorityMiddle) {
+            priorityMiddle.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('priorityHidden').value = 'middle';
+                document.querySelector('#priorityHigh')?.classList.remove('active', 'active1');
+                document.querySelector('#priorityLow')?.classList.remove('active', 'active1');
+                document.querySelector('#priorityMiddle')?.classList.add('active', 'active1');
+                document.querySelectorAll('#priorityLow, #priorityMiddle, #priorityHigh').forEach(b => {
+                    b.style.backgroundColor = '';
+                    b.style.color = '';
+                });
+                if (this) {
+                    this.style.backgroundColor = '#22c55e';
+                    this.style.color = 'white';
+                }
+            });
+        }
+        
+        if (priorityHigh) {
+            priorityHigh.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('priorityHidden').value = 'high';
+                document.querySelector('#priorityMiddle')?.classList.remove('active', 'active1');
+                document.querySelector('#priorityLow')?.classList.remove('active', 'active1');
+                document.querySelector('#priorityHigh')?.classList.add('active', 'active1');
+                document.querySelectorAll('#priorityLow, #priorityMiddle, #priorityHigh').forEach(b => {
+                    b.style.backgroundColor = '';
+                    b.style.color = '';
+                });
+                if (this) {
+                    this.style.backgroundColor = '#22c55e';
+                    this.style.color = 'white';
+                }
+            });
+        }
+
+        // Reminder buttons
+        document.querySelectorAll('.reminder-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.reminder-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('reminderHidden').value = this.dataset.value;
+            });
+        });
+
+        // Time buttons
+        document.querySelectorAll('.time-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('timeHidden').value = this.dataset.value;
+            });
+        });
+
+        // Sections add/remove
+        const sectionsWrapper = document.getElementById('sectionsWrapper');
+        if (sectionsWrapper) {
+            sectionsWrapper.addEventListener('click', function(e) {
+                const addButton = e.target.closest('.add-btn');
+                const removeButton = e.target.closest('.remove-btn');
+
+                if (addButton) {
+                    const div = document.createElement('div');
+                    div.className = 'col-md-12 d-flex align-items-center section-item mt-2';
+                    div.innerHTML = `
+                        <input name="sections[]" type="text" class="form-control" placeholder="Section Description"
+                               style="font-size: 13px; background-color: white; border-radius: 8px;">
+                        <button type="button" class="btn btn-minus btn-sm ms-2 remove-btn"><span>-</span></button>
+                    `;
+                    sectionsWrapper.appendChild(div);
+                }
+
+                if (removeButton) {
+                    removeButton.closest('.section-item').remove();
+                }
+            });
+        }
+
+        // User selection handlers
+        document.querySelectorAll('.user_div').forEach(div => {
+            div.addEventListener('click', function() {
+                let userId = this.getAttribute('data-user-id');
+                let isPrivate = document.getElementById('todo_visibility')?.value === 'private' || 
+                               document.getElementById('isPrivateHidden')?.value === '1';
+                
+                if (isPrivate) {
+                    document.querySelectorAll('.user_div').forEach(d => d.classList.remove('user_active'));
+                    const membersSelect = document.getElementById('members');
+                    if (membersSelect) {
+                        membersSelect.querySelectorAll('option').forEach(opt => opt.selected = false);
+                    }
+                    window.selectedUsers = [userId];
+                } else {
+                    if (this.classList.contains('user_active')) {
+                        this.classList.remove('user_active');
+                        window.selectedUsers = window.selectedUsers.filter(id => id !== userId);
+                        const membersSelect = document.getElementById('members');
+                        if (membersSelect) {
+                            let option = membersSelect.querySelector(`option[value="${userId}"]`);
+                            if (option) option.selected = false;
+                        }
+                    } else {
+                        this.classList.add('user_active');
+                        if (!window.selectedUsers.includes(userId)) {
+                            window.selectedUsers.push(userId);
+                        }
+                        const membersSelect = document.getElementById('members');
+                        if (membersSelect) {
+                            let option = membersSelect.querySelector(`option[value="${userId}"]`);
+                            if (option) option.selected = true;
+                        }
+                    }
+                }
+                
+                const selectedUserInput = document.getElementById('selected_user');
+                if (selectedUserInput) {
+                    selectedUserInput.value = window.selectedUsers.join(',');
+                }
+            });
+        });
+
+        // Shared/Private toggle handlers
+        const btnShared = document.getElementById('btnShared');
+        const btnPrivate = document.getElementById('btnPrivate');
+        const selectUsersBox = document.getElementById('selectUsersBox');
+
+        if (btnPrivate && selectUsersBox) {
+            btnPrivate.addEventListener('click', function() {
+                selectUsersBox.style.display = 'none';
+                document.querySelectorAll('.user_div.user_active').forEach((el, index) => {
+                    if (index > 0) {
+                        el.classList.remove('user_active');
+                        let userId = el.getAttribute('data-user-id');
+                        let membersSelect = document.getElementById('members');
+                        if (membersSelect) {
+                            let option = membersSelect.querySelector(`option[value='${userId}']`);
+                            if (option) option.selected = false;
+                        }
+                    }
+                });
+                if (window.selectedUsers && window.selectedUsers.length > 1) {
+                    window.selectedUsers = window.selectedUsers.slice(0, 1);
+                    const selectedUserInput = document.getElementById('selected_user');
+                    if (selectedUserInput) {
+                        selectedUserInput.value = window.selectedUsers.join(',');
+                    }
+                }
+            });
+        }
+        
+        if (btnShared && selectUsersBox) {
+            btnShared.addEventListener('click', function() {
+                selectUsersBox.style.display = 'block';
+                if (window.selectedUsers) {
+                    window.selectedUsers = [];
+                }
+            });
+        }
+
+        // Today/Scheduled toggle handlers
+        const btnToday = document.getElementById('btnToday');
+        const btnScheduled = document.getElementById('btnScheduled');
+        const timeRow = document.getElementById('timeRow');
+        const timeToday = document.getElementById('timeToday');
+
+        if (btnScheduled && timeRow && timeToday) {
+            btnScheduled.addEventListener('click', function() {
+                timeRow.style.display = 'flex';
+                timeToday.style.display = 'none';
+            });
+        }
+
+        if (btnToday && timeRow && timeToday) {
+            btnToday.addEventListener('click', function() {
+                timeRow.style.display = 'none';
+                timeToday.style.display = 'flex';
+            });
+        }
+
+        // Save button handler
+        const saveBtn = document.getElementById('saveBtn');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const form = document.getElementById('todoForm');
+                const title = document.getElementById('todo_name')?.value.trim();
+                const priorityHidden = document.getElementById('priorityHidden')?.value;
+                const reminderHidden = document.getElementById('reminderHidden')?.value;
+                const timeHidden = document.getElementById('timeHidden')?.value;
+                const todoType = document.getElementById('todo_type')?.value;
+                const todoVisibility = document.getElementById('todo_visibility')?.value;
+
+                if (!todoVisibility) {
+                    alert("Please select 'Shared ToDo's' or 'Private ToDo's' before submitting.");
+                    return;
+                }
+
+                if (!todoType) {
+                    alert("Please select 'Today ToDo's' or 'Scheduled ToDo's' before submitting.");
+                    return;
+                }
+
+                if (todoVisibility === 'shared') {
+                    const activeUsers = document.querySelectorAll('.user_div.user_active');
+                    if (activeUsers.length === 0) {
+                        alert('Please select at least one user for Shared ToDo.');
+                        return;
+                    }
+                    const membersSelect = document.getElementById('members');
+                    if (membersSelect) {
+                        membersSelect.querySelectorAll('option').forEach(opt => opt.selected = false);
+                        activeUsers.forEach(userDiv => {
+                            const userId = userDiv.getAttribute('data-user-id');
+                            const option = membersSelect.querySelector(`option[value="${userId}"]`);
+                            if (option) {
+                                option.selected = true;
+                            }
+                        });
+                    }
+                }
+
+                if (todoType === 'scheduled') {
+                    const startDate = document.getElementById('dateInput')?.value;
+                    const endDate = document.getElementById('enddateInput')?.value;
+                    const endTime = document.getElementById('endTimeSelect')?.value;
+                    if (!startDate || !endDate || !endTime) {
+                        alert('Please fill all date and time fields for Scheduled ToDo.');
+                        return;
+                    }
+                } else if (!timeHidden) {
+                    alert('Please select delivery time for Today ToDo.');
+                    return;
+                }
+
+                if (!title || !priorityHidden || !reminderHidden) {
+                    alert('Please fill all required fields before submitting.');
+                    return;
+                }
+
+                // Set hidden date/time fields
+                const dateInput = document.getElementById('dateInput');
+                const enddateInput = document.getElementById('enddateInput');
+                const endTimeSelect = document.getElementById('endTimeSelect');
+                
+                if (dateInput && dateInput.value) {
+                    document.getElementById('startDateHidden').value = dateInput.value;
+                }
+                if (enddateInput && enddateInput.value) {
+                    document.getElementById('endDateHidden').value = enddateInput.value;
+                }
+                if (endTimeSelect && endTimeSelect.value) {
+                    document.getElementById('endTimeHidden').value = endTimeSelect.value;
+                }
+
+                form.submit();
+            });
+        }
+
+        // PDF file upload functions
+        if (typeof window.createAddPdfFile === 'undefined') {
+            window.createAddPdfFile = function() {
+                var input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'application/pdf, video/mp4, image/png, image/jpeg';
+                input.name = 'attachments[]';
+                input.style.display = 'none';
+                input.addEventListener('change', function() { 
+                    if (typeof window.handlePdfSelected === 'function') {
+                        window.handlePdfSelected(this, 'create'); 
+                    }
+                });
+                var createPdfInputs = document.getElementById('createPdfInputs');
+                if (createPdfInputs) {
+                    createPdfInputs.appendChild(input);
+                    input.click();
+                }
+            };
+        }
+
+        if (typeof window.handlePdfSelected === 'undefined') {
+            window.handlePdfSelected = function(fileInput, mode) {
+                if (!fileInput.files || !fileInput.files[0]) return;
+                var file = fileInput.files[0];
+                var list = mode === 'edit' ? document.getElementById('editPdfList') : document.getElementById('createPdfList');
+                if (!list) return;
+                var addTile = list.querySelector('.pdf-add-tile');
+
+                var fileType = file.type;
+                var iconSrc = '';
+                var previewHTML = '';
+
+                if (fileType.includes('pdf')) {
+                    iconSrc = 'https://admin.onlinesystems.info/build/img/pdf-icon.svg';
+                    previewHTML = `<img src="${iconSrc}" alt="PDF" style="width:20px;height:20px;">`;
+                } else if (fileType.includes('image')) {
+                    var imageURL = URL.createObjectURL(file);
+                    previewHTML = `<img src="${imageURL}" alt="Image" style="width:40px;height:40px;object-fit:cover;border-radius:6px;">`;
+                } else if (fileType.includes('video')) {
+                    iconSrc = 'https://cdn-icons-png.flaticon.com/512/711/711245.png';
+                    previewHTML = `<img src="${iconSrc}" alt="Video" style="width:24px;height:24px;">`;
+                }
+
+                var tile = document.createElement('div');
+                tile.className = 'd-flex align-items-center gap-2 px-2';
+                tile.style.cssText = 'border:1px solid #e5e7eb;border-radius:10px;height:60px;background:#fff;';
+                tile.innerHTML =
+                    previewHTML +
+                    `<div class="d-flex flex-column" style="min-width:100px;">
+                        <small style="font-weight:600;">${file.name || 'File'}</small>
+                        <small style="color:#6b7280;">${Math.round(file.size / 1024)} KB</small>
+                    </div>
+                    <button type="button" class="btn" style="color:#ef4444;" onclick="removePdfTile(this)">
+                        <i class="ti ti-trash"></i>
+                    </button>`;
+
+                if (addTile) list.insertBefore(tile, addTile);
+                else list.appendChild(tile);
+
+                tile._fileInput = fileInput;
+            };
+        }
+
+        if (typeof window.removePdfTile === 'undefined') {
+            window.removePdfTile = function(btn) {
+                var tile = btn.closest('div');
+                if (!tile) return;
+                if (tile._fileInput) tile._fileInput.remove();
+                tile.remove();
+            };
+        }
+    });
 </script>
 
 <!-- SVG Filter for Chat Loader -->
@@ -2306,5 +2791,10 @@
         </div>
     </div>
 </div>
+
+<!-- Todo Modal -->
+@if(isset($projects) && isset($teams) && isset($users))
+@include('Todos.todo-modal-partial', ['projects' => $projects, 'teams' => $teams, 'users' => $users])
+@endif
 
 @endsection

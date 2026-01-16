@@ -4887,7 +4887,68 @@ document.querySelectorAll(".addtodo").forEach(btn => {
     
 
     document.getElementById("todo_heading").innerText = "Create new ToDo";
+    
+    // Check if there's a message content from chat to pre-fill
+    const todoFromMessage = sessionStorage.getItem('todoFromMessage');
+    if (todoFromMessage) {
+        try {
+            const messageData = JSON.parse(todoFromMessage);
+            if (messageData.content) {
+                // Pre-fill the todo title with message content (truncate if too long)
+                const todoNameInput = document.getElementById('todo_name');
+                if (todoNameInput) {
+                    const content = messageData.content.replace(/<[^>]*>/g, ''); // Remove HTML tags
+                    todoNameInput.value = content.length > 100 ? content.substring(0, 100) + '...' : content;
+                }
+                // Clear the sessionStorage after using it
+                sessionStorage.removeItem('todoFromMessage');
+            }
+        } catch (e) {
+            console.error('Error parsing todo from message:', e);
+            sessionStorage.removeItem('todoFromMessage');
+        }
+    }
     });
+});
+
+// Check if we should auto-open the modal when coming from chat
+document.addEventListener('DOMContentLoaded', function() {
+    const todoFromMessage = sessionStorage.getItem('todoFromMessage');
+    if (todoFromMessage) {
+        // Auto-open the todo modal
+        const todoModal = document.getElementById('todomodel');
+        if (todoModal) {
+            const bsModal = new bootstrap.Modal(todoModal);
+            bsModal.show();
+        }
+    }
+    
+    // Also check when modal is opened via data-bs-toggle
+    const todoModal = document.getElementById('todomodel');
+    if (todoModal) {
+        todoModal.addEventListener('show.bs.modal', function() {
+            // Check if there's a message content from chat to pre-fill
+            const todoFromMessage = sessionStorage.getItem('todoFromMessage');
+            if (todoFromMessage) {
+                try {
+                    const messageData = JSON.parse(todoFromMessage);
+                    if (messageData.content) {
+                        // Pre-fill the todo title with message content (truncate if too long)
+                        const todoNameInput = document.getElementById('todo_name');
+                        if (todoNameInput && !todoNameInput.value) {
+                            const content = messageData.content.replace(/<[^>]*>/g, ''); // Remove HTML tags
+                            todoNameInput.value = content.length > 100 ? content.substring(0, 100) + '...' : content;
+                        }
+                        // Clear the sessionStorage after using it
+                        sessionStorage.removeItem('todoFromMessage');
+                    }
+                } catch (e) {
+                    console.error('Error parsing todo from message:', e);
+                    sessionStorage.removeItem('todoFromMessage');
+                }
+            }
+        });
+    }
 });
 
 document.querySelectorAll(".btnScheduled").forEach(btn => {
