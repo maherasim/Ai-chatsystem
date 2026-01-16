@@ -1178,8 +1178,8 @@ class GroupChatManager {
                                 </a></li>
                             </ul>
                         </div>
+                        ${reactionsHtml}
                     </div>
-                    ${reactionsHtml}
                 </div>
             `;
         }
@@ -1778,10 +1778,16 @@ class GroupChatManager {
             if (reactionsContainer) {
                 reactionsContainer.outerHTML = reactionsHtml;
             } else {
-                // Find the chat-content div and append reactions
-                const chatContent = messageElement.querySelector('.chat-content');
-                if (chatContent) {
-                    chatContent.insertAdjacentHTML('beforeend', reactionsHtml);
+                // Find the chat-info div and append reactions (for both sent and received messages)
+                const chatInfo = messageElement.querySelector('.chat-info');
+                if (chatInfo) {
+                    chatInfo.insertAdjacentHTML('beforeend', reactionsHtml);
+                } else {
+                    // Fallback to chat-content if chat-info not found
+                    const chatContent = messageElement.querySelector('.chat-content');
+                    if (chatContent) {
+                        chatContent.insertAdjacentHTML('beforeend', reactionsHtml);
+                    }
                 }
             }
         } else {
