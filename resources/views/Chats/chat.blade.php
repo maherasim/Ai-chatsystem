@@ -412,6 +412,22 @@
         pointer-events: none;
     }
 
+    /* Ensure chat footer stays above messages */
+    .chat-footer {
+        position: relative;
+        z-index: 100 !important;
+    }
+
+    .chat-footer .footer-form {
+        z-index: 100 !important;
+        position: relative;
+    }
+
+    .chat-footer .footer-form .chat-footer-wrap {
+        position: relative;
+        z-index: 101 !important;
+    }
+
     /* Drag and Drop Styles */
     .chat-footer.drag-over,
     .chat-body.drag-over,
@@ -995,7 +1011,7 @@
                         <div class="chat-loader-dot dot-3"></div>
                     </div>
                 </div>
-                <div class="messages" id="chatMessagesContainer" style="position: relative; z-index: 1;">
+                <div class="messages" id="chatMessagesContainer" style="position: relative; z-index: 1; padding-bottom: 80px;">
                     <!-- Dynamic messages will be rendered here -->
                     <div id="emptyChatState" style="display: flex; align-items: center; justify-content: center; height: 100%; min-height: 400px; flex-direction: column; color: #7f8ea3;">
                         <i class="ti ti-message-circle" style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;"></i>

@@ -21,6 +21,7 @@ class GroupChatManager {
         this.mentionDropdown = null; // Mention dropdown element
         this.selectedMentionIndex = -1; // Selected mention index
         this.unreadBadgeInterval = null; // Interval for polling unread counts
+        this.onlineMembersInterval = null; // Interval for refreshing online members in header
         this.initNotificationSound();
     }
 
@@ -335,6 +336,25 @@ class GroupChatManager {
 
             // Update contact info panel
             await this.updateContactInfo(groupId);
+            
+            // Refresh online members periodically (every 30 seconds)
+            if (this.onlineMembersInterval) {
+                clearInterval(this.onlineMembersInterval);
+            }
+            // Load immediately
+            this.loadOnlineMembersInHeader();
+            // Then refresh periodically
+            this.onlineMembersInterval = setInterval(() => {
+                if (this.currentGroupId) {
+                    this.loadOnlineMembersInHeader();
+                } else {
+                    // Clear interval if no group is open
+                    if (this.onlineMembersInterval) {
+                        clearInterval(this.onlineMembersInterval);
+                        this.onlineMembersInterval = null;
+                    }
+                }
+            }, 30000);
 
             // Initialize user ID and Agora if not already done
             if (!this.currentUserId) {
@@ -587,21 +607,166 @@ class GroupChatManager {
             this.pollingInterval = null;
             console.log('🛑 Stopped message polling');
         }
+        
+        // Clear online members interval (but don't remove the container - it should persist)
+        if (this.onlineMembersInterval) {
+            clearInterval(this.onlineMembersInterval);
+            this.onlineMembersInterval = null;
+        }
+    }
+
+    /**
+     * Clear online members from header (called when leaving/closing group)
+     */
+    clearOnlineMembersFromHeader() {
+        const onlineMembersContainer = document.getElementById('headerOnlineMembers');
+        if (onlineMembersContainer) {
+            onlineMembersContainer.remove();
+            console.log('👥 [Online Members] Cleared online members from header');
+        }
     }
 
     /**
      * Update chat header with group name and photo
      */
     updateChatHeader(groupName, photoUrl) {
+        // Update group name
         const headerName = document.getElementById('chatHeaderName') || document.querySelector('.user-details h6');
         if (headerName) {
             headerName.textContent = groupName;
         }
 
+        // Update group avatar
         const headerAvatar = document.getElementById('chatHeaderAvatar') || document.querySelector('.user-details .avatar img');
         if (headerAvatar && photoUrl) {
             headerAvatar.src = photoUrl;
             headerAvatar.alt = groupName || 'Group';
+        }
+
+        // Load and display online members in the header
+        this.loadOnlineMembersInHeader();
+    }
+
+    /**
+     * Load and display online members in the chat header
+     */
+    async loadOnlineMembersInHeader() {
+        console.log('👥 [Online Members] Loading online members for chat header...');
+        try {
+            const response = await fetch('/api/chat/all-users', {
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch users');
+            }
+
+            const data = await response.json();
+            
+            if (data.success && data.members && data.members.length > 0) {
+                // Filter only online members
+                const onlineMembers = data.members.filter(member => member.is_online === true);
+                console.log(`👥 [Online Members] Found ${onlineMembers.length} online member(s) out of ${data.members.length} total`);
+                
+                // Get the user-details container in the header
+                const userDetailsContainer = document.querySelector('.chat-header .user-details');
+                if (!userDetailsContainer) {
+                    console.warn('👥 [Online Members] Chat header user-details container not found');
+                    return;
+                }
+
+                // Find or create online members container
+                let onlineMembersContainer = document.getElementById('headerOnlineMembers');
+                if (!onlineMembersContainer) {
+                    console.log('👥 [Online Members] Creating new container in header');
+                    // Create container after the group name/avatar section
+                    onlineMembersContainer = document.createElement('div');
+                    onlineMembersContainer.id = 'headerOnlineMembers';
+                    onlineMembersContainer.style.cssText = 'display: flex; gap: 8px; align-items: center; margin-left: 16px; padding-left: 16px; border-left: 1px solid #e0e0e0;';
+                    
+                    // Insert after the user info section (the div with ms-2 class)
+                    const userInfoSection = userDetailsContainer.querySelector('.ms-2');
+                    if (userInfoSection && userInfoSection.parentElement) {
+                        userInfoSection.parentElement.insertBefore(onlineMembersContainer, userInfoSection.nextSibling);
+                        console.log('👥 [Online Members] Container inserted after user info section');
+                    } else {
+                        // Fallback: append to user-details container
+                        userDetailsContainer.appendChild(onlineMembersContainer);
+                        console.log('👥 [Online Members] Container appended to user-details (fallback)');
+                    }
+                    
+                    // Set up a MutationObserver to detect if container is removed and recreate it
+                    const observer = new MutationObserver((mutations) => {
+                        mutations.forEach((mutation) => {
+                            mutation.removedNodes.forEach((node) => {
+                                if (node === onlineMembersContainer || (node.nodeType === 1 && node.id === 'headerOnlineMembers')) {
+                                    console.warn('👥 [Online Members] Container was removed! Recreating...');
+                                    // Recreate after a short delay
+                                    setTimeout(() => {
+                                        if (!document.getElementById('headerOnlineMembers') && this.currentGroupId) {
+                                            console.log('👥 [Online Members] Recreating container after removal');
+                                            this.loadOnlineMembersInHeader();
+                                        }
+                                    }, 100);
+                                }
+                            });
+                        });
+                    });
+                    
+                    // Observe the parent for removals
+                    if (onlineMembersContainer.parentElement) {
+                        observer.observe(onlineMembersContainer.parentElement, { childList: true });
+                        // Store observer reference to clean up later if needed
+                        onlineMembersContainer._observer = observer;
+                    }
+                } else {
+                    console.log('👥 [Online Members] Using existing container in header');
+                }
+
+                // Always clear and rebuild to ensure fresh data
+                onlineMembersContainer.innerHTML = '';
+
+                if (onlineMembers.length > 0) {
+                    console.log(`👥 [Online Members] Displaying ${onlineMembers.length} online member(s) in header`);
+                    
+                    // Display each online member
+                    onlineMembers.forEach((member, index) => {
+                        const memberElement = document.createElement('div');
+                        memberElement.style.cssText = 'display: flex; flex-direction: column; align-items: center; cursor: pointer; position: relative;';
+                        memberElement.title = member.name || member.email;
+                        
+                        // Online indicator (green dot)
+                        const onlineIndicator = '<div style="position: absolute; bottom: -2px; right: -2px; width: 12px; height: 12px; background: #00c853; border: 2px solid white; border-radius: 50%; z-index: 10;"></div>';
+                        
+                        memberElement.innerHTML = `
+                            <div style="position: relative; margin-bottom: 4px;">
+                                <img src="${member.avatar || '/build/img/profile.svg'}" 
+                                     alt="${member.name || member.email}" 
+                                     style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e0e0;"
+                                     onerror="this.onerror=null; this.src='/build/img/profile.svg';">
+                                ${onlineIndicator}
+                            </div>
+                            <span style="font-size: 11px; color: #2e3a59; font-weight: 500; text-align: center; max-width: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.2;">
+                                ${this.escapeHtml(member.name || member.email || 'User')}
+                            </span>
+                        `;
+                        
+                        onlineMembersContainer.appendChild(memberElement);
+                        console.log(`👥 [Online Members] Added member ${index + 1}/${onlineMembers.length}: ${member.name || member.email}`);
+                    });
+                    console.log('✅ [Online Members] Successfully displayed all online members in header');
+                } else {
+                    console.log('👥 [Online Members] No members online, showing empty state');
+                    // Show "No members online" message
+                    onlineMembersContainer.innerHTML = '<span style="font-size: 12px; color: #7f8ea3;">No members online</span>';
+                }
+            } else {
+                console.warn('👥 [Online Members] No members data received from API');
+            }
+        } catch (error) {
+            console.error('❌ [Online Members] Failed to load online members for header:', error);
         }
     }
 
