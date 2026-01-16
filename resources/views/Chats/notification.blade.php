@@ -3112,10 +3112,8 @@
     }
 
     function updateNotificationBadge(unreadCount) {
-        console.log('🔔 [Notification Badge] Updating badge with count:', unreadCount);
         const bellIcon = document.getElementById('icon-bell');
         if (!bellIcon) {
-            console.warn('🔔 [Notification Badge] Bell icon not found');
             return;
         }
 
@@ -3125,14 +3123,12 @@
         let dot = bellIcon.querySelector('.notification-dot');
         if (count <= 0) {
             if (dot) {
-                console.log('🔔 [Notification Badge] Removing dot (count is 0)');
                 dot.remove();
             }
             return;
         }
 
         if (!dot) {
-            console.log('🔔 [Notification Badge] Creating new dot');
             dot = document.createElement('span');
             dot.className = 'notification-dot';
             bellIcon.appendChild(dot);
@@ -3141,15 +3137,12 @@
         dot.style.cssText =
             'position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;border:2px solid rgb(255,255,255);' +
             'background:rgb(241,65,68);z-index:2;';
-        console.log('🔔 [Notification Badge] Dot updated successfully, count:', count);
     }
 
     // Update message icon badge when there are new messages
     function updateMessageIconBadge(hasNewMessages, count = 0) {
-        console.log('💬 [Message Icon Badge] Updating badge, hasNewMessages:', hasNewMessages, 'count:', count);
         const messageIcon = document.getElementById('icon-message');
         if (!messageIcon) {
-            console.warn('💬 [Message Icon Badge] Message icon not found');
             return;
         }
 
@@ -3158,14 +3151,12 @@
         let dot = messageIcon.querySelector('.notification-dot');
         if (!hasNewMessages || count <= 0) {
             if (dot) {
-                console.log('💬 [Message Icon Badge] Removing dot (no new messages)');
                 dot.remove();
             }
             return;
         }
 
         if (!dot) {
-            console.log('💬 [Message Icon Badge] Creating new dot');
             dot = document.createElement('span');
             dot.className = 'notification-dot';
             messageIcon.appendChild(dot);
@@ -3177,8 +3168,6 @@
                 'position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;border:2px solid rgb(255,255,255);' +
                 'background:rgb(241,65,68);z-index:2;';
         }
-        
-        console.log('💬 [Message Icon Badge] Dot updated successfully');
     }
 
     // Helper function to get time ago
@@ -3446,7 +3435,6 @@
      * Check for new messages and update message icon badge
      */
     async function checkForNewMessages() {
-        console.log('🔍 [Message Check] Checking for new messages...');
         try {
             let totalUnreadCount = 0;
             let hasUnread = false;
@@ -3464,7 +3452,6 @@
                 });
 
                 const conversations = await response.json();
-                console.log('🔍 [Message Check] Conversations:', conversations);
 
                 if (Array.isArray(conversations)) {
                     conversations.forEach(conv => {
@@ -3474,7 +3461,7 @@
                     });
                 }
             } catch (error) {
-                console.warn('⚠️ [Message Check] Error fetching conversations:', error);
+                // Silently handle error
             }
 
             // Check groups for unread messages
@@ -3490,7 +3477,6 @@
                 });
 
                 const groupsData = await groupsResponse.json();
-                console.log('🔍 [Message Check] Groups data:', groupsData);
                 
                 if (groupsData.success && Array.isArray(groupsData.groups)) {
                     groupsData.groups.forEach(group => {
@@ -3504,11 +3490,8 @@
                     });
                 }
             } catch (error) {
-                console.warn('⚠️ [Message Check] Error fetching groups:', error);
+                // Silently handle error
             }
-
-            console.log('🔍 [Message Check] Total unread count:', totalUnreadCount);
-            console.log('🔍 [Message Check] Has unread messages:', hasUnread);
             
             // Update message icon badge with count
             updateMessageIconBadge(hasUnread, totalUnreadCount);
@@ -3516,7 +3499,7 @@
             // Update sidebar chat badge
             updateSidebarChatBadge(totalUnreadCount);
         } catch (error) {
-            console.error('❌ [Message Check] Error checking for new messages:', error);
+            // Silently handle error
         }
     }
 
@@ -3524,10 +3507,8 @@
      * Update group badge in team chat section
      */
     function updateGroupBadge(groupId, count) {
-        console.log(`🏷️ [Group Badge] Updating badge for group ${groupId} with count: ${count}`);
         const groupCard = document.querySelector(`[data-group-id="${groupId}"]`);
         if (!groupCard) {
-            console.warn(`🏷️ [Group Badge] Group card not found for ID: ${groupId}`);
             return;
         }
 
@@ -3536,14 +3517,12 @@
         
         if (count <= 0) {
             if (badge) {
-                console.log(`🏷️ [Group Badge] Removing badge for group ${groupId}`);
                 badge.remove();
             }
             return;
         }
 
         if (!badge) {
-            console.log(`🏷️ [Group Badge] Creating new badge for group ${groupId}`);
             badge = document.createElement('span');
             badge.className = 'group-unread-badge';
             badge.style.cssText = 'position: absolute; top: -5px; right: -5px; background: #dc3545; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 10;';
@@ -3553,21 +3532,16 @@
             if (profileContainer) {
                 profileContainer.style.position = 'relative';
                 profileContainer.appendChild(badge);
-            } else {
-                console.warn(`🏷️ [Group Badge] Profile container not found for group ${groupId}`);
             }
         }
 
         badge.textContent = count > 99 ? '99+' : count.toString();
-        console.log(`✅ [Group Badge] Badge updated for group ${groupId}`);
     }
 
     /**
      * Update sidebar chat link badge
      */
     function updateSidebarChatBadge(count) {
-        console.log(`📱 [Sidebar Badge] Updating sidebar chat badge with count: ${count}`);
-        
         // Find sidebar chat link - try multiple selectors
         const sidebarLinks = [
             document.querySelector('a[href*="/chat"]'),
@@ -3599,14 +3573,12 @@
 
             if (count <= 0) {
                 if (badge) {
-                    console.log('📱 [Sidebar Badge] Removing sidebar badge');
                     badge.remove();
                 }
                 return;
             }
 
             if (!badge) {
-                console.log('📱 [Sidebar Badge] Creating new sidebar badge');
                 badge = document.createElement('span');
                 badge.className = 'sidebar-chat-badge';
                 badge.style.cssText = 'position: absolute; top: -5px; right: -5px; background: #dc3545; color: white; border-radius: 50%; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 10; padding: 0 4px;';
@@ -3620,7 +3592,6 @@
             }
 
             badge.textContent = count > 99 ? '99+' : count.toString();
-            console.log(`✅ [Sidebar Badge] Sidebar badge updated with count: ${count}`);
         });
     }
 
@@ -3640,7 +3611,6 @@
      * Refresh all group badges
      */
     async function refreshGroupBadges() {
-        console.log('🔄 [Refresh Badges] Refreshing all group badges...');
         try {
             const groupsResponse = await fetch('/api/chat/groups', {
                 method: 'GET',
@@ -3658,10 +3628,9 @@
                     const count = parseInt(group.unread_count || 0);
                     updateGroupBadge(group.id || group._id, count);
                 });
-                console.log('✅ [Refresh Badges] All group badges refreshed');
             }
         } catch (error) {
-            console.error('❌ [Refresh Badges] Error refreshing badges:', error);
+            // Silently handle error
         }
     }
 

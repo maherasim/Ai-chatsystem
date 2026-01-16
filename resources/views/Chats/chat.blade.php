@@ -412,6 +412,22 @@
         pointer-events: none;
     }
 
+    /* Ensure chat footer stays above messages */
+    .chat-footer {
+        position: relative;
+        z-index: 100 !important;
+    }
+
+    .chat-footer .footer-form {
+        z-index: 100 !important;
+        position: relative;
+    }
+
+    .chat-footer .footer-form .chat-footer-wrap {
+        position: relative;
+        z-index: 101 !important;
+    }
+
     /* Drag and Drop Styles */
     .chat-footer.drag-over,
     .chat-body.drag-over,
@@ -997,19 +1013,32 @@
                                 <img src="{{ asset('/build/img/Search-Black.svg') }}" alt="Search" width="18px">
                                 <img src="{{ asset('/build/img/Search-White.svg') }}" alt="Search" width="18px">
                             </a>
-                             <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#video-call">
+                        </li>
+                        <li data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Video Call" data-bs-original-title="Video Call">
+                            <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#video-call">
                                 <img src="{{ asset('/build/img/VideoCall-Black.svg') }}" alt="Video Call" width="18px">
                                 <img src="{{ asset('/build/img/VideoCall-White.svg') }}" alt="Video Call" width="18px">
                             </a>
-                              <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#voice_call">
+                        </li>
+                        <li data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Voice Call" data-bs-original-title="Voice Call">
+                            <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#voice_call">
                                 <img src="{{ asset('/build/img/Call-Black.svg') }}" alt="Voice Call" width="18px">
                                 <img src="{{ asset('/build/img/Call-White.svg') }}" alt="Voice Call" width="18px">
                             </a>
-
-                               <a href="javascript:void(0)" class="btn" data-bs-toggle="offcanvas" data-bs-target="#contact-profile">
+                        </li>
+                        <li data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Contact Info" data-bs-original-title="Contact Info">
+                            <a href="javascript:void(0)" class="btn" data-bs-toggle="offcanvas" data-bs-target="#contact-profile">
                                 <img src="{{ asset('/build/img/User-Info-Black.svg') }}" alt="User Info" width="18px">
                                 <img src="{{ asset('/build/img/User-Info-White.svg') }}" alt="User Info" width="18px">
                             </a>
+                        </li>
+                    </ul>
+                </div>
+
+ 
+
+                <!-- RIGHT: Settings, Theme Toggle, Logout -->
+                <div class="right-icons d-flex align-items-center gap-4">
                 </div>
                 <div class="chat-search search-wrap contact-search">
                     <form>
@@ -1042,7 +1071,7 @@
                         <div class="chat-loader-dot dot-3"></div>
                     </div>
                 </div>
-                <div class="messages" id="chatMessagesContainer" style="position: relative; z-index: 1;">
+                <div class="messages" id="chatMessagesContainer" style="position: relative; z-index: 1; padding-bottom: 80px;">
                     <!-- Dynamic messages will be rendered here -->
                     <div id="emptyChatState" style="display: flex; align-items: center; justify-content: center; height: 100%; min-height: 400px; flex-direction: column; color: #7f8ea3;">
                         <i class="ti ti-message-circle" style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;"></i>
