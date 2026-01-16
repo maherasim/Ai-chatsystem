@@ -934,7 +934,7 @@
             <div class="chat-header" style="display: flex; justify-content: space-between; align-items: center; gap: 20px;">
 
                 <!-- LEFT: User Info -->
-                <div class="user-details d-flex align-items-center gap-2">
+                <div class="user-details d-flex align-items-center gap-2" style="border-right: none !important;">
                     <div class="d-xl-none">
                         <a class="text-muted chat-close me-2" href="#">
                             <i class="fas fa-arrow-left"></i>
@@ -985,17 +985,13 @@
                 </div>
 
                 <!-- CENTER: Online Members -->
-                <div class="chat-options" style="flex: 1; display: flex; justify-content: center; overflow: hidden;">
+                <div class="chat-options" style="flex: 1; display: flex; justify-content: center; overflow: hidden; border-left: none;">
                     <div id="onlineAdminsContainer" style="display: flex; gap: 12px; overflow-x: auto; padding: 4px 0; -ms-overflow-style: none; scrollbar-width: none; max-width: 100%;">
                         <style>
                             #onlineAdminsContainer::-webkit-scrollbar {
                                 display: none;
                             }
                         </style>
-                        <!-- Loader (hidden - removed per user request) -->
-                        <div id="onlineAdminsLoader" style="display: none !important;">
-                            <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading..." style="width: 25px;">
-                        </div>
                         <!-- Empty state (hidden initially) -->
                         <div id="onlineAdminsEmpty" style="text-align: center; padding: 5px; width: 100%; display: none; color: #7f8ea3; font-size: 11px; white-space: nowrap;">
                             No admins online
@@ -1008,38 +1004,27 @@
  
 
                 <!-- RIGHT: Settings, Theme Toggle, Logout -->
-                <div class="right-icons d-flex align-items-center gap-4">
-                      <a href="javascript:void(0)" class="btn chat-search-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Search">
-                                <img src="{{ asset('/build/img/Search-Black.svg') }}" alt="Search" width="18px">
-                                <img src="{{ asset('/build/img/Search-White.svg') }}" alt="Search" width="18px">
-                            </a>
-                        </li>
-                        <li data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Video Call" data-bs-original-title="Video Call">
-                            <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#video-call">
-                                <img src="{{ asset('/build/img/VideoCall-Black.svg') }}" alt="Video Call" width="18px">
-                                <img src="{{ asset('/build/img/VideoCall-White.svg') }}" alt="Video Call" width="18px">
-                            </a>
-                        </li>
-                        <li data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Voice Call" data-bs-original-title="Voice Call">
-                            <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#voice_call">
-                                <img src="{{ asset('/build/img/Call-Black.svg') }}" alt="Voice Call" width="18px">
-                                <img src="{{ asset('/build/img/Call-White.svg') }}" alt="Voice Call" width="18px">
-                            </a>
-                        </li>
-                        <li data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Contact Info" data-bs-original-title="Contact Info">
-                            <a href="javascript:void(0)" class="btn" data-bs-toggle="offcanvas" data-bs-target="#contact-profile">
-                                <img src="{{ asset('/build/img/User-Info-Black.svg') }}" alt="User Info" width="18px">
-                                <img src="{{ asset('/build/img/User-Info-White.svg') }}" alt="User Info" width="18px">
-                            </a>
-                        </li>
-                    </ul>
+                <div class="right-icons d-flex align-items-center gap-3">
+                    <a href="javascript:void(0)" class="btn chat-search-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Search">
+                        <img src="{{ asset('/build/img/Search-Black.svg') }}" alt="Search" width="18px">
+                        <img src="{{ asset('/build/img/Search-White.svg') }}" alt="Search" width="18px">
+                    </a>
+                    <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#video-call" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Video Call">
+                        <img src="{{ asset('/build/img/VideoCall-Black.svg') }}" alt="Video Call" width="18px">
+                        <img src="{{ asset('/build/img/VideoCall-White.svg') }}" alt="Video Call" width="18px">
+                    </a>
+                    <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#voice_call" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Voice Call">
+                        <img src="{{ asset('/build/img/Call-Black.svg') }}" alt="Voice Call" width="18px">
+                        <img src="{{ asset('/build/img/Call-White.svg') }}" alt="Voice Call" width="18px">
+                    </a>
+                    <a href="javascript:void(0)" class="btn" data-bs-toggle="offcanvas" data-bs-target="#contact-profile" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Contact Info">
+                        <img src="{{ asset('/build/img/User-Info-Black.svg') }}" alt="User Info" width="18px">
+                        <img src="{{ asset('/build/img/User-Info-White.svg') }}" alt="User Info" width="18px">
+                    </a>
                 </div>
 
  
 
-                <!-- RIGHT: Settings, Theme Toggle, Logout -->
-                <div class="right-icons d-flex align-items-center gap-4">
-                </div>
                 <div class="chat-search search-wrap contact-search">
                     <form>
                         <div class="input-group">
@@ -2468,27 +2453,11 @@
     /**
      * Load and display all users with online/offline status in the header
      */
-    // Prevent concurrent executions
-    let isLoadingUsers = false;
-    
     async function loadAllUsers() {
-        // Prevent concurrent calls
-        if (isLoadingUsers) {
-            console.log('loadAllUsers already in progress, skipping...');
-            return;
-        }
+        const listWrapper = document.getElementById('onlineAdminsList');
+        const emptyState = document.getElementById('onlineAdminsEmpty');
         
-        isLoadingUsers = true;
-        
-        try {
-            let listWrapper = document.getElementById('onlineAdminsList');
-            const loader = document.getElementById('onlineAdminsLoader');
-            const emptyState = document.getElementById('onlineAdminsEmpty');
-            
-            if (!listWrapper) {
-                console.warn('onlineAdminsList element not found');
-                return;
-            }
+        if (!listWrapper) return;
 
         try {
             const response = await fetch('/api/chat/all-users', {
@@ -2498,83 +2467,19 @@
                 },
             });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
+            if (!response.ok) throw new Error('Failed to fetch users');
             const data = await response.json();
-            console.log('Users data received:', data);
             
-            // Hide loader (permanently hidden per user request)
-            if (loader) {
-                loader.style.display = 'none';
-                loader.style.visibility = 'hidden';
-            }
-
-            if (data.success && data.members && Array.isArray(data.members) && data.members.length > 0) {
+            if (data.success && data.members && data.members.length > 0) {
                 if (emptyState) emptyState.style.display = 'none';
                 
-                // CRITICAL: Check for and remove any duplicate onlineAdminsList elements
-                const container = document.getElementById('onlineAdminsContainer');
-                if (container) {
-                    // Check for duplicate list elements
-                    const allLists = container.querySelectorAll('#onlineAdminsList');
-                    if (allLists.length > 1) {
-                        console.error(`ERROR: Found ${allLists.length} onlineAdminsList elements! Removing duplicates.`);
-                        // Remove duplicate lists, keep only the first one
-                        for (let i = 1; i < allLists.length; i++) {
-                            allLists[i].remove();
-                        }
-                        // Re-get the listWrapper reference after removing duplicates
-                        const updatedListWrapper = document.getElementById('onlineAdminsList');
-                        if (updatedListWrapper && updatedListWrapper !== listWrapper) {
-                            // Update reference if needed
-                            listWrapper = updatedListWrapper;
-                        }
-                    }
-                    
-                    // Remove ANY member cards that might be anywhere in the container (safety check)
-                    const allMemberCards = container.querySelectorAll('div[data-member-id]');
-                    if (allMemberCards.length > 0) {
-                        console.warn(`Removing ${allMemberCards.length} stray member cards from container`);
-                        allMemberCards.forEach(card => card.remove());
-                    }
-                }
-                
-                // CRITICAL: Get fresh reference to listWrapper to ensure we have the correct one
-                const currentListWrapper = document.getElementById('onlineAdminsList');
-                if (!currentListWrapper) {
-                    console.error('onlineAdminsList not found after cleanup!');
-                    return;
-                }
-                
-                // Update the reference to use the correct one
-                listWrapper = currentListWrapper;
-                
-                // CRITICAL: Clear current list completely - use both methods for safety
-                listWrapper.textContent = '';
                 listWrapper.innerHTML = '';
-                
-                // Double-check: Remove any existing member cards to ensure clean state
-                const existingCards = listWrapper.querySelectorAll('div[data-member-id]');
-                if (existingCards.length > 0) {
-                    console.warn(`Removing ${existingCards.length} existing cards from listWrapper`);
-                    existingCards.forEach(card => card.remove());
-                }
-                
                 const fragment = document.createDocumentFragment();
-                
-                // Use a Set to track added member IDs to prevent duplicates
                 const addedMemberIds = new Set();
                 
                 data.members.forEach(member => {
                     const memberId = member.id || member._id || member.email;
-                    
-                    // Skip if already added (prevent duplicates)
-                    if (addedMemberIds.has(memberId)) {
-                        console.warn(`Duplicate member skipped: ${memberId}`);
-                        return;
-                    }
+                    if (addedMemberIds.has(memberId)) return;
                     addedMemberIds.add(memberId);
                     
                     const memberCard = document.createElement('div');
@@ -2599,13 +2504,9 @@
                         </div>
                         <span style="font-size: 10px; color: #2e3a59; font-weight: 500; text-align: center; max-width: 45px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${memberName}</span>
                     `;
-                    
                     fragment.appendChild(memberCard);
                 });
-                
-                // Append to the correct list wrapper
                 listWrapper.appendChild(fragment);
-                console.log(`Loaded ${addedMemberIds.size} unique users (total received: ${data.members.length})`);
             } else {
                 listWrapper.innerHTML = '';
                 if (emptyState) {
@@ -2615,17 +2516,11 @@
             }
         } catch (error) {
             console.error('Error loading users:', error);
-            if (loader) loader.style.display = 'none';
             if (emptyState) {
                 emptyState.style.display = 'block';
                 emptyState.textContent = 'Failed to load';
             }
-            if (listWrapper) {
-                listWrapper.innerHTML = '';
-            }
-        } finally {
-            // Always reset the flag
-            isLoadingUsers = false;
+            if (listWrapper) listWrapper.innerHTML = '';
         }
     }
 
