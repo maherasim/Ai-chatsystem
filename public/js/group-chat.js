@@ -1693,6 +1693,7 @@ class GroupChatManager {
         document.querySelectorAll('.emoj-group-list').forEach(list => {
             if (list.closest('[data-message-id]')?.getAttribute('data-message-id') !== messageId) {
                 list.style.display = 'none';
+                list.classList.remove('emoji-picker-shown');
             }
         });
 
@@ -1717,7 +1718,7 @@ class GroupChatManager {
             emojiList = document.createElement('div');
             emojiList.className = 'emoj-group-list';
             emojiList.setAttribute('data-message-id', messageId);
-            emojiList.style.cssText = 'z-index: 10000 !important; position: absolute; bottom: calc(100% + 5px); right: 0; background: #fff; border: 1px solid #eee; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 8px; display: none; margin-bottom: 5px;';
+            emojiList.style.cssText = 'z-index: 10000 !important; position: absolute; bottom: calc(100% + 5px); right: 0; background: #fff; border: 1px solid #eee; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 8px; display: none; margin-bottom: 5px; opacity: 1 !important; visibility: visible !important;';
             
             emojiList.innerHTML = `
                 <ul style="display: flex; padding: 0; margin: 0; list-style: none; gap: 4px; align-items: center;">
@@ -1772,7 +1773,13 @@ class GroupChatManager {
             
             // Show emoji picker after dropdown closes
             setTimeout(() => {
-                emojiList.style.display = 'flex';
+                // Add class to indicate emoji picker is shown
+                emojiList.classList.add('emoji-picker-shown');
+                // Set display and visibility with !important using setProperty
+                emojiList.style.setProperty('display', 'flex', 'important');
+                emojiList.style.setProperty('opacity', '1', 'important');
+                emojiList.style.setProperty('visibility', 'visible', 'important');
+                emojiList.style.setProperty('z-index', '10000', 'important');
                 
                 // Position it properly
                 const chatActions = messageElement.querySelector('.chat-actions');
@@ -1796,6 +1803,7 @@ class GroupChatManager {
                 const emojiList = messageElement.querySelector('.emoj-group-list');
                 if (emojiList) {
                     emojiList.style.display = 'none';
+                    emojiList.classList.remove('emoji-picker-shown');
                 }
             }
 

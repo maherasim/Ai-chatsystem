@@ -639,6 +639,27 @@
         display: none;
         z-index: 2000 !important;
     }
+    
+    /* When emoji picker is shown, it should always be visible - override any hover rules */
+    .emoj-group-list[style*="display: flex"],
+    .emoj-group-list[style*="display:block"],
+    .emoj-group-list[style*="display:flex"] {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    /* Ensure emoji picker is always visible when shown, regardless of parent hover state */
+    .chats:hover .emoj-group-list[style*="display: flex"],
+    .chats:hover .emoj-group-list[style*="display:flex"],
+    .chats:hover .emoj-group-list[style*="display:block"],
+    .chats .emoj-group-list[style*="display: flex"],
+    .chats .emoj-group-list[style*="display:flex"],
+    .chats .emoj-group-list[style*="display:block"] {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
 
     .emoj-group-list ul {
         display: flex;
@@ -2186,6 +2207,7 @@
             if (!e.target.closest('.emoj-action') && !e.target.closest('.emoj-group-list')) {
                 document.querySelectorAll('.emoj-group-list').forEach(list => {
                     list.style.display = 'none';
+                    list.classList.remove('emoji-picker-shown');
                 });
             }
         });
