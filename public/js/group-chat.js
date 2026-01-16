@@ -909,13 +909,13 @@ class GroupChatManager {
                 messageTime = new Date().toLocaleTimeString('en-US', {
                     hour: '2-digit',
                     minute: '2-digit',
-                    hour12: true
+                    hour12: false
                 });
             } else {
                 messageTime = dateObj.toLocaleTimeString('en-US', {
                     hour: '2-digit',
                     minute: '2-digit',
-                    hour12: true
+                    hour12: false
                 });
             }
         } catch (error) {
@@ -923,7 +923,7 @@ class GroupChatManager {
             messageTime = new Date().toLocaleTimeString('en-US', {
                 hour: '2-digit',
                 minute: '2-digit',
-                hour12: true
+                hour12: false
             });
         }
 
@@ -1042,13 +1042,6 @@ class GroupChatManager {
             // RIGHT SIDE: Sent messages (content first, avatar last)
             messageDiv.innerHTML = `
                 <div class="chat-content">
-                    <div class="chat-profile-name text-end">
-                        <h6>You
-                            <i class="ti ti-circle-filled fs-7 mx-2"></i>
-                            <span class="chat-time">${time}</span>
-                            <span class="msg-read success"><i class="ti ti-checks"></i></span>
-                        </h6>
-                    </div>
                     <div class="chat-info">
                         <div class="chat-actions">
                             <a class="#" href="#" data-bs-toggle="dropdown">
@@ -1101,6 +1094,10 @@ class GroupChatManager {
                                     </a></li>
                                 </ul>
                             </div>
+                        </div>
+                        <div class="chat-time-status" style="text-align: right; margin-top: 4px; font-size: 11px; color: #adb5bd; display: flex; align-items: center; justify-content: flex-end; gap: 4px;">
+                            <span class="msg-read success"><i class="ti ti-checks"></i></span>
+                            <span class="chat-time">${time}</span>
                         </div>
                     </div>
                     ${reactionsHtml}
