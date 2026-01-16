@@ -955,30 +955,38 @@
 
                 <!-- CENTER: Chat Options -->
                 <div class="chat-options">
-                    <ul class="d-flex align-items-center gap-3 list-unstyled mb-0">      </ul>
+                    <ul class="d-flex align-items-center gap-3 list-unstyled mb-0">
+                        <li>
+                            <a href="javascript:void(0)" class="btn chat-search-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Search" data-bs-original-title="Search">
+                                <img src="{{ asset('/build/img/Search-Black.svg') }}" alt="Search" width="18px">
+                                <img src="{{ asset('/build/img/Search-White.svg') }}" alt="Search" width="18px">
+                            </a>
+                        </li>
+                        <li data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Video Call" data-bs-original-title="Video Call">
+                            <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#video-call">
+                                <img src="{{ asset('/build/img/VideoCall-Black.svg') }}" alt="Video Call" width="18px">
+                                <img src="{{ asset('/build/img/VideoCall-White.svg') }}" alt="Video Call" width="18px">
+                            </a>
+                        </li>
+                        <li data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Voice Call" data-bs-original-title="Voice Call">
+                            <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#voice_call">
+                                <img src="{{ asset('/build/img/Call-Black.svg') }}" alt="Voice Call" width="18px">
+                                <img src="{{ asset('/build/img/Call-White.svg') }}" alt="Voice Call" width="18px">
+                            </a>
+                        </li>
+                        <li data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Contact Info" data-bs-original-title="Contact Info">
+                            <a href="javascript:void(0)" class="btn" data-bs-toggle="offcanvas" data-bs-target="#contact-profile">
+                                <img src="{{ asset('/build/img/User-Info-Black.svg') }}" alt="User Info" width="18px">
+                                <img src="{{ asset('/build/img/User-Info-White.svg') }}" alt="User Info" width="18px">
+                            </a>
+                        </li>
+                    </ul>
                 </div>
 
  
 
                 <!-- RIGHT: Settings, Theme Toggle, Logout -->
                 <div class="right-icons d-flex align-items-center gap-4">
-                      <a href="javascript:void(0)" class="btn chat-search-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Search">
-                                <img src="{{ asset('/build/img/Search-Black.svg') }}" alt="Search" width="18px">
-                                <img src="{{ asset('/build/img/Search-White.svg') }}" alt="Search" width="18px">
-                            </a>
-                             <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#video-call">
-                                <img src="{{ asset('/build/img/VideoCall-Black.svg') }}" alt="Video Call" width="18px">
-                                <img src="{{ asset('/build/img/VideoCall-White.svg') }}" alt="Video Call" width="18px">
-                            </a>
-                              <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#voice_call">
-                                <img src="{{ asset('/build/img/Call-Black.svg') }}" alt="Voice Call" width="18px">
-                                <img src="{{ asset('/build/img/Call-White.svg') }}" alt="Voice Call" width="18px">
-                            </a>
-
-                               <a href="javascript:void(0)" class="btn" data-bs-toggle="offcanvas" data-bs-target="#contact-profile">
-                                <img src="{{ asset('/build/img/User-Info-Black.svg') }}" alt="User Info" width="18px">
-                                <img src="{{ asset('/build/img/User-Info-White.svg') }}" alt="User Info" width="18px">
-                            </a>
                 </div>
                 <div class="chat-search search-wrap contact-search">
                     <form>
