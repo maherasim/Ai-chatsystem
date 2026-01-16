@@ -5320,13 +5320,13 @@
                         <a href="#" class="action-circle"><i class="ti ti-microphone"></i></a>
                     </div>
                     <div class="form-wrap">
-                        <div class="chats reply-chat">
+                        <div class="chats reply-chat" id="reply-div" style="display: none;">
                             <div class="chat-avatar">
                                 <img src="{{URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="image">
                             </div>
                             <div class="chat-content">
                                 <div class="chat-profile-name">
-                                    <h6>Edward Lietz<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
+                                    <h6>User<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
                                 </div>
                                 <div class="chat-info">
                                     <div class="message-content">

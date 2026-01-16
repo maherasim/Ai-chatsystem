@@ -908,6 +908,14 @@ class GroupChatManager {
     }
 
     /**
+     * Escape string for use in JavaScript (single quotes)
+     */
+    escapeJs(str) {
+        if (!str) return '';
+        return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/\r/g, '\\r');
+    }
+
+    /**
      * Create message element with all UI features
      */
     createMessageElement(message) {
@@ -1107,7 +1115,7 @@ class GroupChatManager {
                                 <li><a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); event.stopPropagation(); window.groupChatManager.showEmojiPicker('${message._id || message.id}'); return false;">
                                     <i class="ti ti-mood-smile me-2"></i>React
                                 </a></li>
-                                <li><a class="dropdown-item reply-btn" href="javascript:void(0);" onclick="window.groupChatManager.setReplyMessage('${message._id || message.id}', '${this.escapeHtml(message.content || '')}')">
+                                <li><a class="dropdown-item reply-btn" href="javascript:void(0);" onclick="window.groupChatManager.setReplyMessage('${this.escapeJs(message._id || message.id)}', '${this.escapeJs(message.content || '')}', '${this.escapeJs(isOwnMessage ? 'You' : (message.sender_name || 'User'))}', '${this.escapeJs(isOwnMessage ? (window.currentUserAvatar || '') : (message.sender_avatar || ''))}')">
                                     <i class="ti ti-corner-up-left me-2"></i>Reply
                                 </a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0);" onclick="window.groupChatManager.forwardMessage('${message._id || message.id}')">
@@ -1171,7 +1179,7 @@ class GroupChatManager {
                                 <li><a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); event.stopPropagation(); window.groupChatManager.showEmojiPicker('${message._id || message.id}'); return false;">
                                     <i class="ti ti-mood-smile me-2"></i>React
                                 </a></li>
-                                <li><a class="dropdown-item reply-btn" href="javascript:void(0);" onclick="window.groupChatManager.setReplyMessage('${message._id || message.id}', '${this.escapeHtml(message.content || '')}')">
+                                <li><a class="dropdown-item reply-btn" href="javascript:void(0);" onclick="window.groupChatManager.setReplyMessage('${this.escapeJs(message._id || message.id)}', '${this.escapeJs(message.content || '')}', '${this.escapeJs(isOwnMessage ? 'You' : (message.sender_name || 'User'))}', '${this.escapeJs(isOwnMessage ? (window.currentUserAvatar || '') : (message.sender_avatar || ''))}')">
                                     <i class="ti ti-corner-up-left me-2"></i>Reply
                                 </a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0);" onclick="window.groupChatManager.forwardMessage('${message._id || message.id}')">
@@ -2487,17 +2495,69 @@ class GroupChatManager {
     /**
      * Set reply message
      */
-    setReplyMessage(messageId, content) {
+    setReplyMessage(messageId, content, senderName, senderAvatar) {
+        // Make parameters optional and provide defaults
+        if (!messageId || !content) {
+            console.error('setReplyMessage: messageId and content are required');
+            return;
+        }
+
         this.replyingToMessage = { id: messageId, content: content };
 
-        // Show reply UI
-        const replyDiv = document.getElementById('reply-div');
+        // Show reply UI - try both possible selectors
+        let replyDiv = document.getElementById('reply-div');
+        if (!replyDiv) {
+            // Fallback: try to find by class
+            replyDiv = document.querySelector('.reply-chat');
+        }
+
         if (replyDiv) {
             replyDiv.style.display = 'block';
             const replyContent = replyDiv.querySelector('.reply-content');
             if (replyContent) {
                 replyContent.textContent = content.substring(0, 50) + (content.length > 50 ? '...' : '');
             }
+            
+            // Update sender name
+            const chatProfileName = replyDiv.querySelector('.chat-profile-name h6');
+            if (chatProfileName) {
+                // Get the time and read status elements if they exist
+                const timeElement = chatProfileName.querySelector('.chat-time');
+                const readElement = chatProfileName.querySelector('.msg-read');
+                const timeHtml = timeElement ? timeElement.outerHTML : '<span class="chat-time">02:39 PM</span>';
+                const readHtml = readElement ? readElement.outerHTML : '<span class="msg-read success"><i class="ti ti-checks"></i></span>';
+                
+                // Update name while preserving time and read status
+                // Use provided senderName or default to 'User'
+                const displayName = senderName || 'User';
+                chatProfileName.innerHTML = `${displayName}<i class="ti ti-circle-filled fs-7 mx-2"></i>${timeHtml}${readHtml}`;
+            }
+            
+            // Update sender avatar
+            const chatAvatar = replyDiv.querySelector('.chat-avatar img');
+            if (chatAvatar) {
+                if (senderAvatar) {
+                    chatAvatar.src = senderAvatar;
+                } else {
+                    // Use default avatar if no sender avatar provided
+                    chatAvatar.src = '/build/img/profiles/avatar-06.jpg';
+                }
+                chatAvatar.onerror = function() {
+                    if (!this.getAttribute('data-tried-fallback')) {
+                        this.setAttribute('data-tried-fallback', 'true');
+                        try {
+                            const u = new URL(this.src);
+                            this.src = 'https://logiteam.it-supportline.de' + u.pathname;
+                        } catch(e) {
+                            this.src = '/build/img/profiles/avatar-06.jpg';
+                        }
+                    } else {
+                        this.src = '/build/img/profiles/avatar-06.jpg';
+                    }
+                };
+            }
+        } else {
+            console.error('setReplyMessage: Could not find reply div element');
         }
     }
 
