@@ -568,7 +568,98 @@
         min-height: unset !important;
         line-height: 1.4 !important; /* Tighter line height to reduce height */
     }
+    .chats.chats-right .chat-time-status {
+        text-align: right !important;
+        margin-top: 2px !important;
+        line-height: 1 !important;
+        font-size: 11px !important;
+        color: #adb5bd !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 4px !important;
+    }
+
+    .chats:not(.chats-right) .chat-time-status {
+        text-align: left !important;
+        margin-top: 2px !important;
+        line-height: 1 !important;
+        font-size: 11px !important;
+        color: #adb5bd !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 4px !important;
+    }
+
+    .emoj-group, .chat-actions {
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s ease;
+    }
+
+    .chats:hover .emoj-group,
+    .chats:hover .chat-actions {
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: flex !important;
+    }
     
+    /* Ensure sender messages show emoji group on hover */
+    .chats.chats-right:hover .emoj-group,
+    .chats.chats-right:hover .chat-actions {
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: flex !important;
+    }
+
+    .emoj-group-list {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        padding: 5px;
+        display: none;
+        z-index: 2000 !important;
+    }
+
+    .emoj-group-list ul {
+        display: flex;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .emoj-group-list ul li {
+        padding: 0 2px;
+    }
+
+    .emoj-group ul {
+        display: flex;
+        align-items: center;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        gap: 5px;
+    }
+
+    .emoj-group ul li a {
+        color: #6c757d;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s;
+    }
+
+    .emoj-group ul li a:hover {
+        color: #6338F6;
+    }
+
     .chats.chats-right .chat-info > .message-content * {
         color: #ffffff !important;
     }

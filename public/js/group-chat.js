@@ -157,6 +157,9 @@ class GroupChatManager {
                 this.isConnected = true;
                 this.setupEventListeners();
 
+                // Setup reaction click handlers
+                this.setupReactionClickHandlers();
+
                 console.log('Agora Chat initialized successfully');
 
                 // Start updating unread badges periodically
@@ -172,8 +175,36 @@ class GroupChatManager {
             console.error('Failed to initialize Agora Chat:', error);
             // Try to get user ID from a fallback endpoint or current user data
             await this.initializeUserIdFallback();
+
+            // Setup reaction click handlers even if Agora fails
+            this.setupReactionClickHandlers();
+
             return false;
         }
+    }
+
+    /**
+     * Setup global event delegation for reaction items
+     */
+    setupReactionClickHandlers() {
+        // Use event delegation for reaction items (handles dynamically added reactions)
+        // Check if already set up to avoid duplicates
+        if (this._reactionHandlersSetup) return;
+        this._reactionHandlersSetup = true;
+
+        document.addEventListener('click', (e) => {
+            const reactionItem = e.target.closest('.reaction-item');
+            if (reactionItem) {
+                e.stopPropagation();
+                e.preventDefault();
+                const messageId = reactionItem.dataset.messageId;
+                const emoji = reactionItem.dataset.emoji;
+                if (messageId && emoji) {
+                    console.log('Reaction clicked:', { messageId, emoji });
+                    this.showReactionUsers(messageId, emoji);
+                }
+            }
+        }, true); // Use capture phase to catch early
     }
 
     /**
@@ -901,7 +932,7 @@ class GroupChatManager {
         messageDiv.className = `chats ${isOwnMessage ? 'chats-right' : ''}`;
         const messageId = message._id || message.id;
         messageDiv.setAttribute('data-message-id', messageId);
-        
+
         // Store message data on element for easy access
         messageDiv.__messageData = message;
         if (message.reactions) {
@@ -1026,7 +1057,7 @@ class GroupChatManager {
         // Group reactions by emoji and store full data for "who reacted" feature
         let reactionsHtml = '';
         let reactionsByEmoji = {}; // Store full reaction data grouped by emoji
-        
+
         if (message.reactions && Array.isArray(message.reactions) && message.reactions.length > 0) {
             // Group reactions by emoji and store full data
             message.reactions.forEach(reaction => {
@@ -1040,16 +1071,17 @@ class GroupChatManager {
             // Build reactions HTML - positioned ON the message bubble (WhatsApp style)
             if (Object.keys(reactionsByEmoji).length > 0) {
                 const isOwn = isOwnMessage;
-                const positionStyle = isOwn 
-                    ? 'bottom: -8px; right: 8px;' 
+                const positionStyle = isOwn
+                    ? 'bottom: -8px; right: 8px;'
                     : 'bottom: -8px; left: 8px;';
-                
-                reactionsHtml = `<div class="message-reactions" style="position: absolute; ${positionStyle} display: flex; gap: 4px; flex-wrap: wrap; align-items: center; z-index: 10; max-width: 200px;">`;
+
+                reactionsHtml = `<div class="message-reactions" style="position: absolute; ${positionStyle} display: flex; gap: 4px; flex-wrap: wrap; align-items: center; z-index: 1000; max-width: 200px; pointer-events: auto;">`;
                 Object.entries(reactionsByEmoji).forEach(([emoji, reactions]) => {
                     const count = reactions.length;
                     const escapedEmoji = this.escapeHtml(emoji);
                     const messageId = message._id || message.id;
-                    reactionsHtml += `<div class="reaction-item" style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 2px 6px; display: flex; align-items: center; gap: 4px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.1); transition: all 0.2s;" onclick="window.groupChatManager.showReactionUsers('${messageId}', '${escapedEmoji}')" title="Click to see who reacted">
+                    const messageIdStr = String(messageId);
+                    reactionsHtml += `<div class="reaction-item" data-message-id="${messageIdStr}" data-emoji="${escapedEmoji}" style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 2px 6px; display: flex; align-items: center; gap: 4px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.1); transition: all 0.2s; position: relative; z-index: 1001;" title="Click to see who reacted">
                         <span style="font-size: 14px;">${emoji}</span>
                         <span style="font-size: 11px; color: #666; font-weight: 500;">${count}</span>
                     </div>`;
@@ -1065,11 +1097,14 @@ class GroupChatManager {
             messageDiv.innerHTML = `
                 <div class="chat-content">
                     <div class="chat-info" style="display: flex; flex-direction: row; align-items: center; gap: 8px; justify-content: flex-end;">
-                        <div class="chat-actions">
-                            <a class="#" href="#" data-bs-toggle="dropdown">
-                                <i class="ti ti-dots-vertical"></i>
+                        <div class="chat-actions" style="position: relative; display: flex; z-index: 100;">
+                            <a class="#" href="#" data-bs-toggle="dropdown" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; color: #6c757d; text-decoration: none; cursor: pointer;">
+                                <i class="ti ti-dots-vertical" style="font-size: 18px;"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end p-3">
+                                <li><a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); event.stopPropagation(); window.groupChatManager.showEmojiPicker('${message._id || message.id}'); return false;">
+                                    <i class="ti ti-mood-smile me-2"></i>React
+                                </a></li>
                                 <li><a class="dropdown-item reply-btn" href="javascript:void(0);" onclick="window.groupChatManager.setReplyMessage('${message._id || message.id}', '${this.escapeHtml(message.content || '')}')">
                                     <i class="ti ti-corner-up-left me-2"></i>Reply
                                 </a></li>
@@ -1084,44 +1119,14 @@ class GroupChatManager {
                                 </a></li>
                             </ul>
                         </div>
-                        ${messageContent}
-                        <div class="emoj-group">
-                            <ul>
-                                <li class="emoj-action">
-                                    <a href="javascript:void(0);" onclick="window.groupChatManager.showEmojiPicker('${message._id || message.id}')">
-                                        <i class="ti ti-mood-smile"></i>
-                                    </a>
-                                    <div class="emoj-group-list">
-                                        <ul>
-                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '👍')">
-                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">👍</span>
-                                            </a></li>
-                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '❤️')">
-                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">❤️</span>
-                                            </a></li>
-                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😄')">
-                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😄</span>
-                                            </a></li>
-                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😮')">
-                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😮</span>
-                                            </a></li>
-                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😢')">
-                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😢</span>
-                                            </a></li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li><a href="javascript:void(0);" onclick="window.groupChatManager.forwardMessage('${message._id || message.id}')">
-                                    <i class="ti ti-arrow-forward-up"></i>
-                                </a></li>
-                            </ul>
+                        <div style="position: relative; display: inline-block;">
+                            ${messageContent}
+                            ${reactionsHtml}
                         </div>
                     </div>
-                </div>
-                        <div class="chat-time-status" style="text-align: right; margin-top: 4px; font-size: 11px; color: #adb5bd; display: flex; align-items: center; justify-content: flex-end; gap: 4px;">
-                            <span class="msg-read success"><i class="ti ti-checks"></i></span>
-                            <span class="chat-time">${time}</span>
-                        </div>
+                    <div class="chat-time-status" style="text-align: right; margin-top: 2px; line-height: 1; font-size: 11px; color: #adb5bd; display: flex; align-items: center; justify-content: flex-end; gap: 4px;">
+                        <span class="chat-time">${time}</span>
+                        <span class="msg-read success"><i class="ti ti-checks" style="font-size: 12px;"></i></span>
                     </div>
                 </div>
                 <div class="chat-avatar">
@@ -1143,54 +1148,24 @@ class GroupChatManager {
                         onerror="if (!this.getAttribute('data-tried-fallback')) { this.setAttribute('data-tried-fallback', 'true'); try { const u = new URL(this.src); this.src = 'https://logiteam.it-supportline.de' + u.pathname; } catch(e) { this.src = '/build/img/profiles/avatar-06.jpg'; } } else { this.src = '/build/img/profiles/avatar-06.jpg'; }">
                 </div>
                 <div class="chat-content">
-                    <div class="chat-profile-name" style="margin-bottom: 4px;">
-                        <h6 style="font-size: 13px; font-weight: 500; color: #495057; margin-bottom: 0;">
+                    <div class="chat-profile-name" style="margin-bottom: 2px;">
+                        <h6 style="font-size: 13px; font-weight: 600; color: #495057; margin-bottom: 0;">
                             ${message.sender_name || 'User'}
-                            <span class="chat-time" style="font-size: 11px; color: #6c757d; font-weight: 400; margin-left: 8px;">${time}</span>
-                            <span class="msg-read success" style="margin-left: 4px;"><i class="ti ti-checks" style="font-size: 12px;"></i></span>
                         </h6>
                     </div>
-                    <div class="chat-info" style="display: flex; flex-direction: row; align-items: center; gap: 8px;">
+                    <div class="chat-info" style="display: flex; flex-direction: row; align-items: flex-start; gap: 8px; justify-content: flex-start;">
                         <div style="position: relative; display: inline-block;">
                             ${messageContent}
                             ${reactionsHtml}
                         </div>
-                        <div class="emoj-group">
-                            <ul>
-                                <li class="emoj-action">
-                                    <a href="javascript:void(0);" onclick="window.groupChatManager.showEmojiPicker('${message._id || message.id}')">
-                                        <i class="ti ti-mood-smile"></i>
-                                    </a>
-                                    <div class="emoj-group-list">
-                                        <ul>
-                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '👍')">
-                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">👍</span>
-                                            </a></li>
-                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '❤️')">
-                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">❤️</span>
-                                            </a></li>
-                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😄')">
-                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😄</span>
-                                            </a></li>
-                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😮')">
-                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😮</span>
-                                            </a></li>
-                                            <li><a href="javascript:void(0);" onclick="window.groupChatManager.addReaction('${message._id || message.id}', '😢')">
-                                                <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px;">😢</span>
-                                            </a></li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li><a href="javascript:void(0);" onclick="window.groupChatManager.forwardMessage('${message._id || message.id}')">
-                                    <i class="ti ti-arrow-forward-up"></i>
-                                </a></li>
-                            </ul>
-                        </div>
-                        <div class="chat-actions">
-                            <a class="#" href="#" data-bs-toggle="dropdown">
-                                <i class="ti ti-dots-vertical"></i>
+                        <div class="chat-actions" style="position: relative; display: flex; z-index: 100;">
+                            <a class="#" href="#" data-bs-toggle="dropdown" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; color: #6c757d; text-decoration: none; cursor: pointer;">
+                                <i class="ti ti-dots-vertical" style="font-size: 18px;"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end p-3">
+                                <li><a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); event.stopPropagation(); window.groupChatManager.showEmojiPicker('${message._id || message.id}'); return false;">
+                                    <i class="ti ti-mood-smile me-2"></i>React
+                                </a></li>
                                 <li><a class="dropdown-item reply-btn" href="javascript:void(0);" onclick="window.groupChatManager.setReplyMessage('${message._id || message.id}', '${this.escapeHtml(message.content || '')}')">
                                     <i class="ti ti-corner-up-left me-2"></i>Reply
                                 </a></li>
@@ -1202,7 +1177,10 @@ class GroupChatManager {
                                 </a></li>
                             </ul>
                         </div>
-                        ${reactionsHtml}
+                    </div>
+                    <div class="chat-time-status" style="text-align: left; margin-top: 2px; line-height: 1; font-size: 11px; color: #adb5bd; display: flex; align-items: center; justify-content: flex-start; gap: 4px;">
+                        <span class="chat-time">${time}</span>
+                        <span class="msg-read success"><i class="ti ti-checks" style="font-size: 12px;"></i></span>
                     </div>
                 </div>
             `;
@@ -1718,16 +1696,93 @@ class GroupChatManager {
             }
         });
 
-        // Find the emoji picker for this message
+        // Find the message element
         const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
-        if (messageElement) {
-            const emojiList = messageElement.querySelector('.emoj-group-list');
-            if (emojiList) {
-                // Toggle the emoji picker
-                const isVisible = emojiList.style.display === 'block';
-                emojiList.style.display = isVisible ? 'none' : 'block';
-            }
+        if (!messageElement) {
+            console.warn('Message element not found for:', messageId);
+            return;
         }
+
+        // Find or create the emoji picker
+        let emojiList = messageElement.querySelector('.emoj-group-list');
+        
+        if (!emojiList) {
+            // Create emoji picker dynamically
+            const chatActions = messageElement.querySelector('.chat-actions');
+            if (!chatActions) {
+                console.warn('Chat actions not found for message:', messageId);
+                return;
+            }
+            
+            emojiList = document.createElement('div');
+            emojiList.className = 'emoj-group-list';
+            emojiList.setAttribute('data-message-id', messageId);
+            emojiList.style.cssText = 'z-index: 10000 !important; position: absolute; bottom: calc(100% + 5px); right: 0; background: #fff; border: 1px solid #eee; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 8px; display: none; margin-bottom: 5px;';
+            
+            emojiList.innerHTML = `
+                <ul style="display: flex; padding: 0; margin: 0; list-style: none; gap: 4px; align-items: center;">
+                    <li style="list-style: none;"><a href="javascript:void(0);" onclick="event.stopPropagation(); window.groupChatManager.addReaction('${messageId}', '👍'); return false;" style="display: block; padding: 4px; border-radius: 4px; transition: background 0.2s;">
+                        <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px; cursor: pointer;">👍</span>
+                    </a></li>
+                    <li style="list-style: none;"><a href="javascript:void(0);" onclick="event.stopPropagation(); window.groupChatManager.addReaction('${messageId}', '❤️'); return false;" style="display: block; padding: 4px; border-radius: 4px; transition: background 0.2s;">
+                        <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px; cursor: pointer;">❤️</span>
+                    </a></li>
+                    <li style="list-style: none;"><a href="javascript:void(0);" onclick="event.stopPropagation(); window.groupChatManager.addReaction('${messageId}', '😄'); return false;" style="display: block; padding: 4px; border-radius: 4px; transition: background 0.2s;">
+                        <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px; cursor: pointer;">😄</span>
+                    </a></li>
+                    <li style="list-style: none;"><a href="javascript:void(0);" onclick="event.stopPropagation(); window.groupChatManager.addReaction('${messageId}', '😮'); return false;" style="display: block; padding: 4px; border-radius: 4px; transition: background 0.2s;">
+                        <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px; cursor: pointer;">😮</span>
+                    </a></li>
+                    <li style="list-style: none;"><a href="javascript:void(0);" onclick="event.stopPropagation(); window.groupChatManager.addReaction('${messageId}', '😢'); return false;" style="display: block; padding: 4px; border-radius: 4px; transition: background 0.2s;">
+                        <span style="font-size: 24px; display: inline-block; width: 32px; height: 32px; text-align: center; line-height: 32px; cursor: pointer;">😢</span>
+                    </a></li>
+                </ul>
+            `;
+            
+            // Ensure chat-actions has relative positioning
+            if (window.getComputedStyle(chatActions).position === 'static') {
+                chatActions.style.position = 'relative';
+            }
+            
+            chatActions.appendChild(emojiList);
+            
+            // Add hover effect to emoji links
+            setTimeout(() => {
+                const emojiLinks = emojiList.querySelectorAll('a');
+                emojiLinks.forEach(link => {
+                    link.addEventListener('mouseenter', () => {
+                        link.style.backgroundColor = '#f0f0f0';
+                    });
+                    link.addEventListener('mouseleave', () => {
+                        link.style.backgroundColor = 'transparent';
+                    });
+                });
+            }, 0);
+        }
+
+        // Close dropdown menu first (with a small delay to allow click to register)
+        setTimeout(() => {
+            const dropdownToggle = messageElement.querySelector('[data-bs-toggle="dropdown"]');
+            if (dropdownToggle) {
+                const bsDropdown = bootstrap.Dropdown.getInstance(dropdownToggle);
+                if (bsDropdown) {
+                    bsDropdown.hide();
+                }
+            }
+            
+            // Show emoji picker after dropdown closes
+            setTimeout(() => {
+                emojiList.style.display = 'flex';
+                
+                // Position it properly
+                const chatActions = messageElement.querySelector('.chat-actions');
+                if (chatActions) {
+                    const rect = chatActions.getBoundingClientRect();
+                    emojiList.style.right = '0';
+                    emojiList.style.bottom = 'calc(100% + 5px)';
+                }
+            }, 150);
+        }, 10);
     }
 
     /**
@@ -1769,7 +1824,7 @@ class GroupChatManager {
     updateMessageReactions(messageId, reactions) {
         const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
         if (!messageElement) return;
-        
+
         // Update stored message data
         if (messageElement.__messageData) {
             messageElement.__messageData.reactions = reactions;
@@ -1795,17 +1850,18 @@ class GroupChatManager {
         // Find or create reactions container
         let reactionsContainer = messageElement.querySelector('.message-reactions');
         const isOwnMessage = messageElement.classList.contains('chats-right');
-        const positionStyle = isOwnMessage 
-            ? 'bottom: -8px; right: 8px;' 
+        const positionStyle = isOwnMessage
+            ? 'bottom: -8px; right: 8px;'
             : 'bottom: -8px; left: 8px;';
 
         if (Object.keys(reactionsByEmoji).length > 0) {
             // Build reactions HTML - WhatsApp style
-            let reactionsHtml = `<div class="message-reactions" style="position: absolute; ${positionStyle} display: flex; gap: 4px; flex-wrap: wrap; align-items: center; z-index: 10; max-width: 200px;">`;
+            let reactionsHtml = `<div class="message-reactions" style="position: absolute; ${positionStyle} display: flex; gap: 4px; flex-wrap: wrap; align-items: center; z-index: 1000; max-width: 200px; pointer-events: auto;">`;
             Object.entries(reactionsByEmoji).forEach(([emoji, reactionList]) => {
                 const count = reactionList.length;
                 const escapedEmoji = this.escapeHtml(emoji);
-                reactionsHtml += `<div class="reaction-item" style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 2px 6px; display: flex; align-items: center; gap: 4px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.1); transition: all 0.2s;" onclick="window.groupChatManager.showReactionUsers('${messageId}', '${escapedEmoji}')" title="Click to see who reacted">
+                const messageIdStr = String(messageId);
+                reactionsHtml += `<div class="reaction-item" data-message-id="${messageIdStr}" data-emoji="${escapedEmoji}" style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 2px 6px; display: flex; align-items: center; gap: 4px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.1); transition: all 0.2s; position: relative; z-index: 1001;" title="Click to see who reacted">
                     <span style="font-size: 14px;">${emoji}</span>
                     <span style="font-size: 11px; color: #666; font-weight: 500;">${count}</span>
                 </div>`;
@@ -1838,6 +1894,37 @@ class GroupChatManager {
                     wrapper.insertAdjacentHTML('beforeend', reactionsHtml);
                 }
             }
+
+            // Attach click handlers to reaction items
+            const newReactionsContainer = messageElement.querySelector('.message-reactions');
+            if (newReactionsContainer) {
+                const reactionItems = newReactionsContainer.querySelectorAll('.reaction-item');
+                reactionItems.forEach(item => {
+                    // Remove existing listeners to avoid duplicates
+                    const newItem = item.cloneNode(true);
+                    item.parentNode.replaceChild(newItem, item);
+
+                    // Add click handler
+                    newItem.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const msgId = newItem.dataset.messageId || messageId;
+                        const emoji = newItem.dataset.emoji;
+                        if (msgId && emoji) {
+                            this.showReactionUsers(msgId, emoji);
+                        }
+                    });
+
+                    // Add hover effect
+                    newItem.addEventListener('mouseenter', () => {
+                        newItem.style.transform = 'scale(1.05)';
+                        newItem.style.boxShadow = '0 2px 4px rgba(0,0,0,0.15)';
+                    });
+                    newItem.addEventListener('mouseleave', () => {
+                        newItem.style.transform = 'scale(1)';
+                        newItem.style.boxShadow = '0 1px 2px rgba(0,0,0,0.1)';
+                    });
+                });
+            }
         } else {
             // Remove reactions if empty
             if (reactionsContainer) {
@@ -1854,7 +1941,7 @@ class GroupChatManager {
             // Try to get reactions from the message element in DOM
             const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
             let allReactions = [];
-            
+
             // Try to get from message element data attribute
             if (messageElement) {
                 const messageData = messageElement.dataset;
@@ -1876,17 +1963,17 @@ class GroupChatManager {
                     }
                 }
             }
-            
+
             // If still no reactions, try to get from current group messages array
             if (allReactions.length === 0 && this.currentGroupMessages) {
-                const message = this.currentGroupMessages.find(m => 
+                const message = this.currentGroupMessages.find(m =>
                     (m._id || m.id) === messageId
                 );
                 if (message && message.reactions) {
                     allReactions = message.reactions;
                 }
             }
-            
+
             // If still no reactions, fetch from API by getting all reactions for each emoji
             if (allReactions.length === 0) {
                 // Fetch message to get all reactions
@@ -1900,7 +1987,7 @@ class GroupChatManager {
                             if (emojiText) emojis.push(emojiText);
                         });
                     }
-                    
+
                     // If we have emojis, fetch reactions for each
                     if (emojis.length > 0) {
                         const reactionsPromises = emojis.map(async (emojiKey) => {
@@ -1925,7 +2012,7 @@ class GroupChatManager {
                             }
                             return [];
                         });
-                        
+
                         const reactionsArrays = await Promise.all(reactionsPromises);
                         allReactions = reactionsArrays.flat();
                     } else {
@@ -1950,7 +2037,7 @@ class GroupChatManager {
                     console.error('Failed to fetch reactions from API:', e);
                 }
             }
-            
+
             // Group reactions by emoji
             const reactionsByEmoji = {};
             allReactions.forEach(reaction => {
@@ -1960,13 +2047,13 @@ class GroupChatManager {
                 }
                 reactionsByEmoji[emojiKey].push(reaction);
             });
-            
+
             // Fetch user details for reactions that don't have them
             const reactionsNeedingUsers = allReactions.filter(r => !r.user || !r.user.avatar);
             if (reactionsNeedingUsers.length > 0) {
                 const userIds = [...new Set(reactionsNeedingUsers.map(r => r.user_id).filter(Boolean))];
                 const usersMap = await this.fetchUsersDetails(userIds);
-                
+
                 // Update reactions with user details
                 allReactions.forEach(reaction => {
                     if (!reaction.user || !reaction.user.avatar) {
@@ -1984,7 +2071,7 @@ class GroupChatManager {
                     }
                 });
             }
-            
+
             // Build reactions data structure
             const reactionsData = {};
             Object.keys(reactionsByEmoji).forEach(emojiKey => {
@@ -2003,20 +2090,20 @@ class GroupChatManager {
                     };
                 });
             });
-            
+
             // Show overlay popup
             this.showReactionUsersOverlay(messageId, reactionsData, emoji);
         } catch (error) {
             console.error('Error fetching reaction users:', error);
         }
     }
-    
+
     /**
      * Fetch user details for given user IDs
      */
     async fetchUsersDetails(userIds) {
         if (!userIds || userIds.length === 0) return {};
-        
+
         const usersMap = {};
         const promises = userIds.map(async (userId) => {
             try {
@@ -2033,11 +2120,11 @@ class GroupChatManager {
                 console.warn(`Failed to fetch user ${userId}:`, error);
             }
         });
-        
+
         await Promise.all(promises);
         return usersMap;
     }
-    
+
     /**
      * Get current group messages from memory/DOM
      */
@@ -2058,65 +2145,73 @@ class GroupChatManager {
         if (existingOverlay) {
             existingOverlay.remove();
         }
-        
+
         // Find the message element to position popup near it
         const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
         if (!messageElement) {
             console.warn('Message element not found for positioning popup');
             return;
         }
-        
-        // Get message element position
+
+        // Get message element position relative to viewport
         const messageRect = messageElement.getBoundingClientRect();
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-        
-        // Calculate popup position - center it near the message
-        const popupWidth = 400;
-        const popupHeight = 500;
+
+        // Calculate popup position - position it near the message bubble
+        const popupWidth = 360;
+        const popupHeight = Math.min(500, window.innerHeight * 0.7);
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-        
-        // Try to position popup above or below the message, centered horizontally
-        let top = messageRect.top + scrollTop;
-        let left = messageRect.left + scrollLeft + (messageRect.width / 2) - (popupWidth / 2);
-        
-        // Adjust if popup would go off-screen
+
+        // Find the message bubble (message-content-wrapper or message-content)
+        const messageBubble = messageElement.querySelector('.message-content-wrapper, .message-content, .chat-img, .file-attach-professional');
+        let bubbleRect = messageBubble ? messageBubble.getBoundingClientRect() : messageRect;
+
+        // Position popup below the message bubble, aligned to the right edge for sent messages, left for received
+        const isOwnMessage = messageElement.classList.contains('chats-right');
+        let top = bubbleRect.bottom + 8; // 8px gap below message
+        let left;
+
+        if (isOwnMessage) {
+            // For sent messages: align to right edge of bubble
+            left = bubbleRect.right - popupWidth;
+        } else {
+            // For received messages: align to left edge of bubble
+            left = bubbleRect.left;
+        }
+
+        // Adjust if popup would go off-screen horizontally
         if (left < 10) {
             left = 10;
         } else if (left + popupWidth > viewportWidth - 10) {
             left = viewportWidth - popupWidth - 10;
         }
-        
+
         // Position above message if there's not enough space below
-        if (messageRect.top + popupHeight > viewportHeight - 20) {
-            top = messageRect.top + scrollTop - popupHeight - 10;
-            // If still off-screen, position below but adjust
-            if (top < scrollTop + 10) {
-                top = messageRect.bottom + scrollTop + 10;
+        if (top + popupHeight > viewportHeight - 20) {
+            top = bubbleRect.top - popupHeight - 8; // 8px gap above message
+            // If still off-screen, position below but limit to viewport
+            if (top < 10) {
+                top = bubbleRect.bottom + 8;
                 // Limit to viewport
-                if (top + popupHeight > scrollTop + viewportHeight - 10) {
-                    top = scrollTop + viewportHeight - popupHeight - 10;
+                if (top + popupHeight > viewportHeight - 10) {
+                    top = viewportHeight - popupHeight - 10;
                 }
             }
-        } else {
-            // Position below message
-            top = messageRect.bottom + scrollTop + 10;
         }
-        
+
         // Calculate total reactions count
         const totalReactions = Object.values(reactionsData).reduce((sum, reactions) => sum + reactions.length, 0);
-        
+
         // Get all emojis
         const emojis = Object.keys(reactionsData);
         const defaultEmoji = selectedEmoji || emojis[0] || '❤️';
-        
+
         // Build tabs HTML
         let tabsHtml = '';
         tabsHtml += `<div class="reaction-tab ${selectedEmoji === 'all' || !selectedEmoji ? 'active' : ''}" data-emoji="all" style="padding: 8px 16px; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s;">
             All ${totalReactions}
         </div>`;
-        
+
         emojis.forEach(emoji => {
             const count = reactionsData[emoji].length;
             const isActive = emoji === defaultEmoji && selectedEmoji !== 'all';
@@ -2124,13 +2219,13 @@ class GroupChatManager {
                 ${emoji} ${count}
             </div>`;
         });
-        
+
         // Build users list HTML for current tab
         const currentEmoji = selectedEmoji === 'all' ? 'all' : defaultEmoji;
-        const currentReactions = currentEmoji === 'all' 
+        const currentReactions = currentEmoji === 'all'
             ? Object.values(reactionsData).flat()
             : reactionsData[currentEmoji] || [];
-        
+
         let usersHtml = '';
         currentReactions.forEach(reaction => {
             const user = reaction.user;
@@ -2138,7 +2233,7 @@ class GroupChatManager {
             const avatar = user.avatar || '/build/img/profiles/avatar-06.jpg';
             const name = user.name || user.email || 'Unknown User';
             const displayName = isCurrentUser ? 'You' : name;
-            
+
             usersHtml += `
                 <div class="reaction-user-item" style="display: flex; align-items: center; gap: 12px; padding: 12px; cursor: ${isCurrentUser ? 'pointer' : 'default'}; transition: background 0.2s;" ${isCurrentUser ? `onclick="window.groupChatManager.removeReaction('${messageId}', '${this.escapeHtml(reaction.emoji)}')"` : ''}>
                     <img src="${avatar}" alt="${name}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
@@ -2152,15 +2247,15 @@ class GroupChatManager {
                 </div>
             `;
         });
-        
+
         if (usersHtml === '') {
             usersHtml = '<div style="padding: 20px; text-align: center; color: #999;">No reactions</div>';
         }
-        
-        // Create overlay HTML with positioned popup
+
+        // Create overlay HTML with positioned popup (floating near message, not full-screen modal)
         const overlayHtml = `
             <div id="reactionUsersOverlay" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.3); z-index: 9999; animation: fadeIn 0.2s;">
-                <div class="reaction-popup" style="position: absolute; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); width: ${popupWidth}px; max-width: 90vw; max-height: ${popupHeight}px; display: flex; flex-direction: column; animation: slideUp 0.2s; top: ${top}px; left: ${left}px;">
+                <div class="reaction-popup" style="position: fixed; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); width: ${popupWidth}px; max-width: 90vw; max-height: ${popupHeight}px; display: flex; flex-direction: column; animation: slideUp 0.2s; top: ${top}px; left: ${left}px; z-index: 10000;">
                     <div class="reaction-tabs" style="display: flex; border-bottom: 1px solid #e0e0e0; overflow-x: auto;">
                         ${tabsHtml}
                     </div>
@@ -2200,18 +2295,28 @@ class GroupChatManager {
                 }
             </style>
         `;
-        
+
         // Add overlay to body
         document.body.insertAdjacentHTML('beforeend', overlayHtml);
-        
-        // Add click handler to close overlay when clicking outside
+
+        // Add click handler to close overlay when clicking outside the popup
         const overlay = document.getElementById('reactionUsersOverlay');
+        const popup = overlay.querySelector('.reaction-popup');
+
+        // Close when clicking outside the popup
         overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) {
+            if (!popup.contains(e.target)) {
                 this.closeReactionUsersOverlay();
             }
         });
-        
+
+        // Prevent clicks inside popup from closing it
+        if (popup) {
+            popup.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
+
         // Add tab click handlers
         const tabs = overlay.querySelectorAll('.reaction-tab');
         tabs.forEach(tab => {
@@ -2220,37 +2325,37 @@ class GroupChatManager {
                 this.switchReactionTab(messageId, reactionsData, emoji);
             });
         });
-        
+
         // Handle window resize and scroll to reposition
         const handleReposition = () => {
             if (!messageElement) return;
             const newRect = messageElement.getBoundingClientRect();
             const newScrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const newScrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-            
+
             const popup = overlay.querySelector('.reaction-popup');
             if (popup) {
                 let newTop = newRect.bottom + newScrollTop + 10;
                 let newLeft = newRect.left + newScrollLeft + (newRect.width / 2) - (popupWidth / 2);
-                
+
                 // Adjust if popup would go off-screen
                 if (newLeft < 10) {
                     newLeft = 10;
                 } else if (newLeft + popupWidth > window.innerWidth - 10) {
                     newLeft = window.innerWidth - popupWidth - 10;
                 }
-                
+
                 popup.style.top = newTop + 'px';
                 popup.style.left = newLeft + 'px';
             }
         };
-        
+
         // Store handler for cleanup
         overlay.__repositionHandler = handleReposition;
         window.addEventListener('scroll', handleReposition, true);
         window.addEventListener('resize', handleReposition);
     }
-    
+
     /**
      * Switch reaction tab
      */
@@ -2258,7 +2363,7 @@ class GroupChatManager {
         // Update active tab
         const overlay = document.getElementById('reactionUsersOverlay');
         if (!overlay) return;
-        
+
         const tabs = overlay.querySelectorAll('.reaction-tab');
         tabs.forEach(tab => {
             if (tab.dataset.emoji === emoji) {
@@ -2267,12 +2372,12 @@ class GroupChatManager {
                 tab.classList.remove('active');
             }
         });
-        
+
         // Update users list
-        const currentReactions = emoji === 'all' 
+        const currentReactions = emoji === 'all'
             ? Object.values(reactionsData).flat()
             : reactionsData[emoji] || [];
-        
+
         let usersHtml = '';
         currentReactions.forEach(reaction => {
             const user = reaction.user;
@@ -2280,7 +2385,7 @@ class GroupChatManager {
             const avatar = user.avatar || '/build/img/profiles/avatar-06.jpg';
             const name = user.name || user.email || 'Unknown User';
             const displayName = isCurrentUser ? 'You' : name;
-            
+
             usersHtml += `
                 <div class="reaction-user-item" style="display: flex; align-items: center; gap: 12px; padding: 12px; cursor: ${isCurrentUser ? 'pointer' : 'default'}; transition: background 0.2s;" ${isCurrentUser ? `onclick="window.groupChatManager.removeReaction('${messageId}', '${this.escapeHtml(reaction.emoji)}')"` : ''}>
                     <img src="${avatar}" alt="${name}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
@@ -2294,17 +2399,17 @@ class GroupChatManager {
                 </div>
             `;
         });
-        
+
         if (usersHtml === '') {
             usersHtml = '<div style="padding: 20px; text-align: center; color: #999;">No reactions</div>';
         }
-        
+
         const usersList = overlay.querySelector('.reaction-users-list');
         if (usersList) {
             usersList.innerHTML = usersHtml;
         }
     }
-    
+
     /**
      * Close reaction users overlay
      */
@@ -2316,14 +2421,14 @@ class GroupChatManager {
                 window.removeEventListener('scroll', overlay.__repositionHandler, true);
                 window.removeEventListener('resize', overlay.__repositionHandler);
             }
-            
+
             overlay.style.animation = 'fadeOut 0.2s';
             setTimeout(() => {
                 overlay.remove();
             }, 200);
         }
     }
-    
+
     /**
      * Remove reaction
      */
@@ -2343,7 +2448,7 @@ class GroupChatManager {
             if (data.success && data.reactions) {
                 // Update the message element's reactions
                 this.updateMessageReactions(messageId, data.reactions);
-                
+
                 // Update stored message if available
                 const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
                 if (messageElement) {
@@ -2353,7 +2458,7 @@ class GroupChatManager {
                     messageElement.dataset.reactions = JSON.stringify(data.reactions);
                 }
             }
-            
+
             // Close overlay
             this.closeReactionUsersOverlay();
         } catch (error) {
