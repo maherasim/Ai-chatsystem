@@ -899,7 +899,14 @@ class GroupChatManager {
 
         const messageDiv = document.createElement('div');
         messageDiv.className = `chats ${isOwnMessage ? 'chats-right' : ''}`;
-        messageDiv.setAttribute('data-message-id', message._id || message.id);
+        const messageId = message._id || message.id;
+        messageDiv.setAttribute('data-message-id', messageId);
+        
+        // Store message data on element for easy access
+        messageDiv.__messageData = message;
+        if (message.reactions) {
+            messageDiv.dataset.reactions = JSON.stringify(message.reactions);
+        }
 
         // Safely parse the date for time display
         let messageTime;
@@ -1762,6 +1769,16 @@ class GroupChatManager {
     updateMessageReactions(messageId, reactions) {
         const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
         if (!messageElement) return;
+        
+        // Update stored message data
+        if (messageElement.__messageData) {
+            messageElement.__messageData.reactions = reactions;
+        }
+        if (reactions) {
+            messageElement.dataset.reactions = JSON.stringify(reactions);
+        } else {
+            messageElement.removeAttribute('data-reactions');
+        }
 
         // Group reactions by emoji (store full data)
         const reactionsByEmoji = {};
@@ -1834,82 +1851,514 @@ class GroupChatManager {
      */
     async showReactionUsers(messageId, emoji) {
         try {
-            const response = await fetch(`/api/chat/message/${messageId}/reactions/${encodeURIComponent(emoji)}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
-                },
-            });
-
-            const data = await response.json();
-            if (data.success && data.users) {
-                // Show modal/popup with users who reacted
-                this.showReactionUsersModal(emoji, data.users);
-            } else {
-                console.error('Failed to fetch reaction users:', data.message);
+            // Try to get reactions from the message element in DOM
+            const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
+            let allReactions = [];
+            
+            // Try to get from message element data attribute
+            if (messageElement) {
+                const messageData = messageElement.dataset;
+                if (messageData.reactions) {
+                    try {
+                        allReactions = JSON.parse(messageData.reactions);
+                    } catch (e) {
+                        // Try to get from the message object if stored
+                        const messageObj = messageElement.__messageData;
+                        if (messageObj && messageObj.reactions) {
+                            allReactions = messageObj.reactions;
+                        }
+                    }
+                } else {
+                    // Try to get from stored message object
+                    const messageObj = messageElement.__messageData;
+                    if (messageObj && messageObj.reactions) {
+                        allReactions = messageObj.reactions;
+                    }
+                }
             }
+            
+            // If still no reactions, try to get from current group messages array
+            if (allReactions.length === 0 && this.currentGroupMessages) {
+                const message = this.currentGroupMessages.find(m => 
+                    (m._id || m.id) === messageId
+                );
+                if (message && message.reactions) {
+                    allReactions = message.reactions;
+                }
+            }
+            
+            // If still no reactions, fetch from API by getting all reactions for each emoji
+            if (allReactions.length === 0) {
+                // Fetch message to get all reactions
+                try {
+                    // Get all unique emojis first by checking the reaction items in DOM
+                    const reactionItems = messageElement?.querySelectorAll('.reaction-item');
+                    const emojis = [];
+                    if (reactionItems) {
+                        reactionItems.forEach(item => {
+                            const emojiText = item.textContent.trim().split(/\s/)[0];
+                            if (emojiText) emojis.push(emojiText);
+                        });
+                    }
+                    
+                    // If we have emojis, fetch reactions for each
+                    if (emojis.length > 0) {
+                        const reactionsPromises = emojis.map(async (emojiKey) => {
+                            try {
+                                const response = await fetch(`/api/chat/message/${messageId}/reactions/${encodeURIComponent(emojiKey)}`, {
+                                    method: 'GET',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                                    },
+                                });
+                                const data = await response.json();
+                                if (data.success && data.users) {
+                                    return data.users.map(user => ({
+                                        user_id: user.id,
+                                        emoji: emojiKey,
+                                        user: user
+                                    }));
+                                }
+                            } catch (e) {
+                                console.warn(`Failed to fetch reactions for ${emojiKey}:`, e);
+                            }
+                            return [];
+                        });
+                        
+                        const reactionsArrays = await Promise.all(reactionsPromises);
+                        allReactions = reactionsArrays.flat();
+                    } else {
+                        // Fallback: just fetch for the clicked emoji
+                        const response = await fetch(`/api/chat/message/${messageId}/reactions/${encodeURIComponent(emoji)}`, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                            },
+                        });
+                        const data = await response.json();
+                        if (data.success && data.users) {
+                            allReactions = data.users.map(user => ({
+                                user_id: user.id,
+                                emoji: emoji,
+                                user: user
+                            }));
+                        }
+                    }
+                } catch (e) {
+                    console.error('Failed to fetch reactions from API:', e);
+                }
+            }
+            
+            // Group reactions by emoji
+            const reactionsByEmoji = {};
+            allReactions.forEach(reaction => {
+                const emojiKey = reaction.emoji || emoji;
+                if (!reactionsByEmoji[emojiKey]) {
+                    reactionsByEmoji[emojiKey] = [];
+                }
+                reactionsByEmoji[emojiKey].push(reaction);
+            });
+            
+            // Fetch user details for reactions that don't have them
+            const reactionsNeedingUsers = allReactions.filter(r => !r.user || !r.user.avatar);
+            if (reactionsNeedingUsers.length > 0) {
+                const userIds = [...new Set(reactionsNeedingUsers.map(r => r.user_id).filter(Boolean))];
+                const usersMap = await this.fetchUsersDetails(userIds);
+                
+                // Update reactions with user details
+                allReactions.forEach(reaction => {
+                    if (!reaction.user || !reaction.user.avatar) {
+                        const userId = reaction.user_id;
+                        if (usersMap[userId]) {
+                            reaction.user = usersMap[userId];
+                        } else if (!reaction.user) {
+                            reaction.user = {
+                                id: userId,
+                                name: 'Unknown User',
+                                email: '',
+                                avatar: '/build/img/profiles/avatar-06.jpg'
+                            };
+                        }
+                    }
+                });
+            }
+            
+            // Build reactions data structure
+            const reactionsData = {};
+            Object.keys(reactionsByEmoji).forEach(emojiKey => {
+                reactionsData[emojiKey] = reactionsByEmoji[emojiKey].map(reaction => {
+                    const userId = reaction.user_id;
+                    const user = reaction.user || {
+                        id: userId,
+                        name: 'Unknown User',
+                        email: '',
+                        avatar: '/build/img/profiles/avatar-06.jpg'
+                    };
+                    return {
+                        user_id: userId,
+                        emoji: emojiKey,
+                        user: user
+                    };
+                });
+            });
+            
+            // Show overlay popup
+            this.showReactionUsersOverlay(messageId, reactionsData, emoji);
         } catch (error) {
             console.error('Error fetching reaction users:', error);
         }
     }
+    
+    /**
+     * Fetch user details for given user IDs
+     */
+    async fetchUsersDetails(userIds) {
+        if (!userIds || userIds.length === 0) return {};
+        
+        const usersMap = {};
+        const promises = userIds.map(async (userId) => {
+            try {
+                const response = await fetch(`/api/user/${userId}/profile`, {
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    },
+                });
+                const data = await response.json();
+                if (data.success && data.user) {
+                    usersMap[userId] = data.user;
+                }
+            } catch (error) {
+                console.warn(`Failed to fetch user ${userId}:`, error);
+            }
+        });
+        
+        await Promise.all(promises);
+        return usersMap;
+    }
+    
+    /**
+     * Get current group messages from memory/DOM
+     */
+    getCurrentGroupMessages() {
+        // Try to get from a stored messages array if available
+        if (this.currentGroupMessages) {
+            return this.currentGroupMessages;
+        }
+        return [];
+    }
 
     /**
-     * Show modal with users who reacted
+     * Show overlay popup with users who reacted (WhatsApp style)
      */
-    showReactionUsersModal(emoji, users) {
-        // Create modal HTML
+    showReactionUsersOverlay(messageId, reactionsData, selectedEmoji) {
+        // Remove existing overlay if any
+        const existingOverlay = document.getElementById('reactionUsersOverlay');
+        if (existingOverlay) {
+            existingOverlay.remove();
+        }
+        
+        // Find the message element to position popup near it
+        const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
+        if (!messageElement) {
+            console.warn('Message element not found for positioning popup');
+            return;
+        }
+        
+        // Get message element position
+        const messageRect = messageElement.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+        
+        // Calculate popup position - center it near the message
+        const popupWidth = 400;
+        const popupHeight = 500;
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        
+        // Try to position popup above or below the message, centered horizontally
+        let top = messageRect.top + scrollTop;
+        let left = messageRect.left + scrollLeft + (messageRect.width / 2) - (popupWidth / 2);
+        
+        // Adjust if popup would go off-screen
+        if (left < 10) {
+            left = 10;
+        } else if (left + popupWidth > viewportWidth - 10) {
+            left = viewportWidth - popupWidth - 10;
+        }
+        
+        // Position above message if there's not enough space below
+        if (messageRect.top + popupHeight > viewportHeight - 20) {
+            top = messageRect.top + scrollTop - popupHeight - 10;
+            // If still off-screen, position below but adjust
+            if (top < scrollTop + 10) {
+                top = messageRect.bottom + scrollTop + 10;
+                // Limit to viewport
+                if (top + popupHeight > scrollTop + viewportHeight - 10) {
+                    top = scrollTop + viewportHeight - popupHeight - 10;
+                }
+            }
+        } else {
+            // Position below message
+            top = messageRect.bottom + scrollTop + 10;
+        }
+        
+        // Calculate total reactions count
+        const totalReactions = Object.values(reactionsData).reduce((sum, reactions) => sum + reactions.length, 0);
+        
+        // Get all emojis
+        const emojis = Object.keys(reactionsData);
+        const defaultEmoji = selectedEmoji || emojis[0] || '❤️';
+        
+        // Build tabs HTML
+        let tabsHtml = '';
+        tabsHtml += `<div class="reaction-tab ${selectedEmoji === 'all' || !selectedEmoji ? 'active' : ''}" data-emoji="all" style="padding: 8px 16px; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s;">
+            All ${totalReactions}
+        </div>`;
+        
+        emojis.forEach(emoji => {
+            const count = reactionsData[emoji].length;
+            const isActive = emoji === defaultEmoji && selectedEmoji !== 'all';
+            tabsHtml += `<div class="reaction-tab ${isActive ? 'active' : ''}" data-emoji="${this.escapeHtml(emoji)}" style="padding: 8px 16px; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s;">
+                ${emoji} ${count}
+            </div>`;
+        });
+        
+        // Build users list HTML for current tab
+        const currentEmoji = selectedEmoji === 'all' ? 'all' : defaultEmoji;
+        const currentReactions = currentEmoji === 'all' 
+            ? Object.values(reactionsData).flat()
+            : reactionsData[currentEmoji] || [];
+        
         let usersHtml = '';
-        users.forEach(user => {
+        currentReactions.forEach(reaction => {
+            const user = reaction.user;
+            const isCurrentUser = user.id === this.currentUserId;
             const avatar = user.avatar || '/build/img/profiles/avatar-06.jpg';
             const name = user.name || user.email || 'Unknown User';
+            const displayName = isCurrentUser ? 'You' : name;
+            
             usersHtml += `
-                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid #f0f0f0;">
+                <div class="reaction-user-item" style="display: flex; align-items: center; gap: 12px; padding: 12px; cursor: ${isCurrentUser ? 'pointer' : 'default'}; transition: background 0.2s;" ${isCurrentUser ? `onclick="window.groupChatManager.removeReaction('${messageId}', '${this.escapeHtml(reaction.emoji)}')"` : ''}>
                     <img src="${avatar}" alt="${name}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                     <div style="flex: 1;">
-                        <div style="font-weight: 500; color: #212529;">${this.escapeHtml(name)}</div>
-                        ${user.email && user.email !== name ? `<div style="font-size: 12px; color: #6c757d;">${this.escapeHtml(user.email)}</div>` : ''}
+                        <div style="font-weight: 500; color: #212529; display: flex; align-items: center; gap: 8px;">
+                            <span>${this.escapeHtml(displayName)}</span>
+                            ${isCurrentUser ? `<span style="font-size: 12px; color: #999; font-weight: normal;">Click to remove</span>` : ''}
+                        </div>
                     </div>
+                    <span style="font-size: 18px;">${reaction.emoji}</span>
                 </div>
             `;
         });
-
-        const modalHtml = `
-            <div class="modal fade" id="reactionUsersModal" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">
-                                <span style="font-size: 20px; margin-right: 8px;">${emoji}</span>
-                                ${users.length} ${users.length === 1 ? 'person' : 'people'} reacted
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body" style="max-height: 400px; overflow-y: auto; padding: 0;">
-                            ${usersHtml}
-                        </div>
+        
+        if (usersHtml === '') {
+            usersHtml = '<div style="padding: 20px; text-align: center; color: #999;">No reactions</div>';
+        }
+        
+        // Create overlay HTML with positioned popup
+        const overlayHtml = `
+            <div id="reactionUsersOverlay" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.3); z-index: 9999; animation: fadeIn 0.2s;">
+                <div class="reaction-popup" style="position: absolute; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); width: ${popupWidth}px; max-width: 90vw; max-height: ${popupHeight}px; display: flex; flex-direction: column; animation: slideUp 0.2s; top: ${top}px; left: ${left}px;">
+                    <div class="reaction-tabs" style="display: flex; border-bottom: 1px solid #e0e0e0; overflow-x: auto;">
+                        ${tabsHtml}
+                    </div>
+                    <div class="reaction-users-list" style="flex: 1; overflow-y: auto; max-height: 400px;">
+                        ${usersHtml}
                     </div>
                 </div>
             </div>
+            <style>
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                @keyframes fadeOut {
+                    from { opacity: 1; }
+                    to { opacity: 0; }
+                }
+                @keyframes slideUp {
+                    from { transform: translateY(20px); opacity: 0; }
+                    to { transform: translateY(0); opacity: 1; }
+                }
+                .reaction-tab {
+                    white-space: nowrap;
+                    font-size: 14px;
+                    color: #666;
+                }
+                .reaction-tab.active {
+                    color: #25D366;
+                    border-bottom-color: #25D366 !important;
+                    font-weight: 500;
+                }
+                .reaction-user-item:hover {
+                    background: #f5f5f5 !important;
+                }
+                .reaction-popup {
+                    overflow: hidden;
+                }
+            </style>
         `;
-
-        // Remove existing modal if any
-        const existingModal = document.getElementById('reactionUsersModal');
-        if (existingModal) {
-            existingModal.remove();
-        }
-
-        // Add modal to body
-        document.body.insertAdjacentHTML('beforeend', modalHtml);
-
-        // Show modal
-        const modal = new bootstrap.Modal(document.getElementById('reactionUsersModal'));
-        modal.show();
-
-        // Remove modal from DOM when hidden
-        document.getElementById('reactionUsersModal').addEventListener('hidden.bs.modal', function() {
-            this.remove();
+        
+        // Add overlay to body
+        document.body.insertAdjacentHTML('beforeend', overlayHtml);
+        
+        // Add click handler to close overlay when clicking outside
+        const overlay = document.getElementById('reactionUsersOverlay');
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                this.closeReactionUsersOverlay();
+            }
         });
+        
+        // Add tab click handlers
+        const tabs = overlay.querySelectorAll('.reaction-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const emoji = tab.dataset.emoji;
+                this.switchReactionTab(messageId, reactionsData, emoji);
+            });
+        });
+        
+        // Handle window resize and scroll to reposition
+        const handleReposition = () => {
+            if (!messageElement) return;
+            const newRect = messageElement.getBoundingClientRect();
+            const newScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const newScrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            
+            const popup = overlay.querySelector('.reaction-popup');
+            if (popup) {
+                let newTop = newRect.bottom + newScrollTop + 10;
+                let newLeft = newRect.left + newScrollLeft + (newRect.width / 2) - (popupWidth / 2);
+                
+                // Adjust if popup would go off-screen
+                if (newLeft < 10) {
+                    newLeft = 10;
+                } else if (newLeft + popupWidth > window.innerWidth - 10) {
+                    newLeft = window.innerWidth - popupWidth - 10;
+                }
+                
+                popup.style.top = newTop + 'px';
+                popup.style.left = newLeft + 'px';
+            }
+        };
+        
+        // Store handler for cleanup
+        overlay.__repositionHandler = handleReposition;
+        window.addEventListener('scroll', handleReposition, true);
+        window.addEventListener('resize', handleReposition);
+    }
+    
+    /**
+     * Switch reaction tab
+     */
+    switchReactionTab(messageId, reactionsData, emoji) {
+        // Update active tab
+        const overlay = document.getElementById('reactionUsersOverlay');
+        if (!overlay) return;
+        
+        const tabs = overlay.querySelectorAll('.reaction-tab');
+        tabs.forEach(tab => {
+            if (tab.dataset.emoji === emoji) {
+                tab.classList.add('active');
+            } else {
+                tab.classList.remove('active');
+            }
+        });
+        
+        // Update users list
+        const currentReactions = emoji === 'all' 
+            ? Object.values(reactionsData).flat()
+            : reactionsData[emoji] || [];
+        
+        let usersHtml = '';
+        currentReactions.forEach(reaction => {
+            const user = reaction.user;
+            const isCurrentUser = user.id === this.currentUserId;
+            const avatar = user.avatar || '/build/img/profiles/avatar-06.jpg';
+            const name = user.name || user.email || 'Unknown User';
+            const displayName = isCurrentUser ? 'You' : name;
+            
+            usersHtml += `
+                <div class="reaction-user-item" style="display: flex; align-items: center; gap: 12px; padding: 12px; cursor: ${isCurrentUser ? 'pointer' : 'default'}; transition: background 0.2s;" ${isCurrentUser ? `onclick="window.groupChatManager.removeReaction('${messageId}', '${this.escapeHtml(reaction.emoji)}')"` : ''}>
+                    <img src="${avatar}" alt="${name}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 500; color: #212529; display: flex; align-items: center; gap: 8px;">
+                            <span>${this.escapeHtml(displayName)}</span>
+                            ${isCurrentUser ? `<span style="font-size: 12px; color: #999; font-weight: normal;">Click to remove</span>` : ''}
+                        </div>
+                    </div>
+                    <span style="font-size: 18px;">${reaction.emoji}</span>
+                </div>
+            `;
+        });
+        
+        if (usersHtml === '') {
+            usersHtml = '<div style="padding: 20px; text-align: center; color: #999;">No reactions</div>';
+        }
+        
+        const usersList = overlay.querySelector('.reaction-users-list');
+        if (usersList) {
+            usersList.innerHTML = usersHtml;
+        }
+    }
+    
+    /**
+     * Close reaction users overlay
+     */
+    closeReactionUsersOverlay() {
+        const overlay = document.getElementById('reactionUsersOverlay');
+        if (overlay) {
+            // Remove event listeners
+            if (overlay.__repositionHandler) {
+                window.removeEventListener('scroll', overlay.__repositionHandler, true);
+                window.removeEventListener('resize', overlay.__repositionHandler);
+            }
+            
+            overlay.style.animation = 'fadeOut 0.2s';
+            setTimeout(() => {
+                overlay.remove();
+            }, 200);
+        }
+    }
+    
+    /**
+     * Remove reaction
+     */
+    async removeReaction(messageId, emoji) {
+        try {
+            // Add the same reaction to remove it (toggle behavior)
+            const response = await fetch(`/api/chat/message/${messageId}/reaction`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                },
+                body: JSON.stringify({ emoji }),
+            });
+
+            const data = await response.json();
+            if (data.success && data.reactions) {
+                // Update the message element's reactions
+                this.updateMessageReactions(messageId, data.reactions);
+                
+                // Update stored message if available
+                const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
+                if (messageElement) {
+                    if (messageElement.__messageData) {
+                        messageElement.__messageData.reactions = data.reactions;
+                    }
+                    messageElement.dataset.reactions = JSON.stringify(data.reactions);
+                }
+            }
+            
+            // Close overlay
+            this.closeReactionUsersOverlay();
+        } catch (error) {
+            console.error('Failed to remove reaction:', error);
+        }
     }
 
     /**
