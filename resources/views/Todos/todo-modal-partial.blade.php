@@ -122,6 +122,13 @@
                             <div id="dot_user2" style="width: 20px; height: 5px; border-radius: 8px; background: #d4d4d4; cursor: pointer;"></div>
                         </div>
                     </div>
+                    
+                    <!-- Hidden members select for form submission -->
+                    <select id="members" multiple name="members[]" style="display: none;">
+                        @foreach($users ?? [] as $cuser)
+                            <option value="{{$cuser->_id}}">{{$cuser->name}}</option>
+                        @endforeach
+                    </select>
 
                     <!-- File upload section -->
                     <div class="" style="background-color:#f7f9fc; border-radius: 12px; padding: 15px; margin-bottom:5px;">

@@ -341,30 +341,6 @@
                             </div>
                             </div>
 
-                    <!-- members online -->
-                    <div style="background: #fff; border-radius: 12px; padding: 12px 16px; margin: 20px; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-                        <!-- Header -->
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <span style="font-weight: 600; color: #2e3a59; font-size: 16px;">Member Online</span>
-                            <i class="bi bi-pin-fill" style="color: red; font-size: 18px; transform: rotate(45deg);"></i>
-                        </div>
-                        <!-- Online Admins Container -->
-                        <div id="onlineAdminsContainer" style="display: flex; gap: 12px; overflow-x: auto; padding: 8px 0; -ms-overflow-style: none; scrollbar-width: none;">
-                            <style>
-                                #onlineAdminsContainer::-webkit-scrollbar {
-                                    display: none;
-                                }
-                            </style>
-                            <!-- Loader (shown initially) -->
-                            <div id="onlineAdminsLoader" style="text-align: center; padding: 10px; width: 100%;">
-                                <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading..." style="width: 40px;">
-                            </div>
-                            <!-- Empty state (hidden initially) -->
-                            <div id="onlineAdminsEmpty" style="text-align: center; padding: 10px; width: 100%; display: none; color: #7f8ea3; font-size: 13px;">
-                                No admins online
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- archive chat -->
                     <div style="background: #fff; border-radius: 12px; padding: 12px 16px; margin: 20px; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
@@ -631,49 +607,6 @@
                         </div>
                     </div>
                     <!--  -->
-                    <div style="background: #fff; border-radius: 12px; padding: 12px 16px; margin: 20px; position: relative;margin-bottom: 0px;">
-
-                        <!-- Header -->
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
-                            <span style="font-weight: 600; color: #2e3a59; font-size: 16px;">Member Online</span>
-                            <i class="bi bi-pin-fill" style="color: red; font-size: 18px; transform: rotate(45deg);"></i>
-                        </div>
-
-                        <!-- Avatars Row -->
-                        <div style="display: flex; gap: 12px;">
-
-                            <!-- Avatar 1 -->
-                            <div style="position: relative;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 50px; height: 50px;   padding: 5px;">
-
-                            </div>
-
-                            <!-- Avatar 2 -->
-                            <div style="position: relative;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 50px; height: 50px; padding: 5px;">
-
-                            </div>
-
-                            <!-- Avatar 3 -->
-                            <div style="position: relative;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 50px; height: 50px;  padding: 5px;">
-
-                            </div>
-
-                            <!-- Avatar 4 -->
-                            <div style="position: relative;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 50px; height: 50px;  padding: 5px;">
-
-                            </div>
-
-                            <!-- Avatar 5 -->
-                            <div style="position: relative;">
-                                <img src="{{ asset('build/img/avatar.svg') }}" alt="Avatar" style="width: 50px; height: 50px;  padding: 5px;">
-
-                            </div>
-
-                        </div>
-                    </div>
                     <!-- Online user -->
 
                     <!-- /Online Contacts -->
@@ -3360,83 +3293,6 @@
         }, 500);
     });
 
-    /**
-     * Load and display all users with online/offline status
-     */
-    async function loadAllUsers() {
-        const container = document.getElementById('onlineAdminsContainer');
-        const loader = document.getElementById('onlineAdminsLoader');
-        const emptyState = document.getElementById('onlineAdminsEmpty');
-        
-        if (!container) return;
-
-        try {
-            const response = await fetch('/api/chat/all-users', {
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch users');
-            }
-
-            const data = await response.json();
-            
-            // Hide loader
-            if (loader) loader.style.display = 'none';
-            if (emptyState) emptyState.style.display = 'none';
-
-            if (data.success && data.members && data.members.length > 0) {
-                // Clear container
-                container.innerHTML = '';
-
-                // Display each user (both online and offline)
-                data.members.forEach(member => {
-                    const memberCard = document.createElement('div');
-                    memberCard.style.cssText = 'flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; cursor: pointer;';
-                    
-                    // Show green circle only if user is online
-                    const onlineIndicator = member.is_online 
-                        ? '<div style="position: absolute; bottom: 2px; right: 2px; width: 14px; height: 14px; background: #00c853; border: 2px solid white; border-radius: 50%;"></div>'
-                        : '';
-                    
-                    memberCard.innerHTML = `
-                        <div style="position: relative; margin-bottom: 6px;">
-                            <img src="${member.avatar || '{{ asset("build/img/profile.svg") }}'}" 
-                                 alt="${member.name}" 
-                                 style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e0e0;">
-                            ${onlineIndicator}
-                        </div>
-                        <span style="font-size: 12px; color: #2e3a59; font-weight: 500; text-align: center; max-width: 60px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${member.name}</span>
-                    `;
-                    
-                    container.appendChild(memberCard);
-                });
-            } else {
-                // Show empty state
-                if (emptyState) {
-                    emptyState.style.display = 'block';
-                    container.appendChild(emptyState);
-                }
-            }
-        } catch (error) {
-            console.error('Error loading users:', error);
-            if (loader) loader.style.display = 'none';
-            if (emptyState) {
-                emptyState.style.display = 'block';
-                emptyState.textContent = 'Failed to load';
-            }
-        }
-    }
-
-    // Load all users on page load
-    document.addEventListener('DOMContentLoaded', () => {
-        loadAllUsers();
-        
-        // Refresh users every 30 seconds
-        setInterval(loadAllUsers, 30000);
-    });
 
     // ============================================
     // TEST SCRIPT: Generate Chat Messages

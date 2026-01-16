@@ -3572,20 +3572,64 @@ class GroupChatManager {
         // Escape HTML first
         const escaped = this.escapeHtml(content);
 
-        // Replace @mentions with highlighted spans
+        // First, convert URLs to clickable links
+        // Pattern: http://, https://, or www. followed by valid URL characters
+        // This regex matches URLs with or without protocol
+        const urlRegex = /(https?:\/\/[^\s<>"{}|\\^`\[\]]+|www\.[^\s<>"{}|\\^`\[\]]+|[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}[^\s<>"{}|\\^`\[\]]*)/gi;
+        
+        let processed = escaped.replace(urlRegex, (url) => {
+            // Ensure URL has protocol
+            let href = url;
+            if (!href.match(/^https?:\/\//i)) {
+                if (href.match(/^www\./i)) {
+                    href = 'https://' + href;
+                } else {
+                    href = 'https://' + href;
+                }
+            }
+            
+            // Create clickable link that opens in new tab
+            // Use a lighter blue color with better contrast and underline for visibility
+            return `<a href="${this.escapeHtml(href)}" target="_blank" rel="noopener noreferrer" style="color: #4A90E2; text-decoration: underline; word-break: break-all; font-weight: 500; opacity: 0.9;" onclick="event.stopPropagation();">${this.escapeHtml(url)}</a>`;
+        });
+
+        // Then, replace @mentions with highlighted spans
         // Pattern: @ followed by name (letters, numbers, spaces, hyphens, underscores, dots)
         // Stop at space, newline, punctuation (except @), or end of string
         // This matches: @username, @John Doe, @user.name, etc.
+        // But don't match if it's inside a link tag
         const mentionRegex = /@([\w\s\-\.]+?)(?=\s|$|@|[^\w\s\-\.]|[\n\r])/g;
-
-        return escaped.replace(mentionRegex, (match, name) => {
-            // Trim the name and create highlighted mention
-            const trimmedName = name.trim();
-            if (trimmedName && trimmedName.length > 0) {
-                return `<span class="mention-highlight" style="color: #1a73e8; font-weight: 600; background-color: rgba(26, 115, 232, 0.1); padding: 2px 6px; border-radius: 4px; display: inline-block;">@${this.escapeHtml(trimmedName)}</span>`;
+        let result = processed;
+        let match;
+        const replacements = [];
+        
+        // First, collect all mentions with their positions
+        while ((match = mentionRegex.exec(processed)) !== null) {
+            const matchIndex = match.index;
+            const beforeMatch = processed.substring(0, matchIndex);
+            const lastOpenTag = beforeMatch.lastIndexOf('<a');
+            const lastCloseTag = beforeMatch.lastIndexOf('</a>');
+            
+            // If not inside a link tag, mark for replacement
+            if (lastOpenTag <= lastCloseTag) {
+                const trimmedName = match[1].trim();
+                if (trimmedName && trimmedName.length > 0) {
+                    replacements.push({
+                        index: matchIndex,
+                        length: match[0].length,
+                        replacement: `<span class="mention-highlight" style="color: #1a73e8; font-weight: 600; background-color: rgba(26, 115, 232, 0.1); padding: 2px 6px; border-radius: 4px; display: inline-block;">@${this.escapeHtml(trimmedName)}</span>`
+                    });
+                }
             }
-            return match;
-        });
+        }
+        
+        // Apply replacements in reverse order to maintain indices
+        for (let i = replacements.length - 1; i >= 0; i--) {
+            const rep = replacements[i];
+            result = result.substring(0, rep.index) + rep.replacement + result.substring(rep.index + rep.length);
+        }
+        
+        return result;
     }
 
     /**

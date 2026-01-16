@@ -581,6 +581,37 @@
         min-height: unset !important;
         line-height: 1.4 !important; /* Tighter line height to reduce height */
     }
+    /* Link styling for better visibility */
+    .chats .message-content a,
+    .chats-right .message-content a {
+        color: #4A90E2 !important;
+        text-decoration: underline !important;
+        font-weight: 500 !important;
+        opacity: 0.95 !important;
+        transition: opacity 0.2s ease !important;
+    }
+    
+    .chats .message-content a:hover,
+    .chats-right .message-content a:hover {
+        opacity: 1 !important;
+        text-decoration: underline !important;
+    }
+    
+    /* For sent messages (blue background), make links lighter/white */
+    .chats-right .chat-info > .message-content a {
+        color: #E3F2FD !important;
+        text-decoration: underline !important;
+        background-color: rgba(255, 255, 255, 0.15) !important;
+        padding: 1px 4px !important;
+        border-radius: 3px !important;
+        font-weight: 500 !important;
+    }
+    
+    .chats-right .chat-info > .message-content a:hover {
+        background-color: rgba(255, 255, 255, 0.25) !important;
+        color: #FFFFFF !important;
+    }
+
     .chats.chats-right .chat-time-status {
         text-align: right !important;
         margin-top: 2px !important;
@@ -937,9 +968,25 @@
                     </div>
                 </div>
 
-                <!-- CENTER: Chat Options -->
-                <div class="chat-options">
-                    <ul class="d-flex align-items-center gap-3 list-unstyled mb-0">      </ul>
+                <!-- CENTER: Online Members -->
+                <div class="chat-options" style="flex: 1; display: flex; justify-content: center; overflow: hidden;">
+                    <div id="onlineAdminsContainer" style="display: flex; gap: 12px; overflow-x: auto; padding: 4px 0; -ms-overflow-style: none; scrollbar-width: none; max-width: 100%;">
+                        <style>
+                            #onlineAdminsContainer::-webkit-scrollbar {
+                                display: none;
+                            }
+                        </style>
+                        <!-- Loader (shown initially) -->
+                        <div id="onlineAdminsLoader" style="text-align: center; padding: 5px; width: 100%;">
+                            <img src="{{ asset('assets/spin-loader.gif') }}" alt="Loading..." style="width: 25px;">
+                        </div>
+                        <!-- Empty state (hidden initially) -->
+                        <div id="onlineAdminsEmpty" style="text-align: center; padding: 5px; width: 100%; display: none; color: #7f8ea3; font-size: 11px; white-space: nowrap;">
+                            No admins online
+                        </div>
+                        <!-- Members List Wrapper -->
+                        <div id="onlineAdminsList" style="display: flex; gap: 12px;"></div>
+                    </div>
                 </div>
 
  
@@ -2388,8 +2435,99 @@
         }, 500);
     });
 
-    // Todo Modal JavaScript Handlers
+
+    /**
+     * Load and display all users with online/offline status in the header
+     */
+    async function loadAllUsers() {
+        const listWrapper = document.getElementById('onlineAdminsList');
+        const loader = document.getElementById('onlineAdminsLoader');
+        const emptyState = document.getElementById('onlineAdminsEmpty');
+        
+        if (!listWrapper) {
+            console.warn('onlineAdminsList element not found');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/chat/all-users', {
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    'Accept': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            console.log('Users data received:', data);
+            
+            // Hide loader
+            if (loader) loader.style.display = 'none';
+
+            if (data.success && data.members && Array.isArray(data.members) && data.members.length > 0) {
+                if (emptyState) emptyState.style.display = 'none';
+                
+                // Clear current list
+                listWrapper.innerHTML = '';
+                const fragment = document.createDocumentFragment();
+                
+                data.members.forEach(member => {
+                    const memberCard = document.createElement('div');
+                    memberCard.style.cssText = 'flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; cursor: pointer; min-width: 50px;';
+                    
+                    const onlineIndicator = member.is_online 
+                        ? '<div style="position: absolute; bottom: 1px; right: 1px; width: 10px; height: 10px; background: #00c853; border: 1.5px solid white; border-radius: 50%;"></div>'
+                        : '';
+                    
+                    const defaultAvatar = '{{ asset("build/img/profile.svg") }}';
+                    const avatarUrl = member.avatar || defaultAvatar;
+                    const memberName = member.name || member.email || 'User';
+                    
+                    memberCard.innerHTML = `
+                        <div style="position: relative; margin-bottom: 2px;">
+                            <img src="${avatarUrl}" 
+                                 alt="${memberName}" 
+                                 style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 1.5px solid #e0e0e0;"
+                                 onerror="this.onerror=null; this.src='${defaultAvatar}';">
+                            ${onlineIndicator}
+                        </div>
+                        <span style="font-size: 10px; color: #2e3a59; font-weight: 500; text-align: center; max-width: 45px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${memberName}</span>
+                    `;
+                    
+                    fragment.appendChild(memberCard);
+                });
+                listWrapper.appendChild(fragment);
+                console.log(`Loaded ${data.members.length} users`);
+            } else {
+                listWrapper.innerHTML = '';
+                if (emptyState) {
+                    emptyState.style.display = 'block';
+                    emptyState.textContent = 'No users found';
+                }
+            }
+        } catch (error) {
+            console.error('Error loading users:', error);
+            if (loader) loader.style.display = 'none';
+            if (emptyState) {
+                emptyState.style.display = 'block';
+                emptyState.textContent = 'Failed to load';
+            }
+            if (listWrapper) {
+                listWrapper.innerHTML = '';
+            }
+        }
+    }
+
+    // Initialize logic - merge with existing DOMContentLoaded
     document.addEventListener('DOMContentLoaded', function() {
+        // Load online users
+        loadAllUsers();
+        setInterval(loadAllUsers, 30000);
+        
+        // Initialize selectedUsers if not exists
         // Initialize selectedUsers if not exists
         if (!window.selectedUsers) {
             window.selectedUsers = [];
@@ -2524,17 +2662,25 @@
                         if (!window.selectedUsers.includes(userId)) {
                             window.selectedUsers.push(userId);
                         }
-                        const membersSelect = document.getElementById('members');
-                        if (membersSelect) {
-                            let option = membersSelect.querySelector(`option[value="${userId}"]`);
-                            if (option) option.selected = true;
-                        }
                     }
                 }
                 
+                // Update selected_user hidden field
                 const selectedUserInput = document.getElementById('selected_user');
                 if (selectedUserInput) {
                     selectedUserInput.value = window.selectedUsers.join(',');
+                }
+                
+                // Ensure members select is synced with window.selectedUsers
+                const membersSelect = document.getElementById('members');
+                if (membersSelect) {
+                    // Clear all first
+                    membersSelect.querySelectorAll('option').forEach(opt => opt.selected = false);
+                    // Select all users in window.selectedUsers
+                    window.selectedUsers.forEach(uid => {
+                        const option = membersSelect.querySelector(`option[value="${uid}"]`);
+                        if (option) option.selected = true;
+                    });
                 }
             });
         });
@@ -2623,37 +2769,89 @@
                 if (todoVisibility === 'shared') {
                     const activeUsers = document.querySelectorAll('.user_div.user_active');
                     if (activeUsers.length === 0) {
-                        alert('Please select at least one user for Shared ToDo.');
+                        alert('Missing required field: Please select at least one user for Shared ToDo.');
                         return;
                     }
+                    // Sync members select for shared todos (will be synced again before submission)
                     const membersSelect = document.getElementById('members');
                     if (membersSelect) {
                         membersSelect.querySelectorAll('option').forEach(opt => opt.selected = false);
                         activeUsers.forEach(userDiv => {
                             const userId = userDiv.getAttribute('data-user-id');
-                            const option = membersSelect.querySelector(`option[value="${userId}"]`);
-                            if (option) {
-                                option.selected = true;
+                            if (userId) {
+                                const option = membersSelect.querySelector(`option[value="${userId}"]`);
+                                if (option) {
+                                    option.selected = true;
+                                }
                             }
                         });
                     }
+                    
+                    // Check project and team for shared todos
+                    // The dropdowns use select_project and select_team IDs
+                    const projectEl = document.getElementById('select_project');
+                    const teamEl = document.getElementById('select_team');
+                    const project = projectEl?.value;
+                    const team = teamEl?.value;
+                    
+                    const missingSharedFields = [];
+                    if (!project || project === '') missingSharedFields.push('Project');
+                    if (!team || team === '') missingSharedFields.push('Team');
+                    
+                    if (missingSharedFields.length > 0) {
+                        alert('Missing required fields for Shared ToDo:\n- ' + missingSharedFields.join('\n- '));
+                        return;
+                    }
+                    
+                    // Copy values to form fields with name attributes for submission
+                    // Check if there's a select with name="project" or create hidden inputs
+                    let projectInput = form.querySelector('select[name="project"]');
+                    if (!projectInput) {
+                        projectInput = document.createElement('input');
+                        projectInput.type = 'hidden';
+                        projectInput.name = 'project';
+                        form.appendChild(projectInput);
+                    }
+                    projectInput.value = project;
+                    
+                    let teamInput = form.querySelector('select[name="team"]');
+                    if (!teamInput) {
+                        teamInput = document.createElement('input');
+                        teamInput.type = 'hidden';
+                        teamInput.name = 'team';
+                        form.appendChild(teamInput);
+                    }
+                    teamInput.value = team;
                 }
 
+                // Check scheduled todo fields individually
                 if (todoType === 'scheduled') {
                     const startDate = document.getElementById('dateInput')?.value;
                     const endDate = document.getElementById('enddateInput')?.value;
                     const endTime = document.getElementById('endTimeSelect')?.value;
-                    if (!startDate || !endDate || !endTime) {
-                        alert('Please fill all date and time fields for Scheduled ToDo.');
+                    
+                    const missingFields = [];
+                    if (!startDate) missingFields.push('Start Date');
+                    if (!endDate) missingFields.push('Deliver Date');
+                    if (!endTime) missingFields.push('Deliver Time');
+                    
+                    if (missingFields.length > 0) {
+                        alert('Missing required fields for Scheduled ToDo:\n- ' + missingFields.join('\n- '));
                         return;
                     }
                 } else if (!timeHidden) {
-                    alert('Please select delivery time for Today ToDo.');
+                    alert('Missing required field: Please select delivery time for Today ToDo.');
                     return;
                 }
 
-                if (!title || !priorityHidden || !reminderHidden) {
-                    alert('Please fill all required fields before submitting.');
+                // Check required fields individually and show specific errors
+                const missingRequiredFields = [];
+                if (!title) missingRequiredFields.push('Todo Name/Title');
+                if (!priorityHidden) missingRequiredFields.push('Priority');
+                if (!reminderHidden) missingRequiredFields.push('Reminder');
+                
+                if (missingRequiredFields.length > 0) {
+                    alert('Missing required fields:\n- ' + missingRequiredFields.join('\n- '));
                     return;
                 }
 
@@ -2670,6 +2868,118 @@
                 }
                 if (endTimeSelect && endTimeSelect.value) {
                     document.getElementById('endTimeHidden').value = endTimeSelect.value;
+                }
+                
+                // Copy project and team values to form fields if they exist
+                if (todoVisibility === 'shared') {
+                    const selectProject = document.getElementById('select_project');
+                    const selectTeam = document.getElementById('select_team');
+                    
+                    // Check if form has fields with name="project" and name="team"
+                    let projectField = form.querySelector('[name="project"]');
+                    let teamField = form.querySelector('[name="team"]');
+                    
+                    // If they don't exist, create hidden inputs
+                    if (!projectField && selectProject) {
+                        projectField = document.createElement('input');
+                        projectField.type = 'hidden';
+                        projectField.name = 'project';
+                        form.appendChild(projectField);
+                    }
+                    if (!teamField && selectTeam) {
+                        teamField = document.createElement('input');
+                        teamField.type = 'hidden';
+                        teamField.name = 'team';
+                        form.appendChild(teamField);
+                    }
+                    
+                    // Set values
+                    if (projectField && selectProject) {
+                        projectField.value = selectProject.value;
+                    }
+                    if (teamField && selectTeam) {
+                        teamField.value = selectTeam.value;
+                    }
+                }
+                
+                // CRITICAL: Ensure members select has all selected users before submission
+                // This must happen for BOTH shared and private todos
+                const membersSelect = document.getElementById('members');
+                if (membersSelect) {
+                    // Clear all selections first
+                    membersSelect.querySelectorAll('option').forEach(opt => opt.selected = false);
+                    
+                    // Get selected users from multiple sources
+                    let selectedUserIds = [];
+                    
+                    // First, try to get from active user divs (most reliable)
+                    const activeUsers = document.querySelectorAll('.user_div.user_active');
+                    if (activeUsers.length > 0) {
+                        activeUsers.forEach(userDiv => {
+                            const userId = userDiv.getAttribute('data-user-id');
+                            if (userId && userId.trim()) {
+                                selectedUserIds.push(String(userId).trim());
+                            }
+                        });
+                    }
+                    
+                    // Fallback: use window.selectedUsers
+                    if (selectedUserIds.length === 0 && window.selectedUsers && Array.isArray(window.selectedUsers) && window.selectedUsers.length > 0) {
+                        selectedUserIds = window.selectedUsers.map(id => String(id).trim()).filter(id => id);
+                    }
+                    
+                    // Also check selected_user hidden field as another fallback
+                    if (selectedUserIds.length === 0) {
+                        const selectedUserInput = document.getElementById('selected_user');
+                        if (selectedUserInput && selectedUserInput.value) {
+                            const userIds = selectedUserInput.value.split(',').map(id => String(id).trim()).filter(id => id);
+                            selectedUserIds = userIds;
+                        }
+                    }
+                    
+                    // Remove duplicates
+                    selectedUserIds = [...new Set(selectedUserIds)];
+                    
+                    // Select all found users in the members select
+                    let selectedCount = 0;
+                    selectedUserIds.forEach(userId => {
+                        // Try exact match first
+                        let option = membersSelect.querySelector(`option[value="${userId}"]`);
+                        if (!option) {
+                            // Try with different quotes
+                            option = membersSelect.querySelector(`option[value='${userId}']`);
+                        }
+                        if (!option) {
+                            // Try to find by iterating all options
+                            const allOptions = Array.from(membersSelect.options);
+                            option = allOptions.find(opt => String(opt.value).trim() === String(userId).trim());
+                        }
+                        if (option) {
+                            option.selected = true;
+                            selectedCount++;
+                        } else {
+                            console.warn(`User option not found for ID: ${userId}`);
+                        }
+                    });
+                    
+                    // Verify the selection worked
+                    const selectedOptions = Array.from(membersSelect.selectedOptions);
+                    console.log('Members sync before submission:', {
+                        selectedUserIds,
+                        selectedCount,
+                        actualSelected: selectedOptions.map(opt => ({value: opt.value, text: opt.text})),
+                        totalOptions: membersSelect.options.length
+                    });
+                    
+                    // Double-check: if we have user IDs but no selected options, something is wrong
+                    if (selectedUserIds.length > 0 && selectedOptions.length === 0) {
+                        console.error('ERROR: User IDs found but no options selected!', {
+                            selectedUserIds,
+                            availableOptions: Array.from(membersSelect.options).map(opt => ({value: opt.value, text: opt.text}))
+                        });
+                    }
+                } else {
+                    console.error('ERROR: Members select field not found!');
                 }
 
                 form.submit();
