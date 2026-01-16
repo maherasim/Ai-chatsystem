@@ -741,13 +741,13 @@ class GroupChatManager {
                         const onlineIndicator = '<div style="position: absolute; bottom: -2px; right: -2px; width: 12px; height: 12px; background: #00c853; border: 2px solid white; border-radius: 50%; z-index: 10;"></div>';
                         
                         memberElement.innerHTML = `
-                            // <div style="position: relative; margin-bottom: 4px;">
-                            //     <img src="${member.avatar || '/build/img/profile.svg'}" 
-                            //          alt="${member.name || member.email}" 
-                            //          style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e0e0;"
-                            //          onerror="this.onerror=null; this.src='/build/img/profile.svg';">
-                            //     ${onlineIndicator}
-                            // </div>
+                            <div style="position: relative; margin-bottom: 4px;">
+                                <img src="${member.avatar || '/build/img/profile.svg'}" 
+                                     alt="${member.name || member.email}" 
+                                     style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e0e0;"
+                                     onerror="this.onerror=null; this.src='/build/img/profile.svg';">
+                                ${onlineIndicator}
+                            </div>
                             <span style="font-size: 11px; color: #2e3a59; font-weight: 500; text-align: center; max-width: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.2;">
                                 ${this.escapeHtml(member.name || member.email || 'User')}
                             </span>
