@@ -704,7 +704,8 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch(form.action, {
             method: "POST",
             body: new FormData(form),
-            headers: { "X-Requested-With": "XMLHttpRequest" }
+            headers: { "X-Requested-With": "XMLHttpRequest" },
+            credentials: 'same-origin'
         })
         .then(res => res.json())
         .then(data => {

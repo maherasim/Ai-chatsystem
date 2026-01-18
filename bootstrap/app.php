@@ -11,6 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Handle reverse proxy (Trust Proxies)
+        $middleware->trustProxies(at: '*');
+        
         // Update user last activity on each request
         $middleware->append(\App\Http\Middleware\UpdateLastActivity::class);
     })

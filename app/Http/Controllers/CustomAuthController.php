@@ -19,9 +19,10 @@ class CustomAuthController extends Controller
       
 public function customLogin(Request $request)
 {
-    $credentials = array_filter($request->only('user_id', 'email', 'password'));
+    $credentials = array_filter(array_map('trim', $request->only('user_id', 'email', 'password')));
 
-    if (!Auth::attempt($credentials)) {
+    // Use $remember = true to ensure session persistence across redirects/proxies
+    if (!Auth::attempt($credentials, true)) {
         return response()->json(['success' => false, 'message' => 'Invalid credentials']);
     }
 
@@ -38,6 +39,7 @@ public function customLogin(Request $request)
 
     //Check if user already completed profile & accepted policy
     if ($user->policy_accepted  && $user->profile_image && $user->card_image) {
+        $request->session()->save();
         return response()->json(['success' => true, 'redirect' => route('home')]);
     }
 

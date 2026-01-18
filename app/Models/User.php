@@ -61,5 +61,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'last_activity' => 'datetime',
         'active' => 'boolean',
+        'policy_accepted' => 'boolean',
+        'agreement_accepted' => 'boolean',
     ];
 }
