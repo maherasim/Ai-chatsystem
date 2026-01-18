@@ -16,13 +16,10 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // Middleware already handles authentication, so user is guaranteed to exist
         $header = Setting::all();
         $setting = Setting::first();
         $user = Auth::user();
-        
-        if (!$user) {
-            return redirect()->route('login');
-        }
         
         $userId = (string) Auth::id();
         

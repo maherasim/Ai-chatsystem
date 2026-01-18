@@ -709,7 +709,8 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(res => res.json())
         .then(data => {
             if (data.success && data.redirect) {
-                window.location.href = data.redirect; // direct login
+                // Use window.location.replace to avoid redirect loop
+                window.location.replace(data.redirect);
             } else if (data.require_info) {
                 // Update CSRF token in everything
                 if (data.csrf_token) {
