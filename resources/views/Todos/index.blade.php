@@ -2821,6 +2821,31 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                         <h5 class="fw-bold" style="color: #1c2233; margin-bottom:8px;">Shared Files</h5>
                         <div class="todo-files-list d-flex flex-column gap-2" style="font-size: 13px;"></div>
                     </div>
+                    
+                    <!-- Video Player Container - Full Screen Cover Style (hidden by default) -->
+                    <div id="todoVideoPlayerContainer" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 9999; overflow: hidden;">
+                        <div style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column;">
+                            <!-- Video Header -->
+                            <div class="d-flex justify-content-between align-items-center p-3" style="background: rgba(0, 0, 0, 0.8); border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                <h6 class="mb-0 text-white" style="font-weight: 600; font-size: 16px;" id="todoVideoPlayerTitle">Video Player</h6>
+                                <button type="button" class="btn-close btn-close-white" id="closeTodoVideoPlayer" style="opacity: 1; font-size: 20px; padding: 8px;" aria-label="Close"></button>
+                            </div>
+                            
+                            <!-- Video Container - Full Screen -->
+                            <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; overflow: hidden;">
+                                <video id="todoVideoPlayer" controls 
+                                       style="max-width: 100%; max-height: 100%; width: auto; height: auto; outline: none; border-radius: 8px;"
+                                       preload="metadata">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            
+                            <!-- Video Footer (optional info) -->
+                            <div class="p-3 text-center" style="background: rgba(0, 0, 0, 0.8); border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                                <p class="text-white mb-0" style="font-size: 14px; opacity: 0.8;" id="todoVideoPlayerInfo"></p>
+                            </div>
+                        </div>
+                    </div>
                    
                     
                     <!-- Notes -->
@@ -4465,11 +4490,33 @@ if (files.length > 0) {
         if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) {
             icon = url.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
         }
-        if (['mp4','mov','avi','mkv'].includes(ext)) icon = "https://cdn-icons-png.flaticon.com/512/711/711245.png";
+        if (['mp4','mov','avi','mkv','webm','flv','wmv'].includes(ext)) icon = "https://cdn-icons-png.flaticon.com/512/711/711245.png";
+        
+        // Fix video URL if needed (replace domain)
+        if (['mp4','mov','avi','mkv','webm','flv','wmv'].includes(ext) && url) {
+            url = url.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+        }
 
         // Build download URL using current domain
         const baseUrl = window.location.origin;
         const downloadUrl = baseUrl + '/download/' + id;
+        
+        // Check if file is a video
+        const isVideo = ['mp4','mov','avi','mkv','webm','flv','wmv'].includes(ext);
+        
+        // Build view button HTML for videos
+        let viewButtonHtml = '';
+        if (isVideo) {
+            viewButtonHtml = `
+                <a href="javascript:void(0);" class="view-video-btn" 
+                   data-video-url="${url}" 
+                   data-video-name="${name}"
+                   style="color:#22c55e; text-decoration:none; margin-right:10px; cursor:pointer;" 
+                   title="View Video">
+                    <i class="fa fa-eye" style="font-size:18px;"></i>
+                </a>
+            `;
+        }
 
         // File item markup
         let fileHtml = `
@@ -4486,10 +4533,14 @@ if (files.length > 0) {
                             <div style="font-size:12px; color:#6b7280;">${size}</div>
                         </div>
                     </div>
-                    <a href="${downloadUrl}" download 
-                       style="color:#1d4ed8; text-decoration:none;">
-                        <i class="fa fa-arrow-down" style="font-size:16px;"></i>
-                    </a>
+                    <div class="d-flex align-items-center">
+                        ${viewButtonHtml}
+                        <a href="${downloadUrl}" download 
+                           style="color:#1d4ed8; text-decoration:none; cursor:pointer;" 
+                           title="Download">
+                            <i class="fa fa-arrow-down" style="font-size:16px;"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         `;
@@ -5598,5 +5649,110 @@ document.querySelectorAll('.user_div').forEach(div => {
 });
 
 
+        </script>
+
+        <script>
+        // Handle video view button clicks - show video in todo modal
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.view-video-btn')) {
+                e.preventDefault();
+                const btn = e.target.closest('.view-video-btn');
+                const videoUrl = btn.getAttribute('data-video-url');
+                const videoName = btn.getAttribute('data-video-name');
+                
+                // Fix URL if needed (replace domain)
+                let finalUrl = videoUrl;
+                if (videoUrl.includes('admin.onlinesystems.info')) {
+                    finalUrl = videoUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                }
+                
+                // Get video player container and player elements
+                const videoContainer = document.getElementById('todoVideoPlayerContainer');
+                const videoPlayer = document.getElementById('todoVideoPlayer');
+                const videoTitle = document.getElementById('todoVideoPlayerTitle');
+                const videoInfo = document.getElementById('todoVideoPlayerInfo');
+                
+                if (videoContainer && videoPlayer && videoTitle) {
+                    // Set video source and title
+                    videoPlayer.src = finalUrl;
+                    videoTitle.textContent = videoName || 'Video Player';
+                    if (videoInfo) {
+                        videoInfo.textContent = videoName || 'Playing video';
+                    }
+                    
+                    // Show video container (fullscreen cover)
+                    videoContainer.style.display = 'flex';
+                    
+                    // Prevent body scroll when video is open
+                    document.body.style.overflow = 'hidden';
+                    
+                    // Try to play video
+                    setTimeout(() => {
+                        videoPlayer.play().catch(err => {
+                            console.log('Autoplay prevented:', err);
+                        });
+                    }, 300);
+                }
+            }
+            
+            // Handle close video player button
+            if (e.target.closest('#closeTodoVideoPlayer')) {
+                e.preventDefault();
+                const videoContainer = document.getElementById('todoVideoPlayerContainer');
+                const videoPlayer = document.getElementById('todoVideoPlayer');
+                
+                if (videoContainer && videoPlayer) {
+                    // Pause and reset video
+                    videoPlayer.pause();
+                    videoPlayer.currentTime = 0;
+                    videoPlayer.src = '';
+                    
+                    // Hide container
+                    videoContainer.style.display = 'none';
+                    
+                    // Restore body scroll
+                    document.body.style.overflow = '';
+                }
+            }
+            
+            // Close video on Escape key
+            if (e.key === 'Escape') {
+                const videoContainer = document.getElementById('todoVideoPlayerContainer');
+                if (videoContainer && videoContainer.style.display === 'flex') {
+                    const closeBtn = document.getElementById('closeTodoVideoPlayer');
+                    if (closeBtn) closeBtn.click();
+                }
+            }
+        });
+        
+        // Reset video player when todo modal is closed
+        const inrejectModal = document.getElementById('inreject');
+        if (inrejectModal) {
+            inrejectModal.addEventListener('hidden.bs.modal', function() {
+                const videoContainer = document.getElementById('todoVideoPlayerContainer');
+                const videoPlayer = document.getElementById('todoVideoPlayer');
+                
+                if (videoContainer && videoPlayer) {
+                    videoPlayer.pause();
+                    videoPlayer.currentTime = 0;
+                    videoPlayer.src = '';
+                    videoContainer.style.display = 'none';
+                    
+                    // Restore body scroll
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+        
+        // Add Escape key listener for closing video
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const videoContainer = document.getElementById('todoVideoPlayerContainer');
+                if (videoContainer && videoContainer.style.display === 'flex') {
+                    const closeBtn = document.getElementById('closeTodoVideoPlayer');
+                    if (closeBtn) closeBtn.click();
+                }
+            }
+        });
         </script>
         @endsection
