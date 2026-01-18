@@ -711,6 +711,13 @@ document.addEventListener("DOMContentLoaded", function () {
             if (data.success && data.redirect) {
                 window.location.href = data.redirect; // direct login
             } else if (data.require_info) {
+                // Update CSRF token in everything
+                if (data.csrf_token) {
+                    document.querySelectorAll('input[name="_token"]').forEach(el => el.value = data.csrf_token);
+                    const csrfParam = document.querySelector('meta[name="csrf-token"]');
+                    if (csrfParam) csrfParam.setAttribute('content', data.csrf_token);
+                }
+
                 // Show policy & extra info modal
                 var myModal = new bootstrap.Modal(document.getElementById('policyModal'));
                 myModal.show();
@@ -726,7 +733,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // When user accepts + uploads info
-    acceptBtn.addEventListener("click", function () {
+    document.querySelector('.accept-policy').addEventListener("click", function () {
         const profileForm = document.getElementById("profileForm");
         
         // Get CSRF token from form

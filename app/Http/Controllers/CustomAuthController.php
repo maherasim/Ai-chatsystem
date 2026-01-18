@@ -45,7 +45,8 @@ public function customLogin(Request $request)
     return response()->json([
         'success' => false,
         'require_info' => true,
-        'user' => $user
+        'user' => $user,
+        'csrf_token' => csrf_token()
     ]);
 }
 
