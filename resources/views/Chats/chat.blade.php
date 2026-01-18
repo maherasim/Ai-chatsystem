@@ -1178,35 +1178,7 @@
                             </a>
                         </div>
                     </div> --}}
-                    <div class="content-wrapper">
-                        <h5 class="sub-title">Profile Info</h5>
-                        <div class="card">
-                            <div class="card-body">
-                                <ul class="list-group profile-item">
-                                    <li class="list-group-item">
-                                        <div class="profile-info">
-                                            <h6>Name</h6>
-                                            <p id="contactInfoName">Select a group</p>
-                                        </div>
-                                        <div class="profile-icon">
-                                            <i class="ti ti-user-circle"></i>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="info">
-                                            <h6>Email Address</h6>
-                                            <p id="contactInfoEmail">-</p>
-                                        </div>
-                                        <div class="icon">
-                                            <i class="ti ti-mail-heart"></i>
-                                        </div>
-                                    </li>
-                                     
-                                    
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <!-- <div class="content-wrapper">
                         <h5 class="sub-title">Social Profiles</h5>
                         <div class="card">
