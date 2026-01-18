@@ -53,6 +53,13 @@ public function completeprofile(Request $request)
 {
     $user = Auth::user();
 
+    if (!$user) {
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json(['success' => false, 'message' => 'User not authenticated'], 401);
+        }
+        return redirect()->route('login')->withErrors(['error' => 'Please login first']);
+    }
+
     $request->validate([
         'password' => 'required|min:6|confirmed',
         'image' => 'required|image',
@@ -76,9 +83,14 @@ public function completeprofile(Request $request)
     $user->agreement_accepted = true;
     $user->save();
 
-    return redirect("home")->withSuccess('You have signed-in');
+    // Regenerate session to prevent CSRF token issues
+    $request->session()->regenerate();
 
-    //return response()->json(['success' => true, 'redirect' => route('home')]);
+    if ($request->expectsJson() || $request->ajax()) {
+        return response()->json(['success' => true, 'redirect' => route('home')]);
+    }
+
+    return redirect("home")->withSuccess('You have signed-in');
 }
 
 

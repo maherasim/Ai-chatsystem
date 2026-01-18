@@ -276,7 +276,8 @@ border-color: #c0c0c0;
             </div>
         </div>  
         <form onSubmit="return validt();" id="profileForm" action="{{ route('profile.complete') }}" method="POST" enctype="multipart/form-data">
-        @csrf 
+        @csrf
+        <input type="hidden" name="_token" value="{{ csrf_token() }}" id="csrf_token"> 
              <input type="hidden" name="policy" id="policy_accept_val" value="0" />
             <input type="hidden" name="agreement" id="agreement_accept_val" value="0" />
 
@@ -727,19 +728,48 @@ document.addEventListener("DOMContentLoaded", function () {
     // When user accepts + uploads info
     acceptBtn.addEventListener("click", function () {
         const profileForm = document.getElementById("profileForm");
+        
+        // Get CSRF token from form
+        const csrfToken = document.querySelector('input[name="_token"]')?.value || 
+                         document.querySelector('#csrf_token')?.value;
+
+        // Create FormData and ensure CSRF token is included
+        const formData = new FormData(profileForm);
+        if (csrfToken) {
+            formData.append('_token', csrfToken);
+        }
 
         fetch(profileForm.action, {
             method: "POST",
-            body: new FormData(profileForm),
-            headers: { "X-Requested-With": "XMLHttpRequest" }
+            body: formData,
+            headers: { 
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-TOKEN": csrfToken || ""
+            },
+            credentials: 'same-origin' // Important for session cookies
         })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success && data.redirect) {
-                window.location.href = data.redirect; // login after completion
-            } else {
-                alert("Please fill all fields correctly");
+        .then(res => {
+            if (res.redirected) {
+                window.location.href = res.url;
+                return;
             }
+            if (res.status === 419) {
+                alert("Session expired. Please refresh the page and try again.");
+                window.location.reload();
+                return;
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (data && data.success && data.redirect) {
+                window.location.href = data.redirect;
+            } else if (data && !data.success) {
+                alert(data.message || "Please fill all fields correctly");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("An error occurred. Please try again.");
         });
     });
 });

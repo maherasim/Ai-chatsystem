@@ -22,7 +22,7 @@ use App\Http\Controllers\ChatController;
 Route::get('deals-dashboard', [CustomAuthController::class, 'deals-dashboard']);
 //  Route::get('index', [CustomAuthController::class, 'index'])->name('index');
 Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom');
-Route::post('profile/complete', [CustomAuthController::class, 'completeprofile'])->name('profile.complete');
+Route::post('profile/complete', [CustomAuthController::class, 'completeprofile'])->middleware('auth')->name('profile.complete');
 Route::get('register', [CustomAuthController::class, 'register'])->name('register-user');
 Route::post('custom-registration', [CustomAuthController::class, 'customRegistration'])->name('register.custom');
 Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout');
