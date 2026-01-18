@@ -931,7 +931,7 @@
     <!-- Chat -->
     <div class="chat chat-messages show" id="middle">
         <div>
-            <div class="chat-header" style="display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+            <div class="chat-header" style="display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 0px 15px; min-height: auto;">
 
                 <!-- LEFT: User Info -->
                 <div class="user-details d-flex align-items-center gap-2" style="border-right: none !important;">
@@ -940,7 +940,7 @@
                             <i class="fas fa-arrow-left"></i>
                         </a>
                     </div>
-                    <div class="avatar avatar-lg online flex-shrink-0">
+                    <div class="avatar avatar-lg online flex-shrink-0" style="width: 40px; height: 40px;">
                         @php
     $headerAvatar = asset('build/img/profiles/avatar-16.jpg');
     
@@ -976,11 +976,12 @@
 <img id="chatHeaderAvatar" src="{{ $headerAvatar }}"
      class="rounded-circle"
      alt="image"
+     style="width: 40px; height: 40px; object-fit: cover;"
      onerror="this.onerror=null; this.src='{{ asset('build/img/profiles/avatar-16.jpg') }}';">
                     </div>
                     <div class="ms-2 overflow-hidden">
-                        <h6 id="chatHeaderName">{{$header->first_name ?? 'Chat'}}</h6>
-                        <span class="last-seen">Online</span>
+                        <h6 id="chatHeaderName" style="font-size: 14px; margin-bottom: 2px; line-height: 1.2;">{{$header->first_name ?? 'Chat'}}</h6>
+                        <span class="last-seen" style="font-size: 11px; line-height: 1.2;">Online</span>
                     </div>
                 </div>
 
@@ -1278,44 +1279,178 @@
                         </div>
                     </div>
                     
+                    <!-- Members Section -->
+                    <div class="content-wrapper">
+                        <h5 class="sub-title">Members</h5>
+                        <div class="chat-file">
+                            <div class="file-item action-wrap">
+                                <div class="accordion accordion-flush chat-accordion" id="members-accordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#members-collapse" aria-expanded="false" aria-controls="members-collapse">
+                                                <i class="ti ti-users me-2"></i>Group Members
+                                            </a>
+                                        </h2>
+                                        <div id="members-collapse" class="accordion-collapse collapse" data-bs-parent="#members-accordion">
+                                            <div class="accordion-body" style="padding: 0;">
+                                                <div id="membersContainerInline" style="max-height: 400px; overflow-y: auto;">
+                                                    <div class="text-center p-4">
+                                                        <div class="spinner-border text-primary" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
+                                                        <p class="mt-2 text-muted">Loading members...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Favorites Section -->
+                    <div class="content-wrapper">
+                        <h5 class="sub-title">Favorites</h5>
+                        <div class="chat-file">
+                            <div class="file-item action-wrap">
+                                <div class="accordion accordion-flush chat-accordion" id="favorites-accordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#favorites-collapse" aria-expanded="false" aria-controls="favorites-collapse">
+                                                <i class="ti ti-heart me-2"></i>Favorites
+                                            </a>
+                                        </h2>
+                                        <div id="favorites-collapse" class="accordion-collapse collapse" data-bs-parent="#favorites-accordion">
+                                            <div class="accordion-body" style="padding: 0;">
+                                                <div id="favoritesContainerInline" style="max-height: 400px; overflow-y: auto;">
+                                                    <div class="text-center p-4">
+                                                        <div class="spinner-border text-primary" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
+                                                        <p class="mt-2 text-muted">Loading favorites...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Background Section -->
+                    <div class="content-wrapper">
+                        <h5 class="sub-title">Chat Background</h5>
+                        <div class="chat-file">
+                            <div class="file-item action-wrap">
+                                <div class="accordion accordion-flush chat-accordion" id="chat-background-accordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#chat-background-collapse-sidebar" aria-expanded="false" aria-controls="chat-background-collapse-sidebar">
+                                                <i class="ti ti-photo me-2"></i>Chat Background
+                                            </a>
+                                        </h2>
+                                        <div id="chat-background-collapse-sidebar" class="accordion-collapse collapse" data-bs-parent="#chat-background-accordion">
+                                            <div class="accordion-body">
+                                                <form action="{{ route('upload.chat.backgrounds') }}" method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+                                                    <div class="chat-user-photo">
+                                                        <div class="chat-img contact-gallery mb-3">
+                                                            <div class="row g-2">
+                                                                @for ($i = 1; $i <= 6; $i++)
+                                                                    @php
+                                                                        $imageSrc = isset($chat_backgrounds[$i - 1]) && $chat_backgrounds[$i - 1]
+                                                                            ? asset($chat_backgrounds[$i - 1])
+                                                                            : asset('/build/img/gallery/gallery-01.jpg');
+                                                                    @endphp
+                                                                    <div class="col-6 mb-2">
+                                                                        <div class="img-wrap position-relative" style="width: 100%; height: 100px; overflow: hidden; border: 1px solid #ccc; border-radius: 8px;">
+                                                                            <img id="previewImagechatSidebar{{ $i }}" src="{{ $imageSrc }}" alt="Chat Background {{ $i }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                                                                            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-between p-2" style="background: rgba(0, 0, 0, 0.25); opacity: 0; transition: opacity 0.2s ease-in-out; border-radius: 8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                                                                                <button type="button" class="btn btn-sm btn-light" onclick="document.getElementById('imageUploadChatSidebar{{ $i }}').click();" style="font-size: 11px; padding: 4px 8px;">Upload</button>
+                                                                                <button type="button" class="btn btn-sm {{ (isset($selected_chat_background) && $selected_chat_background === ($i - 1)) ? 'btn-success' : 'btn-outline-light' }}" onclick="submitChatBgSelect({{ $i - 1 }})" style="font-size: 11px; padding: 4px 8px;">Select</button>
+                                                                            </div>
+                                                                        </div>
+                                                                        <input type="file" name="chat_images[{{ $i - 1 }}]" id="imageUploadChatSidebar{{ $i }}" accept=".jpg,.jpeg,.svg,.png" onchange="handleChatImageUploadSidebar(event, 'previewImagechatSidebar{{ $i }}')" style="display: none;">
+                                                                    </div>
+                                                                @endfor
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 d-flex">
+                                                            <button type="submit" class="btn btn-primary flex-fill mb-3">
+                                                                <i class="ti ti-device-floppy me-2"></i>Save Changes
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Message Ringtone Section -->
                     <div class="content-wrapper other-info mb-0">
-                        <h5 class="sub-title">Others</h5>
-                        <div class="card mb-0">
-                            <div class="card-body list-group profile-item">
-                                <a href="javascript:void(0);" class="list-group-item" data-bs-toggle="offcanvas" data-bs-target="#contact-favourite">
-                                    <div class="profile-info">
-                                        <h6><i class="ti ti-graph me-2 text-default"></i>Favorites</h6>
+                        <h5 class="sub-title">Message Ringtone</h5>
+                        <div class="chat-file">
+                            <div class="file-item action-wrap">
+                                <div class="accordion accordion-flush chat-accordion" id="message-ringtone-accordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#message-sound-collapse-sidebar" aria-expanded="false" aria-controls="message-sound-collapse-sidebar">
+                                                <i class="ti ti-bell me-2"></i>Message Notifications
+                                            </a>
+                                        </h2>
+                                        <div id="message-sound-collapse-sidebar" class="accordion-collapse collapse" data-bs-parent="#message-ringtone-accordion">
+                                            <div class="accordion-body">
+                                                <form action="{{ route('upload.chat.sounds') }}" method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+                                                    <div class="row">
+                                                        @for ($i = 1; $i <= 4; $i++)
+                                                            @php
+                                                                $audioSrc = isset($chat_sounds[$i - 1]) && $chat_sounds[$i - 1]
+                                                                    ? asset($chat_sounds[$i - 1])
+                                                                    : '';
+                                                            @endphp
+                                                            <div class="col-6 mb-3">
+                                                                <div class="sound-box position-relative p-3 border rounded text-center" style="min-height: 100px;">
+                                                                    <strong>Sound {{ $i }}</strong><br>
+                                                                    @if ($audioSrc)
+                                                                        <button type="button" class="btn btn-sm btn-secondary mt-2" onclick="toggleAudioSidebar({{ $i }})">
+                                                                            <i class="ti ti-player-play" id="playIconSidebar{{ $i }}"></i>
+                                                                        </button>
+                                                                        <audio id="audioPlayerSidebar{{ $i }}" style="display: none;" preload="none">
+                                                                            <source src="{{ $audioSrc }}" type="audio/{{ pathinfo($audioSrc, PATHINFO_EXTENSION) }}">
+                                                                        </audio>
+                                                                    @else
+                                                                        <p class="text-muted mt-2">No audio uploaded.</p>
+                                                                        <audio id="audioPlayerSidebar{{ $i }}" style="display: none;" preload="none"></audio>
+                                                                    @endif
+                                                                    <div class="mt-2">
+                                                                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="document.getElementById('audioUploadSidebar{{ $i }}').click();">
+                                                                            <i class="ti ti-plus"></i> Upload New
+                                                                        </button>
+                                                                    </div>
+                                                                    <input type="file" name="chat_sounds[]" id="audioUploadSidebar{{ $i }}" accept=".mp3,.wav" onchange="handleAudioUploadSidebar(event, {{ $i }})" style="display: none;">
+                                                                </div>
+                                                            </div>
+                                                        @endfor
+                                                    </div>
+                                                    <div class="col-lg-12 d-flex">
+                                                        <button type="submit" class="btn btn-primary flex-fill mb-3">
+                                                            <i class="ti ti-device-floppy me-2"></i>Save Changes
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="d-flex align-items-center">
-                                        <span class="badge badge-danger count-message me-1">12</span>
-                                        <span class="link-icon"><i class="ti ti-chevron-right"></i></span>
-                                    </div>
-                                </a>
-                                
-                                {{-- <a href="javascript:void(0);" class="list-group-item">
-                                    <div class="profile-info">
-                                        <h6><i class="ti ti-user-off me-2 text-info"></i>Block Users</h6>
-                                    </div>
-                                    <div>
-                                        <span class="link-icon"><i class="ti ti-chevron-right"></i></span>
-                                    </div>
-                                </a>
-                                <a href="javascript:void(0);" class="list-group-item">
-                                    <div class="profile-info">
-                                        <h6><i class="ti ti-user-x me-2 text-purple"></i>Report Users</h6>
-                                    </div>
-                                    <div>
-                                        <span class="link-icon"><i class="ti ti-chevron-right"></i></span>
-                                    </div>
-                                </a>
-                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete-chat" class="list-group-item">
-                                    <div class="profile-info">
-                                        <h6><i class="ti ti-trash me-2 text-danger"></i>Delete Chat</h6>
-                                    </div>
-                                    <div>
-                                        <span class="link-icon"><i class="ti ti-chevron-right"></i></span>
-                                    </div>
-                                </a> --}}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1324,6 +1459,12 @@
         </div>
     </div>
     <!-- /Contact Info -->
+    
+    <!-- Hidden form for chat background selection -->
+    <form id="selectChatBgForm" action="{{ route('select.chat.background') }}" method="POST" style="display:none;">
+        @csrf
+        <input type="hidden" name="index" id="selectChatBgIndex" value="">
+    </form>
     <!-- New Chat -->
     <div class="modal fade" id="new-chat">
         <div class="modal-dialog modal-dialog-centered">
@@ -2360,9 +2501,16 @@
             }
         });
 
-        // Load favorites when favorites offcanvas is opened
-        // Use setTimeout to ensure DOM is ready
+        // Load favorites when favorites accordion is expanded (inline)
         setTimeout(() => {
+            const favoritesAccordion = document.getElementById('favorites-collapse');
+            if (favoritesAccordion) {
+                favoritesAccordion.addEventListener('show.bs.collapse', () => {
+                    loadFavoritesInline();
+                });
+            }
+            
+            // Load favorites when favorites offcanvas is opened (for backward compatibility)
             const favoritesOffcanvas = document.getElementById('contact-favourite');
             if (favoritesOffcanvas) {
                 favoritesOffcanvas.addEventListener('show.bs.offcanvas', () => {
@@ -2373,7 +2521,267 @@
                     }
                 });
             }
+            
+            // Load members when members offcanvas is opened
+            const membersOffcanvas = document.getElementById('contact-members');
+            if (membersOffcanvas) {
+                membersOffcanvas.addEventListener('show.bs.offcanvas', () => {
+                    loadGroupMembersList('membersContainer');
+                });
+            }
+            
+            // Load members when members accordion is expanded (inline)
+            const membersAccordion = document.getElementById('members-collapse');
+            if (membersAccordion) {
+                membersAccordion.addEventListener('show.bs.collapse', () => {
+                    loadGroupMembersList('membersContainerInline');
+                });
+            }
         }, 500);
+        
+        // Function to load favorites inline
+        async function loadFavoritesInline() {
+            const container = document.getElementById('favoritesContainerInline');
+            if (!container) return;
+            
+            const currentGroupId = window.groupChatManager?.currentGroupId;
+            if (!currentGroupId) {
+                container.innerHTML = '<div class="text-center p-4 text-muted">No group selected</div>';
+                return;
+            }
+            
+            try {
+                container.innerHTML = '<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2 text-muted">Loading favorites...</p></div>';
+                
+                const url = `/api/chat/favorites?group_id=${currentGroupId}`;
+                const response = await fetch(url, {
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    },
+                });
+                
+                if (!response.ok) throw new Error('Failed to fetch favorites');
+                const data = await response.json();
+                
+                if (data.success && data.favorites && Array.isArray(data.favorites) && data.favorites.length > 0) {
+                    // Store reference to inline container temporarily
+                    const tempContainer = document.getElementById('favoritesContainer');
+                    const tempContainerParent = tempContainer ? tempContainer.parentNode : null;
+                    
+                    // Create temporary container with expected ID
+                    const tempDiv = document.createElement('div');
+                    tempDiv.id = 'favoritesContainer';
+                    tempDiv.style.display = 'none';
+                    document.body.appendChild(tempDiv);
+                    
+                    // Use existing renderFavorites function
+                    if (window.groupChatManager && typeof window.groupChatManager.renderFavorites === 'function') {
+                        window.groupChatManager.renderFavorites(data.favorites);
+                        
+                        // Get rendered content and move to inline container
+                        const renderedContent = tempDiv.innerHTML;
+                        container.innerHTML = renderedContent;
+                        
+                        // Clean up
+                        document.body.removeChild(tempDiv);
+                    } else {
+                        container.innerHTML = '<div class="text-center p-4 text-muted">Favorites feature not available</div>';
+                    }
+                } else {
+                    container.innerHTML = '<div class="text-center p-4 text-muted">No favorites found</div>';
+                }
+            } catch (error) {
+                console.error('Failed to load favorites:', error);
+                container.innerHTML = '<div class="text-center p-4 text-danger">Failed to load favorites</div>';
+            }
+        }
+        
+        // Function to load and display group members
+        async function loadGroupMembersList(containerId = 'membersContainer') {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            // Get current group ID
+            const currentGroupId = window.groupChatManager?.currentGroupId;
+            if (!currentGroupId) {
+                container.innerHTML = '<div class="text-center p-4 text-muted">No group selected</div>';
+                return;
+            }
+            
+            try {
+                container.innerHTML = '<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2 text-muted">Loading members...</p></div>';
+                
+                const response = await fetch(`/api/chat/group/${currentGroupId}/members`, {
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    },
+                });
+                
+                if (!response.ok) throw new Error('Failed to fetch members');
+                const data = await response.json();
+                
+                if (data.success && data.members && Array.isArray(data.members) && data.members.length > 0) {
+                    let membersHtml = '';
+                    data.members.forEach((member, index) => {
+                        const avatar = member.avatar || '{{ asset("build/img/profile.svg") }}';
+                        const name = member.name || member.email || 'User';
+                        const memberId = member.id || member._id || '';
+                        const isFollowed = false; // Will be managed by state
+                        
+                        // Format type/role display
+                        let roleDisplay = 'Member';
+                        if (member.type) {
+                            const typeLower = member.type.toLowerCase();
+                            // Format type nicely: "developer" -> "Software Developer", "employee" -> "Employee", etc.
+                            if (typeLower === 'developer') {
+                                roleDisplay = 'Software Developer';
+                            } else {
+                                // Capitalize first letter of each word
+                                roleDisplay = typeLower.split(' ').map(word => 
+                                    word.charAt(0).toUpperCase() + word.slice(1)
+                                ).join(' ');
+                            }
+                        } else if (member.designation) {
+                            roleDisplay = member.designation;
+                        }
+                        
+                        // Determine button text and class based on follow state
+                        const buttonText = isFollowed ? 'Chat' : 'Follow';
+                        const buttonClass = isFollowed ? 'btn-primary chat-btn' : 'btn-primary follow-btn';
+                        
+                        membersHtml += `
+                            <div class="d-flex align-items-center py-3 border-bottom" style="border-color: #e5e7eb !important;" data-member-id="${memberId}">
+                                <div class="avatar me-3" style="position: relative; flex-shrink: 0;">
+                                    <img src="${avatar}" class="rounded-circle" alt="${name}" style="width: 45px; height: 45px; object-fit: cover;" onerror="this.onerror=null; this.src='{{ asset('build/img/profile.svg') }}';">
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0" style="font-size: 15px; font-weight: 600; color: #1c2233; line-height: 1.4;">${name}</h6>
+                                    <p class="mb-0" style="font-size: 13px; color: #6b7280; line-height: 1.4;">${roleDisplay}</p>
+                                </div>
+                                <div class="ms-auto" style="flex-shrink: 0;">
+                                    <button type="button" class="btn ${buttonClass}" data-member-id="${memberId}" data-followed="${isFollowed}" style="background-color: #6338F6; border-color: #6338F6; color: white; font-size: 13px; padding: 6px 16px; border-radius: 8px; font-weight: 500; white-space: nowrap;">
+                                        ${buttonText}
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    container.innerHTML = membersHtml;
+                    
+                    // Add click handlers for Follow/Chat buttons (no functionality yet, just UI)
+                    container.querySelectorAll('button[data-member-id]').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const isFollowed = this.getAttribute('data-followed') === 'true';
+                            const memberId = this.getAttribute('data-member-id');
+                            
+                            if (!isFollowed) {
+                                // Change from "Follow" to "Chat"
+                                this.textContent = 'Chat';
+                                this.classList.remove('follow-btn');
+                                this.classList.add('chat-btn');
+                                this.setAttribute('data-followed', 'true');
+                                // Placeholder for follow functionality
+                                console.log('Follow button clicked for member:', memberId);
+                            } else {
+                                // Change from "Chat" to "Follow"
+                                this.textContent = 'Follow';
+                                this.classList.remove('chat-btn');
+                                this.classList.add('follow-btn');
+                                this.setAttribute('data-followed', 'false');
+                                // Placeholder for chat functionality
+                                console.log('Chat button clicked for member:', memberId);
+                            }
+                        });
+                    });
+                } else {
+                    container.innerHTML = '<div class="text-center p-4 text-muted">No members found</div>';
+                }
+            } catch (error) {
+                console.error('Failed to load members:', error);
+                container.innerHTML = '<div class="text-center p-4 text-danger">Failed to load members</div>';
+            }
+        }
+        
+        // Chat Background Functions
+        function submitChatBgSelect(idx) {
+            try {
+                var input = document.getElementById('selectChatBgIndex');
+                var form = document.getElementById('selectChatBgForm');
+                if (input && form) {
+                    input.value = String(idx);
+                    form.submit();
+                }
+            } catch(e) {
+                console.error('Error submitting chat background selection:', e);
+            }
+        }
+        
+        function handleChatImageUploadSidebar(event, previewId) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(previewId).src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Message Ringtone Functions
+        function handleAudioUploadSidebar(event, index) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('audio/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const audio = document.getElementById(`audioPlayerSidebar${index}`);
+                    const icon = document.getElementById(`playIconSidebar${index}`);
+                    if (audio) {
+                        audio.innerHTML = `<source src="${e.target.result}" type="${file.type}">`;
+                        audio.load();
+                        audio.pause();
+                        audio.style.display = "none";
+                        if (icon) {
+                            icon.classList.remove('d-none');
+                            icon.classList.add('ti-player-play');
+                            icon.classList.remove('ti-player-pause');
+                        }
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        function toggleAudioSidebar(index) {
+            const audio = document.getElementById(`audioPlayerSidebar${index}`);
+            const icon = document.getElementById(`playIconSidebar${index}`);
+            
+            if (!audio || !icon) return;
+            
+            // Pause all other audio before playing current one
+            for (let i = 1; i <= 4; i++) {
+                if (i !== index) {
+                    const otherAudio = document.getElementById(`audioPlayerSidebar${i}`);
+                    const otherIcon = document.getElementById(`playIconSidebar${i}`);
+                    if (otherAudio && !otherAudio.paused) {
+                        otherAudio.pause();
+                        if (otherIcon) {
+                            otherIcon.classList.remove('ti-player-pause');
+                            otherIcon.classList.add('ti-player-play');
+                        }
+                    }
+                }
+            }
+            
+            if (audio.paused) {
+                audio.play();
+                icon.classList.remove('ti-player-play');
+                icon.classList.add('ti-player-pause');
+            } else {
+                audio.pause();
+                icon.classList.remove('ti-player-pause');
+                icon.classList.add('ti-player-play');
+            }
+        }
     });
 
 
@@ -3107,6 +3515,32 @@
         </filter>
     </defs>
 </svg>
+
+<!-- Members Offcanvas -->
+<div class="chat-offcanvas fav-canvas offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="contact-members">
+    <div class="offcanvas-header">
+        <h4 class="offcanvas-title">
+            <a href="javascript:void(0);" data-bs-toggle="offcanvas" data-bs-target="#contact-profile" data-bs-dismiss="offcanvas">
+                <i class="ti ti-arrow-left me-2"></i>
+            </a>Group Members
+        </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
+            <i class="ti ti-x"></i>
+        </button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="members-list">
+            <div id="membersContainer">
+                <div class="text-center p-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-muted">Loading members...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Favourites Offcanvas -->
 <div class="chat-offcanvas fav-canvas offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="contact-favourite">

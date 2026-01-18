@@ -115,7 +115,16 @@ class ChatController extends Controller
                      ->where('completed', '!=', '1')
                      ->get();
         
-        return view('Chats.chat', compact('headers', 'setting', 'conversations', 'groups', 'projects', 'teams', 'users'));
+        // Get chat backgrounds and sounds for settings
+        $chat_backgrounds = $setting && $setting->chat_backgrounds
+            ? json_decode($setting->chat_backgrounds, true)
+            : [];
+        $selected_chat_background = $setting->selected_chat_background ?? null;
+        $chat_sounds = $setting && $setting->chat_sounds
+            ? json_decode($setting->chat_sounds, true)
+            : [];
+        
+        return view('Chats.chat', compact('headers', 'setting', 'conversations', 'groups', 'projects', 'teams', 'users', 'chat_backgrounds', 'selected_chat_background', 'chat_sounds'));
     }
 
     /**
@@ -1043,12 +1052,15 @@ class ChatController extends Controller
                     'name' => $member->name ?? $member->email ?? 'Unknown',
                     'email' => $member->email ?? '',
                     'avatar' => $avatarUrl,
+                    'type' => $member->type ?? null,
+                    'designation' => $member->designation ?? null,
+                    'is_online' => $member->is_online ?? false,
                 ];
             });
 
             return response()->json([
                 'success' => true,
-                'members' => $formattedMembers,
+                'members' => $formattedMembers->values()->all(),
             ]);
         } catch (\Exception $e) {
             \Log::error('Failed to get group members', [
