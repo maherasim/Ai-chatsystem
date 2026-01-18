@@ -2828,7 +2828,17 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                             <!-- Video Header -->
                             <div class="d-flex justify-content-between align-items-center p-3" style="background: rgba(0, 0, 0, 0.8); border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
                                 <h6 class="mb-0 text-white" style="font-weight: 600; font-size: 16px;" id="todoVideoPlayerTitle">Video Player</h6>
-                                <button type="button" class="btn-close btn-close-white" id="closeTodoVideoPlayer" style="opacity: 1; font-size: 20px; padding: 8px;" aria-label="Close"></button>
+                                <div class="d-flex align-items-center gap-3">
+                                    <!-- Download Button -->
+                                    <button type="button" id="downloadVideoBtn" class="btn btn-sm text-white" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Download">
+                                        <i class="fa fa-download" style="font-size: 14px;"></i>
+                                    </button>
+                                    <!-- Share in Chat Button -->
+                                    <button type="button" id="shareVideoInChatBtn" class="btn btn-sm text-white" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Share in Chat">
+                                        <i class="fa fa-share-alt" style="font-size: 14px;"></i>
+                                    </button>
+                                    <button type="button" class="btn-close btn-close-white" id="closeTodoVideoPlayer" style="opacity: 1; font-size: 20px; padding: 8px;" aria-label="Close"></button>
+                                </div>
                             </div>
                             
                             <!-- Video Container - Full Screen -->
@@ -2840,9 +2850,12 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 </video>
                             </div>
                             
-                            <!-- Video Footer (optional info) -->
-                            <div class="p-3 text-center" style="background: rgba(0, 0, 0, 0.8); border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                                <p class="text-white mb-0" style="font-size: 14px; opacity: 0.8;" id="todoVideoPlayerInfo"></p>
+                            <!-- Video Footer with Thumbnails -->
+                            <div class="p-3" style="background: rgba(0, 0, 0, 0.8); border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                                <p class="text-white mb-2" style="font-size: 12px; opacity: 0.8;" id="todoVideoPlayerInfo"></p>
+                                <div id="todoVideoThumbnails" class="d-flex gap-2" style="overflow-x: auto; padding: 5px 0;">
+                                    <!-- Thumbnails will be populated here -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -4424,6 +4437,9 @@ filecont.style.display = "block";
 let files = JSON.parse(this.dataset.files || "[]");
 let filesList = document.querySelector('.todo-files-list');
 
+// Store all files globally for thumbnail display
+window.currentTodoFiles = files;
+
 
 const list = document.getElementById('createPdfList');
     const addTile = list.querySelector('.pdf-add-tile');
@@ -5680,6 +5696,13 @@ document.querySelectorAll('.user_div').forEach(div => {
                         videoInfo.textContent = videoName || 'Playing video';
                     }
                     
+                    // Store current video data for download/share
+                    videoPlayer.setAttribute('data-video-url', finalUrl);
+                    videoPlayer.setAttribute('data-video-name', videoName);
+                    
+                    // Load thumbnails
+                    loadVideoThumbnails();
+                    
                     // Show video container (fullscreen cover)
                     videoContainer.style.display = 'flex';
                     
@@ -5708,17 +5731,30 @@ document.querySelectorAll('.user_div').forEach(div => {
                     finalUrl = imageUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
                 }
                 
-                // Create and show image modal
+                // Create and show image modal with download/share buttons
                 const modalHtml = `
                     <div class="modal fade" id="imageViewerModal" tabindex="-1" style="z-index: 10000;">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content" style="background: #000; border: none;">
-                                <div class="modal-header border-0" style="background: rgba(0,0,0,0.8);">
-                                    <h6 class="modal-title text-white">${imageName || 'Image'}</h6>
-                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                <div class="modal-header border-0 d-flex justify-content-between align-items-center" style="background: rgba(0,0,0,0.8);">
+                                    <h6 class="modal-title text-white mb-0">${imageName || 'Image'}</h6>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <button type="button" class="btn btn-sm text-white image-download-btn" data-image-url="${finalUrl}" data-image-name="${imageName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Download">
+                                            <i class="fa fa-download" style="font-size: 14px;"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm text-white image-share-btn" data-image-url="${finalUrl}" data-image-name="${imageName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Share in Chat">
+                                            <i class="fa fa-share-alt" style="font-size: 14px;"></i>
+                                        </button>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                    </div>
                                 </div>
                                 <div class="modal-body p-0 text-center">
-                                    <img src="${finalUrl}" alt="${imageName}" style="max-width: 100%; max-height: 80vh; object-fit: contain;">
+                                    <img src="${finalUrl}" alt="${imageName}" style="max-width: 100%; max-height: 70vh; object-fit: contain;">
+                                </div>
+                                <div class="modal-footer border-0 p-2" style="background: rgba(0,0,0,0.8);">
+                                    <div id="imageThumbnails" class="d-flex gap-2" style="overflow-x: auto; width: 100%; padding: 5px 0;">
+                                        <!-- Thumbnails will be populated here -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -5733,6 +5769,9 @@ document.querySelectorAll('.user_div').forEach(div => {
                 document.body.insertAdjacentHTML('beforeend', modalHtml);
                 const modal = new bootstrap.Modal(document.getElementById('imageViewerModal'));
                 modal.show();
+                
+                // Load thumbnails for images
+                loadImageThumbnails();
                 
                 // Clean up on close
                 document.getElementById('imageViewerModal').addEventListener('hidden.bs.modal', function() {
@@ -5831,5 +5870,148 @@ document.querySelectorAll('.user_div').forEach(div => {
                 }
             }
         });
+        
+        // Handle download video button
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('#downloadVideoBtn')) {
+                e.preventDefault();
+                const videoPlayer = document.getElementById('todoVideoPlayer');
+                if (videoPlayer && videoPlayer.src) {
+                    const a = document.createElement('a');
+                    a.href = videoPlayer.src;
+                    a.download = videoPlayer.getAttribute('data-video-name') || 'video.mp4';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                }
+            }
+            
+            // Handle share video in chat
+            if (e.target.closest('#shareVideoInChatBtn')) {
+                e.preventDefault();
+                const videoPlayer = document.getElementById('todoVideoPlayer');
+                if (videoPlayer) {
+                    const videoUrl = videoPlayer.getAttribute('data-video-url');
+                    const videoName = videoPlayer.getAttribute('data-video-name');
+                    
+                    // Store video data for sharing
+                    sessionStorage.setItem('shareInChat', JSON.stringify({
+                        type: 'video',
+                        url: videoUrl,
+                        name: videoName
+                    }));
+                    
+                    // Close video player
+                    document.getElementById('closeTodoVideoPlayer').click();
+                    
+                    // Redirect to chat or show notification
+                    alert('Video ready to share! Go to chat and paste or select this file.');
+                }
+            }
+            
+            // Handle download image button
+            if (e.target.closest('.image-download-btn')) {
+                e.preventDefault();
+                const btn = e.target.closest('.image-download-btn');
+                const imageUrl = btn.getAttribute('data-image-url');
+                const imageName = btn.getAttribute('data-image-name');
+                
+                const a = document.createElement('a');
+                a.href = imageUrl;
+                a.download = imageName || 'image.jpg';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+            
+            // Handle share image in chat
+            if (e.target.closest('.image-share-btn')) {
+                e.preventDefault();
+                const btn = e.target.closest('.image-share-btn');
+                const imageUrl = btn.getAttribute('data-image-url');
+                const imageName = btn.getAttribute('data-image-name');
+                
+                // Store image data for sharing
+                sessionStorage.setItem('shareInChat', JSON.stringify({
+                    type: 'image',
+                    url: imageUrl,
+                    name: imageName
+                }));
+                
+                // Close image modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('imageViewerModal'));
+                if (modal) modal.hide();
+                
+                // Redirect to chat or show notification
+                alert('Image ready to share! Go to chat and paste or select this file.');
+            }
+        });
+        
+        // Function to load video thumbnails
+        function loadVideoThumbnails() {
+            const thumbnailsContainer = document.getElementById('todoVideoThumbnails');
+            if (!thumbnailsContainer || !window.currentTodoFiles) return;
+            
+            thumbnailsContainer.innerHTML = '';
+            
+            window.currentTodoFiles.forEach((file, index) => {
+                const ext = (file.name || '').split('.').pop().toLowerCase();
+                const isVideo = ['mp4','mov','avi','mkv','webm','flv','wmv'].includes(ext);
+                
+                if (isVideo) {
+                    let thumbnailUrl = file.url || '';
+                    if (thumbnailUrl.includes('admin.onlinesystems.info')) {
+                        thumbnailUrl = thumbnailUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                    }
+                    
+                    const thumbnail = document.createElement('div');
+                    thumbnail.className = 'video-thumbnail';
+                    thumbnail.style.cssText = 'width: 80px; height: 60px; border-radius: 6px; overflow: hidden; cursor: pointer; border: 2px solid transparent; flex-shrink: 0;';
+                    thumbnail.innerHTML = `
+                        <img src="${thumbnailUrl}" style="width: 100%; height: 100%; object-fit: cover;" 
+                             onerror="this.src='https://cdn-icons-png.flaticon.com/512/711/711245.png'">
+                    `;
+                    
+                    thumbnail.addEventListener('click', function() {
+                        const viewBtn = document.querySelector(`[data-video-url="${file.url}"]`);
+                        if (viewBtn) viewBtn.click();
+                    });
+                    
+                    thumbnailsContainer.appendChild(thumbnail);
+                }
+            });
+        }
+        
+        // Function to load image thumbnails
+        function loadImageThumbnails() {
+            const thumbnailsContainer = document.getElementById('imageThumbnails');
+            if (!thumbnailsContainer || !window.currentTodoFiles) return;
+            
+            thumbnailsContainer.innerHTML = '';
+            
+            window.currentTodoFiles.forEach((file) => {
+                const ext = (file.name || '').split('.').pop().toLowerCase();
+                const isImage = ['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
+                
+                if (isImage) {
+                    let thumbnailUrl = file.url || '';
+                    if (thumbnailUrl.includes('admin.onlinesystems.info')) {
+                        thumbnailUrl = thumbnailUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                    }
+                    
+                    const thumbnail = document.createElement('div');
+                    thumbnail.className = 'image-thumbnail';
+                    thumbnail.style.cssText = 'width: 60px; height: 60px; border-radius: 6px; overflow: hidden; cursor: pointer; border: 2px solid transparent; flex-shrink: 0;';
+                    thumbnail.innerHTML = `<img src="${thumbnailUrl}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                    
+                    thumbnail.addEventListener('click', function() {
+                        const viewBtn = document.querySelector(`[data-image-url="${file.url}"]`);
+                        if (viewBtn) viewBtn.click();
+                    });
+                    
+                    thumbnailsContainer.appendChild(thumbnail);
+                }
+            });
+        }
         </script>
         @endsection
