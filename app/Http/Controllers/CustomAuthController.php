@@ -19,8 +19,7 @@ class CustomAuthController extends Controller
       
 public function customLogin(Request $request)
 {
-    $credentials = $request->only('user_id', 'email', 'password');
-   // $credentials = $request->only( 'email', 'password');
+    $credentials = array_filter($request->only('user_id', 'email', 'password'));
 
     if (!Auth::attempt($credentials)) {
         return response()->json(['success' => false, 'message' => 'Invalid credentials']);

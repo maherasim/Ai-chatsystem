@@ -42,6 +42,9 @@ Route::delete('/attachments/{id}', [UsersController::class, 'destroyattachement'
 
 
 Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('home');
+    }
     $setting = Setting::first();
     $policyTerm = $setting && $setting->policy_html ? $setting->policy_html : ($setting && $setting->agreement_html ? $setting->agreement_html : 'No policy available.');
     $agreement_text = $setting && $setting->agreement_html ? $setting->agreement_html : 'No agreement available.';
@@ -63,6 +66,9 @@ Route::get('/home', [DashboardController::class, 'index'])
     ->name('home');
 
 Route::get('/login', function () {
+    if (Auth::check()) {
+        return redirect()->route('home');
+    }
     $setting = Setting::first();
     $policyTerm = $setting && $setting->policy_html ? $setting->policy_html : ($setting && $setting->agreement_html ? $setting->agreement_html : 'No policy available.');
     $agreement_text = $setting && $setting->agreement_html ? $setting->agreement_html : 'No agreement available.';
