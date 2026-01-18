@@ -1234,7 +1234,7 @@ class GroupChatManager {
 
             messageContent = `
                 ${replySection}
-                <div class="message-content-wrapper" style="position: relative; display: inline-block; width: 100%;">
+                <div class="message-content-wrapper" style="position: relative; display: inline-block; width: auto; max-width: 100%;">
                     <div class="message-content">
                         ${this.formatMessageWithMentions(message.content || '')}
                     </div>
@@ -2692,48 +2692,27 @@ class GroupChatManager {
 
         if (replyDiv) {
             replyDiv.style.display = 'block';
+            
+            // Update reply content (WhatsApp style)
             const replyContent = replyDiv.querySelector('.reply-content');
             if (replyContent) {
-                replyContent.textContent = content.substring(0, 50) + (content.length > 50 ? '...' : '');
+                // Truncate content to fit in 2 lines (max ~60 chars)
+                const maxLength = 60;
+                const truncatedContent = content.length > maxLength ? content.substring(0, maxLength) + '...' : content;
+                replyContent.textContent = truncatedContent;
             }
             
-            // Update sender name
-            const chatProfileName = replyDiv.querySelector('.chat-profile-name h6');
-            if (chatProfileName) {
-                // Get the time and read status elements if they exist
-                const timeElement = chatProfileName.querySelector('.chat-time');
-                const readElement = chatProfileName.querySelector('.msg-read');
-                const timeHtml = timeElement ? timeElement.outerHTML : '<span class="chat-time">02:39 PM</span>';
-                const readHtml = readElement ? readElement.outerHTML : '<span class="msg-read success"><i class="ti ti-checks"></i></span>';
-                
-                // Update name while preserving time and read status
-                // Use provided senderName or default to 'User'
+            // Update sender name (WhatsApp style - blue text #25D366)
+            // Find the name element by looking for div with color style or font-weight
+            const nameContainer = replyDiv.querySelector('div[style*="color: #25D366"]') || 
+                                  replyDiv.querySelector('div[style*="font-weight: 600"]');
+            if (nameContainer) {
                 const displayName = senderName || 'User';
-                chatProfileName.innerHTML = `${displayName}<i class="ti ti-circle-filled fs-7 mx-2"></i>${timeHtml}${readHtml}`;
-            }
-            
-            // Update sender avatar
-            const chatAvatar = replyDiv.querySelector('.chat-avatar img');
-            if (chatAvatar) {
-                if (senderAvatar) {
-                    chatAvatar.src = senderAvatar;
-                } else {
-                    // Use default avatar if no sender avatar provided
-                    chatAvatar.src = '/build/img/profiles/avatar-06.jpg';
+                nameContainer.textContent = displayName;
+                // Ensure it has the blue color
+                if (!nameContainer.style.color || nameContainer.style.color !== 'rgb(37, 211, 102)') {
+                    nameContainer.style.color = '#25D366';
                 }
-                chatAvatar.onerror = function() {
-                    if (!this.getAttribute('data-tried-fallback')) {
-                        this.setAttribute('data-tried-fallback', 'true');
-                        try {
-                            const u = new URL(this.src);
-                            this.src = 'https://logiteam.it-supportline.de' + u.pathname;
-                        } catch(e) {
-                            this.src = '/build/img/profiles/avatar-06.jpg';
-                        }
-                    } else {
-                        this.src = '/build/img/profiles/avatar-06.jpg';
-                    }
-                };
             }
         } else {
             console.error('setReplyMessage: Could not find reply div element');

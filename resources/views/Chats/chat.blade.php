@@ -387,6 +387,72 @@
         border: none !important;
         padding: 0 !important;
     }
+    
+    /* WhatsApp-style compact reply box */
+    .reply-chat.reply-div {
+        padding: 0 !important;
+        margin-bottom: 0 !important;
+        background: white;
+        border-radius: 8px 8px 0 0;
+        border: none !important;
+    }
+    
+    .reply-chat .message-reply.reply-content {
+        font-size: 13px !important;
+        line-height: 1.5 !important;
+        margin-top: 0 !important;
+        padding: 4px 0 !important;
+        min-height: 48px !important;
+        max-height: 80px !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+    
+    .reply-chat .close-replay {
+        width: 18px !important;
+        height: 18px !important;
+        font-size: 14px !important;
+        padding: 0 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #667781;
+        text-decoration: none;
+    }
+    
+    .reply-chat .close-replay:hover {
+        color: #000;
+    }
+    
+    /* Reduce chat footer spacing */
+    .chat-footer {
+        padding: 12px 15px !important;
+    }
+    
+    .chat-footer-wrap {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .chat-footer .form-wrap {
+        margin: 0 8px !important;
+    }
+    
+    .chat-footer .form-control {
+        padding: 12px 16px !important;
+        font-size: 15px !important;
+        min-height: 52px !important;
+        max-height: 120px !important;
+        line-height: 1.5 !important;
+    }
+    
+    .chat-footer .form-item {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
 
     .chat-body {
         height: calc(100vh - 200px); /* Adjust based on header and footer height */
@@ -577,6 +643,13 @@
         color: inherit !important;
     }
 
+    /* Message content wrapper - allow it to shrink to fit content */
+    .message-content-wrapper {
+        width: auto !important;
+        max-width: 100% !important;
+        display: inline-block !important;
+    }
+
     .chats.chats-right .chat-info > .message-content {
         background: linear-gradient(135deg, #0d6efd 0%, #0052cc 100%) !important;
         color: #ffffff !important;
@@ -591,8 +664,8 @@
         box-shadow: 0 2px 5px rgba(13, 110, 253, 0.2) !important;
         word-wrap: break-word !important; /* Break long words if they exceed container */
         overflow-wrap: break-word !important; /* Break words if they're too long */
-        white-space: normal !important; /* Normal text flow - wrap when needed */
-        word-break: break-word !important; /* Break long words if necessary */
+        white-space: pre-wrap !important; /* Preserve whitespace but allow wrapping when needed */
+        word-break: normal !important; /* Only break on word boundaries, not mid-word */
         hyphens: none !important; /* Don't add hyphens */
         min-height: unset !important;
         line-height: 1.4 !important; /* Tighter line height to reduce height */
@@ -1068,25 +1141,18 @@
         </div>
         <div class="chat-footer">
             <form class="footer-form">
-                <div class="chats reply-chat reply-div" id="reply-div">
-                    <div class="chat-avatar">
-                        <img src="{{URL::asset('/build/img/profiles/avatar-06.jpg')}}" class="rounded-circle" alt="image">
-                    </div>
-                    <div class="chat-content">
-                        <div class="chat-profile-name">
-                            <h6>Edward Lietz<i class="ti ti-circle-filled fs-7 mx-2"></i><span class="chat-time">02:39 PM</span><span class="msg-read success"><i class="ti ti-checks"></i></span></h6>
-                        </div>
-                        <div class="chat-info">
-                            <div class="message-content">
-                                <div class="message-reply reply-content">
-                                    Thank you for your support
-                                </div>
+                <div class="chats reply-chat reply-div" id="reply-div" style="display: none; padding: 0; margin-bottom: 0; background: white; border-radius: 8px 8px 0 0;">
+                    <div style="background: #f0f2f5; padding: 8px 12px; border-left: 3px solid #25D366; border-radius: 4px 0 0 0; display: flex; align-items: center; gap: 8px; min-height: 60px;">
+                        <div style="flex: 1; min-width: 0;">
+                            <div id="reply-sender-name" style="font-size: 13px; font-weight: 600; color: #25D366; margin-bottom: 2px; line-height: 1.2;">Abdullah Tahir</div>
+                            <div class="message-reply reply-content" id="reply-message-content" style="font-size: 13px; color: #667781; line-height: 1.5; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; min-height: 48px; max-height: 80px; padding: 4px 0;">
+                                Thank you for your support
                             </div>
                         </div>
+                        <a href="#" class="close-replay" style="width: 18px; height: 18px; font-size: 14px; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #667781; text-decoration: none;">
+                            <i class="ti ti-x"></i>
+                        </a>
                     </div>
-                    <a href="#" class="close-replay">
-                        <i class="ti ti-x"></i>
-                    </a>
                 </div>
                 <div class="chat-footer-wrap">
                     <div class="form-item">
