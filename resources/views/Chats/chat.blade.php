@@ -1370,7 +1370,7 @@
                                                                             <img id="previewImagechatSidebar{{ $i }}" src="{{ $imageSrc }}" alt="Chat Background {{ $i }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
                                                                             <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-between p-2" style="background: rgba(0, 0, 0, 0.25); opacity: 0; transition: opacity 0.2s ease-in-out; border-radius: 8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
                                                                                 <button type="button" class="btn btn-sm btn-light" onclick="document.getElementById('imageUploadChatSidebar{{ $i }}').click();" style="font-size: 11px; padding: 4px 8px;">Upload</button>
-                                                                                <button type="button" class="btn btn-sm {{ (isset($selected_chat_background) && $selected_chat_background === ($i - 1)) ? 'btn-success' : 'btn-outline-light' }}" onclick="submitChatBgSelect({{ $i - 1 }})" style="font-size: 11px; padding: 4px 8px;">Select</button>
+                                                                                <button type="button" class="btn btn-sm {{ (isset($selected_chat_background) && $selected_chat_background === ($i - 1)) ? 'btn-success' : 'btn-outline-light' }}" onclick="if(typeof submitChatBgSelect === 'function') { submitChatBgSelect({{ $i - 1 }}); } else { console.error('submitChatBgSelect function not found'); }" style="font-size: 11px; padding: 4px 8px;">Select</button>
                                                                             </div>
                                                                         </div>
                                                                         <input type="file" name="chat_images[{{ $i - 1 }}]" id="imageUploadChatSidebar{{ $i }}" accept=".jpg,.jpeg,.svg,.png" onchange="handleChatImageUploadSidebar(event, 'previewImagechatSidebar{{ $i }}')" style="display: none;">
@@ -1385,6 +1385,37 @@
                                                         </div>
                                                     </div>
                                                 </form>
+                                                <form id="selectChatBgFormSidebar" action="{{ route('select.chat.background') }}" method="POST" style="display:none;">
+                                                    @csrf
+                                                    <input type="hidden" name="index" id="selectChatBgIndexSidebar" value="">
+                                                </form>
+                                                <script>
+                                                    // Ensure submitChatBgSelect is available for this accordion
+                                                    if (typeof window.submitChatBgSelect === 'undefined') {
+                                                        window.submitChatBgSelect = function(idx) {
+                                                            try {
+                                                                var input = document.getElementById('selectChatBgIndexSidebar');
+                                                                var form = document.getElementById('selectChatBgFormSidebar');
+                                                                
+                                                                if (!input || !form) {
+                                                                    input = document.getElementById('selectChatBgIndex');
+                                                                    form = document.getElementById('selectChatBgForm');
+                                                                }
+                                                                
+                                                                if (input && form) {
+                                                                    input.value = String(idx);
+                                                                    form.submit();
+                                                                } else {
+                                                                    console.error('Chat background select form not found');
+                                                                    alert('Error: Could not find the selection form.');
+                                                                }
+                                                            } catch(e) {
+                                                                console.error('Error submitting chat background selection:', e);
+                                                                alert('Error: ' + e.message);
+                                                            }
+                                                        };
+                                                    }
+                                                </script>
                                             </div>
                                         </div>
                                     </div>
@@ -2702,19 +2733,42 @@
             }
         }
         
-        // Chat Background Functions
-        function submitChatBgSelect(idx) {
+        // Chat Background Functions - Make it globally accessible
+        window.submitChatBgSelect = function(idx) {
             try {
-                var input = document.getElementById('selectChatBgIndex');
-                var form = document.getElementById('selectChatBgForm');
+                console.log('submitChatBgSelect called with index:', idx);
+                
+                // Try sidebar form first (for chat page)
+                var input = document.getElementById('selectChatBgIndexSidebar');
+                var form = document.getElementById('selectChatBgFormSidebar');
+                
+                console.log('Sidebar form found:', !!form, 'Input found:', !!input);
+                
+                // Fallback to main form (for settings page)
+                if (!input || !form) {
+                    input = document.getElementById('selectChatBgIndex');
+                    form = document.getElementById('selectChatBgForm');
+                    console.log('Main form found:', !!form, 'Input found:', !!input);
+                }
+                
                 if (input && form) {
                     input.value = String(idx);
+                    console.log('Submitting form with index:', idx);
                     form.submit();
+                } else {
+                    console.error('Chat background select form not found. Available forms:', {
+                        sidebarForm: !!document.getElementById('selectChatBgFormSidebar'),
+                        sidebarInput: !!document.getElementById('selectChatBgIndexSidebar'),
+                        mainForm: !!document.getElementById('selectChatBgForm'),
+                        mainInput: !!document.getElementById('selectChatBgIndex')
+                    });
+                    alert('Error: Could not find the selection form. Please try again.');
                 }
             } catch(e) {
                 console.error('Error submitting chat background selection:', e);
+                alert('Error selecting chat background: ' + e.message);
             }
-        }
+        };
         
         function handleChatImageUploadSidebar(event, previewId) {
             const file = event.target.files[0];
