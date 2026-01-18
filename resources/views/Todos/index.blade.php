@@ -4497,50 +4497,49 @@ if (files.length > 0) {
             url = url.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
         }
 
-        // Build download URL using current domain
-        const baseUrl = window.location.origin;
-        const downloadUrl = baseUrl + '/download/' + id;
-        
-        // Check if file is a video
+        // Check file type for view functionality
         const isVideo = ['mp4','mov','avi','mkv','webm','flv','wmv'].includes(ext);
+        const isImage = ['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
+        const isPdf = ['pdf'].includes(ext);
         
-        // Build view button HTML for videos
-        let viewButtonHtml = '';
+        // Build view button for all file types
+        let viewButtonClass = 'view-file-btn';
+        let viewButtonData = `data-file-url="${url}" data-file-name="${name}"`;
+        
         if (isVideo) {
-            viewButtonHtml = `
-                <a href="javascript:void(0);" class="view-video-btn" 
-                   data-video-url="${url}" 
-                   data-video-name="${name}"
-                   style="color:#22c55e; text-decoration:none; margin-right:10px; cursor:pointer;" 
-                   title="View Video">
-                    <i class="fa fa-eye" style="font-size:18px;"></i>
-                </a>
-            `;
+            viewButtonClass = 'view-video-btn';
+            viewButtonData = `data-video-url="${url}" data-video-name="${name}"`;
+        } else if (isImage) {
+            viewButtonClass = 'view-image-btn';
+            viewButtonData = `data-image-url="${url}" data-image-name="${name}"`;
+        } else if (isPdf) {
+            viewButtonClass = 'view-pdf-btn';
+            viewButtonData = `data-pdf-url="${url}" data-pdf-name="${name}"`;
         }
 
-        // File item markup
+        // Optimized file item markup - more compact
         let fileHtml = `
             <div class="col-md-6 mb-2">
                 <div class="d-flex align-items-center justify-content-between p-2"
-                     style="background:#f9fafb; border-radius:10px; border:1px solid #e5e7eb;">
-                    <div class="d-flex align-items-center">
+                     style="background:#f9fafb; border-radius:8px; border:1px solid #e5e7eb; transition: all 0.2s;">
+                    <div class="d-flex align-items-center flex-grow-1" style="min-width: 0;">
                         <img src="${icon}" alt="${name}" 
-                             style="width:40px; height:40px; border-radius:6px; object-fit:cover; margin-right:10px;">
-                        <div>
-                            <div style="font-weight:500; color:#1e293b; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:140px;">
+                             style="width:36px; height:36px; border-radius:6px; object-fit:cover; margin-right:10px; flex-shrink: 0;">
+                        <div style="min-width: 0; flex-grow: 1;">
+                            <div style="font-weight:500; color:#1e293b; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
                                 ${name}
                             </div>
-                            <div style="font-size:12px; color:#6b7280;">${size}</div>
+                            <div style="font-size:11px; color:#6b7280;">${size}</div>
                         </div>
                     </div>
-                    <div class="d-flex align-items-center">
-                        ${viewButtonHtml}
-                        <a href="${downloadUrl}" download 
-                           style="color:#1d4ed8; text-decoration:none; cursor:pointer;" 
-                           title="Download">
-                            <i class="fa fa-arrow-down" style="font-size:16px;"></i>
-                        </a>
-                    </div>
+                    <a href="javascript:void(0);" class="${viewButtonClass}" 
+                       ${viewButtonData}
+                       style="color:#6338F6; text-decoration:none; cursor:pointer; padding: 6px; border-radius: 6px; transition: all 0.2s; flex-shrink: 0; margin-left: 8px;" 
+                       title="View ${isVideo ? 'Video' : isImage ? 'Image' : isPdf ? 'PDF' : 'File'}"
+                       onmouseover="this.style.background='#f3f4f6'" 
+                       onmouseout="this.style.background='transparent'">
+                        <i class="fa fa-eye" style="font-size:16px;"></i>
+                    </a>
                 </div>
             </div>
         `;
@@ -5652,8 +5651,9 @@ document.querySelectorAll('.user_div').forEach(div => {
         </script>
 
         <script>
-        // Handle video view button clicks - show video in todo modal
+        // Handle file view button clicks - optimized for all file types
         document.addEventListener('click', function(e) {
+            // Handle video files
             if (e.target.closest('.view-video-btn')) {
                 e.preventDefault();
                 const btn = e.target.closest('.view-video-btn');
@@ -5693,6 +5693,83 @@ document.querySelectorAll('.user_div').forEach(div => {
                         });
                     }, 300);
                 }
+            }
+            
+            // Handle image files - open in modal
+            if (e.target.closest('.view-image-btn')) {
+                e.preventDefault();
+                const btn = e.target.closest('.view-image-btn');
+                const imageUrl = btn.getAttribute('data-image-url');
+                const imageName = btn.getAttribute('data-image-name');
+                
+                // Fix URL if needed
+                let finalUrl = imageUrl;
+                if (imageUrl.includes('admin.onlinesystems.info')) {
+                    finalUrl = imageUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                }
+                
+                // Create and show image modal
+                const modalHtml = `
+                    <div class="modal fade" id="imageViewerModal" tabindex="-1" style="z-index: 10000;">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content" style="background: #000; border: none;">
+                                <div class="modal-header border-0" style="background: rgba(0,0,0,0.8);">
+                                    <h6 class="modal-title text-white">${imageName || 'Image'}</h6>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body p-0 text-center">
+                                    <img src="${finalUrl}" alt="${imageName}" style="max-width: 100%; max-height: 80vh; object-fit: contain;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Remove existing modal if any
+                const existingModal = document.getElementById('imageViewerModal');
+                if (existingModal) existingModal.remove();
+                
+                // Add and show modal
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+                const modal = new bootstrap.Modal(document.getElementById('imageViewerModal'));
+                modal.show();
+                
+                // Clean up on close
+                document.getElementById('imageViewerModal').addEventListener('hidden.bs.modal', function() {
+                    this.remove();
+                }, { once: true });
+            }
+            
+            // Handle PDF files - open in new tab
+            if (e.target.closest('.view-pdf-btn')) {
+                e.preventDefault();
+                const btn = e.target.closest('.view-pdf-btn');
+                const pdfUrl = btn.getAttribute('data-pdf-url');
+                
+                // Fix URL if needed
+                let finalUrl = pdfUrl;
+                if (pdfUrl.includes('admin.onlinesystems.info')) {
+                    finalUrl = pdfUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                }
+                
+                // Open PDF in new tab
+                window.open(finalUrl, '_blank');
+            }
+            
+            // Handle other files - open download link
+            if (e.target.closest('.view-file-btn')) {
+                e.preventDefault();
+                const btn = e.target.closest('.view-file-btn');
+                const fileUrl = btn.getAttribute('data-file-url');
+                
+                // Fix URL if needed
+                let finalUrl = fileUrl;
+                if (fileUrl.includes('admin.onlinesystems.info')) {
+                    finalUrl = fileUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                }
+                
+                // Open file in new tab (browser will handle it)
+                window.open(finalUrl, '_blank');
             }
             
             // Handle close video player button
