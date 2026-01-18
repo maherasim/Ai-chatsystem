@@ -14,8 +14,16 @@ return Application::configure(basePath: dirname(__DIR__))
         // Handle reverse proxy (Trust Proxies)
         $middleware->trustProxies(at: '*');
         
-        // Update user last activity on each request
-        $middleware->append(\App\Http\Middleware\UpdateLastActivity::class);
+        // Update user last activity on each request in the web group
+        $middleware->web(append: [
+            \App\Http\Middleware\UpdateLastActivity::class,
+        ]);
+
+        // Exempt logout from CSRF to prevent 419 errors
+        $middleware->validateCsrfTokens(except: [
+            'logout',
+            'signout',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

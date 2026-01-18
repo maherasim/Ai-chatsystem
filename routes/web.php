@@ -26,7 +26,7 @@ Route::post('profile/complete', [CustomAuthController::class, 'completeprofile']
 Route::get('register', [CustomAuthController::class, 'register'])->name('register-user');
 Route::post('custom-registration', [CustomAuthController::class, 'customRegistration'])->name('register.custom');
 Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout');
-Route::post('/logout', [CustomAuthController::class, 'signOut'])->name('logout');
+Route::match(['get', 'post'], '/logout', [CustomAuthController::class, 'signOut'])->name('logout');
 
 //  users
 
