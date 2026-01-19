@@ -600,7 +600,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
     data-files='@json($todo->attachments->map(fn($a) => [
             "name" => $a->file_name."_@_".$a->_id,
             "size" => $a->size,
-            "url"  => asset("storage/{$a->file_path}")
+            "url"  => "https://logiadmin.it-supportline.de/storage/{$a->file_path}"
         ]))'
     data-own="today"
     data-bs-toggle="modal"
@@ -987,7 +987,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
     data-files='@json($todo->attachments->map(fn($a) => [
             "name" => $a->file_name."_@_".$a->_id,
             "size" => $a->size,
-            "url"  => asset("storage/{$a->file_path}")
+            "url"  => "https://logiadmin.it-supportline.de/storage/{$a->file_path}"
         ]))'
     data-members='@json($todo->members_data)'
     data-bs-toggle="modal"
@@ -1352,7 +1352,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
     data-files='@json($todo->attachments->map(fn($a) => [
             "name" => $a->file_name."_@_".$a->_id,
             "size" => $a->size,
-            "url"  => asset("storage/{$a->file_path}")
+            "url"  => "https://logiadmin.it-supportline.de/storage/{$a->file_path}"
         ]))'
     data-image="{{ $imageUrl }}"
     data-total="{{ $todo->total_time }}"
