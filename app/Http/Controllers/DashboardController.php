@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\Task;
 use App\Models\Todo;
+use App\Models\Meetings;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -164,6 +165,13 @@ class DashboardController extends Controller
             'rejected' => $rejectedTasks->count()
         ];
         
+        // Calculate global statistics for dashboard cards
+        $totalTickets = Ticket::count();
+        $totalTasks_global = Task::count();
+        $totalMeetings = Meetings::where('is_removed', '!=', true)->count();
+        $totalMembers = User::count();
+        $todosCount_global = Todo::count();
+        
         return view('index', compact(
             'header',
             'setting',
@@ -178,7 +186,12 @@ class DashboardController extends Controller
             'inCheckTasks',
             'rejectedTasks',
             'reminders',
-            'taskStats'
+            'taskStats',
+            'totalTickets',
+            'totalTasks_global',
+            'totalMembers',
+            'totalMeetings',
+            'todosCount_global'
         ));
     }
 }

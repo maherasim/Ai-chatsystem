@@ -1847,7 +1847,7 @@
                                             <div style="color: #126bb3; font-weight: 700; font-size: 14px;">Tickets</div>
 
                                             <!-- Value -->
-                                            <div style="color: #126bb3; font-weight: 700; font-size: 18px;">45</div>
+                                            <div style="color: #126bb3; font-weight: 700; font-size: 18px;">{{ $totalTickets ?? 0 }}</div>
 
                                             <!-- Change Indicator -->
                                             <div style="position: absolute; bottom: 12px; right: 12px; font-size: 12px; color: #dc3545; font-weight: 600; display: flex; align-items: center;">
@@ -1870,7 +1870,7 @@
 
                                             <div style="color: #f37021; font-weight: 700; font-size: 14px;">Tasks</div>
 
-                                            <div style="color: #f37021; font-weight: 700; font-size: 18px;">45</div>
+                                            <div style="color: #f37021; font-weight: 700; font-size: 18px;">{{ $totalTasks_global ?? 0 }}</div>
 
                                             <div style="position: absolute; bottom: 12px; right: 12px; font-size: 12px; color: #28c76f; font-weight: 600; display: flex; align-items: center;">
                                                 <img src="{{ asset('build/img/up.svg') }}" alt="up" style="width: 12px; margin-right: 3px;">
@@ -1892,7 +1892,7 @@
 
                                             <div style="color: #6a768e; font-weight: 700; font-size: 14px;">Members</div>
 
-                                            <div style="color: #6a768e; font-weight: 700; font-size: 18px;">45</div>
+                                            <div style="color: #6a768e; font-weight: 700; font-size: 18px;">{{ $totalMembers ?? 0 }}</div>
 
                                             <div style="position: absolute; bottom: 12px; right: 12px; font-size: 12px; color: #28c76f; font-weight: 600; display: flex; align-items: center;">
                                                 <img src="{{ asset('build/img/up.svg') }}" alt="up" style="width: 12px; margin-right: 3px;">
@@ -1920,7 +1920,7 @@
                                             <div style="color: #6a768e; font-weight: 700; font-size: 14px;">Meetings</div>
 
                                             <!-- Value -->
-                                            <div style="color: #6a768e; font-weight: 700; font-size: 18px;">45</div>
+                                            <div style="color: #6a768e; font-weight: 700; font-size: 18px;">{{ $totalMeetings ?? 0 }}</div>
 
                                             <!-- Change Indicator -->
                                             <div style="position: absolute; bottom: 12px; right: 12px; font-size: 12px; color: #dc3545; font-weight: 600; display: flex; align-items: center;">
@@ -1943,7 +1943,7 @@
 
                                             <div style="color: #025f2d; font-weight: 700; font-size: 14px;">ToDo's</div>
 
-                                            <div style="color: #025f2d; font-weight: 700; font-size: 18px;">45</div>
+                                            <div style="color: #025f2d; font-weight: 700; font-size: 18px;">{{ $todosCount_global ?? 0 }}</div>
 
                                             <div style="position: absolute; bottom: 12px; right: 12px; font-size: 12px; color: #28c76f; font-weight: 600; display: flex; align-items: center;">
                                                 <img src="{{ asset('build/img/up.svg') }}" alt="up" style="width: 12px; margin-right: 3px;">
