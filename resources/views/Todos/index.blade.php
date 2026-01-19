@@ -5082,9 +5082,23 @@ document.addEventListener('click', function(e) {
                 videoInfo.textContent = videoName || 'Playing video';
             }
             
+            // Find file ID from currentTodoFiles
+            let fileId = '';
+            if (window.currentTodoFiles) {
+                const file = window.currentTodoFiles.find(f => {
+                    const fileUrl = f.url || '';
+                    return fileUrl === videoUrl || fileUrl.includes(videoUrl) || videoUrl.includes(fileUrl);
+                });
+                if (file && file.name) {
+                    const parts = file.name.split("_@_");
+                    fileId = parts[1] || '';
+                }
+            }
+            
             // Store current video data for download/share
             videoPlayer.setAttribute('data-video-url', videoUrl);
             videoPlayer.setAttribute('data-video-name', videoName);
+            videoPlayer.setAttribute('data-file-id', fileId);
             
             // Load thumbnails
             if (typeof loadVideoThumbnails === 'function') {
@@ -5120,8 +5134,14 @@ document.addEventListener('click', function(e) {
             return ['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
         }) : [];
         
-        // Find current image index
+        // Find current image index and file
         const currentIndex = imageFiles.findIndex(f => f.url === imageUrl);
+        const currentFile = imageFiles[currentIndex] || window.currentTodoFiles?.find(f => f.url === imageUrl);
+        let fileId = '';
+        if (currentFile && currentFile.name) {
+            const parts = currentFile.name.split("_@_");
+            fileId = parts[1] || '';
+        }
         
         // Create and show image modal with download/share buttons and gallery navigation
         const modalHtml = `
@@ -5131,7 +5151,7 @@ document.addEventListener('click', function(e) {
                         <div class="modal-header border-0 d-flex justify-content-between align-items-center" style="background: rgba(0,0,0,0.8);">
                             <h6 class="modal-title text-white mb-0" id="imageViewerTitle">${imageName || 'Image'}</h6>
                             <div class="d-flex align-items-center gap-2">
-                                <button type="button" class="btn btn-sm text-white image-download-btn" data-image-url="${imageUrl}" data-image-name="${imageName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Download">
+                                <button type="button" class="btn btn-sm text-white image-download-btn" data-image-url="${imageUrl}" data-image-name="${imageName}" data-file-id="${fileId}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Download">
                                     <i class="fa fa-download" style="font-size: 14px;"></i>
                                 </button>
                                 <button type="button" class="btn btn-sm text-white image-share-btn" data-image-url="${imageUrl}" data-image-name="${imageName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Share in Chat">
@@ -5333,6 +5353,10 @@ function setupGalleryNavigation() {
         if (downloadBtn) {
             downloadBtn.setAttribute('data-image-url', imageUrl);
             downloadBtn.setAttribute('data-image-name', file.name || 'Image');
+            // Update file ID
+            const parts = (file.name || '').split("_@_");
+            const fileId = parts[1] || '';
+            downloadBtn.setAttribute('data-file-id', fileId);
         }
         
         if (shareBtn) {
@@ -5482,6 +5506,53 @@ document.addEventListener('keydown', function(e) {
         if (videoContainer && videoContainer.style.display === 'flex') {
             const closeBtn = document.getElementById('closeTodoVideoPlayer');
             if (closeBtn) closeBtn.click();
+        }
+    }
+});
+
+// Handle download buttons - use static base URL
+document.addEventListener('click', function(e) {
+    // Image download button
+    if (e.target.closest('.image-download-btn')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const btn = e.target.closest('.image-download-btn');
+        const fileId = btn.getAttribute('data-file-id');
+        const imageUrl = btn.getAttribute('data-image-url');
+        const imageName = btn.getAttribute('data-image-name');
+        
+        if (fileId) {
+            // Use static base URL for download
+            window.open(`https://logiadmin.it-supportline.de/download/${fileId}`, '_blank');
+        } else {
+            // Fallback: direct download from URL
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            link.download = imageName || 'image';
+            link.click();
+        }
+    }
+    
+    // Video download button
+    if (e.target.closest('#downloadVideoBtn')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const videoPlayer = document.getElementById('todoVideoPlayer');
+        if (videoPlayer) {
+            const fileId = videoPlayer.getAttribute('data-file-id');
+            const videoUrl = videoPlayer.getAttribute('data-video-url') || videoPlayer.src;
+            const videoName = videoPlayer.getAttribute('data-video-name') || 'video';
+            
+            if (fileId) {
+                // Use static base URL for download
+                window.open(`https://logiadmin.it-supportline.de/download/${fileId}`, '_blank');
+            } else {
+                // Fallback: direct download from URL
+                const link = document.createElement('a');
+                link.href = videoUrl;
+                link.download = videoName;
+                link.click();
+            }
         }
     }
 });
