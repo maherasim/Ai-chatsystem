@@ -480,9 +480,46 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
   left: 50%;
   transform: translateX(-50%);
   font-size: 12px; /* smaller label */
-  color: #666;
-}
+    /* Gallery Navigation Styling */
+    .gallery-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10001;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
 
+    .gallery-nav-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .gallery-nav-btn i {
+        font-size: 24px;
+    }
+
+    .gallery-prev { left: 20px; }
+    .gallery-next { right: 20px; }
+
+    @media (max-width: 768px) {
+        .gallery-nav-btn {
+            width: 40px;
+            height: 40px;
+        }
+        .gallery-prev { left: 10px; }
+        .gallery-next { right: 10px; }
+    }
 </style>
 
 
@@ -2842,12 +2879,21 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                             </div>
                             
                             <!-- Video Container - Full Screen -->
-                            <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; overflow: hidden;">
+                            <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; overflow: hidden; position: relative;">
+                                <!-- Navigation Arrows -->
+                                <button type="button" class="gallery-nav-btn gallery-prev" id="todoVideoPrev" title="Previous">
+                                    <i class="fa fa-chevron-left"></i>
+                                </button>
+                                
                                 <video id="todoVideoPlayer" controls 
-                                       style="max-width: 100%; max-height: 100%; width: auto; height: auto; outline: none; border-radius: 8px;"
+                                       style="max-width: 100%; max-height: 100%; width: auto; height: auto; outline: none; border-radius: 8px; z-index: 1;"
                                        preload="metadata">
                                     Your browser does not support the video tag.
                                 </video>
+
+                                <button type="button" class="gallery-nav-btn gallery-next" id="todoVideoNext" title="Next">
+                                    <i class="fa fa-chevron-right"></i>
+                                </button>
                             </div>
                             
                             <!-- Video Footer with Thumbnails -->
@@ -5667,6 +5713,67 @@ document.querySelectorAll('.user_div').forEach(div => {
         </script>
 
         <script>
+        window.currentMediaIndex = -1;
+
+        function navigateToMedia(direction) {
+            if (!window.currentTodoFiles || window.currentTodoFiles.length === 0) return;
+            
+            // Filter for images and videos only
+            const mediaFiles = window.currentTodoFiles.filter(file => {
+                const ext = (file.name || '').split('.').pop().toLowerCase();
+                return ['jpg','jpeg','png','gif','webp','bmp','svg','mp4','mov','avi','mkv','webm','flv','wmv'].includes(ext);
+            });
+            
+            if (mediaFiles.length <= 1) return;
+            
+            // If current index is not set, find it based on current view
+            if (window.currentMediaIndex === -1) {
+                const videoPlayer = document.getElementById('todoVideoPlayer');
+                const imageModal = document.getElementById('imageViewerModal');
+                let currentUrl = "";
+                
+                if (videoPlayer && videoPlayer.src && document.getElementById('todoVideoPlayerContainer').style.display === 'flex') {
+                    currentUrl = videoPlayer.getAttribute('data-original-url') || videoPlayer.src;
+                } else if (imageModal) {
+                    const img = imageModal.querySelector('.modal-body img');
+                    currentUrl = img ? img.getAttribute('src') : "";
+                }
+                
+                if (currentUrl) {
+                    // Try to find matching file (handling domain replacements)
+                    window.currentMediaIndex = mediaFiles.findIndex(f => {
+                        let fUrl = f.url;
+                        if (fUrl.includes('admin.onlinesystems.info')) fUrl = fUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                        let cUrl = currentUrl;
+                        if (cUrl.includes('admin.onlinesystems.info')) cUrl = cUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                        return fUrl === cUrl;
+                    });
+                }
+            }
+            
+            let nextIndex = window.currentMediaIndex + direction;
+            if (nextIndex < 0) nextIndex = mediaFiles.length - 1;
+            if (nextIndex >= mediaFiles.length) nextIndex = 0;
+            
+            window.currentMediaIndex = nextIndex;
+            const nextFile = mediaFiles[nextIndex];
+            const ext = (nextFile.name || '').split('.').pop().toLowerCase();
+            const isVideo = ['mp4','mov','avi','mkv','webm','flv','wmv'].includes(ext);
+            
+            if (isVideo) {
+                // Trigger video view logic manually to avoid recursive issues or just click the button
+                const videoBtn = document.querySelector(`[data-video-url="${nextFile.url}"]`);
+                if (videoBtn) {
+                    videoBtn.click();
+                }
+            } else {
+                const imageBtn = document.querySelector(`[data-image-url="${nextFile.url}"]`);
+                if (imageBtn) {
+                    imageBtn.click();
+                }
+            }
+        }
+
         // Handle file view button clicks - optimized for all file types
         document.addEventListener('click', function(e) {
             // Handle video files
@@ -5698,8 +5805,18 @@ document.querySelectorAll('.user_div').forEach(div => {
                     
                     // Store current video data for download/share
                     videoPlayer.setAttribute('data-video-url', finalUrl);
+                    videoPlayer.setAttribute('data-original-url', videoUrl);
                     videoPlayer.setAttribute('data-video-name', videoName);
                     
+                    // Update current index
+                    if (window.currentTodoFiles) {
+                        const mediaFiles = window.currentTodoFiles.filter(file => {
+                            const ext = (file.name || '').split('.').pop().toLowerCase();
+                            return ['jpg','jpeg','png','gif','webp','bmp','svg','mp4','mov','avi','mkv','webm','flv','wmv'].includes(ext);
+                        });
+                        window.currentMediaIndex = mediaFiles.findIndex(f => f.url === videoUrl);
+                    }
+
                     // Load thumbnails
                     loadVideoThumbnails();
                     
@@ -5735,8 +5852,13 @@ document.querySelectorAll('.user_div').forEach(div => {
                 const modalHtml = `
                     <div class="modal fade" id="imageViewerModal" tabindex="-1" style="z-index: 10000;">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
-                            <div class="modal-content" style="background: #000; border: none;">
-                                <div class="modal-header border-0 d-flex justify-content-between align-items-center" style="background: rgba(0,0,0,0.8);">
+                            <div class="modal-content" style="background: #000; border: none; position: relative;">
+                                <!-- Navigation Arrows -->
+                                <button type="button" class="gallery-nav-btn gallery-prev" id="todoImagePrev" title="Previous">
+                                    <i class="fa fa-chevron-left"></i>
+                                </button>
+
+                                <div class="modal-header border-0 d-flex justify-content-between align-items-center" style="background: rgba(0,0,0,0.8); z-index: 2;">
                                     <h6 class="modal-title text-white mb-0">${imageName || 'Image'}</h6>
                                     <div class="d-flex align-items-center gap-2">
                                         <button type="button" class="btn btn-sm text-white image-download-btn" data-image-url="${finalUrl}" data-image-name="${imageName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Download">
@@ -5748,10 +5870,15 @@ document.querySelectorAll('.user_div').forEach(div => {
                                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                                     </div>
                                 </div>
-                                <div class="modal-body p-0 text-center">
-                                    <img src="${finalUrl}" alt="${imageName}" style="max-width: 100%; max-height: 70vh; object-fit: contain;">
+                                <div class="modal-body p-4 text-center" style="position: relative; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                                    <img src="${finalUrl}" alt="${imageName}" style="max-width: 100%; max-height: 70vh; object-fit: contain; z-index: 1;">
                                 </div>
-                                <div class="modal-footer border-0 p-2" style="background: rgba(0,0,0,0.8);">
+
+                                <button type="button" class="gallery-nav-btn gallery-next" id="todoImageNext" title="Next">
+                                    <i class="fa fa-chevron-right"></i>
+                                </button>
+
+                                <div class="modal-footer border-0 p-2" style="background: rgba(0,0,0,0.8); z-index: 2;">
                                     <div id="imageThumbnails" class="d-flex gap-2" style="overflow-x: auto; width: 100%; padding: 5px 0;">
                                         <!-- Thumbnails will be populated here -->
                                     </div>
@@ -5760,6 +5887,15 @@ document.querySelectorAll('.user_div').forEach(div => {
                         </div>
                     </div>
                 `;
+                
+                // Update current index
+                if (window.currentTodoFiles) {
+                    const mediaFiles = window.currentTodoFiles.filter(file => {
+                        const ext = (file.name || '').split('.').pop().toLowerCase();
+                        return ['jpg','jpeg','png','gif','webp','bmp','svg','mp4','mov','avi','mkv','webm','flv','wmv'].includes(ext);
+                    });
+                    window.currentMediaIndex = mediaFiles.findIndex(f => f.url === imageUrl);
+                }
                 
                 // Remove existing modal if any
                 const existingModal = document.getElementById('imageViewerModal');
@@ -5811,6 +5947,16 @@ document.querySelectorAll('.user_div').forEach(div => {
                 window.open(finalUrl, '_blank');
             }
             
+            // Handle gallery navigation button clicks
+            if (e.target.closest('#todoVideoPrev') || e.target.closest('#todoImagePrev')) {
+                e.preventDefault();
+                navigateToMedia(-1);
+            }
+            if (e.target.closest('#todoVideoNext') || e.target.closest('#todoImageNext')) {
+                e.preventDefault();
+                navigateToMedia(1);
+            }
+
             // Handle close video player button
             if (e.target.closest('#closeTodoVideoPlayer')) {
                 e.preventDefault();
@@ -5860,13 +6006,34 @@ document.querySelectorAll('.user_div').forEach(div => {
             });
         }
         
-        // Add Escape key listener for closing video
+        // Add keyboard listener for navigation
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 const videoContainer = document.getElementById('todoVideoPlayerContainer');
                 if (videoContainer && videoContainer.style.display === 'flex') {
                     const closeBtn = document.getElementById('closeTodoVideoPlayer');
                     if (closeBtn) closeBtn.click();
+                }
+                const imageModal = document.getElementById('imageViewerModal');
+                if (imageModal && imageModal.classList.contains('show')) {
+                    const modal = bootstrap.Modal.getInstance(imageModal);
+                    if (modal) modal.hide();
+                }
+            }
+            
+            if (e.key === 'ArrowLeft') {
+                const videoVisible = document.getElementById('todoVideoPlayerContainer').style.display === 'flex';
+                const imageVisible = document.getElementById('imageViewerModal')?.classList.contains('show');
+                if (videoVisible || imageVisible) {
+                    navigateToMedia(-1);
+                }
+            }
+            
+            if (e.key === 'ArrowRight') {
+                const videoVisible = document.getElementById('todoVideoPlayerContainer').style.display === 'flex';
+                const imageVisible = document.getElementById('imageViewerModal')?.classList.contains('show');
+                if (videoVisible || imageVisible) {
+                    navigateToMedia(1);
                 }
             }
         });
