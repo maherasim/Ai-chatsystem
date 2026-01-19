@@ -480,6 +480,8 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
   left: 50%;
   transform: translateX(-50%);
   font-size: 12px; /* smaller label */
+}
+
     /* Gallery Navigation Styling */
     .gallery-nav-btn {
         position: absolute;
@@ -5849,6 +5851,28 @@ document.querySelectorAll('.user_div').forEach(div => {
                 }
                 
                 // Create and show image modal with download/share buttons
+                let counterHtml = '';
+                let currentIndex = 0;
+                let totalFiles = 0;
+                
+                if (window.currentTodoFiles) {
+                    const normalize = (u) => (u || '').replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                    const normImageUrl = normalize(imageUrl);
+                    
+                    const mediaFiles = window.currentTodoFiles.filter(file => {
+                        const ext = (file.name || '').split('.').pop().toLowerCase();
+                        return ['jpg','jpeg','png','gif','webp','bmp','svg','mp4','mov','avi','mkv','webm','flv','wmv'].includes(ext);
+                    });
+                    
+                    totalFiles = Math.max(mediaFiles.length, 1);
+                    currentIndex = mediaFiles.findIndex(f => normalize(f.url) === normImageUrl);
+                    if (currentIndex === -1) currentIndex = 0;
+                    
+                    if (totalFiles > 0) {
+                        counterHtml = `<div style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); padding: 5px 15px; border-radius: 20px; color: white; font-size: 14px; font-weight: 600; z-index: 9999; pointer-events: none; white-space: nowrap;">${currentIndex + 1} / ${totalFiles}</div>`;
+                    }
+                }
+
                 const modalHtml = `
                     <div class="modal fade" id="imageViewerModal" tabindex="-1" style="z-index: 10000;">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -5872,6 +5896,7 @@ document.querySelectorAll('.user_div').forEach(div => {
                                 </div>
                                 <div class="modal-body p-4 text-center" style="position: relative; min-height: 200px; display: flex; align-items: center; justify-content: center;">
                                     <img src="${finalUrl}" alt="${imageName}" style="max-width: 100%; max-height: 70vh; object-fit: contain; z-index: 1;">
+                                    ${counterHtml}
                                 </div>
 
                                 <button type="button" class="gallery-nav-btn gallery-next" id="todoImageNext" title="Next">
