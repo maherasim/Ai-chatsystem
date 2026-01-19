@@ -2546,6 +2546,42 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
     </div>
 </div>
 
+<!-- Video Player Container (Fullscreen Cover) -->
+<div id="todoVideoPlayerContainer" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; flex-direction: column; align-items: center; justify-content: center;">
+    <div style="width: 100%; height: 100%; display: flex; flex-direction: column;">
+        <!-- Header -->
+        <div style="padding: 15px 20px; background: rgba(0,0,0,0.8); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <h6 class="text-white mb-0" id="todoVideoPlayerTitle">Video Player</h6>
+            <div class="d-flex align-items-center gap-2">
+                <button type="button" class="btn btn-sm text-white" id="downloadVideoBtn" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Download">
+                    <i class="fa fa-download" style="font-size: 14px;"></i>
+                </button>
+                <button type="button" class="btn btn-sm text-white" id="shareVideoBtn" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Share in Chat">
+                    <i class="fa fa-share-alt" style="font-size: 14px;"></i>
+                </button>
+                <button type="button" class="btn btn-sm text-white" id="closeTodoVideoPlayer" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Close">
+                    <i class="fa fa-times" style="font-size: 14px;"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Video Player -->
+        <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px;">
+            <video id="todoVideoPlayer" controls style="max-width: 100%; max-height: 80vh; width: auto; height: auto;" autoplay>
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        
+        <!-- Footer -->
+        <div style="padding: 15px 20px; background: rgba(0,0,0,0.8); border-top: 1px solid rgba(255,255,255,0.1);">
+            <div id="todoVideoPlayerInfo" class="text-white mb-2" style="font-size: 14px;">Playing video</div>
+            <div id="todoVideoThumbnails" class="d-flex gap-2" style="overflow-x: auto; width: 100%; padding: 5px 0;">
+                <!-- Video thumbnails will be populated here -->
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Denied Modal -->
 <div class="modal fade" id="deniedModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -3975,9 +4011,10 @@ console.log("Raw members data:", e_members);
 let filecont = document.querySelector('.files-container');
 filecont.style.display = "block";
 
-
-
+// Store files globally for gallery navigation
 let files = JSON.parse(this.dataset.files || "[]");
+window.currentTodoFiles = files; // Store for gallery navigation
+
 let filesList = document.querySelector('.todo-files-list');
 
 
@@ -4045,6 +4082,25 @@ if (files.length > 0) {
         if (['jpg','jpeg','png','gif','webp'].includes(ext)) icon = url;
         if (['mp4','mov','avi','mkv'].includes(ext)) icon = "https://cdn-icons-png.flaticon.com/512/711/711245.png";
 
+        // Determine file type and view button class
+        const isImage = ['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
+        const isVideo = ['mp4','mov','avi','mkv','webm','flv','wmv'].includes(ext);
+        const isPdf = ['pdf'].includes(ext);
+        
+        let viewButtonClass = 'view-file-btn';
+        let viewButtonData = `data-file-url="${url}" data-file-name="${name}"`;
+        
+        if (isVideo) {
+            viewButtonClass = 'view-video-btn';
+            viewButtonData = `data-video-url="${url}" data-video-name="${name}"`;
+        } else if (isImage) {
+            viewButtonClass = 'view-image-btn';
+            viewButtonData = `data-image-url="${url}" data-image-name="${name}"`;
+        } else if (isPdf) {
+            viewButtonClass = 'view-pdf-btn';
+            viewButtonData = `data-pdf-url="${url}" data-pdf-name="${name}"`;
+        }
+        
         // File item markup
         let fileHtml = `
             <div class="col-md-6 mb-2">
@@ -4060,9 +4116,13 @@ if (files.length > 0) {
                             <div style="font-size:12px; color:#6b7280;">${size}</div>
                         </div>
                     </div>
-                    <a href="/download/${id}" target="_blank" download 
-                       style="color:#1d4ed8; text-decoration:none;">
-                        <i class="fa fa-arrow-down" style="font-size:16px;"></i>
+                    <a href="javascript:void(0);" class="${viewButtonClass}" 
+                       ${viewButtonData}
+                       style="color:#6338F6; text-decoration:none; cursor:pointer; padding: 6px; border-radius: 6px; transition: all 0.2s; flex-shrink: 0; margin-left: 8px;" 
+                       title="View ${isVideo ? 'Video' : isImage ? 'Image' : isPdf ? 'PDF' : 'File'}"
+                       onmouseover="this.style.background='#f3f4f6'" 
+                       onmouseout="this.style.background='transparent'">
+                        <i class="fa fa-eye" style="font-size:16px;"></i>
                     </a>
                 </div>
             </div>
@@ -4975,6 +5035,456 @@ document.querySelectorAll('.user_div').forEach(div => {
     });
 });
 
+// Store current todo files for gallery navigation
+window.currentTodoFiles = null;
+
+// Handle file view button clicks - optimized for all file types
+document.addEventListener('click', function(e) {
+    // Check if click is on view button or icon inside it
+    const viewBtn = e.target.closest('.view-video-btn') || 
+                   e.target.closest('.view-image-btn') || 
+                   e.target.closest('.view-pdf-btn') || 
+                   e.target.closest('.view-file-btn');
+    
+    if (!viewBtn) return;
+    
+    // Store files for gallery navigation
+    const filesContainer = viewBtn.closest('.todo-files-list');
+    if (filesContainer) {
+        const todoCard = filesContainer.closest('[data-files]');
+        if (todoCard) {
+            try {
+                window.currentTodoFiles = JSON.parse(todoCard.getAttribute('data-files') || '[]');
+            } catch (err) {
+                window.currentTodoFiles = [];
+            }
+        }
+    }
+    
+    // Handle video files
+    if (viewBtn.classList.contains('view-video-btn')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const videoUrl = viewBtn.getAttribute('data-video-url');
+        const videoName = viewBtn.getAttribute('data-video-name');
+        
+        // Get video player container and player elements
+        const videoContainer = document.getElementById('todoVideoPlayerContainer');
+        const videoPlayer = document.getElementById('todoVideoPlayer');
+        const videoTitle = document.getElementById('todoVideoPlayerTitle');
+        const videoInfo = document.getElementById('todoVideoPlayerInfo');
+        
+        if (videoContainer && videoPlayer && videoTitle) {
+            // Set video source and title
+            videoPlayer.src = videoUrl;
+            videoTitle.textContent = videoName || 'Video Player';
+            if (videoInfo) {
+                videoInfo.textContent = videoName || 'Playing video';
+            }
+            
+            // Store current video data for download/share
+            videoPlayer.setAttribute('data-video-url', videoUrl);
+            videoPlayer.setAttribute('data-video-name', videoName);
+            
+            // Load thumbnails
+            if (typeof loadVideoThumbnails === 'function') {
+                loadVideoThumbnails();
+            }
+            
+            // Show video container (fullscreen cover)
+            videoContainer.style.display = 'flex';
+            
+            // Prevent body scroll when video is open
+            document.body.style.overflow = 'hidden';
+            
+            // Try to play video
+            setTimeout(() => {
+                videoPlayer.play().catch(err => {
+                    console.log('Autoplay prevented:', err);
+                });
+            }, 300);
+        }
+        return;
+    }
+    
+    // Handle image files - open in modal
+    if (viewBtn.classList.contains('view-image-btn')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const imageUrl = viewBtn.getAttribute('data-image-url');
+        const imageName = viewBtn.getAttribute('data-image-name');
+        
+        // Get all image files for gallery navigation
+        const imageFiles = window.currentTodoFiles ? window.currentTodoFiles.filter((file) => {
+            const ext = (file.name || '').split('.').pop().toLowerCase();
+            return ['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
+        }) : [];
+        
+        // Find current image index
+        const currentIndex = imageFiles.findIndex(f => f.url === imageUrl);
+        
+        // Create and show image modal with download/share buttons and gallery navigation
+        const modalHtml = `
+            <div class="modal fade" id="imageViewerModal" tabindex="-1" style="z-index: 10000;" data-current-index="${currentIndex}">
+                <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 90vw;">
+                    <div class="modal-content" style="background: #000; border: none; position: relative;">
+                        <div class="modal-header border-0 d-flex justify-content-between align-items-center" style="background: rgba(0,0,0,0.8);">
+                            <h6 class="modal-title text-white mb-0" id="imageViewerTitle">${imageName || 'Image'}</h6>
+                            <div class="d-flex align-items-center gap-2">
+                                <button type="button" class="btn btn-sm text-white image-download-btn" data-image-url="${imageUrl}" data-image-name="${imageName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Download">
+                                    <i class="fa fa-download" style="font-size: 14px;"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm text-white image-share-btn" data-image-url="${imageUrl}" data-image-name="${imageName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Share in Chat">
+                                    <i class="fa fa-share-alt" style="font-size: 14px;"></i>
+                                </button>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                        </div>
+                        <div class="modal-body p-0 text-center" style="position: relative; min-height: 400px;">
+                            ${imageFiles.length > 1 ? `
+                                <button type="button" class="btn btn-lg text-white gallery-nav-btn gallery-prev-btn" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.4); border-radius: 50%; width: 50px; height: 50px; z-index: 1001; padding: 0; display: ${currentIndex > 0 ? 'flex' : 'none'}; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;" title="Previous Image (←)" onmouseover="this.style.background='rgba(99,56,246,0.8)'; this.style.borderColor='rgba(255,255,255,0.6)'" onmouseout="this.style.background='rgba(0,0,0,0.7)'; this.style.borderColor='rgba(255,255,255,0.4)'">
+                                    <i class="fa fa-chevron-left" style="font-size: 18px;"></i>
+                                </button>
+                                <button type="button" class="btn btn-lg text-white gallery-nav-btn gallery-next-btn" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.4); border-radius: 50%; width: 50px; height: 50px; z-index: 1001; padding: 0; display: ${currentIndex < imageFiles.length - 1 ? 'flex' : 'none'}; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;" title="Next Image (→)" onmouseover="this.style.background='rgba(99,56,246,0.8)'; this.style.borderColor='rgba(255,255,255,0.6)'" onmouseout="this.style.background='rgba(0,0,0,0.7)'; this.style.borderColor='rgba(255,255,255,0.4)'">
+                                    <i class="fa fa-chevron-right" style="font-size: 18px;"></i>
+                                </button>
+                            ` : ''}
+                            <img id="imageViewerImg" src="${imageUrl}" alt="${imageName}" style="max-width: 100%; max-height: 70vh; object-fit: contain; display: block; margin: 0 auto;">
+                        </div>
+                        <div class="modal-footer border-0 p-2" style="background: rgba(0,0,0,0.8);">
+                            <div id="imageThumbnails" class="d-flex gap-2" style="overflow-x: auto; width: 100%; padding: 5px 0;">
+                                <!-- Thumbnails will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Remove existing modal if any
+        const existingModal = document.getElementById('imageViewerModal');
+        if (existingModal) existingModal.remove();
+        
+        // Add and show modal
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        const modal = new bootstrap.Modal(document.getElementById('imageViewerModal'));
+        modal.show();
+        
+        // Store image files in modal for gallery navigation
+        const modalElement = document.getElementById('imageViewerModal');
+        if (modalElement && imageFiles.length > 0) {
+            modalElement.imageFiles = imageFiles;
+            modalElement.currentIndex = currentIndex;
+        }
+        
+        // Load thumbnails for images after modal is shown
+        const modalEl = document.getElementById('imageViewerModal');
+        if (modalEl) {
+            modalEl.addEventListener('shown.bs.modal', function() {
+                if (typeof loadImageThumbnails === 'function') {
+                    loadImageThumbnails();
+                }
+                if (imageFiles.length > 1 && typeof setupGalleryNavigation === 'function') {
+                    setupGalleryNavigation();
+                }
+            }, { once: true });
+            
+            // Clean up on close
+            modalEl.addEventListener('hidden.bs.modal', function() {
+                this.remove();
+            }, { once: true });
+        }
+        return;
+    }
+    
+    // Handle PDF files - open in new tab
+    if (viewBtn.classList.contains('view-pdf-btn')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const pdfUrl = viewBtn.getAttribute('data-pdf-url');
+        
+        // Open PDF in new tab
+        window.open(pdfUrl, '_blank');
+        return;
+    }
+    
+    // Handle other files - open download link
+    if (viewBtn.classList.contains('view-file-btn')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const fileUrl = viewBtn.getAttribute('data-file-url');
+        
+        // Open file in new tab (browser will handle it)
+        window.open(fileUrl, '_blank');
+        return;
+    }
+});
+
+// Function to load image thumbnails
+function loadImageThumbnails() {
+    const thumbnailsContainer = document.getElementById('imageThumbnails');
+    if (!thumbnailsContainer || !window.currentTodoFiles) return;
+    
+    thumbnailsContainer.innerHTML = '';
+    
+    // Get all image files
+    const imageFiles = window.currentTodoFiles.filter((file) => {
+        const ext = (file.name || '').split('.').pop().toLowerCase();
+        return ['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
+    });
+    
+    const modal = document.getElementById('imageViewerModal');
+    if (!modal) return;
+    
+    const currentIndex = parseInt(modal.getAttribute('data-current-index')) || 0;
+    
+    imageFiles.forEach((file, index) => {
+        const thumbnailUrl = file.url || '';
+        const isActive = index === currentIndex;
+        
+        const thumbnail = document.createElement('div');
+        thumbnail.className = 'image-thumbnail';
+        thumbnail.setAttribute('data-image-index', index);
+        thumbnail.setAttribute('data-image-url', file.url);
+        thumbnail.style.cssText = `width: 70px; height: 70px; border-radius: 8px; overflow: hidden; cursor: pointer; border: ${isActive ? '3px solid #6338F6' : '2px solid rgba(255,255,255,0.3)'}; flex-shrink: 0; transition: all 0.2s; position: relative;`;
+        thumbnail.innerHTML = `
+            <img src="${thumbnailUrl}" style="width: 100%; height: 100%; object-fit: cover;" 
+                 onerror="this.src='{{ asset('build/img/file-icon.svg') }}'">
+            ${isActive ? '<div style="position: absolute; top: 4px; right: 4px; background: #6338F6; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold;">✓</div>' : ''}
+        `;
+        
+        thumbnail.addEventListener('click', function() {
+            const modal = document.getElementById('imageViewerModal');
+            if (modal && modal.classList.contains('show') && modal.imageFiles && window.updateGalleryImage) {
+                window.updateGalleryImage(index);
+            } else {
+                const viewBtn = document.querySelector(`.view-image-btn[data-image-url="${file.url}"]`);
+                if (viewBtn) viewBtn.click();
+            }
+        });
+        
+        thumbnail.addEventListener('mouseenter', function() {
+            if (!isActive) {
+                this.style.border = '3px solid rgba(99, 56, 246, 0.6)';
+                this.style.transform = 'scale(1.08)';
+                this.style.boxShadow = '0 4px 12px rgba(99, 56, 246, 0.3)';
+            }
+        });
+        
+        thumbnail.addEventListener('mouseleave', function() {
+            if (!isActive) {
+                this.style.border = '2px solid rgba(255,255,255,0.3)';
+                this.style.transform = 'scale(1)';
+                this.style.boxShadow = 'none';
+            }
+        });
+        
+        thumbnailsContainer.appendChild(thumbnail);
+    });
+    
+    // Add scroll to active thumbnail if many images
+    if (imageFiles.length > 5) {
+        const activeThumb = thumbnailsContainer.querySelector('[style*="3px solid #6338F6"]');
+        if (activeThumb) {
+            activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+    }
+}
+
+// Function to setup gallery navigation
+function setupGalleryNavigation() {
+    const modal = document.getElementById('imageViewerModal');
+    if (!modal || !modal.imageFiles || modal.imageFiles.length <= 1) return;
+    
+    const imageFiles = modal.imageFiles;
+    let currentIndex = parseInt(modal.getAttribute('data-current-index')) || modal.currentIndex || 0;
+    modal.currentIndex = currentIndex;
+    
+    // Function to update image in gallery (make it global for thumbnail clicks)
+    window.updateGalleryImage = function(index) {
+        if (index < 0 || index >= imageFiles.length) return;
+        
+        // Update both closure variable and modal attributes
+        currentIndex = index;
+        modal.currentIndex = index;
+        modal.setAttribute('data-current-index', index.toString());
+        
+        const file = imageFiles[index];
+        let imageUrl = file.url || '';
+        
+        const img = document.getElementById('imageViewerImg');
+        const title = document.getElementById('imageViewerTitle');
+        const downloadBtn = modal.querySelector('.image-download-btn');
+        const shareBtn = modal.querySelector('.image-share-btn');
+        
+        if (img) {
+            img.style.opacity = '0.5';
+            setTimeout(() => {
+                img.src = imageUrl;
+                img.alt = file.name || 'Image';
+                img.style.opacity = '1';
+            }, 150);
+        }
+        
+        if (title) {
+            title.textContent = file.name || 'Image';
+        }
+        
+        if (downloadBtn) {
+            downloadBtn.setAttribute('data-image-url', imageUrl);
+            downloadBtn.setAttribute('data-image-name', file.name || 'Image');
+        }
+        
+        if (shareBtn) {
+            shareBtn.setAttribute('data-image-url', imageUrl);
+            shareBtn.setAttribute('data-image-name', file.name || 'Image');
+        }
+        
+        // Update navigation buttons visibility
+        const prevBtn = modal.querySelector('.gallery-prev-btn');
+        const nextBtn = modal.querySelector('.gallery-next-btn');
+        
+        if (prevBtn) {
+            if (currentIndex > 0) {
+                prevBtn.style.display = 'flex';
+                prevBtn.style.pointerEvents = 'auto';
+                prevBtn.style.opacity = '1';
+                prevBtn.style.visibility = 'visible';
+            } else {
+                prevBtn.style.display = 'none';
+                prevBtn.style.visibility = 'hidden';
+            }
+        }
+        
+        if (nextBtn) {
+            if (currentIndex < imageFiles.length - 1) {
+                nextBtn.style.display = 'flex';
+                nextBtn.style.pointerEvents = 'auto';
+                nextBtn.style.opacity = '1';
+                nextBtn.style.visibility = 'visible';
+            } else {
+                nextBtn.style.display = 'none';
+                nextBtn.style.visibility = 'hidden';
+            }
+        }
+        
+        // Update thumbnails highlight
+        setTimeout(() => {
+            loadImageThumbnails();
+        }, 200);
+    };
+    
+    // Previous/Next button - use event delegation
+    modal.addEventListener('click', function(e) {
+        // Get current index from modal (always up-to-date)
+        let currentIdx = parseInt(modal.getAttribute('data-current-index')) || modal.currentIndex || 0;
+        
+        if (e.target.closest('.gallery-prev-btn')) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (currentIdx > 0 && window.updateGalleryImage) {
+                window.updateGalleryImage(currentIdx - 1);
+            }
+        }
+        
+        if (e.target.closest('.gallery-next-btn')) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (currentIdx < imageFiles.length - 1 && window.updateGalleryImage) {
+                window.updateGalleryImage(currentIdx + 1);
+            }
+        }
+    });
+    
+    // Keyboard navigation
+    const handleKeyPress = function(e) {
+        if (!modal.classList.contains('show')) return;
+        
+        // Get current index from modal (always up-to-date)
+        let currentIdx = parseInt(modal.getAttribute('data-current-index')) || modal.currentIndex || 0;
+        
+        if (e.key === 'ArrowLeft' && currentIdx > 0 && window.updateGalleryImage) {
+            e.preventDefault();
+            window.updateGalleryImage(currentIdx - 1);
+        } else if (e.key === 'ArrowRight' && currentIdx < imageFiles.length - 1 && window.updateGalleryImage) {
+            e.preventDefault();
+            window.updateGalleryImage(currentIdx + 1);
+        }
+    };
+    
+    document.addEventListener('keydown', handleKeyPress);
+    
+    // Remove listener when modal closes
+    modal.addEventListener('hidden.bs.modal', function() {
+        document.removeEventListener('keydown', handleKeyPress);
+        window.updateGalleryImage = null; // Clean up
+    }, { once: true });
+}
+
+// Function to load video thumbnails
+function loadVideoThumbnails() {
+    const thumbnailsContainer = document.getElementById('todoVideoThumbnails');
+    if (!thumbnailsContainer || !window.currentTodoFiles) return;
+    
+    thumbnailsContainer.innerHTML = '';
+    
+    window.currentTodoFiles.forEach((file, index) => {
+        const ext = (file.name || '').split('.').pop().toLowerCase();
+        const isVideo = ['mp4','mov','avi','mkv','webm','flv','wmv'].includes(ext);
+        
+        if (isVideo) {
+            let thumbnailUrl = file.url || '';
+            
+            const thumbnail = document.createElement('div');
+            thumbnail.className = 'video-thumbnail';
+            thumbnail.style.cssText = 'width: 80px; height: 60px; border-radius: 6px; overflow: hidden; cursor: pointer; border: 2px solid transparent; flex-shrink: 0;';
+            thumbnail.innerHTML = `
+                <img src="${thumbnailUrl}" style="width: 100%; height: 100%; object-fit: cover;" 
+                     onerror="this.src='https://cdn-icons-png.flaticon.com/512/711/711245.png'">
+            `;
+            
+            thumbnail.addEventListener('click', function() {
+                const viewBtn = document.querySelector(`[data-video-url="${file.url}"]`);
+                if (viewBtn) viewBtn.click();
+            });
+            
+            thumbnailsContainer.appendChild(thumbnail);
+        }
+    });
+}
+
+// Handle close video player button
+document.addEventListener('click', function(e) {
+    if (e.target.closest('#closeTodoVideoPlayer')) {
+        e.preventDefault();
+        const videoContainer = document.getElementById('todoVideoPlayerContainer');
+        const videoPlayer = document.getElementById('todoVideoPlayer');
+        
+        if (videoContainer && videoPlayer) {
+            // Pause and reset video
+            videoPlayer.pause();
+            videoPlayer.currentTime = 0;
+            videoPlayer.src = '';
+            
+            // Hide container
+            videoContainer.style.display = 'none';
+            
+            // Restore body scroll
+            document.body.style.overflow = '';
+        }
+    }
+});
+
+// Handle Escape key for closing video
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const videoContainer = document.getElementById('todoVideoPlayerContainer');
+        if (videoContainer && videoContainer.style.display === 'flex') {
+            const closeBtn = document.getElementById('closeTodoVideoPlayer');
+            if (closeBtn) closeBtn.click();
+        }
+    }
+});
 
         </script>
         @endsection
