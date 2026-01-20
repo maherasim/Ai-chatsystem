@@ -1266,9 +1266,9 @@
                                 <div class="accordion accordion-flush chat-accordion" id="mediafile">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
-                                            <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse1" aria-expanded="false" aria-controls="chatuser-collapse1">
+                                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#chatuser-collapse1" aria-expanded="false" aria-controls="chatuser-collapse1">
                                                 <i class="ti ti-photo-shield me-2"></i>Photos
-                                            </a>
+                                            </button>
                                         </h2>
                                         <div id="chatuser-collapse1" class="accordion-collapse collapse" data-bs-parent="#mediafile">
                                             <div class="accordion-body">
@@ -1285,9 +1285,9 @@
                                     </div>
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
-                                            <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#media-video" aria-expanded="false" aria-controls="media-video">
+                                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#media-video" aria-expanded="false" aria-controls="media-video">
                                                 <i class="ti ti-video me-2"></i>Videos
-                                            </a>
+                                            </button>
                                         </h2>
                                         <div id="media-video" class="accordion-collapse collapse" data-bs-parent="#mediafile">
                                             <div class="accordion-body">
@@ -1304,9 +1304,9 @@
                                     </div>
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
-                                            <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#media-links" aria-expanded="false" aria-controls="media-links">
+                                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#media-links" aria-expanded="false" aria-controls="media-links">
                                                 <i class="ti ti-unlink me-2"></i>Links
-                                            </a>
+                                            </button>
                                         </h2>
                                         <div id="media-links" class="accordion-collapse collapse" data-bs-parent="#mediafile">
                                             <div class="accordion-body">
@@ -1323,9 +1323,9 @@
                                     </div>
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
-                                            <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#media-document" aria-expanded="false" aria-controls="media-document">
+                                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#media-document" aria-expanded="false" aria-controls="media-document">
                                                 <i class="ti ti-unlink me-2"></i>Documents
-                                            </a>
+                                            </button>
                                         </h2>
                                         <div id="media-document" class="accordion-collapse collapse" data-bs-parent="#mediafile">
                                             <div class="accordion-body">
@@ -1353,9 +1353,9 @@
                                 <div class="accordion accordion-flush chat-accordion" id="members-accordion">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
-                                            <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#members-collapse" aria-expanded="false" aria-controls="members-collapse">
+                                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#members-collapse" aria-expanded="false" aria-controls="members-collapse">
                                                 <i class="ti ti-users me-2"></i>Group Members
-                                            </a>
+                                            </button>
                                         </h2>
                                         <div id="members-collapse" class="accordion-collapse collapse" data-bs-parent="#members-accordion">
                                             <div class="accordion-body" style="padding: 0;">
@@ -1383,9 +1383,9 @@
                                 <div class="accordion accordion-flush chat-accordion" id="favorites-accordion">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
-                                            <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#favorites-collapse" aria-expanded="false" aria-controls="favorites-collapse">
+                                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#favorites-collapse" aria-expanded="false" aria-controls="favorites-collapse">
                                                 <i class="ti ti-heart me-2"></i>Favorites
-                                            </a>
+                                            </button>
                                         </h2>
                                         <div id="favorites-collapse" class="accordion-collapse collapse" data-bs-parent="#favorites-accordion">
                                             <div class="accordion-body" style="padding: 0;">
@@ -1413,9 +1413,9 @@
                                 <div class="accordion accordion-flush chat-accordion" id="chat-background-accordion">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
-                                            <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#chat-background-collapse-sidebar" aria-expanded="false" aria-controls="chat-background-collapse-sidebar">
+                                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#chat-background-collapse-sidebar" aria-expanded="false" aria-controls="chat-background-collapse-sidebar">
                                                 <i class="ti ti-photo me-2"></i>Chat Background
-                                            </a>
+                                            </button>
                                         </h2>
                                         <div id="chat-background-collapse-sidebar" class="accordion-collapse collapse" data-bs-parent="#chat-background-accordion">
                                             <div class="accordion-body">
@@ -1498,9 +1498,9 @@
                                 <div class="accordion accordion-flush chat-accordion" id="message-ringtone-accordion">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
-                                            <a href="#" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#message-sound-collapse-sidebar" aria-expanded="false" aria-controls="message-sound-collapse-sidebar">
+                                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#message-sound-collapse-sidebar" aria-expanded="false" aria-controls="message-sound-collapse-sidebar">
                                                 <i class="ti ti-bell me-2"></i>Message Notifications
-                                            </a>
+                                            </button>
                                         </h2>
                                         <div id="message-sound-collapse-sidebar" class="accordion-collapse collapse" data-bs-parent="#message-ringtone-accordion">
                                             <div class="accordion-body">
@@ -2661,9 +2661,9 @@
                 const data = await response.json();
                 
                 if (data.success && data.favorites && Array.isArray(data.favorites) && data.favorites.length > 0) {
-                    // Store reference to inline container temporarily
-                    const tempContainer = document.getElementById('favoritesContainer');
-                    const tempContainerParent = tempContainer ? tempContainer.parentNode : null;
+                    // Temporarily rename the existing container to avoid ID conflict
+                    const originalContainer = document.getElementById('favoritesContainer');
+                    if (originalContainer) originalContainer.id = 'favoritesContainer_temp';
                     
                     // Create temporary container with expected ID
                     const tempDiv = document.createElement('div');
@@ -2678,12 +2678,13 @@
                         // Get rendered content and move to inline container
                         const renderedContent = tempDiv.innerHTML;
                         container.innerHTML = renderedContent;
-                        
-                        // Clean up
-                        document.body.removeChild(tempDiv);
                     } else {
                         container.innerHTML = '<div class="text-center p-4 text-muted">Favorites feature not available</div>';
                     }
+
+                    // Clean up: Remove temp div and restore original ID
+                    if (tempDiv.parentNode) tempDiv.parentNode.removeChild(tempDiv);
+                    if (originalContainer) originalContainer.id = 'favoritesContainer';
                 } else {
                     container.innerHTML = '<div class="text-center p-4 text-muted">No favorites found</div>';
                 }
@@ -2751,12 +2752,12 @@
                                 <div class="avatar me-3" style="position: relative; flex-shrink: 0;">
                                     <img src="${avatar}" class="rounded-circle" alt="${name}" style="width: 45px; height: 45px; object-fit: cover;" onerror="this.onerror=null; this.src='{{ asset('build/img/profile.svg') }}';">
                                 </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-0" style="font-size: 15px; font-weight: 600; color: #1c2233; line-height: 1.4;">${name}</h6>
-                                    <p class="mb-0" style="font-size: 13px; color: #6b7280; line-height: 1.4;">${roleDisplay}</p>
+                                <div class="flex-grow-1" style="text-align: left;">
+                                    <h6 class="mb-0" style="font-size: 15px; font-weight: 600; color: #1c2233; line-height: 1.4; text-align: left;">${name}</h6>
+                                    <p class="mb-0" style="font-size: 13px; color: #6b7280; line-height: 1.4; text-align: left;">${roleDisplay}</p>
                                 </div>
                                 <div class="ms-auto" style="flex-shrink: 0;">
-                                    <button type="button" class="btn ${buttonClass}" data-member-id="${memberId}" data-followed="${isFollowed}" style="background-color: #6338F6; border-color: #6338F6; color: white; font-size: 13px; padding: 6px 16px; border-radius: 8px; font-weight: 500; white-space: nowrap;">
+                                    <button type="button" class="btn ${buttonClass}" data-member-id="${memberId}" data-followed="${isFollowed}" style="background-color: #6338F6; border-color: #6338F6; color: white; font-size: 13px; padding: 6px 16px; border-radius: 20px; font-weight: 500; white-space: nowrap;">
                                         ${buttonText}
                                     </button>
                                 </div>

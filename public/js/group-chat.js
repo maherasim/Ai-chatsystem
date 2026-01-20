@@ -3215,6 +3215,38 @@ class GroupChatManager {
                 linksHeader.innerHTML = `<i class="ti ti-unlink me-2"></i>Links (${counts.links})`;
             }
         }
+
+        // Add event listeners to all favorite buttons in Media Details after rendering
+        this.attachFavoriteButtonListeners();
+    }
+
+    /**
+     * Attach event listeners to favorite buttons in Media Details
+     */
+    attachFavoriteButtonListeners() {
+        // Get all containers
+        const photosContainer = document.getElementById('mediaPhotosContainer');
+        const videosContainer = document.getElementById('mediaVideosContainer');
+        const documentsContainer = document.getElementById('mediaDocumentsContainer');
+        const linksContainer = document.getElementById('mediaLinksContainer');
+
+        // Attach listeners to all favorite buttons
+        [photosContainer, videosContainer, documentsContainer, linksContainer].forEach(container => {
+            if (container) {
+                container.querySelectorAll('.favorite-btn').forEach(btn => {
+                    // Remove inline onclick to avoid conflicts
+                    btn.removeAttribute('onclick');
+                    // Add proper event listener
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (window.groupChatManager && typeof window.groupChatManager.toggleFavorite === 'function') {
+                            window.groupChatManager.toggleFavorite(btn);
+                        }
+                    });
+                });
+            }
+        });
     }
 
     /**
@@ -3265,11 +3297,19 @@ class GroupChatManager {
         }
 
         try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+            if (!csrfToken) {
+                console.error('CSRF token not found');
+                alert('Security token missing. Please refresh the page.');
+                return;
+            }
+
             const response = await fetch('/api/chat/favorite/toggle', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
                 },
                 body: JSON.stringify({
                     message_id: messageId,
@@ -3280,6 +3320,13 @@ class GroupChatManager {
                     url: url,
                 }),
             });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Failed to toggle favorite:', response.status, errorText);
+                alert('Failed to toggle favorite. Please try again.');
+                return;
+            }
 
             const data = await response.json();
 
@@ -3498,17 +3545,16 @@ class GroupChatManager {
                             <span class="link-icon">
                                 <img src="${faviconUrl}" alt="${domain}" style="width: 20px; height: 20px; object-fit: contain;" onerror="this.src='${window.baseUrl || ''}/build/img/icons/info-icon.svg'">
                             </span>
-                            <div class="ms-2" style="flex: 1; overflow: hidden;">
-                                <a href="${fav.url}" target="_blank" rel="noopener noreferrer" class="text-decoration-none" style="color: inherit;">
-                                    <p class="mb-0" style="color: #8A8D93; word-break: break-all; font-size: 14px;">${fav.url}</p>
+                            <div class="ms-2 link-clickable" style="flex: 1; overflow: hidden; cursor: pointer;" data-url="${fav.url}">
+                                <a href="${fav.url}" target="_blank" rel="noopener noreferrer" class="text-decoration-none d-block" style="color: inherit;">
+                                    <p class="mb-0" style="color: #8A8D93; word-break: break-all; font-size: 14px; margin: 0;">${fav.url}</p>
                                 </a>
                             </div>
                             <a href="#" class="favorite-btn favorited" 
                                data-message-id="${fav.message_id}" 
                                data-media-type="${fav.media_type}" 
                                data-url="${fav.url}"
-                               data-group-id="${fav.group_id || ''}"
-                               onclick="event.preventDefault(); window.groupChatManager.toggleFavorite(this);">
+                               data-group-id="${fav.group_id || ''}">
                                 <i class="ti ti-heart-filled"></i>
                             </a>
                         </div>
@@ -3519,17 +3565,16 @@ class GroupChatManager {
                             <span class="link-icon">
                                 <img src="${window.baseUrl || ''}/build/img/icons/info-icon.svg" alt="link" style="width: 20px; height: 20px;">
                             </span>
-                            <div class="ms-2" style="flex: 1; overflow: hidden;">
-                                <a href="${fav.url}" target="_blank" rel="noopener noreferrer" class="text-decoration-none" style="color: inherit;">
-                                    <p class="mb-0" style="color: #8A8D93; word-break: break-all; font-size: 14px;">${fav.url}</p>
+                            <div class="ms-2 link-clickable" style="flex: 1; overflow: hidden; cursor: pointer;" data-url="${fav.url}">
+                                <a href="${fav.url}" target="_blank" rel="noopener noreferrer" class="text-decoration-none d-block" style="color: inherit;">
+                                    <p class="mb-0" style="color: #8A8D93; word-break: break-all; font-size: 14px; margin: 0;">${fav.url}</p>
                                 </a>
                             </div>
                             <a href="#" class="favorite-btn favorited" 
                                data-message-id="${fav.message_id}" 
                                data-media-type="${fav.media_type}" 
                                data-url="${fav.url}"
-                               data-group-id="${fav.group_id || ''}"
-                               onclick="event.preventDefault(); window.groupChatManager.toggleFavorite(this);">
+                               data-group-id="${fav.group_id || ''}">
                                 <i class="ti ti-heart-filled"></i>
                             </a>
                         </div>
@@ -3574,6 +3619,46 @@ class GroupChatManager {
         }
 
         container.innerHTML = html || '<div class="text-center p-4 text-muted">No favorites yet</div>';
+        
+        // Ensure link clicks work properly - add event listeners after rendering
+        container.querySelectorAll('.link-item').forEach(linkItem => {
+            const linkDiv = linkItem.querySelector('.link-clickable');
+            const linkAnchor = linkItem.querySelector('a[target="_blank"]');
+            const favoriteBtn = linkItem.querySelector('.favorite-btn');
+            
+            if (linkDiv && linkAnchor) {
+                const url = linkDiv.getAttribute('data-url') || linkAnchor.getAttribute('href');
+                if (url) {
+                    // Make the entire link area clickable
+                    linkDiv.addEventListener('click', function(e) {
+                        // Only open if not clicking on favorite button
+                        if (favoriteBtn && (e.target === favoriteBtn || favoriteBtn.contains(e.target))) {
+                            return; // Don't open link if clicking favorite button
+                        }
+                        e.preventDefault();
+                        e.stopPropagation();
+                        window.open(url, '_blank', 'noopener,noreferrer');
+                    });
+                    
+                    // Ensure the anchor itself works
+                    linkAnchor.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        // Let default behavior happen (open in new tab)
+                    });
+                }
+            }
+            
+            // Ensure favorite button doesn't interfere with link clicks
+            if (favoriteBtn) {
+                favoriteBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (window.groupChatManager && typeof window.groupChatManager.toggleFavorite === 'function') {
+                        window.groupChatManager.toggleFavorite(this);
+                    }
+                });
+            }
+        });
     }
 
     /**
