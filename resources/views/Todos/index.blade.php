@@ -2931,7 +2931,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                         <div class="todo-waiting text-center" style="padding:10px; text-align:center; margin-bottom:5px; background:#FAE6c8; border-radius:10px;">
                             <div class="text-center mb-2">
-                                <img src="{{ asset('build/img/waiting.png') }}" alt="waiting" width="40" height="40">
+                                <img src="{{ asset('build/img/waiting.jpg') }}" alt="waiting" width="40" height="40">
                             </div>
                             Waiting for user activity
                         </div>
