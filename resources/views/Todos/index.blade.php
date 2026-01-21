@@ -5886,7 +5886,7 @@ document.querySelectorAll('.user_div').forEach(div => {
                 console.log('Updating image in modal');
                 // Update image modal directly without recreating it
                 const img = imageModal.querySelector('.modal-body img');
-                const modalTitle = imageModal.querySelector('.modal-title');
+                const modalTitle = imageModal.querySelector('.modal-footer .modal-title');
                 const downloadBtn = imageModal.querySelector('.image-download-btn');
                 const shareBtn = imageModal.querySelector('.image-share-btn');
                 
@@ -6097,8 +6097,7 @@ document.querySelectorAll('.user_div').forEach(div => {
                                     <i class="fa fa-chevron-left"></i>
                                 </button>
 
-                                <div class="modal-header border-0 d-flex justify-content-between align-items-center" style="background: rgba(0,0,0,0.8); z-index: 2;">
-                                    <h6 class="modal-title text-white mb-0">${imageName || 'Image'}</h6>
+                                <div class="modal-header border-0 d-flex justify-content-end align-items-center" style="background: rgba(0,0,0,0.8); z-index: 2;">
                                     <div class="d-flex align-items-center gap-2">
                                         <button type="button" class="btn btn-sm text-white image-download-btn" data-image-url="${finalUrl}" data-image-name="${imageName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Download">
                                             <i class="fa fa-download" style="font-size: 14px;"></i>
@@ -6118,8 +6117,11 @@ document.querySelectorAll('.user_div').forEach(div => {
                                 </button>
 
                                 <div class="modal-footer border-0 p-2" style="background: rgba(0,0,0,0.8); z-index: 2;">
-                                    <div id="imageThumbnails" class="d-flex gap-2" style="overflow-x: auto; width: 100%; padding: 5px 0;">
-                                        <!-- Thumbnails will be populated here -->
+                                    <div class="w-100">
+                                        <h6 class="modal-title text-white mb-2 text-center" style="font-size: 14px; font-weight: 500;">${imageName || 'Image'}</h6>
+                                        <div id="imageThumbnails" class="d-flex gap-2" style="overflow-x: auto; width: 100%; padding: 5px 0;">
+                                            <!-- Thumbnails will be populated here -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
