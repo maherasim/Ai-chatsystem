@@ -5715,26 +5715,127 @@ document.querySelectorAll('.user_div').forEach(div => {
         <script>
         window.currentMediaIndex = -1;
 
-        function navigateToMedia(direction) {
-            if (!window.currentTodoFiles || window.currentTodoFiles.length === 0) return;
+        // Make function globally accessible
+        window.navigateToMedia = function(direction) {
+            console.log('navigateToMedia called with direction:', direction);
+            console.log('window.currentTodoFiles:', window.currentTodoFiles);
+            console.log('window.currentTodoFiles length:', window.currentTodoFiles ? window.currentTodoFiles.length : 0);
             
-            // Filter for images and videos only
-            const mediaFiles = window.currentTodoFiles.filter(file => {
-                const ext = (file.name || '').split('.').pop().toLowerCase();
-                return ['jpg','jpeg','png','gif','webp','bmp','svg','mp4','mov','avi','mkv','webm','flv','wmv'].includes(ext);
-            });
+            if (!window.currentTodoFiles || window.currentTodoFiles.length === 0) {
+                console.log('No currentTodoFiles or empty array');
+                // Try to get files from the current todo item
+                const todoItem = document.querySelector('.todo-item.active, .todo-item[data-files]');
+                if (todoItem && todoItem.dataset.files) {
+                    try {
+                        window.currentTodoFiles = JSON.parse(todoItem.dataset.files || "[]");
+                        console.log('Retrieved files from todo item:', window.currentTodoFiles);
+                    } catch(e) {
+                        console.error('Error parsing files:', e);
+                        return;
+                    }
+                } else {
+                    console.log('No todo item found with files');
+                    return;
+                }
+            }
             
-            if (mediaFiles.length <= 1) return;
+            if (!window.currentTodoFiles || window.currentTodoFiles.length === 0) {
+                console.log('Still no files after trying to retrieve');
+                return;
+            }
             
-            // If current index is not set, find it based on current view
-            if (window.currentMediaIndex === -1) {
+            // Check if we're in image viewer or video player
+            const imageModal = document.getElementById('imageViewerModal');
+            const videoContainer = document.getElementById('todoVideoPlayerContainer');
+            
+            // Simple check: if modal exists in DOM, assume it's visible
+            const isImageMode = imageModal && document.body.contains(imageModal);
+            const isVideoMode = videoContainer && videoContainer.style.display === 'flex';
+            
+            console.log('isImageMode:', isImageMode, 'isVideoMode:', isVideoMode);
+            
+            if (!isImageMode && !isVideoMode) {
+                console.log('Neither image nor video mode detected');
+                return;
+            }
+            
+            // Filter files based on current mode - images only for image viewer, videos only for video player
+            let mediaFiles;
+            if (isImageMode) {
+                // Try to get image files from modal data attribute first
+                if (imageModal && imageModal.dataset.imageFiles) {
+                    try {
+                        mediaFiles = JSON.parse(imageModal.dataset.imageFiles);
+                        console.log('Got image files from modal data:', mediaFiles.length);
+                    } catch(e) {
+                        console.error('Error parsing modal image files:', e);
+                    }
+                }
+                
+                // If not in modal, try from global variable
+                if (!mediaFiles && window.currentImageFiles && window.currentImageFiles.length > 0) {
+                    mediaFiles = window.currentImageFiles;
+                    console.log('Got image files from window.currentImageFiles:', mediaFiles.length);
+                }
+                
+                // Fallback: filter from currentTodoFiles
+                if (!mediaFiles && window.currentTodoFiles && window.currentTodoFiles.length > 0) {
+                    console.log('All files before filtering:', window.currentTodoFiles);
+                    mediaFiles = window.currentTodoFiles.filter(file => {
+                        if (!file || !file.name) {
+                            console.log('File missing name:', file);
+                            return false;
+                        }
+                        const ext = (file.name || '').split('.').pop().toLowerCase();
+                        const isImage = ['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
+                        if (isImage) {
+                            console.log('Found image file:', file.name, 'ext:', ext);
+                        }
+                        return isImage;
+                    });
+                    console.log('Filtered image files from currentTodoFiles:', mediaFiles.length);
+                }
+                
+                // Last resort: get from DOM view buttons
+                if (!mediaFiles || mediaFiles.length === 0) {
+                    const imageButtons = document.querySelectorAll('.view-image-btn');
+                    mediaFiles = [];
+                    imageButtons.forEach(btn => {
+                        const url = btn.getAttribute('data-image-url');
+                        const name = btn.getAttribute('data-image-name');
+                        if (url && name) {
+                            mediaFiles.push({ url: url, name: name });
+                        }
+                    });
+                    console.log('Got image files from DOM buttons:', mediaFiles.length);
+                }
+                
+                console.log('Final mediaFiles count:', mediaFiles ? mediaFiles.length : 0, mediaFiles);
+            } else if (isVideoMode) {
+                // Only filter videos when in video player
+                mediaFiles = window.currentTodoFiles.filter(file => {
+                    const ext = (file.name || '').split('.').pop().toLowerCase();
+                    return ['mp4','mov','avi','mkv','webm','flv','wmv'].includes(ext);
+                });
+            } else {
+                return;
+            }
+            
+            console.log('Media files count:', mediaFiles.length, 'Current index:', window.currentMediaIndex);
+            
+            if (mediaFiles.length <= 1) {
+                console.log('Not enough media files to navigate');
+                return;
+            }
+            
+            // If current index is not set or invalid, find it based on current view
+            if (window.currentMediaIndex === -1 || window.currentMediaIndex >= mediaFiles.length) {
                 const videoPlayer = document.getElementById('todoVideoPlayer');
-                const imageModal = document.getElementById('imageViewerModal');
                 let currentUrl = "";
                 
-                if (videoPlayer && videoPlayer.src && document.getElementById('todoVideoPlayerContainer').style.display === 'flex') {
+                if (isVideoMode && videoPlayer && videoPlayer.src) {
                     currentUrl = videoPlayer.getAttribute('data-original-url') || videoPlayer.src;
-                } else if (imageModal) {
+                } else if (isImageMode && imageModal) {
                     const img = imageModal.querySelector('.modal-body img');
                     currentUrl = img ? img.getAttribute('src') : "";
                 }
@@ -5742,34 +5843,139 @@ document.querySelectorAll('.user_div').forEach(div => {
                 if (currentUrl) {
                     // Try to find matching file (handling domain replacements)
                     window.currentMediaIndex = mediaFiles.findIndex(f => {
-                        let fUrl = f.url;
-                        if (fUrl.includes('admin.onlinesystems.info')) fUrl = fUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                        let fUrl = f.url || '';
+                        if (fUrl.includes('admin.onlinesystems.info')) {
+                            fUrl = fUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                        }
                         let cUrl = currentUrl;
-                        if (cUrl.includes('admin.onlinesystems.info')) cUrl = cUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
-                        return fUrl === cUrl;
+                        if (cUrl.includes('admin.onlinesystems.info')) {
+                            cUrl = cUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                        }
+                        return fUrl === cUrl || fUrl.includes(cUrl) || cUrl.includes(fUrl);
                     });
+                    
+                    // If still not found, default to 0
+                    if (window.currentMediaIndex === -1) {
+                        window.currentMediaIndex = 0;
+                    }
+                } else {
+                    window.currentMediaIndex = 0;
                 }
             }
             
+            // Calculate next index with wrap-around
             let nextIndex = window.currentMediaIndex + direction;
-            if (nextIndex < 0) nextIndex = mediaFiles.length - 1;
-            if (nextIndex >= mediaFiles.length) nextIndex = 0;
+            if (nextIndex < 0) {
+                nextIndex = mediaFiles.length - 1;
+            }
+            if (nextIndex >= mediaFiles.length) {
+                nextIndex = 0;
+            }
             
             window.currentMediaIndex = nextIndex;
             const nextFile = mediaFiles[nextIndex];
-            const ext = (nextFile.name || '').split('.').pop().toLowerCase();
-            const isVideo = ['mp4','mov','avi','mkv','webm','flv','wmv'].includes(ext);
             
-            if (isVideo) {
-                // Trigger video view logic manually to avoid recursive issues or just click the button
-                const videoBtn = document.querySelector(`[data-video-url="${nextFile.url}"]`);
-                if (videoBtn) {
-                    videoBtn.click();
+            console.log('Next index:', nextIndex, 'Next file:', nextFile);
+            
+            if (!nextFile) {
+                console.log('Next file is null or undefined');
+                return;
+            }
+            
+            if (isImageMode && imageModal) {
+                console.log('Updating image in modal');
+                // Update image modal directly without recreating it
+                const img = imageModal.querySelector('.modal-body img');
+                const modalTitle = imageModal.querySelector('.modal-title');
+                const downloadBtn = imageModal.querySelector('.image-download-btn');
+                const shareBtn = imageModal.querySelector('.image-share-btn');
+                
+                console.log('Image element found:', !!img, 'Modal:', !!imageModal);
+                
+                if (!img) {
+                    console.error('Image element not found in modal. Modal HTML:', imageModal.innerHTML.substring(0, 200));
+                    return;
                 }
-            } else {
-                const imageBtn = document.querySelector(`[data-image-url="${nextFile.url}"]`);
-                if (imageBtn) {
-                    imageBtn.click();
+                
+                if (!nextFile) {
+                    console.error('Next file is null');
+                    return;
+                }
+                
+                let finalUrl = nextFile.url || '';
+                if (finalUrl.includes('admin.onlinesystems.info')) {
+                    finalUrl = finalUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                }
+                
+                console.log('Updating image to:', finalUrl, 'Index:', window.currentMediaIndex);
+                console.log('Current image src:', img.src);
+                
+                // Force image reload by clearing src first, then setting new src
+                if (img.src === finalUrl || img.src.includes(finalUrl.split('/').pop())) {
+                    // If same URL, add cache buster
+                    const separator = finalUrl.includes('?') ? '&' : '?';
+                    img.src = finalUrl + separator + '_t=' + Date.now();
+                } else {
+                    // Update image source directly
+                    img.src = finalUrl;
+                }
+                img.alt = nextFile.name || 'Image';
+                
+                // Force image to load
+                img.onload = function() {
+                    console.log('Image loaded successfully');
+                };
+                img.onerror = function() {
+                    console.error('Error loading image:', finalUrl);
+                    // Try without cache buster if it failed
+                    if (img.src.includes('_t=')) {
+                        img.src = finalUrl;
+                    }
+                };
+                
+                // Update title
+                if (modalTitle) {
+                    modalTitle.textContent = nextFile.name || 'Image';
+                }
+                
+                // Update download and share buttons
+                if (downloadBtn) {
+                    downloadBtn.setAttribute('data-image-url', finalUrl);
+                    downloadBtn.setAttribute('data-image-name', nextFile.name || 'image.jpg');
+                }
+                if (shareBtn) {
+                    shareBtn.setAttribute('data-image-url', finalUrl);
+                    shareBtn.setAttribute('data-image-name', nextFile.name || 'image.jpg');
+                }
+                
+                // Highlight active thumbnail
+                const thumbnails = imageModal.querySelectorAll('.image-thumbnail');
+                thumbnails.forEach((thumb) => {
+                    const thumbImg = thumb.querySelector('img');
+                    if (thumbImg) {
+                        let thumbUrl = thumbImg.src;
+                        // Remove any query parameters or fragments for comparison
+                        thumbUrl = thumbUrl.split('?')[0].split('#')[0];
+                        let compareUrl = finalUrl.split('?')[0].split('#')[0];
+                        
+                        if (thumbUrl === compareUrl || thumbUrl.includes(compareUrl) || compareUrl.includes(thumbUrl)) {
+                            thumb.style.border = '2px solid #6338F6';
+                            thumb.style.borderWidth = '2px';
+                        } else {
+                            thumb.style.border = '2px solid transparent';
+                        }
+                    }
+                });
+            } else if (isVideoMode) {
+                // Handle video navigation
+                const ext = (nextFile.name || '').split('.').pop().toLowerCase();
+                const isVideo = ['mp4','mov','avi','mkv','webm','flv','wmv'].includes(ext);
+                
+                if (isVideo) {
+                    const videoBtn = document.querySelector(`[data-video-url="${nextFile.url}"]`);
+                    if (videoBtn) {
+                        videoBtn.click();
+                    }
                 }
             }
         }
@@ -5848,13 +6054,46 @@ document.querySelectorAll('.user_div').forEach(div => {
                     finalUrl = imageUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
                 }
                 
+                // Count total images to determine if navigation should be shown
+                let imageFiles = [];
+                let showNavigation = false;
+                if (window.currentTodoFiles) {
+                    imageFiles = window.currentTodoFiles.filter(file => {
+                        const ext = (file.name || '').split('.').pop().toLowerCase();
+                        return ['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
+                    });
+                    showNavigation = imageFiles.length > 1;
+                    // Find index by comparing URLs (handle domain conversion)
+                    window.currentMediaIndex = imageFiles.findIndex(f => {
+                        let fUrl = f.url || '';
+                        let compareUrl = imageUrl || '';
+                        // Normalize URLs for comparison
+                        if (fUrl.includes('admin.onlinesystems.info')) {
+                            fUrl = fUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                        }
+                        if (compareUrl.includes('admin.onlinesystems.info')) {
+                            compareUrl = compareUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                        }
+                        return fUrl === compareUrl || f.url === imageUrl;
+                    });
+                    // If not found, default to 0
+                    if (window.currentMediaIndex === -1) {
+                        window.currentMediaIndex = 0;
+                    }
+                    console.log('Initial image index set to:', window.currentMediaIndex, 'out of', imageFiles.length, 'images');
+                }
+                
+                // Store image files globally for navigation
+                window.currentImageFiles = imageFiles;
+                
                 // Create and show image modal with download/share buttons
+                const navArrowStyle = showNavigation ? '' : 'display: none;';
                 const modalHtml = `
-                    <div class="modal fade" id="imageViewerModal" tabindex="-1" style="z-index: 10000;">
+                    <div class="modal fade" id="imageViewerModal" tabindex="-1" style="z-index: 10000;" data-image-files='${JSON.stringify(imageFiles)}'>
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content" style="background: #000; border: none; position: relative;">
                                 <!-- Navigation Arrows -->
-                                <button type="button" class="gallery-nav-btn gallery-prev" id="todoImagePrev" title="Previous">
+                                <button type="button" class="gallery-nav-btn gallery-prev" id="todoImagePrev" title="Previous" style="${navArrowStyle}" onclick="if(window.navigateToMedia) { window.navigateToMedia(-1); } return false;">
                                     <i class="fa fa-chevron-left"></i>
                                 </button>
 
@@ -5874,7 +6113,7 @@ document.querySelectorAll('.user_div').forEach(div => {
                                     <img src="${finalUrl}" alt="${imageName}" style="max-width: 100%; max-height: 70vh; object-fit: contain; z-index: 1;">
                                 </div>
 
-                                <button type="button" class="gallery-nav-btn gallery-next" id="todoImageNext" title="Next">
+                                <button type="button" class="gallery-nav-btn gallery-next" id="todoImageNext" title="Next" style="${navArrowStyle}" onclick="if(window.navigateToMedia) { window.navigateToMedia(1); } return false;">
                                     <i class="fa fa-chevron-right"></i>
                                 </button>
 
@@ -5888,26 +6127,21 @@ document.querySelectorAll('.user_div').forEach(div => {
                     </div>
                 `;
                 
-                // Update current index
-                if (window.currentTodoFiles) {
-                    const mediaFiles = window.currentTodoFiles.filter(file => {
-                        const ext = (file.name || '').split('.').pop().toLowerCase();
-                        return ['jpg','jpeg','png','gif','webp','bmp','svg','mp4','mov','avi','mkv','webm','flv','wmv'].includes(ext);
-                    });
-                    window.currentMediaIndex = mediaFiles.findIndex(f => f.url === imageUrl);
-                }
-                
                 // Remove existing modal if any
                 const existingModal = document.getElementById('imageViewerModal');
                 if (existingModal) existingModal.remove();
                 
                 // Add and show modal
                 document.body.insertAdjacentHTML('beforeend', modalHtml);
-                const modal = new bootstrap.Modal(document.getElementById('imageViewerModal'));
-                modal.show();
+                const modalElement = document.getElementById('imageViewerModal');
+                const modal = new bootstrap.Modal(modalElement);
                 
-                // Load thumbnails for images
-                loadImageThumbnails();
+                // Load thumbnails when modal is shown
+                modalElement.addEventListener('shown.bs.modal', function() {
+                    loadImageThumbnails();
+                }, { once: true });
+                
+                modal.show();
                 
                 // Clean up on close
                 document.getElementById('imageViewerModal').addEventListener('hidden.bs.modal', function() {
@@ -6156,6 +6390,16 @@ document.querySelectorAll('.user_div').forEach(div => {
             
             thumbnailsContainer.innerHTML = '';
             
+            // Get current image URL to highlight active thumbnail
+            const imageModal = document.getElementById('imageViewerModal');
+            let currentImageUrl = '';
+            if (imageModal) {
+                const img = imageModal.querySelector('.modal-body img');
+                if (img) {
+                    currentImageUrl = img.getAttribute('src') || '';
+                }
+            }
+            
             window.currentTodoFiles.forEach((file) => {
                 const ext = (file.name || '').split('.').pop().toLowerCase();
                 const isImage = ['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
@@ -6166,9 +6410,20 @@ document.querySelectorAll('.user_div').forEach(div => {
                         thumbnailUrl = thumbnailUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
                     }
                     
+                    // Check if this is the current image
+                    let isActive = false;
+                    if (currentImageUrl) {
+                        let fileUrl = thumbnailUrl;
+                        let currUrl = currentImageUrl;
+                        if (fileUrl === currUrl) {
+                            isActive = true;
+                        }
+                    }
+                    
                     const thumbnail = document.createElement('div');
                     thumbnail.className = 'image-thumbnail';
-                    thumbnail.style.cssText = 'width: 60px; height: 60px; border-radius: 6px; overflow: hidden; cursor: pointer; border: 2px solid transparent; flex-shrink: 0;';
+                    const borderStyle = isActive ? '2px solid #6338F6' : '2px solid transparent';
+                    thumbnail.style.cssText = `width: 60px; height: 60px; border-radius: 6px; overflow: hidden; cursor: pointer; border: ${borderStyle}; flex-shrink: 0;`;
                     thumbnail.innerHTML = `<img src="${thumbnailUrl}" style="width: 100%; height: 100%; object-fit: cover;">`;
                     
                     thumbnail.addEventListener('click', function() {
