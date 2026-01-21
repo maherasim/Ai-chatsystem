@@ -2867,14 +2867,16 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 <h6 class="mb-0 text-white" style="font-weight: 600; font-size: 16px;" id="todoVideoPlayerTitle">Video Player</h6>
                                 <div class="d-flex align-items-center gap-3">
                                     <!-- Download Button -->
-                                    <button type="button" id="downloadVideoBtn" class="btn btn-sm text-white" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Download">
-                                        <i class="fa fa-download" style="font-size: 14px;"></i>
+                                    <button type="button" id="downloadVideoBtn" class="btn btn-sm text-white" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center;" title="Download">
+                                        <img src="{{ asset('assets/img/display-arrow-down 1.png') }}" alt="Download" style="width: 16px; height: 16px; object-fit: contain;">
                                     </button>
                                     <!-- Share in Chat Button -->
-                                    <button type="button" id="shareVideoInChatBtn" class="btn btn-sm text-white" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Share in Chat">
-                                        <i class="fa fa-share-alt" style="font-size: 14px;"></i>
+                                    <button type="button" id="shareVideoInChatBtn" class="btn btn-sm text-white" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center;" title="Share in Chat">
+                                        <img src="{{ asset('assets/img/refer-arrow 1.png') }}" alt="Share" style="width: 16px; height: 16px; object-fit: contain;">
                                     </button>
-                                    <button type="button" class="btn-close btn-close-white" id="closeTodoVideoPlayer" style="opacity: 1; font-size: 20px; padding: 8px;" aria-label="Close"></button>
+                                    <button type="button" id="closeTodoVideoPlayer" style="background: transparent; border: none; padding: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;" aria-label="Close" title="Close">
+                                        <img src="{{ asset('assets/img/circle-xmark 1.png') }}" alt="Close" style="width: 20px; height: 20px; object-fit: contain;">
+                                    </button>
                                 </div>
                             </div>
                             
@@ -6099,13 +6101,15 @@ document.querySelectorAll('.user_div').forEach(div => {
 
                                 <div class="modal-header border-0 d-flex justify-content-end align-items-center" style="background: rgba(0,0,0,0.8); z-index: 2;">
                                     <div class="d-flex align-items-center gap-2">
-                                        <button type="button" class="btn btn-sm text-white image-download-btn" data-image-url="${finalUrl}" data-image-name="${imageName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Download">
-                                            <i class="fa fa-download" style="font-size: 14px;"></i>
+                                        <button type="button" class="btn btn-sm text-white image-download-btn" data-image-url="${finalUrl}" data-image-name="${imageName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center;" title="Download">
+                                            <img src="{{ asset('assets/img/display-arrow-down 1.png') }}" alt="Download" style="width: 16px; height: 16px; object-fit: contain;">
                                         </button>
-                                        <button type="button" class="btn btn-sm text-white image-share-btn" data-image-url="${finalUrl}" data-image-name="${imageName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px;" title="Share in Chat">
-                                            <i class="fa fa-share-alt" style="font-size: 14px;"></i>
+                                        <button type="button" class="btn btn-sm text-white image-share-btn" data-image-url="${finalUrl}" data-image-name="${imageName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center;" title="Share in Chat">
+                                            <img src="{{ asset('assets/img/refer-arrow 1.png') }}" alt="Share" style="width: 16px; height: 16px; object-fit: contain;">
                                         </button>
-                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                        <button type="button" data-bs-dismiss="modal" style="background: transparent; border: none; padding: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;" aria-label="Close" title="Close">
+                                            <img src="{{ asset('assets/img/circle-xmark 1.png') }}" alt="Close" style="width: 20px; height: 20px; object-fit: contain;">
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="modal-body p-4 text-center" style="position: relative; min-height: 200px; display: flex; align-items: center; justify-content: center;">
