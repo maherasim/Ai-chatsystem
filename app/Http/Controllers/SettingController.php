@@ -24,6 +24,18 @@ public function showSettingsForm()
     $chat_backgrounds = $setting && $setting->chat_backgrounds
         ? json_decode($setting->chat_backgrounds, true)
         : [];
+    // Ensure it's an array and reindex to maintain slot positions (0-5)
+    if (!is_array($chat_backgrounds)) {
+        $chat_backgrounds = [];
+    }
+    // Normalize array keys to ensure sequential 0-5 indices
+    $normalized = array_fill(0, 6, null);
+    foreach ($chat_backgrounds as $key => $value) {
+        if (is_numeric($key) && $key >= 0 && $key < 6 && $value !== null && $value !== '') {
+            $normalized[(int)$key] = $value;
+        }
+    }
+    $chat_backgrounds = $normalized;
     $selected_chat_background = $setting->selected_chat_background ?? null;
 
     return view('Chats.settings', compact('setting', 'images', 'chat_backgrounds','chat_sounds','selected_login_background', 'selected_chat_background'));
@@ -425,16 +437,28 @@ public function selectChatBackground(Request $request)
     if (!is_array($existing)) {
         $existing = [];
     }
+    // Reindex to ensure sequential array and maintain slot positions
+    // Initialize array with 6 slots (indices 0-5)
+    $backgrounds = array_fill(0, 6, null);
+    // Copy existing values to their correct positions
+    foreach ($existing as $key => $value) {
+        if (is_numeric($key) && $key >= 0 && $key < 6 && $value !== null) {
+            $backgrounds[(int)$key] = $value;
+        }
+    }
 
     $files = $request->file('chat_images'); // expected associative array keyed by slot index
     $changes = 0;
     if (is_array($files)) {
         foreach ($files as $index => $file) {
             if ($file && $file->isValid()) {
-                $filename = 'chat_' . $userId . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                $file->storeAs('public/chat_backgrounds', $filename);
-                $existing[(int)$index] = 'storage/chat_backgrounds/' . $filename;
-                $changes++;
+                $slotIndex = (int)$index;
+                if ($slotIndex >= 0 && $slotIndex < 6) {
+                    $filename = 'chat_' . $userId . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                    $file->storeAs('public/chat_backgrounds', $filename);
+                    $backgrounds[$slotIndex] = 'storage/chat_backgrounds/' . $filename;
+                    $changes++;
+                }
             }
         }
     }
@@ -443,7 +467,9 @@ public function selectChatBackground(Request $request)
         return back()->with('warning', 'No chat background images were selected.');
     }
 
-    $setting->chat_backgrounds = json_encode($existing);
+    // Remove null values but maintain slot positions - keep array as associative with numeric keys
+    // This ensures indices 0-5 are preserved even if some slots are empty
+    $setting->chat_backgrounds = json_encode($backgrounds);
     $setting->save();
 
     return back()->with('success', 'Chat background images updated successfully.');

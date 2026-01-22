@@ -119,6 +119,18 @@ class ChatController extends Controller
         $chat_backgrounds = $setting && $setting->chat_backgrounds
             ? json_decode($setting->chat_backgrounds, true)
             : [];
+        // Ensure it's an array and reindex to maintain slot positions (0-5)
+        if (!is_array($chat_backgrounds)) {
+            $chat_backgrounds = [];
+        }
+        // Normalize array keys to ensure sequential 0-5 indices
+        $normalized = array_fill(0, 6, null);
+        foreach ($chat_backgrounds as $key => $value) {
+            if (is_numeric($key) && $key >= 0 && $key < 6 && $value !== null && $value !== '') {
+                $normalized[(int)$key] = $value;
+            }
+        }
+        $chat_backgrounds = $normalized;
         $selected_chat_background = $setting->selected_chat_background ?? null;
         $chat_sounds = $setting && $setting->chat_sounds
             ? json_decode($setting->chat_sounds, true)
