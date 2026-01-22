@@ -485,23 +485,22 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        background: rgba(255, 255, 255, 0.15);
+        background: transparent;
         color: white;
         border: none;
         width: 50px;
         height: 50px;
-        border-radius: 50%;
+        border-radius: 0;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
         z-index: 10001;
         transition: all 0.3s ease;
-        backdrop-filter: blur(5px);
     }
 
     .gallery-nav-btn:hover {
-        background: rgba(255, 255, 255, 0.3);
+        opacity: 0.8;
         transform: translateY(-50%) scale(1.1);
     }
 
@@ -509,16 +508,129 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
         font-size: 24px;
     }
 
-    .gallery-prev { left: 20px; }
-    .gallery-next { right: 20px; }
+    .gallery-nav-btn img {
+        /* Remove white background - screen mode makes white transparent on dark backgrounds */
+        mix-blend-mode: screen;
+        /* Ensure the image itself is visible */
+        opacity: 1;
+    }
+    
+    /* Alternative approach if screen doesn't work: use multiply for light backgrounds */
+    /* .gallery-nav-btn img { mix-blend-mode: multiply; } */
+
+    .gallery-prev { 
+        left: 20px; 
+        right: auto !important;
+        top: 50% !important;
+        bottom: auto !important;
+    }
+    .gallery-next { 
+        right: 20px; 
+        left: auto !important;
+        top: 50% !important;
+        bottom: auto !important;
+    }
+
+    /* Image Gallery Sidebar Styles */
+    .image-gallery-sidebar {
+        max-width: 320px;
+        min-width: 0;
+        height: 100%;
+    }
+    
+    .image-gallery-sidebar.active {
+        width: 320px !important;
+        min-width: 320px;
+        overflow: visible !important;
+    }
+    
+    .image-gallery-sidebar.active > div {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+    
+    .image-gallery-thumbnail {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border-radius: 8px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.2s ease;
+        background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .image-gallery-thumbnail:hover {
+        border-color: rgba(255, 255, 255, 0.6);
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .image-gallery-thumbnail.active {
+        border-color: #6338F6;
+        border-width: 3px;
+        box-shadow: 0 0 0 2px rgba(99, 56, 246, 0.3);
+    }
+    
+    .image-main-area.sidebar-open {
+        margin-right: 0;
+    }
+    
+    /* Ensure modal body takes full height */
+    #imageViewerModal .modal-body {
+        max-height: 80vh;
+        min-height: 70vh;
+    }
+    
+    #imageGallerySidebar.active {
+        display: block !important;
+    }
+    
+    /* Sidebar scrollbar styling */
+    #imageGallerySidebar > div {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    }
+    
+    #imageGallerySidebar > div::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    #imageGallerySidebar > div::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    #imageGallerySidebar > div::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+    }
+    
+    #imageGallerySidebar > div::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+    
+    /* Ensure thumbnails grid is responsive */
+    #imageGalleryThumbnails {
+        width: 100%;
+    }
+    
+    #imageGalleryThumbnails > div {
+        width: 100%;
+    }
 
     @media (max-width: 768px) {
         .gallery-nav-btn {
             width: 40px;
             height: 40px;
         }
-        .gallery-prev { left: 10px; }
-        .gallery-next { right: 10px; }
+        .gallery-prev { 
+            left: 10px; 
+            right: auto !important;
+        }
+        .gallery-next { 
+            right: 10px; 
+            left: auto !important;
+        }
     }
 </style>
 
@@ -2882,9 +2994,9 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                             
                             <!-- Video Container - Full Screen -->
                             <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; overflow: hidden; position: relative;">
-                                <!-- Navigation Arrows -->
-                                <button type="button" class="gallery-nav-btn gallery-prev" id="todoVideoPrev" title="Previous">
-                                    <i class="fa fa-chevron-left"></i>
+                                <!-- Navigation Arrows - Left -->
+                                <button type="button" class="gallery-nav-btn gallery-prev" id="todoVideoPrev" title="Previous" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); z-index: 10001; display: flex; align-items: center; justify-content: center;">
+                                    <img src="{{ asset('assets/img/left.png') }}" alt="Previous" style="width: 50px; height: 50px; object-fit: contain;">
                                 </button>
                                 
                                 <video id="todoVideoPlayer" controls 
@@ -2893,8 +3005,10 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                     Your browser does not support the video tag.
                                 </video>
 
-                                <button type="button" class="gallery-nav-btn gallery-next" id="todoVideoNext" title="Next">
-                                    <i class="fa fa-chevron-right"></i>
+                                <!-- Navigation Arrows - Right -->
+                                <button type="button" class="gallery-nav-btn gallery-next" id="todoVideoNext" ti
+                                tle="Next" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 10001; display: flex; align-items: center; justify-content: center;">
+                                    <img src="{{ asset('assets/img/right.png') }}" alt="Next" style="width: 50px; height: 50px; object-fit: contain;">
                                 </button>
                             </div>
                             
@@ -5788,7 +5902,12 @@ document.querySelectorAll('.user_div').forEach(div => {
                             console.log('File missing name:', file);
                             return false;
                         }
-                        const ext = (file.name || '').split('.').pop().toLowerCase();
+                        // Handle filename format: "filename_@_id" - extract actual filename first
+                        let fileName = file.name;
+                        if (fileName.includes('_@_')) {
+                            fileName = fileName.split('_@_')[0]; // Get part before "_@_"
+                        }
+                        const ext = fileName.split('.').pop().toLowerCase();
                         const isImage = ['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
                         if (isImage) {
                             console.log('Found image file:', file.name, 'ext:', ext);
@@ -5838,7 +5957,7 @@ document.querySelectorAll('.user_div').forEach(div => {
                 if (isVideoMode && videoPlayer && videoPlayer.src) {
                     currentUrl = videoPlayer.getAttribute('data-original-url') || videoPlayer.src;
                 } else if (isImageMode && imageModal) {
-                    const img = imageModal.querySelector('.modal-body img');
+                    const img = imageModal.querySelector('#mainImageViewerImage') || imageModal.querySelector('.modal-body img');
                     currentUrl = img ? img.getAttribute('src') : "";
                 }
                 
@@ -5887,7 +6006,7 @@ document.querySelectorAll('.user_div').forEach(div => {
             if (isImageMode && imageModal) {
                 console.log('Updating image in modal');
                 // Update image modal directly without recreating it
-                const img = imageModal.querySelector('.modal-body img');
+                const img = imageModal.querySelector('#mainImageViewerImage') || imageModal.querySelector('.modal-body img');
                 const modalTitle = imageModal.querySelector('.modal-footer .modal-title');
                 const downloadBtn = imageModal.querySelector('.image-download-btn');
                 const shareBtn = imageModal.querySelector('.image-share-btn');
@@ -5950,7 +6069,7 @@ document.querySelectorAll('.user_div').forEach(div => {
                     shareBtn.setAttribute('data-image-name', nextFile.name || 'image.jpg');
                 }
                 
-                // Highlight active thumbnail
+                // Highlight active thumbnail in footer
                 const thumbnails = imageModal.querySelectorAll('.image-thumbnail');
                 thumbnails.forEach((thumb) => {
                     const thumbImg = thumb.querySelector('img');
@@ -5968,6 +6087,28 @@ document.querySelectorAll('.user_div').forEach(div => {
                         }
                     }
                 });
+                
+                // Highlight active thumbnail in sidebar gallery
+                const sidebarThumbnails = imageModal.querySelectorAll('.image-gallery-thumbnail');
+                sidebarThumbnails.forEach((thumb) => {
+                    let thumbUrl = thumb.src;
+                    // Remove any query parameters or fragments for comparison
+                    thumbUrl = thumbUrl.split('?')[0].split('#')[0];
+                    let compareUrl = finalUrl.split('?')[0].split('#')[0];
+                    
+                    if (thumbUrl === compareUrl || thumbUrl.includes(compareUrl) || compareUrl.includes(thumbUrl)) {
+                        thumb.classList.add('active');
+                    } else {
+                        thumb.classList.remove('active');
+                    }
+                });
+                
+                // Update main image if using new structure
+                const mainImg = imageModal.querySelector('#mainImageViewerImage');
+                if (mainImg) {
+                    mainImg.src = finalUrl;
+                    mainImg.alt = nextFile.name || 'Image';
+                }
             } else if (isVideoMode) {
                 // Handle video navigation
                 const ext = (nextFile.name || '').split('.').pop().toLowerCase();
@@ -6056,51 +6197,157 @@ document.querySelectorAll('.user_div').forEach(div => {
                     finalUrl = imageUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
                 }
                 
+                // Get files from multiple sources - try to find the todo item that contains this button
+                let allFiles = window.currentTodoFiles || [];
+                
+                // If no files, try to get from the todo item in the modal
+                if (!allFiles || allFiles.length === 0) {
+                    // Try to find the todo item that was clicked to open the modal
+                    const todoItem = document.querySelector('.viewTodo[data-files]');
+                    if (todoItem) {
+                        try {
+                            const filesData = todoItem.getAttribute('data-files');
+                            if (filesData) {
+                                allFiles = JSON.parse(filesData);
+                                window.currentTodoFiles = allFiles; // Store for later use
+                                console.log('Loaded files from todo item:', allFiles.length);
+                            }
+                        } catch(e) {
+                            console.error('Error parsing files from todo item:', e);
+                        }
+                    }
+                }
+                
+                // If still no files, try to get from all view-image-btn buttons (collect all images)
+                if (!allFiles || allFiles.length === 0) {
+                    const allImageButtons = document.querySelectorAll('.view-image-btn');
+                    allFiles = [];
+                    allImageButtons.forEach(imgBtn => {
+                        const url = imgBtn.getAttribute('data-image-url');
+                        const name = imgBtn.getAttribute('data-image-name');
+                        if (url && name) {
+                            // Create file object with proper structure
+                            allFiles.push({ 
+                                url: url, 
+                                name: name,
+                                size: 0 // Size not available from button, but that's okay
+                            });
+                        }
+                    });
+                    if (allFiles.length > 0) {
+                        window.currentTodoFiles = allFiles;
+                        window.currentImageFiles = allFiles; // Also set as image files since they're all images
+                        console.log('Collected files from all image buttons:', allFiles.length, allFiles);
+                    }
+                }
+                
+                // Last resort: try to get files from the todo files list displayed in the modal
+                if (!allFiles || allFiles.length === 0) {
+                    const todoFilesList = document.querySelector('.todo-files-list');
+                    if (todoFilesList) {
+                        const fileItems = todoFilesList.querySelectorAll('[data-image-url], [data-video-url], [data-file-url]');
+                        allFiles = [];
+                        fileItems.forEach(item => {
+                            const url = item.getAttribute('data-image-url') || item.getAttribute('data-video-url') || item.getAttribute('data-file-url');
+                            const name = item.getAttribute('data-image-name') || item.getAttribute('data-video-name') || item.getAttribute('data-file-name') || 'File';
+                            if (url) {
+                                allFiles.push({ url: url, name: name });
+                            }
+                        });
+                        if (allFiles.length > 0) {
+                            window.currentTodoFiles = allFiles;
+                            console.log('Collected files from todo files list:', allFiles.length);
+                        }
+                    }
+                }
+                
                 // Count total images to determine if navigation should be shown
                 let imageFiles = [];
                 let showNavigation = false;
-                if (window.currentTodoFiles) {
-                    imageFiles = window.currentTodoFiles.filter(file => {
-                        const ext = (file.name || '').split('.').pop().toLowerCase();
-                        return ['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
+                
+                // Filter allFiles for images
+                if (allFiles && allFiles.length > 0) {
+                    console.log('Filtering files for images. Total files:', allFiles.length);
+                    console.log('Sample file structure:', allFiles[0]);
+                    imageFiles = allFiles.filter(file => {
+                        if (!file || !file.name) {
+                            console.log('Skipping file - no name:', file);
+                            return false;
+                        }
+                        // Handle filename format: "filename_@_id" - extract actual filename first
+                        let fileName = file.name;
+                        if (fileName.includes('_@_')) {
+                            fileName = fileName.split('_@_')[0]; // Get part before "_@_"
+                        }
+                        const ext = fileName.split('.').pop().toLowerCase();
+                        const isImage = ['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
+                        console.log('File:', file.name, '-> Cleaned:', fileName, '-> Ext:', ext, '-> IsImage:', isImage);
+                        return isImage;
                     });
                     showNavigation = imageFiles.length > 1;
+                    console.log('Image files found:', imageFiles.length, 'Show navigation:', showNavigation);
+                    console.log('All files count:', allFiles.length, 'Image files count:', imageFiles.length);
+                    
                     // Find index by comparing URLs (handle domain conversion)
-                    window.currentMediaIndex = imageFiles.findIndex(f => {
-                        let fUrl = f.url || '';
-                        let compareUrl = imageUrl || '';
-                        // Normalize URLs for comparison
-                        if (fUrl.includes('admin.onlinesystems.info')) {
-                            fUrl = fUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                    if (imageFiles.length > 0) {
+                        window.currentMediaIndex = imageFiles.findIndex(f => {
+                            let fUrl = f.url || '';
+                            let compareUrl = imageUrl || '';
+                            // Normalize URLs for comparison
+                            if (fUrl.includes('admin.onlinesystems.info')) {
+                                fUrl = fUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                            }
+                            if (compareUrl.includes('admin.onlinesystems.info')) {
+                                compareUrl = compareUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                            }
+                            return fUrl === compareUrl || f.url === imageUrl;
+                        });
+                        // If not found, default to 0
+                        if (window.currentMediaIndex === -1) {
+                            window.currentMediaIndex = 0;
                         }
-                        if (compareUrl.includes('admin.onlinesystems.info')) {
-                            compareUrl = compareUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
-                        }
-                        return fUrl === compareUrl || f.url === imageUrl;
-                    });
-                    // If not found, default to 0
-                    if (window.currentMediaIndex === -1) {
-                        window.currentMediaIndex = 0;
+                        console.log('Initial image index set to:', window.currentMediaIndex, 'out of', imageFiles.length, 'images');
                     }
-                    console.log('Initial image index set to:', window.currentMediaIndex, 'out of', imageFiles.length, 'images');
                 }
                 
-                // Store image files globally for navigation
+                // If still no image files but we have allFiles, all files might be images
+                if (imageFiles.length === 0 && allFiles && allFiles.length > 0) {
+                    // Assume all files are images if we couldn't determine otherwise
+                    imageFiles = allFiles;
+                    console.log('Assuming all files are images:', imageFiles.length);
+                }
+                
+                // Store image files globally for navigation and sidebar
                 window.currentImageFiles = imageFiles;
+                window.currentTodoFiles = allFiles; // Ensure all files are stored
+                
+                // Log for debugging
+                console.log('All files available:', allFiles.length);
+                console.log('Image files filtered:', imageFiles.length);
+                console.log('Files being stored:', allFiles);
+                
+                // Define asset paths for navigation arrows
+                const arrowLeftPath = '{{ asset("assets/img/left.png") }}';
+                const arrowRightPath = '{{ asset("assets/img/right.png") }}';
+                console.log('Arrow paths - Left:', arrowLeftPath, 'Right:', arrowRightPath);
                 
                 // Create and show image modal with download/share buttons
-                const navArrowStyle = showNavigation ? '' : 'display: none;';
+                // Always show arrows - navigation function handles single image case
+                const navArrowStyle = 'display: flex; align-items: center; justify-content: center;';
                 const modalHtml = `
-                    <div class="modal fade" id="imageViewerModal" tabindex="-1" style="z-index: 10000;" data-image-files='${JSON.stringify(imageFiles)}'>
-                        <div class="modal-dialog modal-dialog-centered modal-lg">
-                            <div class="modal-content" style="background: #000; border: none; position: relative;">
-                                <!-- Navigation Arrows -->
-                                <button type="button" class="gallery-nav-btn gallery-prev" id="todoImagePrev" title="Previous" style="${navArrowStyle}" onclick="if(window.navigateToMedia) { window.navigateToMedia(-1); } return false;">
-                                    <i class="fa fa-chevron-left"></i>
+                    <div class="modal fade" id="imageViewerModal" tabindex="-1" style="z-index: 10000;" data-image-files='${JSON.stringify(imageFiles)}' data-all-files='${JSON.stringify(allFiles)}'>
+                        <div class="modal-dialog modal-dialog-centered" style="max-width: 95vw; width: auto;">
+                            <div class="modal-content" style="background: #000; border: none; position: relative; max-width: 100%;">
+                                <!-- Navigation Arrows - Left -->
+                                <button type="button" class="gallery-nav-btn gallery-prev" id="todoImagePrev" title="Previous" style="${navArrowStyle} position: absolute; left: 20px; top: 50%; transform: translateY(-50%); z-index: 10001;" onclick="if(window.navigateToMedia) { window.navigateToMedia(-1); } return false;">
+                                    <img src="${arrowLeftPath}" alt="Previous" style="width: 50px; height: 50px; object-fit: contain; display: block;" onerror="console.error('Failed to load left arrow image:', this.src); this.style.display='none';">
                                 </button>
 
                                 <div class="modal-header border-0 d-flex justify-content-end align-items-center" style="background: rgba(0,0,0,0.8); z-index: 2;">
                                     <div class="d-flex align-items-center gap-2">
+                                        <button type="button" class="btn btn-sm text-white image-group-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center;" title="Group">
+                                            <img src="{{ asset('assets/img/group.png') }}" alt="Group" style="width: 16px; height: 16px; object-fit: contain;">
+                                        </button>
                                         <button type="button" class="btn btn-sm text-white image-download-btn" data-image-url="${finalUrl}" data-image-name="${imageName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center;" title="Download">
                                             <img src="{{ asset('assets/img/display-arrow-down 1.png') }}" alt="Download" style="width: 16px; height: 16px; object-fit: contain;">
                                         </button>
@@ -6112,13 +6359,27 @@ document.querySelectorAll('.user_div').forEach(div => {
                                         </button>
                                     </div>
                                 </div>
-                                <div class="modal-body p-4 text-center" style="position: relative; min-height: 200px; display: flex; align-items: center; justify-content: center;">
-                                    <img src="${finalUrl}" alt="${imageName}" style="max-width: 100%; max-height: 70vh; object-fit: contain; z-index: 1;">
+                                <div class="modal-body p-0" style="display: flex; position: relative; min-height: 70vh;">
+                                    <!-- Main Image Area -->
+                                    <div class="image-main-area" style="flex: 1; display: flex; align-items: center; justify-content: center; position: relative; padding: 20px;">
+                                        <img id="mainImageViewerImage" src="${finalUrl}" alt="${imageName}" style="max-width: 100%; max-height: 70vh; object-fit: contain; z-index: 1;">
+                                        
+                                        <!-- Navigation Arrows - Right (adjust position when sidebar is open) -->
+                                        <button type="button" class="gallery-nav-btn gallery-next" id="todoImageNext" title="Next" style="${navArrowStyle} position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 10001;" onclick="if(window.navigateToMedia) { window.navigateToMedia(1); } return false;">
+                                            <img src="${arrowRightPath}" alt="Next" style="width: 50px; height: 50px; object-fit: contain; display: block;" onerror="console.error('Failed to load right arrow image:', this.src); this.style.display='none';">
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Right Sidebar Gallery (hidden by default) -->
+                                    <div id="imageGallerySidebar" class="image-gallery-sidebar" style="width: 0; overflow: hidden; background: rgba(30, 30, 30, 0.98); transition: width 0.3s ease, overflow 0.3s ease; border-left: 1px solid rgba(255,255,255,0.15); position: relative; flex-shrink: 0;">
+                                        <div style="padding: 20px; height: 100%; overflow-y: auto; overflow-x: hidden; min-height: 400px;">
+                                            <h6 style="color: white; font-size: 14px; font-weight: 600; margin-bottom: 20px; text-align: center; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">Image Gallery</h6>
+                                            <div id="imageGalleryThumbnails" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%;">
+                                                <!-- Thumbnails will be populated here -->
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <button type="button" class="gallery-nav-btn gallery-next" id="todoImageNext" title="Next" style="${navArrowStyle}" onclick="if(window.navigateToMedia) { window.navigateToMedia(1); } return false;">
-                                    <i class="fa fa-chevron-right"></i>
-                                </button>
 
                                 <div class="modal-footer border-0 p-2" style="background: rgba(0,0,0,0.8); z-index: 2;">
                                     <div class="w-100">
@@ -6145,6 +6406,68 @@ document.querySelectorAll('.user_div').forEach(div => {
                 // Load thumbnails when modal is shown
                 modalElement.addEventListener('shown.bs.modal', function() {
                     loadImageThumbnails();
+                    loadImageGallerySidebar();
+                    
+                    // Add click handler for group button
+                    const groupBtn = modalElement.querySelector('.image-group-btn');
+                    if (groupBtn) {
+                        groupBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const sidebar = document.getElementById('imageGallerySidebar');
+                            const mainArea = modalElement.querySelector('.image-main-area');
+                            const modalDialog = modalElement.querySelector('.modal-dialog');
+                            
+                            if (sidebar) {
+                                const isActive = sidebar.classList.contains('active');
+                                sidebar.classList.toggle('active');
+                                
+                                if (mainArea) {
+                                    mainArea.classList.toggle('sidebar-open');
+                                }
+                                
+                                // Expand modal dialog when sidebar opens
+                                if (modalDialog) {
+                                    if (!isActive) {
+                                        // Opening sidebar - reload thumbnails to ensure they're displayed
+                                        setTimeout(() => {
+                                            loadImageGallerySidebar();
+                                        }, 100);
+                                        // Opening sidebar
+                                        modalDialog.style.maxWidth = 'calc(95vw + 320px)';
+                                    } else {
+                                        // Closing sidebar
+                                        modalDialog.style.maxWidth = '95vw';
+                                    }
+                                }
+                                
+                                // Adjust right arrow position when sidebar is open
+                                const rightArrow = document.getElementById('todoImageNext');
+                                if (rightArrow && sidebar.classList.contains('active')) {
+                                    rightArrow.style.right = '340px';
+                                } else if (rightArrow) {
+                                    rightArrow.style.right = '20px';
+                                }
+                                
+                                // Ensure sidebar is visible and has content
+                                if (sidebar.classList.contains('active')) {
+                                    sidebar.style.display = 'block';
+                                    sidebar.style.overflow = 'visible';
+                                    sidebar.style.width = '320px';
+                                    sidebar.style.minWidth = '320px';
+                                    // Force reload thumbnails after a short delay to ensure DOM is ready
+                                    setTimeout(() => {
+                                        if (typeof loadImageGallerySidebar === 'function') {
+                                            loadImageGallerySidebar();
+                                        }
+                                    }, 150);
+                                } else {
+                                    sidebar.style.width = '0';
+                                    sidebar.style.overflow = 'hidden';
+                                }
+                            }
+                        });
+                    }
                 }, { once: true });
                 
                 modal.show();
@@ -6400,14 +6723,20 @@ document.querySelectorAll('.user_div').forEach(div => {
             const imageModal = document.getElementById('imageViewerModal');
             let currentImageUrl = '';
             if (imageModal) {
-                const img = imageModal.querySelector('.modal-body img');
+                const img = imageModal.querySelector('#mainImageViewerImage') || imageModal.querySelector('.modal-body img');
                 if (img) {
                     currentImageUrl = img.getAttribute('src') || '';
                 }
             }
             
             window.currentTodoFiles.forEach((file) => {
-                const ext = (file.name || '').split('.').pop().toLowerCase();
+                if (!file || !file.name) return;
+                // Handle filename format: "filename_@_id" - extract actual filename first
+                let fileName = file.name;
+                if (fileName.includes('_@_')) {
+                    fileName = fileName.split('_@_')[0]; // Get part before "_@_"
+                }
+                const ext = fileName.split('.').pop().toLowerCase();
                 const isImage = ['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
                 
                 if (isImage) {
@@ -6440,6 +6769,173 @@ document.querySelectorAll('.user_div').forEach(div => {
                     thumbnailsContainer.appendChild(thumbnail);
                 }
             });
+        }
+        
+        // Function to load image gallery sidebar
+        function loadImageGallerySidebar() {
+            const sidebarContainer = document.getElementById('imageGalleryThumbnails');
+            if (!sidebarContainer) {
+                console.log('Sidebar container not found');
+                return;
+            }
+            
+            // Get files from multiple sources - prioritize currentImageFiles
+            let files = window.currentImageFiles || window.currentTodoFiles || [];
+            
+            // If no files, try to get from modal data attribute
+            if (!files || files.length === 0) {
+                const imageModal = document.getElementById('imageViewerModal');
+                if (imageModal) {
+                    // First try data-all-files (all files including non-images)
+                    if (imageModal.dataset.allFiles) {
+                        try {
+                            files = JSON.parse(imageModal.dataset.allFiles);
+                            console.log('Loaded all files from modal data-all-files:', files.length);
+                        } catch(e) {
+                            console.error('Error parsing all files from modal:', e);
+                        }
+                    }
+                    // If still no files, try data-image-files (filtered images only)
+                    if ((!files || files.length === 0) && imageModal.dataset.imageFiles) {
+                        try {
+                            files = JSON.parse(imageModal.dataset.imageFiles);
+                            console.log('Loaded image files from modal data-image-files:', files.length);
+                        } catch(e) {
+                            console.error('Error parsing image files from modal:', e);
+                        }
+                    }
+                }
+            }
+            
+            console.log('Files available for sidebar:', files ? files.length : 0, files);
+            
+            if (!files || files.length === 0) {
+                console.log('No image files available for gallery');
+                sidebarContainer.innerHTML = '<p style="color: rgba(255,255,255,0.6); text-align: center; padding: 20px;">No images available</p>';
+                return;
+            }
+            
+            sidebarContainer.innerHTML = '';
+            
+            // Get current image URL to highlight active thumbnail
+            const imageModal = document.getElementById('imageViewerModal');
+            let currentImageUrl = '';
+            if (imageModal) {
+                const img = imageModal.querySelector('#mainImageViewerImage');
+                if (img) {
+                    currentImageUrl = img.getAttribute('src') || '';
+                }
+            }
+            
+            // Filter only image files - handle filename format "filename_@_id"
+            const imageFiles = files.filter(file => {
+                if (!file || !file.name) return false;
+                // Handle filename format: "filename_@_id" - extract actual filename first
+                let fileName = file.name;
+                if (fileName.includes('_@_')) {
+                    fileName = fileName.split('_@_')[0]; // Get part before "_@_"
+                }
+                const ext = fileName.split('.').pop().toLowerCase();
+                const isImage = ['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
+                if (isImage) {
+                    console.log('Sidebar: Found image file:', file.name, 'Extension:', ext);
+                }
+                return isImage;
+            });
+            
+            console.log('Sidebar: Filtered image files:', imageFiles.length, 'out of', files.length, 'total files');
+            
+            if (imageFiles.length === 0) {
+                // If no images found but we have files, show all files as images (fallback)
+                if (files && files.length > 0) {
+                    console.log('No images filtered, using all files as images');
+                    imageFiles.push(...files);
+                } else {
+                    sidebarContainer.innerHTML = '<p style="color: rgba(255,255,255,0.6); text-align: center; padding: 20px;">No images found</p>';
+                    return;
+                }
+            }
+            
+            console.log('Loading', imageFiles.length, 'images into sidebar gallery');
+            
+            imageFiles.forEach((file, index) => {
+                let thumbnailUrl = file.url || '';
+                if (thumbnailUrl.includes('admin.onlinesystems.info')) {
+                    thumbnailUrl = thumbnailUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                }
+                
+                // Check if this is the current image
+                let isActive = false;
+                if (currentImageUrl) {
+                    let fileUrl = thumbnailUrl;
+                    let currUrl = currentImageUrl;
+                    // Normalize URLs for comparison
+                    fileUrl = fileUrl.split('?')[0].split('#')[0];
+                    currUrl = currUrl.split('?')[0].split('#')[0];
+                    if (fileUrl === currUrl || fileUrl.includes(currUrl) || currUrl.includes(fileUrl)) {
+                        isActive = true;
+                    }
+                }
+                
+                const thumbnailWrapper = document.createElement('div');
+                thumbnailWrapper.style.cssText = 'position: relative; cursor: pointer;';
+                
+                const thumbnail = document.createElement('img');
+                thumbnail.className = 'image-gallery-thumbnail' + (isActive ? ' active' : '');
+                thumbnail.src = thumbnailUrl;
+                thumbnail.alt = file.name || 'Image ' + (index + 1);
+                thumbnail.title = file.name || 'Image ' + (index + 1);
+                
+                // Add click handler to navigate to this image
+                thumbnail.addEventListener('click', function() {
+                    // Update main image
+                    const mainImg = document.getElementById('mainImageViewerImage');
+                    if (mainImg) {
+                        mainImg.src = thumbnailUrl;
+                        mainImg.alt = file.name || 'Image';
+                    }
+                    
+                    // Update current index
+                    window.currentMediaIndex = index;
+                    
+                    // Update active thumbnail
+                    document.querySelectorAll('.image-gallery-thumbnail').forEach(thumb => {
+                        thumb.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Update footer title
+                    const footerTitle = document.querySelector('#imageViewerModal .modal-footer .modal-title');
+                    if (footerTitle) {
+                        footerTitle.textContent = file.name || 'Image';
+                    }
+                    
+                    // Update download and share buttons
+                    const downloadBtn = document.querySelector('.image-download-btn');
+                    const shareBtn = document.querySelector('.image-share-btn');
+                    if (downloadBtn) {
+                        downloadBtn.setAttribute('data-image-url', thumbnailUrl);
+                        downloadBtn.setAttribute('data-image-name', file.name || 'image.jpg');
+                    }
+                    if (shareBtn) {
+                        shareBtn.setAttribute('data-image-url', thumbnailUrl);
+                        shareBtn.setAttribute('data-image-name', file.name || 'image.jpg');
+                    }
+                });
+                
+                thumbnailWrapper.appendChild(thumbnail);
+                sidebarContainer.appendChild(thumbnailWrapper);
+            });
+            
+            console.log('Sidebar gallery loaded with', imageFiles.length, 'thumbnails');
+            
+            // Ensure sidebar container is visible
+            if (imageFiles.length > 0) {
+                const sidebar = document.getElementById('imageGallerySidebar');
+                if (sidebar) {
+                    sidebar.style.display = 'block';
+                }
+            }
         }
         </script>
         @endsection
