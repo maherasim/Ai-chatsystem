@@ -67,6 +67,22 @@
         max-width: 100% !important;
         width: 100%;
     }
+    
+    /* Override for chat background thumbnails - ensure they fill container */
+    .chat-img.contact-gallery .img-wrap {
+        height: 100px !important;
+        min-height: 100px !important;
+        max-height: 100px !important;
+    }
+    
+    .chat-img.contact-gallery .img-wrap img {
+        width: 100% !important;
+        height: 100px !important;
+        min-height: 100px !important;
+        max-height: 100px !important;
+        object-fit: cover !important;
+        object-position: center !important;
+    }
 
     .chats .chat-content .message-content .chat-img {
         max-width: 100% !important;
@@ -1428,8 +1444,8 @@
                                                                             : asset('/build/img/gallery/gallery-01.jpg');
                                                                     @endphp
                                                                     <div class="col-6 mb-2" style="padding: 0;">
-                                                                        <div class="img-wrap position-relative" style="width: 100%; height: 100px; overflow: hidden; border: 1px solid #ccc; border-radius: 8px; margin: 0; padding: 0; display: block; line-height: 0;">
-                                                                            <img id="previewImagechatSidebar{{ $i }}" src="{{ $imageSrc }}" alt="Chat Background {{ $i }}" style="width: 100%; height: 100px; object-fit: cover; object-position: center; border-radius: 8px; display: block; margin: 0; padding: 0; border: none;">
+                                                                        <div class="img-wrap position-relative" style="width: 100% !important; height: 100px !important; min-height: 100px !important; max-height: 100px !important; overflow: hidden; border: 1px solid #ccc; border-radius: 8px; margin: 0; padding: 0; box-sizing: border-box; line-height: 0;">
+                                                                            <img id="previewImagechatSidebar{{ $i }}" src="{{ $imageSrc }}" alt="Chat Background {{ $i }}" style="width: 100% !important; height: 100px !important; min-height: 100px !important; max-height: 100px !important; object-fit: cover !important; object-position: center !important; border-radius: 8px; margin: 0 !important; padding: 0 !important; border: none; display: block; box-sizing: border-box; vertical-align: top;">
                                                                             <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-between p-2" style="background: rgba(0, 0, 0, 0.25); opacity: 0; transition: opacity 0.2s ease-in-out; border-radius: 8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
                                                                                 <button type="button" class="btn btn-sm btn-light" onclick="document.getElementById('imageUploadChatSidebar{{ $i }}').click();" style="font-size: 11px; padding: 4px 8px;">Upload</button>
                                                                                 <button type="button" class="btn btn-sm {{ (isset($selected_chat_background) && $selected_chat_background === ($i - 1)) ? 'btn-success' : 'btn-outline-light' }}" onclick="if(typeof submitChatBgSelect === 'function') { submitChatBgSelect({{ $i - 1 }}); } else { console.error('submitChatBgSelect function not found'); }" style="font-size: 11px; padding: 4px 8px;">Select</button>
