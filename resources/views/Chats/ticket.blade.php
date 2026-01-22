@@ -2864,6 +2864,66 @@
         const projectSelect = document.getElementById('ticketProjectSelect');
         const sectionSelect = document.getElementById('ticketSectionSelect');
 
+        // Insert Phase Select dynamically after Project Select
+        const phaseWrapper = document.createElement('div');
+        phaseWrapper.className = 'col-md-4';
+        phaseWrapper.innerHTML = `
+            <select id="ticketPhaseSelect" class="form-control" style="background-color: white;">
+                <option value="">Select the Phase</option>
+            </select>
+        `;
+        // Insert it between Project and Section
+        projectSelect.parentElement.parentElement.insertBefore(phaseWrapper, sectionSelect.parentElement.parentElement);
+
+        const phaseSelect = document.getElementById('ticketPhaseSelect');
+        
+        let projectDataCache = {};
+
+        // When project changes -> Load phases
+        projectSelect.addEventListener('change', function(){
+            const pid = this.value;
+            phaseSelect.innerHTML = '<option value="">Select the Phase</option>';
+            sectionSelect.innerHTML = '<option value="">Select the Section</option>';
+            
+            if(!pid) return;
+
+            // Fetch full project data to get phases and sections
+            fetch('/project/' + encodeURIComponent(pid) + '/json')
+            .then(r => r.json())
+            .then(data => {
+                projectDataCache[pid] = data; // cache for section filtering
+                const phases = data.phases || [];
+                phases.forEach(ph => {
+                    const opt = document.createElement('option');
+                    opt.value = ph.title; // Phase title is the key reference in sections
+                    opt.textContent = ph.title;
+                    phaseSelect.appendChild(opt);
+                });
+            })
+            .catch(e => console.error(e));
+        });
+
+        // When phase changes -> Load filtered sections
+        phaseSelect.addEventListener('change', function(){
+            const pid = projectSelect.value;
+            const pTitle = this.value;
+            sectionSelect.innerHTML = '<option value="">Select the Section</option>';
+            
+            if(!pid || !projectDataCache[pid]) return;
+
+            const allSections = projectDataCache[pid].sections || [];
+            // Filter sections that match this phase title
+            // If pTitle is empty, maybe show all? Defaulting to show none/all depending on requirement. 
+            // The prompt implies "based on phase section should be laod", so filtering is key.
+            const filtered = allSections.filter(sec => sec.phase_title === pTitle);
+            
+            filtered.forEach(sec => {
+                const opt = document.createElement('option');
+                opt.value = sec.name; // or ID if sections had unique IDs
+                opt.textContent = sec.name;
+                sectionSelect.appendChild(opt);
+            });
+        });
 
         const priorityHidden = document.getElementById('ticketPriority');
         const reminderHidden = document.getElementById('ticketReminderHours');
@@ -3015,15 +3075,9 @@
                         const modalEl = document.getElementById('ticketModal');
                         const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
                         modal.hide();
-                        // Do not reload; keep current view and optionally show a brief success note
-                        try {
-                            const note = document.createElement('div');
-                            note.className = 'position-fixed top-0 end-0 p-3';
-                            note.style.zIndex = '1060';
-                            note.innerHTML = '<div class="alert alert-success shadow" role="alert" style="border-radius:8px;">Ticket created successfully</div>';
-                            document.body.appendChild(note);
-                            setTimeout(function(){ try { note.remove(); } catch(_){} }, 2000);
-                        } catch(_) {}
+                        // Reload as requested
+                        window.location.reload();
+                        return;
                     } else {
                         // Inline success alert inside modal (not closing)
                         const modalBody = document.querySelector('#ticketModal .modal-body');
