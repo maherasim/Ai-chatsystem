@@ -31,7 +31,8 @@ class ChatController extends Controller
     {
         
         $headers = \App\Models\Setting::all();
-        $setting = \App\Models\Setting::first();
+        // Fetch setting for current user (same as settings page)
+        $setting = \App\Models\Setting::where('user_id', auth()->id())->first();
         $groups = Group::all();
       //  dd($groups);
         $user = Auth::user();
