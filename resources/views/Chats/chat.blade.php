@@ -3033,7 +3033,7 @@
                                  onerror="this.onerror=null; this.src='${defaultAvatar}';">
                             ${onlineIndicator}
                         </div>
-                        <span style="font-size: 10px; color: #2e3a59; font-weight: 500; text-align: center; max-width: 45px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${memberName}</span>
+                        <span style="font-size: 12px; color: #2e3a59; font-weight: 500; text-align: center; max-width: 45px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${memberName}</span>
                     `;
                     fragment.appendChild(memberCard);
                 });
