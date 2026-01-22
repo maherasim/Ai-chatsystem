@@ -521,11 +521,11 @@
                                                                             @endphp
 
                                                                             <div class="img-wrap position-relative"
-                                                                                style="width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px; margin: 0; padding: 0; display: block;">
+                                                                                style="width: 200px; height: 120px; overflow: hidden; border: 1px solid #ccc; border-radius: 10px; margin: 0; padding: 0; display: block; line-height: 0; background-color: #f0f0f0;">
                                                                                 <img id="previewImagechat{{ $i }}"
                                                                                     src="{{ $imageSrc }}"
                                                                                     alt="Chat Background {{ $i }}"
-                                                                                    style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 10px; display: block; margin: 0; padding: 0; vertical-align: top;">
+                                                                                    style="width: 100%; height: 120px; min-height: 120px; max-height: 120px; object-fit: cover; object-position: center; border-radius: 10px; display: block; margin: 0; padding: 0; border: none; vertical-align: middle;">
 
                                                                                 <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-between p-2"
                                                                                     style="background: rgba(0, 0, 0, 0.25); opacity: 0; transition: opacity 0.2s ease-in-out; border-radius: 10px;"
