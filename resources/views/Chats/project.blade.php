@@ -1961,7 +1961,6 @@
                             </div>
                             <div class="mt-4" data-rows>
                                 ${sectionRowTemplate(index, 0)}
-                                ${sectionRowTemplate(index, 1)}
                             </div>
                         `;
                         wrapper.appendChild(div);
@@ -2725,28 +2724,63 @@
                 try {
                     var sw = document.getElementById('section-groups-wrapper');
                     if (sw) sw.innerHTML = '';
-                    addSectionGroup(); // create one group
+                    
                     var sections = Array.isArray(p.sections) ? p.sections : (function(){ try { return JSON.parse(p.sections)||[]; } catch(_){ return []; } })();
+                    
                     if (!sections.length) {
-                        // keep default two rows created by addSectionGroup()
+                        addSectionGroup();
                     } else {
-                        // Clear rows in the first group then add per section
-                        var group = sw.querySelector('.section-group');
-                        if (group) {
+                        // Group sections by adjacent phase_title to preserve order but group logically
+                        var groupsData = [];
+                        sections.forEach(function(sec){
+                             var pTitle = sec.phase_title || '';
+                             if (groupsData.length === 0 || groupsData[groupsData.length-1].phase !== pTitle) {
+                                 groupsData.push({ phase: pTitle, sections: [sec] });
+                             } else {
+                                 groupsData[groupsData.length-1].sections.push(sec);
+                             }
+                        });
+                        
+                        groupsData.forEach(function(gData){
+                            addSectionGroup();
+                            var group = sw.lastElementChild;
+                            
+                            // Set Group Phase Dropdown
+                            var sel = group.querySelector('.group-phase-select');
+                            if (sel) {
+                                sel.value = gData.phase;
+                                syncGroupPhase(sel); // Ensures hidden inputs get the value
+                            }
+                            
+                            // Clear the default empty row added by addSectionGroup
                             var rowsWrap = group.querySelector('[data-rows]');
                             if (rowsWrap) rowsWrap.innerHTML = '';
-                            sections.forEach(function(sec, idx){
-                                rowsWrap.insertAdjacentHTML('beforeend', sectionRowTemplate(0, idx));
-                                var nameInput = rowsWrap.querySelector('input[name="sections[0_'+idx+'][name]"]');
-                                var descInput = rowsWrap.querySelector('input[name="sections[0_'+idx+'][description]"]');
-                                var phaseHidden = rowsWrap.querySelectorAll('input.section-phase-title')[idx];
+                            
+                            // Get correct group index for input naming
+                            var gIdx = Array.prototype.indexOf.call(sw.children, group);
+                            
+                            // Add rows for this group
+                            gData.sections.forEach(function(sec, rIdx){
+                                rowsWrap.insertAdjacentHTML('beforeend', sectionRowTemplate(gIdx, rIdx));
+                                var row = rowsWrap.lastElementChild;
+                                var nameInput = row.querySelector('input[name^="sections"][name$="[name]"]');
+                                var descInput = row.querySelector('input[name^="sections"][name$="[description]"]');
+                                var phaseHidden = row.querySelector('input.section-phase-title');
+                                var finalPhase = (sel ? sel.value : '') || gData.phase; 
+
                                 if (nameInput) nameInput.value = sec.name || '';
                                 if (descInput) descInput.value = sec.description || '';
-                                if (phaseHidden) phaseHidden.value = sec.phase_title || '';
+                                if (phaseHidden) phaseHidden.value = finalPhase;
                             });
-                        }
+                             // Update add/remove icons for rows
+                             refreshRowIcons(group);
+                        });
                     }
-                } catch (_) {}
+                } catch (e) {
+                    console.error('Error populating sections', e);
+                    // Fallback
+                    if (document.getElementById('section-groups-wrapper').children.length === 0) addSectionGroup();
+                }
 
                 // Finally show the create modal as "edit"
                 setTimeout(function(){
