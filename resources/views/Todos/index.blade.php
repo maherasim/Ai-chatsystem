@@ -485,9 +485,9 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        background: transparent;
+        background: transparent !important;
         color: white;
-        border: none;
+        border: none !important;
         width: 50px;
         height: 50px;
         border-radius: 0;
@@ -497,26 +497,34 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
         cursor: pointer;
         z-index: 10001;
         transition: all 0.3s ease;
+        box-shadow: none !important;
+        padding: 0;
+        margin: 0;
     }
 
     .gallery-nav-btn:hover {
+        background: transparent !important;
         opacity: 0.8;
         transform: translateY(-50%) scale(1.1);
+        box-shadow: none !important;
+    }
+    
+    .gallery-nav-btn:focus,
+    .gallery-nav-btn:active {
+        background: transparent !important;
+        box-shadow: none !important;
+        outline: none;
     }
 
     .gallery-nav-btn i {
         font-size: 24px;
     }
 
-    .gallery-nav-btn img {
-        /* Remove white background - screen mode makes white transparent on dark backgrounds */
-        mix-blend-mode: screen;
-        /* Ensure the image itself is visible */
-        opacity: 1;
+    .gallery-nav-btn svg {
+        width: 24px;
+        height: 24px;
+        color: white;
     }
-    
-    /* Alternative approach if screen doesn't work: use multiply for light backgrounds */
-    /* .gallery-nav-btn img { mix-blend-mode: multiply; } */
 
     .gallery-prev { 
         left: 20px; 
@@ -533,15 +541,29 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
 
     /* Image Gallery Sidebar Styles */
     .image-gallery-sidebar {
-        max-width: 320px;
+        max-width: 240px;
         min-width: 0;
         height: 100%;
     }
     
     .image-gallery-sidebar.active {
-        width: 320px !important;
-        min-width: 320px;
+        width: 240px !important;
+        min-width: 240px;
         overflow: visible !important;
+    }
+    
+    /* Modal Styling Improvements */
+    #imageViewerModal .modal-dialog {
+        transition: all 0.3s ease;
+    }
+    
+    #imageViewerModal .modal-content {
+        backdrop-filter: blur(10px);
+    }
+    
+    #imageViewerModal .modal-header,
+    #imageViewerModal .modal-footer {
+        backdrop-filter: blur(10px);
     }
     
     .image-gallery-sidebar.active > div {
@@ -2995,8 +3017,10 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                             <!-- Video Container - Full Screen -->
                             <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; overflow: hidden; position: relative;">
                                 <!-- Navigation Arrows - Left -->
-                                <button type="button" class="gallery-nav-btn gallery-prev" id="todoVideoPrev" title="Previous" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); z-index: 10001; display: flex; align-items: center; justify-content: center;">
-                                    <img src="{{ asset('assets/img/left.png') }}" alt="Previous" style="width: 50px; height: 50px; object-fit: contain;">
+                                <button type="button" class="gallery-nav-btn gallery-prev" id="todoVideoPrev" title="Previous" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); z-index: 10001; display: flex; align-items: center; justify-content: center; background: transparent !important; border: none !important; box-shadow: none !important; padding: 0;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
+                                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                                    </svg>
                                 </button>
                                 
                                 <video id="todoVideoPlayer" controls 
@@ -3006,9 +3030,10 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 </video>
 
                                 <!-- Navigation Arrows - Right -->
-                                <button type="button" class="gallery-nav-btn gallery-next" id="todoVideoNext" ti
-                                tle="Next" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 10001; display: flex; align-items: center; justify-content: center;">
-                                    <img src="{{ asset('assets/img/right.png') }}" alt="Next" style="width: 50px; height: 50px; object-fit: contain;">
+                                <button type="button" class="gallery-nav-btn gallery-next" id="todoVideoNext" title="Next" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 10001; display: flex; align-items: center; justify-content: center; background: transparent !important; border: none !important; box-shadow: none !important; padding: 0;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
+                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                    </svg>
                                 </button>
                             </div>
                             
@@ -6326,24 +6351,21 @@ document.querySelectorAll('.user_div').forEach(div => {
                 console.log('Image files filtered:', imageFiles.length);
                 console.log('Files being stored:', allFiles);
                 
-                // Define asset paths for navigation arrows
-                const arrowLeftPath = '{{ asset("assets/img/left.png") }}';
-                const arrowRightPath = '{{ asset("assets/img/right.png") }}';
-                console.log('Arrow paths - Left:', arrowLeftPath, 'Right:', arrowRightPath);
-                
                 // Create and show image modal with download/share buttons
                 // Always show arrows - navigation function handles single image case
-                const navArrowStyle = 'display: flex; align-items: center; justify-content: center;';
+                const navArrowStyle = 'display: flex; align-items: center; justify-content: center; background: transparent !important; border: none !important; box-shadow: none !important; padding: 0;';
                 const modalHtml = `
                     <div class="modal fade" id="imageViewerModal" tabindex="-1" style="z-index: 10000;" data-image-files='${JSON.stringify(imageFiles)}' data-all-files='${JSON.stringify(allFiles)}'>
-                        <div class="modal-dialog modal-dialog-centered" style="max-width: 95vw; width: auto;">
-                            <div class="modal-content" style="background: #000; border: none; position: relative; max-width: 100%;">
+                        <div class="modal-dialog modal-dialog-centered" style="max-width: 70vw; width: 75%; margin: auto;">
+                            <div class="modal-content" style="background: #000; border: none; position: relative; max-width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
                                 <!-- Navigation Arrows - Left -->
                                 <button type="button" class="gallery-nav-btn gallery-prev" id="todoImagePrev" title="Previous" style="${navArrowStyle} position: absolute; left: 20px; top: 50%; transform: translateY(-50%); z-index: 10001;" onclick="if(window.navigateToMedia) { window.navigateToMedia(-1); } return false;">
-                                    <img src="${arrowLeftPath}" alt="Previous" style="width: 50px; height: 50px; object-fit: contain; display: block;" onerror="console.error('Failed to load left arrow image:', this.src); this.style.display='none';">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
+                                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                                    </svg>
                                 </button>
 
-                                <div class="modal-header border-0 d-flex justify-content-end align-items-center" style="background: rgba(0,0,0,0.8); z-index: 2;">
+                                <div class="modal-header border-0 d-flex justify-content-end align-items-center" style="background: rgba(0,0,0,0.9); z-index: 2; padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
                                     <div class="d-flex align-items-center gap-2">
                                         <button type="button" class="btn btn-sm text-white image-group-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center;" title="Group">
                                             <img src="{{ asset('assets/img/group.png') }}" alt="Group" style="width: 16px; height: 16px; object-fit: contain;">
@@ -6359,14 +6381,16 @@ document.querySelectorAll('.user_div').forEach(div => {
                                         </button>
                                     </div>
                                 </div>
-                                <div class="modal-body p-0" style="display: flex; position: relative; min-height: 70vh;">
+                                <div class="modal-body p-0" style="display: flex; position: relative; min-height: 50vh; max-height: 65vh;">
                                     <!-- Main Image Area -->
                                     <div class="image-main-area" style="flex: 1; display: flex; align-items: center; justify-content: center; position: relative; padding: 20px;">
-                                        <img id="mainImageViewerImage" src="${finalUrl}" alt="${imageName}" style="max-width: 100%; max-height: 70vh; object-fit: contain; z-index: 1;">
+                                        <img id="mainImageViewerImage" src="${finalUrl}" alt="${imageName}" style="max-width: 100%; max-height: 55vh; object-fit: contain; z-index: 1; border-radius: 8px;">
                                         
                                         <!-- Navigation Arrows - Right (adjust position when sidebar is open) -->
                                         <button type="button" class="gallery-nav-btn gallery-next" id="todoImageNext" title="Next" style="${navArrowStyle} position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 10001;" onclick="if(window.navigateToMedia) { window.navigateToMedia(1); } return false;">
-                                            <img src="${arrowRightPath}" alt="Next" style="width: 50px; height: 50px; object-fit: contain; display: block;" onerror="console.error('Failed to load right arrow image:', this.src); this.style.display='none';">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
+                                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                                            </svg>
                                         </button>
                                     </div>
                                     
@@ -6381,9 +6405,9 @@ document.querySelectorAll('.user_div').forEach(div => {
                                     </div>
                                 </div>
 
-                                <div class="modal-footer border-0 p-2" style="background: rgba(0,0,0,0.8); z-index: 2;">
+                                <div class="modal-footer border-0" style="background: rgba(0,0,0,0.9); z-index: 2; padding: 15px 20px; border-top: 1px solid rgba(255,255,255,0.1);">
                                     <div class="w-100">
-                                        <h6 class="modal-title text-white mb-2 text-center" style="font-size: 14px; font-weight: 500;">${imageName || 'Image'}</h6>
+                                        <h6 class="modal-title text-white mb-2 text-center" style="font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.9);">${imageName || 'Image'}</h6>
                                         <div id="imageThumbnails" class="d-flex gap-2" style="overflow-x: auto; width: 100%; padding: 5px 0;">
                                             <!-- Thumbnails will be populated here -->
                                         </div>
@@ -6417,53 +6441,58 @@ document.querySelectorAll('.user_div').forEach(div => {
                             const sidebar = document.getElementById('imageGallerySidebar');
                             const mainArea = modalElement.querySelector('.image-main-area');
                             const modalDialog = modalElement.querySelector('.modal-dialog');
+                            const rightArrow = document.getElementById('todoImageNext');
                             
                             if (sidebar) {
                                 const isActive = sidebar.classList.contains('active');
-                                sidebar.classList.toggle('active');
                                 
-                                if (mainArea) {
-                                    mainArea.classList.toggle('sidebar-open');
-                                }
-                                
-                                // Expand modal dialog when sidebar opens
-                                if (modalDialog) {
-                                    if (!isActive) {
-                                        // Opening sidebar - reload thumbnails to ensure they're displayed
-                                        setTimeout(() => {
-                                            loadImageGallerySidebar();
-                                        }, 100);
-                                        // Opening sidebar
-                                        modalDialog.style.maxWidth = 'calc(95vw + 320px)';
-                                    } else {
-                                        // Closing sidebar
-                                        modalDialog.style.maxWidth = '95vw';
+                                if (isActive) {
+                                    // Closing sidebar - normalize everything
+                                    sidebar.classList.remove('active');
+                                    sidebar.style.width = '0';
+                                    sidebar.style.minWidth = '0';
+                                    sidebar.style.overflow = 'hidden';
+                                    sidebar.style.display = 'none';
+                                    
+                                    if (mainArea) {
+                                        mainArea.classList.remove('sidebar-open');
                                     }
-                                }
-                                
-                                // Adjust right arrow position when sidebar is open
-                                const rightArrow = document.getElementById('todoImageNext');
-                                if (rightArrow && sidebar.classList.contains('active')) {
-                                    rightArrow.style.right = '340px';
-                                } else if (rightArrow) {
-                                    rightArrow.style.right = '20px';
-                                }
-                                
-                                // Ensure sidebar is visible and has content
-                                if (sidebar.classList.contains('active')) {
-                                    sidebar.style.display = 'block';
+                                    
+                                    if (modalDialog) {
+                                        modalDialog.style.maxWidth = '70vw';
+                                        modalDialog.style.width = '75%';
+                                    }
+                                    
+                                    if (rightArrow) {
+                                        rightArrow.style.right = '20px';
+                                    }
+                                } else {
+                                    // Opening sidebar
+                                    sidebar.classList.add('active');
+                                    sidebar.style.width = '240px';
+                                    sidebar.style.minWidth = '240px';
                                     sidebar.style.overflow = 'visible';
-                                    sidebar.style.width = '320px';
-                                    sidebar.style.minWidth = '320px';
-                                    // Force reload thumbnails after a short delay to ensure DOM is ready
+                                    sidebar.style.display = 'block';
+                                    
+                                    if (mainArea) {
+                                        mainArea.classList.add('sidebar-open');
+                                    }
+                                    
+                                    if (modalDialog) {
+                                        modalDialog.style.maxWidth = '70vw';
+                                        modalDialog.style.width = '75%';
+                                    }
+                                    
+                                    if (rightArrow) {
+                                        rightArrow.style.right = '260px';
+                                    }
+                                    
+                                    // Reload thumbnails after a short delay to ensure DOM is ready
                                     setTimeout(() => {
                                         if (typeof loadImageGallerySidebar === 'function') {
                                             loadImageGallerySidebar();
                                         }
                                     }, 150);
-                                } else {
-                                    sidebar.style.width = '0';
-                                    sidebar.style.overflow = 'hidden';
                                 }
                             }
                         });

@@ -1111,14 +1111,10 @@
             </div>
 
             @php
-                $chatBgSetting = \App\Models\Setting::where('user_id', auth()->id())->first();
-                $chatBackgrounds = $chatBgSetting && $chatBgSetting->chat_backgrounds
-                    ? json_decode($chatBgSetting->chat_backgrounds, true)
-                    : [];
-                $selectedChatBgIndex = $chatBgSetting->selected_chat_background ?? null;
+                // Use variables passed from ChatController instead of fetching directly
                 $chatBackgroundUrl = null;
-                if ($selectedChatBgIndex !== null && isset($chatBackgrounds[$selectedChatBgIndex])) {
-                    $chatBackgroundUrl = asset($chatBackgrounds[$selectedChatBgIndex]);
+                if ($selected_chat_background !== null && isset($chat_backgrounds[$selected_chat_background])) {
+                    $chatBackgroundUrl = asset($chat_backgrounds[$selected_chat_background]);
                 }
             @endphp
             <div class="chat-body chat-page-group slimscroll {{ $chatBackgroundUrl ? 'has-background' : '' }}" id="chatBody" style="position: relative; @if($chatBackgroundUrl) background-image: url('{{ $chatBackgroundUrl }}'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; @endif">
