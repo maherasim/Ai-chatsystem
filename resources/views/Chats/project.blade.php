@@ -1801,9 +1801,9 @@
                             <div style="font-size: 12px; color: #7d7f85;">Type the Content and Press Enter</div>
                         </div>
                         <div class="d-flex align-items-center gap-2">
-                            <select id="globalPhaseSelect" class="form-select for m-select-sm" style="min-width:200px;">
+                            <!-- <select id="globalPhaseSelect" class="form-select for m-select-sm" style="min-width:200px;">
                                 <option value="">Select Phase</option>
-                            </select>
+                            </select> -->
                             <button type="button" class="btn btn-sm" onclick="addSectionGroup()"
                                     style="background:#22c55e; color:#fff; border:none; border-radius:8px; padding:6px 10px; font-weight:600;">
                                     <img src="{{ asset('build/img/plus.svg') }}" alt="Add" style="width:28px; height:28px; cursor:pointer;" >
@@ -1902,23 +1902,42 @@
                         });
                         return titles;
                     }
-                    function refreshPhaseOptions() {
+                    function getPhaseOptionsHtml() {
                         const titles = getPhaseTitles();
+                        return '<option value="">Select Phase</option>' + titles.map(t => `<option value="${t}">${t}</option>`).join('');
+                    }
+                    function syncGroupPhase(selectEl) {
+                        const val = selectEl.value;
+                        const group = selectEl.closest('.section-group');
+                        if (group) {
+                            group.querySelectorAll('.section-phase-title').forEach(h => h.value = val);
+                        }
+                    }
+                    function refreshPhaseOptions() {
+                        const html = getPhaseOptionsHtml();
+                        const titles = getPhaseTitles();
+
+                        // Global
                         const sel = document.getElementById('globalPhaseSelect');
-                        if (!sel) return;
-                        const current = sel.value;
-                        sel.innerHTML = '<option value="">Select Phase</option>' + titles.map(t => `<option value="${t}">${t}</option>`).join('');
-                        if (current && titles.includes(current)) sel.value = current;
-                        const val = sel.value || '';
-                        document.querySelectorAll('#section-groups-wrapper .section-phase-title').forEach(function(h){ h.value = val; });
+                        if (sel) {
+                            const current = sel.value;
+                            sel.innerHTML = html;
+                            if (current && titles.includes(current)) sel.value = current;
+                        }
+                        
+                        // Group Selects
+                        document.querySelectorAll('.group-phase-select').forEach(gSel => {
+                            const cur = gSel.value;
+                            gSel.innerHTML = html;
+                            if (cur && titles.includes(cur)) {
+                                gSel.value = cur;
+                            }
+                            syncGroupPhase(gSel);
+                        });
                     }
                     document.addEventListener('input', function(e){
                         if (e.target && e.target.matches('#phases-wrapper input[name^="phases"][name$="[title]"]')) {
                             refreshPhaseOptions();
-                        }
-                        if (e.target && e.target.id === 'globalPhaseSelect') {
-                            const val = e.target.value || '';
-                            document.querySelectorAll('#section-groups-wrapper .section-phase-title').forEach(function(h){ h.value = val; });
                         }
                     });
                     function addSectionGroup() {
@@ -1927,9 +1946,18 @@
                         const div = document.createElement('div');
                         div.className = 'section-group';
                         div.setAttribute('style','background:#ffffff; border:1px solid #e0e0e0; border-radius:12px; padding:12px; margin-bottom:10px; position:relative;');
+                        
+                        // Default phase from global
+                        const globalVal = document.getElementById('globalPhaseSelect')?.value || '';
+
                         div.innerHTML = `
                             <div class="d-flex align-items-center justify-content-end gap-2" style="position:absolute; top:8px; right:8px;">
                                 <img src="{{ asset('build/img/trash.svg') }}" alt="Remove" class="group-delete" style="width:24px; height:24px; cursor:pointer; ${index === 0 ? 'display:none;' : ''}" onclick="removeSectionGroup(this)">
+                            </div>
+                            <div class="mb-3" style="max-width: 250px;">
+                                <select class="form-select group-phase-select" onchange="syncGroupPhase(this)">
+                                    ${getPhaseOptionsHtml()}
+                                </select>
                             </div>
                             <div class="mt-4" data-rows>
                                 ${sectionRowTemplate(index, 0)}
@@ -1937,7 +1965,14 @@
                             </div>
                         `;
                         wrapper.appendChild(div);
-                        refreshPhaseOptions();
+                        
+                        // Set start value from global and sync
+                        const newSel = div.querySelector('.group-phase-select');
+                        if (newSel && globalVal) {
+                            newSel.value = globalVal;
+                            syncGroupPhase(newSel);
+                        }
+
                         refreshGroupDeleteIcons();
                         // ensure first row shows plus only
                         refreshRowIcons(div);
@@ -1953,8 +1988,8 @@
                         const gIdx = Array.prototype.indexOf.call(document.getElementById('section-groups-wrapper').children, group);
                         const rIdx = rowsWrap.querySelectorAll('.section-row').length;
                         rowsWrap.insertAdjacentHTML('beforeend', sectionRowTemplate(gIdx, rIdx));
-                        // set hidden phase title from global select
-                        const selVal = (document.getElementById('globalPhaseSelect')?.value || '');
+                        // set hidden phase title from LOCAL group select
+                        const selVal = group.querySelector('.group-phase-select')?.value || '';
                         rowsWrap.lastElementChild.querySelector('input.section-phase-title').value = selVal;
                         refreshRowIcons(group);
                     }
