@@ -2938,12 +2938,18 @@
                 const data = await resp.json();
                 projectSelect.innerHTML = '<option value="">Select the Project</option>' +
                     data.map(p => `<option value="${p.id}">${p.title ?? 'Untitled'}</option>`).join('');
-                if (prefill?.projectId) {
+                // Only prefill if explicitly provided (e.g., when editing or from data attributes)
+                // Don't prefill when creating new ticket
+                if (prefill?.projectId && editingTicketId) {
                     projectSelect.value = prefill.projectId;
                     await loadSections(prefill.projectId);
                     if (prefill.sectionName) {
                         sectionSelect.value = prefill.sectionName;
                     }
+                } else {
+                    // Ensure dropdowns are empty when creating
+                    projectSelect.value = '';
+                    sectionSelect.innerHTML = '<option value="">Select the Section</option>';
                 }
             } catch (e) {
                 console.error('Failed to load projects', e);
@@ -2968,9 +2974,8 @@
 
         projectSelect?.addEventListener('change', function() {
             loadSections(this.value);
-            try {
-                localStorage.setItem('ticket.lastProjectId', this.value || '');
-            } catch (e) {}
+            // Don't save to localStorage - we want empty form each time
+            // Removed localStorage.setItem to ensure fresh form on each create
         });
 
 
@@ -3177,18 +3182,9 @@
                 if (removeBtn) {
                     removeBtn.style.display = editingTicketId ? 'inline-block' : 'none';
                 }
-                if (!prefill.projectId) {
-                    try {
-                        const lastPid = localStorage.getItem('ticket.lastProjectId');
-                        if (lastPid) prefill.projectId = lastPid;
-                    } catch (e) {}
-                }
-                if (!prefill.sectionName) {
-                    try {
-                        const lastSec = localStorage.getItem('ticket.lastSectionName');
-                        if (lastSec) prefill.sectionName = lastSec;
-                    } catch (e) {}
-                }
+                // Don't prefill from localStorage when creating new ticket - keep fields empty
+                // Only use localStorage values if explicitly provided via data attributes
+                
                 // If editing, load the ticket and prefill all fields
                 if (editingTicketId) {
                     (async () => {
@@ -3229,7 +3225,28 @@
                         }
                     })();
                 } else {
-                    loadProjects(prefill);
+                    // When creating new ticket, don't prefill anything - start with empty form
+                    loadProjects({}); // Pass empty object to ensure no prefill
+                    // Reset all fields to empty/default
+                    if (projectSelect) projectSelect.value = '';
+                    if (sectionSelect) sectionSelect.innerHTML = '<option value="">Select the Section</option>';
+                    if (document.getElementById('ticketTitle')) document.getElementById('ticketTitle').value = '';
+                    if (document.getElementById('ticketDescription')) document.getElementById('ticketDescription').value = '';
+                    // Reset priority to default (low) but visually show it
+                    if (priorityHidden) priorityHidden.value = 'low';
+                    setPriorityStyles();
+                    // Reset reminder to default (6) but visually show it
+                    if (reminderHidden) reminderHidden.value = '6';
+                    setActive('[data-reminder]', 'data-reminder', '6');
+                    // Reset dates
+                    const sd = document.getElementById('startDateInput');
+                    const ed = document.getElementById('expiredDateInput');
+                    const sdDisp = document.getElementById('startDateDisplay');
+                    const edDisp = document.getElementById('expiredDateDisplay');
+                    if (sd) sd.value = '';
+                    if (ed) ed.value = '';
+                    if (sdDisp) sdDisp.innerText = 'DD:MM:YYYY';
+                    if (edDisp) edDisp.innerText = 'DD:MM:YYYY';
                 }
             });
 
@@ -3241,11 +3258,21 @@
                 updateBtn.style.display = 'none';
                 saveCloseBtn.style.display = 'inline-block';
                 saveAddAnotherBtn.style.display = 'inline-block';
-                // Clear fields
+                // Clear all fields completely
                 const titleEl = document.getElementById('ticketTitle');
                 const descEl = document.getElementById('ticketDescription');
                 if (titleEl) titleEl.value = '';
                 if (descEl) descEl.value = '';
+                // Clear dropdowns
+                if (projectSelect) projectSelect.value = '';
+                if (sectionSelect) sectionSelect.innerHTML = '<option value="">Select the Section</option>';
+                // Reset priority to default
+                if (priorityHidden) priorityHidden.value = 'low';
+                setPriorityStyles();
+                // Reset reminder to default
+                if (reminderHidden) reminderHidden.value = '6';
+                setActive('[data-reminder]', 'data-reminder', '6');
+                // Clear dates
                 const sd = document.getElementById('startDateInput');
                 const ed = document.getElementById('expiredDateInput');
                 const sdDisp = document.getElementById('startDateDisplay');
@@ -3258,9 +3285,11 @@
         }
 
         // Initial load (no prefill if modal not opened yet)
-        loadProjects();
+        loadProjects({}); // Pass empty object to ensure no prefill
         // Initialize priority visual styles on first paint
         setPriorityStyles();
+        // Ensure reminder is set to default visually
+        setActive('[data-reminder]', 'data-reminder', reminderHidden.value || '6');
 
         // Delegate edit clicks
         document.addEventListener('click', function(e) {

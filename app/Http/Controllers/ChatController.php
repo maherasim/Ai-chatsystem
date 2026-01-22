@@ -1319,6 +1319,13 @@ class ChatController extends Controller
     {
         try {
             $user = Auth::user();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized',
+                    'unread_counts' => [],
+                ], 401);
+            }
             $userId = (string)$user->_id;
 
             // Get all groups

@@ -1829,12 +1829,22 @@ class GroupChatManager {
      */
     async updateAllGroupUnreadBadges() {
         try {
+            // Check if user is authenticated before making API call
             const response = await fetch('/api/chat/groups/unread-counts', {
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
                 },
                 cache: 'no-cache', // Ensure fresh data
+                credentials: 'same-origin',
             });
+
+            // Handle 401 Unauthorized - user not authenticated
+            if (response.status === 401) {
+                // Silently fail - user is not logged in
+                return;
+            }
 
             if (!response.ok) {
                 return;
@@ -1849,7 +1859,8 @@ class GroupChatManager {
                 });
             }
         } catch (error) {
-            console.error('Failed to update unread badges:', error);
+            // Silently handle errors - don't log to avoid console spam
+            // This can happen if user is not authenticated or network issues
         }
     }
 
