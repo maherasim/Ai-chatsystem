@@ -1074,8 +1074,8 @@
      onerror="this.onerror=null; this.src='{{ asset('build/img/profiles/avatar-16.jpg') }}';">
                     </div>
                     <div class="ms-2 overflow-hidden">
-                        <h6 id="chatHeaderName" style="font-size: 16px; margin-bottom: 2px; line-height: 1.2;">{{$header->first_name ?? 'Chat'}}</h6>
-                        <span class="last-seen" style="font-size: 13px; line-height: 1.2;">Online</span>
+                        <h6 id="chatHeaderName" style="font-size: 20px; margin-bottom: 2px; line-height: 1.2;">{{$header->first_name ?? 'Chat'}}</h6>
+                        <span class="last-seen" style="font-size: 16px; line-height: 1.2;">Online</span>
                     </div>
                 </div>
 
@@ -3054,7 +3054,7 @@
                                  onerror="this.onerror=null; this.src='${defaultAvatar}';">
                             ${onlineIndicator}
                         </div>
-                        <span style="font-size: 13px; color: #2e3a59; font-weight: 500; text-align: center; max-width: 45px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${memberName}</span>
+                        <span style="font-size: 16px; color: #2e3a59; font-weight: 500; text-align: center; max-width: 45px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${memberName}</span>
                     `;
                     fragment.appendChild(memberCard);
                 });
