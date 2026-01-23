@@ -2724,7 +2724,7 @@
                         <div class="col-md-4">
                             <input type="text" id="ticketTitle" class="form-control" placeholder="Ticket Title" style="background-color: white;">
                         </div>
-                        <div class="col-12 mt-2">
+                        <div class="col-md-8">
                             <textarea id="ticketDescription" class="form-control" rows="2" placeholder="Ticket Description" style="background-color: white;"></textarea>
                         </div>
                     </div>
@@ -2736,7 +2736,7 @@
                     <p style="color: #888;">Set activation Date</p>
                     <div class="row  g-2">
                         <!-- Start Date -->
-                        <div class="col-md-4" id="startDateFieldWrapper" style="position: relative;">
+                        <div class="col-md-6" id="startDateFieldWrapper" style="position: relative;">
                             <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px;  border: 1px solid #e0e0e0;  display: flex; flex-direction: column; justify-content: center;">
                                 <div style="font-weight: 600; font-size: 14px; color: #7d7f85;margin-right:30px;">Start Date</div>
                                 <div id="startDateDisplay" style="font-size: 13px; color: #a0a4ab;margin-right:32px;">DD:MM:YYYY</div>
@@ -2752,7 +2752,7 @@
                         </div>
 
                         <!-- Expired Date -->
-                        <div class="col-md-4" id="expiredDateFieldWrapper" style="position: relative;">
+                        <div class="col-md-6" id="expiredDateFieldWrapper" style="position: relative;">
                             <div style="background-color: #fff; border-radius: 12px; padding: 2px 16px; width: 100%; border: 1px solid #e0e0e0; height: 45px; display: flex; flex-direction: column; justify-content: center;">
                                 <div style="font-weight: 600; font-size: 14px; color: #7d7f85;margin-right:15px;">Expired Date</div>
                                 <div id="expiredDateDisplay" style="font-size: 13px; color: #a0a4ab;margin-right:30px;">DD:MM:YYYY</div>
