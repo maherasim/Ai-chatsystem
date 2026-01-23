@@ -2725,7 +2725,7 @@
                             <input type="text" id="ticketTitle" class="form-control" placeholder="Ticket Title" style="background-color: white;">
                         </div>
                         <div class="col-md-8">
-                            <textarea id="ticketDescription" class="form-control" rows="2" placeholder="Ticket Description" style="background-color: white;"></textarea>
+                            <input type="text" id="ticketDescription" class="form-control" rows="2" placeholder="Ticket Description" style="background-color: white;"></input>
                         </div>
                     </div>
                 </div>
