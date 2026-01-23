@@ -442,10 +442,15 @@
     .reply-chat .close-replay:hover {
         color: #000;
     }
+    .chat .chat-footer .footer-form {
+     
+    bottom: 21px;
+    
+}
     
     /* Reduce chat footer spacing */
     .chat-footer {
-        padding: 12px 15px !important;
+        padding: 8px 15px 12px 15px !important;
     }
     
     .chat-footer-wrap {
