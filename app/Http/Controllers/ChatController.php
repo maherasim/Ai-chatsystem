@@ -1416,10 +1416,22 @@ class ChatController extends Controller
                 $memberIds = is_array($decoded) ? $decoded : [];
             }
             
-            // Get all member IDs (including admin)
-            $userIds = array_map('strval', $memberIds);
-            if ($group->admin_id && !in_array((string)$group->admin_id, $userIds)) {
-                $userIds[] = (string)$group->admin_id;
+            // Ensure member_ids is an array
+            if (!is_array($memberIds)) {
+                $memberIds = [];
+            }
+            
+            // Get all member IDs (including admin) - convert to strings and filter empty values
+            $userIds = array_filter(array_map('strval', $memberIds), function($id) {
+                return !empty(trim($id));
+            });
+            
+            // Add admin if not already in the list
+            if ($group->admin_id) {
+                $adminIdStr = (string)$group->admin_id;
+                if (!in_array($adminIdStr, $userIds)) {
+                    $userIds[] = $adminIdStr;
+                }
             }
 
             // If no members, return empty
@@ -1430,10 +1442,57 @@ class ChatController extends Controller
                 ]);
             }
 
+            // Log for debugging
+            \Log::info('getAllUsers - Group member IDs', [
+                'group_id' => $groupId,
+                'member_ids_raw' => $group->member_ids,
+                'member_ids_parsed' => $memberIds,
+                'user_ids' => $userIds,
+                'admin_id' => $group->admin_id,
+            ]);
+
             // Get users - only group members
-            $users = User::where('email', '!=', 'admin@gmail.com')
-                ->whereIn('_id', $userIds)
-                ->get();
+            // Query all users first, then filter by email
+            $users = User::whereIn('_id', $userIds)->get();
+            
+            // Filter out admin email if needed
+            $users = $users->filter(function($user) {
+                return $user->email !== 'admin@gmail.com';
+            });
+            
+            // Log found users for debugging
+            \Log::info('getAllUsers - Found users', [
+                'group_id' => $groupId,
+                'user_ids_queried' => $userIds,
+                'users_found_count' => $users->count(),
+                'user_ids_found' => $users->pluck('_id')->map('strval')->toArray(),
+            ]);
+            
+            // If we didn't find all users, try to find them individually
+            if ($users->count() < count($userIds)) {
+                $foundUserIds = $users->pluck('_id')->map('strval')->toArray();
+                $missingUserIds = array_diff($userIds, $foundUserIds);
+                
+                \Log::warning('getAllUsers - Missing users', [
+                    'group_id' => $groupId,
+                    'missing_user_ids' => $missingUserIds,
+                ]);
+                
+                // Try to find missing users individually
+                foreach ($missingUserIds as $missingId) {
+                    try {
+                        $missingUser = User::find($missingId);
+                        if ($missingUser && $missingUser->email !== 'admin@gmail.com') {
+                            $users->push($missingUser);
+                        }
+                    } catch (\Exception $e) {
+                        \Log::error('getAllUsers - Error finding user', [
+                            'user_id' => $missingId,
+                            'error' => $e->getMessage(),
+                        ]);
+                    }
+                }
+            }
 
             // Users are considered online if they were active in the last X minutes
             $onlineThresholdMinutes = 2; // Adjust this value to change online status duration
