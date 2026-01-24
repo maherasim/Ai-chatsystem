@@ -1383,12 +1383,39 @@ class ChatController extends Controller
 
     /**
      * Get all users with online status
+     * If group_id is provided, only return users that are members of that group
      */
     public function getAllUsers(Request $request)
     {
         try {
-            // Get all users (excluding superadmin if needed)
-            $users = User::where('email', '!=', 'admin@gmail.com')->get();
+            $groupId = $request->query('group_id');
+            $userIds = null;
+
+            // If group_id is provided, filter to only group members
+            if ($groupId) {
+                $group = Group::find($groupId);
+                if ($group) {
+                    // Handle member_ids - could be array or JSON string
+                    $memberIds = $group->member_ids ?? [];
+                    if (is_string($memberIds)) {
+                        $decoded = json_decode($memberIds, true);
+                        $memberIds = is_array($decoded) ? $decoded : [];
+                    }
+                    
+                    // Get all member IDs (including admin)
+                    $userIds = array_map('strval', $memberIds);
+                    if ($group->admin_id && !in_array((string)$group->admin_id, $userIds)) {
+                        $userIds[] = (string)$group->admin_id;
+                    }
+                }
+            }
+
+            // Get users - filter by group members if group_id provided, otherwise all users
+            $query = User::where('email', '!=', 'admin@gmail.com');
+            if ($userIds !== null && count($userIds) > 0) {
+                $query->whereIn('_id', $userIds);
+            }
+            $users = $query->get();
 
             // Users are considered online if they were active in the last X minutes
             $onlineThresholdMinutes = 2; // Adjust this value to change online status duration

@@ -2988,7 +2988,11 @@
                 allMemberCards.forEach(card => card.remove());
             }
 
-            const response = await fetch('/api/chat/all-users', {
+            // Get current group ID to filter members
+            const currentGroupId = window.groupChatManager?.currentGroupId;
+            const url = currentGroupId ? `/api/chat/all-users?group_id=${currentGroupId}` : '/api/chat/all-users';
+            
+            const response = await fetch(url, {
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
                     'Accept': 'application/json',

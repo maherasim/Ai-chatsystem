@@ -657,7 +657,11 @@ class GroupChatManager {
     async loadOnlineMembersInHeader() {
         console.log('👥 [Online Members] Loading online members for chat header...');
         try {
-            const response = await fetch('/api/chat/all-users', {
+            // Get current group ID to filter members
+            const groupId = this.currentGroupId;
+            const url = groupId ? `/api/chat/all-users?group_id=${groupId}` : '/api/chat/all-users';
+            
+            const response = await fetch(url, {
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
                 },
