@@ -337,6 +337,13 @@ class GroupChatManager {
             // Update contact info panel
             await this.updateContactInfo(groupId);
             
+            // Load online members for the header (call loadAllUsers from chat.blade.php)
+            if (typeof window.loadAllUsers === 'function') {
+                setTimeout(() => {
+                    window.loadAllUsers();
+                }, 500); // Small delay to ensure DOM is ready
+            }
+            
             // Refresh online members periodically (every 30 seconds)
             // NOTE: Online members are now handled by loadAllUsers() in chat.blade.php
             // Disabled to prevent duplicate display

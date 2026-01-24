@@ -2929,7 +2929,8 @@
     // Prevent concurrent executions
     let isLoadingUsers = false;
     
-    async function loadAllUsers() {
+    // Make loadAllUsers globally accessible
+    window.loadAllUsers = async function loadAllUsers() {
         // Prevent concurrent calls
         if (isLoadingUsers) {
             console.log('loadAllUsers already in progress, skipping...');
@@ -2989,10 +2990,43 @@
             }
 
             // Get current group ID - required for fetching members
-            const currentGroupId = window.groupChatManager?.currentGroupId;
+            // Try to get from groupChatManager first, then check if a group is selected in the UI
+            let currentGroupId = window.groupChatManager?.currentGroupId;
+            
+            // If not set yet, try to find the selected group from the UI
             if (!currentGroupId) {
-                if (emptyState) emptyState.style.display = 'block';
-                container.innerHTML = '<div class="text-center p-4 text-muted">No group selected</div>';
+                // Check if there's a selected group in the sidebar
+                const selectedGroupItem = document.querySelector('.chat-user-list .chat-user-item.active, .chat-user-list .chat-user-item.selected');
+                if (selectedGroupItem) {
+                    const groupIdAttr = selectedGroupItem.getAttribute('data-group-id') || selectedGroupItem.getAttribute('data-id');
+                    if (groupIdAttr) {
+                        currentGroupId = groupIdAttr;
+                        // Also set it in groupChatManager if available
+                        if (window.groupChatManager) {
+                            window.groupChatManager.currentGroupId = currentGroupId;
+                        }
+                    }
+                }
+            }
+            
+            // If still no group ID, wait a bit for group to be selected (happens in initAgora promise)
+            if (!currentGroupId) {
+                // Don't show error immediately, wait for group to be selected
+                setTimeout(() => {
+                    const retryGroupId = window.groupChatManager?.currentGroupId;
+                    if (retryGroupId) {
+                        // Retry loading with the group ID
+                        window.loadAllUsers();
+                    } else {
+                        // Only show error if still no group after waiting
+                        if (emptyState) emptyState.style.display = 'block';
+                        if (container) {
+                            container.innerHTML = '<div class="text-center p-4 text-muted">No group selected</div>';
+                        }
+                        isLoadingUsers = false;
+                    }
+                }, 1500); // Wait 1.5 seconds for group to be selected
+                isLoadingUsers = false;
                 return;
             }
             
@@ -3109,8 +3143,10 @@
                 emptyState.textContent = 'Failed to load';
             }
             if (listWrapper) listWrapper.innerHTML = '';
+        } finally {
+            isLoadingUsers = false;
         }
-    }
+    };
 
     // Initialize logic - merge with existing DOMContentLoaded
     document.addEventListener('DOMContentLoaded', function() {
