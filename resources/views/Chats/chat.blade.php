@@ -2988,9 +2988,15 @@
                 allMemberCards.forEach(card => card.remove());
             }
 
-            // Get current group ID to filter members
+            // Get current group ID - required for fetching members
             const currentGroupId = window.groupChatManager?.currentGroupId;
-            const url = currentGroupId ? `/api/chat/all-users?group_id=${currentGroupId}` : '/api/chat/all-users';
+            if (!currentGroupId) {
+                if (emptyState) emptyState.style.display = 'block';
+                container.innerHTML = '<div class="text-center p-4 text-muted">No group selected</div>';
+                return;
+            }
+            
+            const url = `/api/chat/all-users?group_id=${currentGroupId}`;
             
             const response = await fetch(url, {
                 headers: {

@@ -657,9 +657,14 @@ class GroupChatManager {
     async loadOnlineMembersInHeader() {
         console.log('👥 [Online Members] Loading online members for chat header...');
         try {
-            // Get current group ID to filter members
+            // Get current group ID - required for fetching members
             const groupId = this.currentGroupId;
-            const url = groupId ? `/api/chat/all-users?group_id=${groupId}` : '/api/chat/all-users';
+            if (!groupId) {
+                console.log('👥 [Online Members] No group selected, skipping member load');
+                return;
+            }
+            
+            const url = `/api/chat/all-users?group_id=${groupId}`;
             
             const response = await fetch(url, {
                 headers: {
