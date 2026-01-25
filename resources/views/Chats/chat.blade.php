@@ -3080,7 +3080,7 @@
                     
                     const memberCard = document.createElement('div');
                     memberCard.setAttribute('data-member-id', memberId);
-                    memberCard.style.cssText = 'flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; cursor: pointer; min-width: 50px;';
+                    memberCard.style.cssText = 'flex: 0 0 auto; display: flex; flex-direction: row; align-items: center; cursor: pointer; gap: 8px;';
                     
                     const onlineIndicator = member.is_online 
                         ? '<div style="position: absolute; bottom: 1px; right: 1px; width: 10px; height: 10px; background: #00c853; border: 1.5px solid white; border-radius: 50%;"></div>'
@@ -3091,14 +3091,14 @@
                     const memberName = member.name || member.email || 'User';
                     
                     memberCard.innerHTML = `
-                        <span style="font-size: 16px; color: #2e3a59; font-weight: 500; text-align: center; max-width: 45px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 2px;">${memberName}</span>
-                        <div style="position: relative;">
+                        <div style="position: relative; flex-shrink: 0;">
                             <img src="${avatarUrl}" 
                                  alt="${memberName}" 
                                  style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 1.5px solid #e0e0e0;"
                                  onerror="this.onerror=null; this.src='${defaultAvatar}';">
                             ${onlineIndicator}
                         </div>
+                        <span style="font-size: 16px; color: #2e3a59; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${memberName}</span>
                     `;
                     fragment.appendChild(memberCard);
                 });
