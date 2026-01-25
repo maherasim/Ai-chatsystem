@@ -3100,8 +3100,8 @@
                             ${onlineIndicator}
                         </div>
                         <div style="display: flex; flex-direction: column; min-width: 0;">
-                            <span style="font-size: 16px; color: #2e3a59; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${memberName}</span>
-                            ${memberType ? `<span style="font-size: 12px; color: #7d7f85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${memberType}</span>` : ''}
+                            <span style="font-size: 20px; color: #2e3a59; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${memberName}</span>
+                            ${memberType ? `<span style="font-size: 16px; color: #7d7f85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${memberType}</span>` : ''}
                         </div>
                     `;
                     fragment.appendChild(memberCard);
