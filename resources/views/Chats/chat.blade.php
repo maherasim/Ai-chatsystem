@@ -1098,6 +1098,22 @@
         overflow: visible;
     }
 
+    .video-gallery-sidebar {
+        width: 0;
+        overflow: hidden;
+        background: rgba(30, 30, 30, 0.98);
+        transition: width 0.3s ease, overflow 0.3s ease;
+        border-left: 1px solid rgba(255,255,255,0.15);
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .video-gallery-sidebar.active {
+        width: 240px;
+        min-width: 240px;
+        overflow: visible;
+    }
+
     #imageGalleryThumbnails > div {
         width: 100%;
         aspect-ratio: 1;
@@ -4008,6 +4024,56 @@
         return imageFiles;
     }
 
+    // Function to collect all videos from Media Details section
+    function collectMediaVideos() {
+        const videoFiles = [];
+        const mediaVideosContainer = document.getElementById('mediaVideosContainer');
+        if (mediaVideosContainer) {
+            const viewButtons = mediaVideosContainer.querySelectorAll('.media-view-video-btn');
+            viewButtons.forEach(btn => {
+                const videoUrl = btn.getAttribute('data-video-url');
+                const videoName = btn.getAttribute('data-video-name') || 'Video';
+                
+                if (videoUrl && !videoFiles.find(f => f.url === videoUrl)) {
+                    videoFiles.push({
+                        url: videoUrl,
+                        name: window.cleanImageName(videoName)
+                    });
+                }
+            });
+        }
+        return videoFiles;
+    }
+
+    // Function to collect all videos from Favorites section
+    function collectFavoritesVideos() {
+        const videoFiles = [];
+        // Check both inline and offcanvas favorites containers
+        const favoritesContainers = [
+            document.getElementById('favoritesContainerInline'),
+            document.getElementById('favoritesContainer')
+        ];
+        
+        favoritesContainers.forEach(container => {
+            if (container) {
+                const viewButtons = container.querySelectorAll('.favorites-view-video-btn');
+                viewButtons.forEach(btn => {
+                    const videoUrl = btn.getAttribute('data-video-url');
+                    const videoName = btn.getAttribute('data-video-name') || 'Video';
+                    
+                    if (videoUrl && !videoFiles.find(f => f.url === videoUrl)) {
+                        videoFiles.push({
+                            url: videoUrl,
+                            name: window.cleanImageName(videoName)
+                        });
+                    }
+                });
+            }
+        });
+        
+        return videoFiles;
+    }
+
     // Helper function to open image viewer modal
     function openImageViewerModal(imageUrl, imageName, imageFiles) {
         // Fix URL if needed
@@ -4183,6 +4249,183 @@
         }, { once: true });
     }
 
+    // Helper function to open video viewer modal
+    function openVideoViewerModal(videoUrl, videoName, videoFiles) {
+        // Fix URL if needed
+        let finalUrl = videoUrl;
+        if (videoUrl.includes('admin.onlinesystems.info')) {
+            finalUrl = videoUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+        }
+        
+        // Filter for videos only
+        const filteredVideos = videoFiles.filter(file => {
+            if (!file || !file.url) return false;
+            const url = file.url.toLowerCase();
+            return url.match(/\.(mp4|webm|ogg|mov|avi|wmv|flv|mkv)(\?|$)/);
+        });
+        
+        // Find current video index
+        window.currentMediaIndex = filteredVideos.findIndex(f => {
+            let fUrl = f.url || '';
+            let compareUrl = videoUrl || '';
+            if (fUrl.includes('admin.onlinesystems.info')) {
+                fUrl = fUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+            }
+            if (compareUrl.includes('admin.onlinesystems.info')) {
+                compareUrl = compareUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+            }
+            return fUrl === compareUrl || fUrl.includes(compareUrl) || compareUrl.includes(fUrl);
+        });
+        
+        if (window.currentMediaIndex === -1) {
+            window.currentMediaIndex = 0;
+        }
+        
+        // Store videos globally
+        window.currentChatVideoFiles = filteredVideos;
+        window.currentVideoFiles = filteredVideos;
+        
+        // Clean video name
+        const cleanName = window.cleanImageName(videoName);
+        
+        // Create and show video modal
+        const navArrowStyle = 'display: flex; align-items: center; justify-content: center; background: transparent !important; border: none !important; box-shadow: none !important; padding: 0; cursor: pointer;';
+        const modalHtml = `
+            <div class="modal fade" id="videoViewerModal" tabindex="-1" style="z-index: 10000;" data-video-files='${JSON.stringify(filteredVideos)}' data-all-files='${JSON.stringify(filteredVideos)}'>
+                <div class="modal-dialog modal-dialog-centered" style="max-width: 70vw; width: 75%; margin: auto;">
+                    <div class="modal-content" style="background: #000; border: none; position: relative; max-width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+                        <!-- Navigation Arrows - Left -->
+                        <button type="button" class="gallery-nav-btn gallery-prev" id="chatVideoPrev" title="Previous" style="${navArrowStyle} position: absolute; left: 20px; top: 50%; transform: translateY(-50%); z-index: 10001;" onclick="if(window.navigateToVideo) { window.navigateToVideo(-1); } return false;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
+                                <path d="M19 12H5M12 19l-7-7 7-7"/>
+                            </svg>
+                        </button>
+
+                        <div class="modal-header border-0 d-flex justify-content-end align-items-center" style="background: rgba(0,0,0,0.9); z-index: 2; padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <div class="d-flex align-items-center gap-2">
+                                <button type="button" class="btn btn-sm text-white video-group-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer;" title="Group">
+                                    <img src="{{ asset('assets/img/group.png') }}" alt="Group" style="width: 16px; height: 16px; object-fit: contain;">
+                                </button>
+                                <button type="button" class="btn btn-sm text-white video-download-btn" data-video-url="${finalUrl}" data-video-name="${cleanName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer;" title="Download">
+                                    <img src="{{ asset('assets/img/display-arrow-down 1.png') }}" alt="Download" style="width: 16px; height: 16px; object-fit: contain;">
+                                </button>
+                                <button type="button" class="btn btn-sm text-white video-share-btn" data-video-url="${finalUrl}" data-video-name="${cleanName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer;" title="Share in Chat">
+                                    <img src="{{ asset('assets/img/refer-arrow 1.png') }}" alt="Share" style="width: 16px; height: 16px; object-fit: contain;">
+                                </button>
+                                <button type="button" data-bs-dismiss="modal" style="background: transparent; border: none; padding: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;" aria-label="Close" title="Close">
+                                    <img src="{{ asset('assets/img/circle-xmark 1.png') }}" alt="Close" style="width: 20px; height: 20px; object-fit: contain;">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal-body p-0" style="display: flex; position: relative; min-height: 50vh; max-height: 65vh;">
+                            <!-- Main Video Area -->
+                            <div class="video-main-area" style="flex: 1; display: flex; align-items: center; justify-content: center; position: relative; padding: 20px;">
+                                <video id="mainVideoViewerVideo" controls style="max-width: 100%; max-height: 55vh; object-fit: contain; z-index: 1; border-radius: 8px; background: #000;">
+                                    <source src="${finalUrl}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                
+                                <!-- Navigation Arrows - Right -->
+                                <button type="button" class="gallery-nav-btn gallery-next" id="chatVideoNext" title="Next" style="${navArrowStyle} position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 10001;" onclick="if(window.navigateToVideo) { window.navigateToVideo(1); } return false;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
+                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <!-- Right Sidebar Gallery (hidden by default) -->
+                            <div id="videoGallerySidebar" class="video-gallery-sidebar" style="width: 0; overflow: hidden; background: rgba(30, 30, 30, 0.98); transition: width 0.3s ease, overflow 0.3s ease; border-left: 1px solid rgba(255,255,255,0.15); position: relative; flex-shrink: 0;">
+                                <div style="padding: 20px; height: 100%; overflow-y: auto; overflow-x: hidden; min-height: 400px;">
+                                    <h6 style="color: white; font-size: 14px; font-weight: 600; margin-bottom: 20px; text-align: center; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">Video Gallery</h6>
+                                    <div id="videoGalleryThumbnails" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%;">
+                                        <!-- Thumbnails will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer border-0" style="background: rgba(0,0,0,0.9); z-index: 2; padding: 15px 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <div class="w-100">
+                                <h6 class="modal-title text-white mb-2 text-center" style="font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.9);">${cleanName}</h6>
+                                <div id="videoThumbnails" class="d-flex gap-2" style="overflow-x: auto; width: 100%; padding: 5px 0;">
+                                    <!-- Thumbnails will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Remove existing modal if any
+        const existingModal = document.getElementById('videoViewerModal');
+        if (existingModal) existingModal.remove();
+        
+        // Add and show modal
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        const modalElement = document.getElementById('videoViewerModal');
+        const modal = new bootstrap.Modal(modalElement);
+        
+        // Load thumbnails when modal is shown
+        modalElement.addEventListener('shown.bs.modal', function() {
+            loadChatVideoThumbnails();
+            loadChatVideoGallerySidebar();
+            
+            // Add click handler for group button
+            const groupBtn = modalElement.querySelector('.video-group-btn');
+            if (groupBtn) {
+                groupBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const sidebar = document.getElementById('videoGallerySidebar');
+                    const mainArea = modalElement.querySelector('.video-main-area');
+                    const modalDialog = modalElement.querySelector('.modal-dialog');
+                    const rightArrow = document.getElementById('chatVideoNext');
+                    
+                    if (sidebar) {
+                        const isActive = sidebar.classList.contains('active');
+                        
+                        if (isActive) {
+                            // Closing sidebar
+                            sidebar.classList.remove('active');
+                            sidebar.style.width = '0';
+                            sidebar.style.minWidth = '0';
+                            sidebar.style.overflow = 'hidden';
+                            sidebar.style.display = 'none';
+                            
+                            if (mainArea) mainArea.classList.remove('sidebar-open');
+                            if (modalDialog) {
+                                modalDialog.style.maxWidth = '70vw';
+                                modalDialog.style.width = '75%';
+                            }
+                            if (rightArrow) rightArrow.style.right = '20px';
+                        } else {
+                            // Opening sidebar
+                            sidebar.classList.add('active');
+                            sidebar.style.width = '240px';
+                            sidebar.style.minWidth = '240px';
+                            sidebar.style.overflow = 'visible';
+                            sidebar.style.display = 'block';
+                            
+                            if (mainArea) mainArea.classList.add('sidebar-open');
+                            if (modalDialog) {
+                                modalDialog.style.maxWidth = 'calc(70vw + 240px)';
+                            }
+                            if (rightArrow) rightArrow.style.right = '260px';
+                        }
+                    }
+                });
+            }
+        }, { once: true });
+        
+        modal.show();
+        
+        // Clean up on close
+        modalElement.addEventListener('hidden.bs.modal', function() {
+            this.remove();
+        }, { once: true });
+    }
+
     // Handle click on chat image view button
     document.addEventListener('click', function(e) {
         if (e.target.closest('.chat-view-image-btn')) {
@@ -4218,6 +4461,30 @@
             // Collect all images from Favorites section
             const allImages = collectFavoritesImages();
             openImageViewerModal(imageUrl, imageName, allImages);
+        }
+        
+        // Handle click on Media Details videos view button
+        if (e.target.closest('.media-view-video-btn')) {
+            e.preventDefault();
+            const btn = e.target.closest('.media-view-video-btn');
+            const videoUrl = btn.getAttribute('data-video-url');
+            const videoName = btn.getAttribute('data-video-name') || 'Video';
+            
+            // Collect all videos from Media Details section
+            const allVideos = collectMediaVideos();
+            openVideoViewerModal(videoUrl, videoName, allVideos);
+        }
+        
+        // Handle click on Favorites videos view button
+        if (e.target.closest('.favorites-view-video-btn')) {
+            e.preventDefault();
+            const btn = e.target.closest('.favorites-view-video-btn');
+            const videoUrl = btn.getAttribute('data-video-url');
+            const videoName = btn.getAttribute('data-video-name') || 'Video';
+            
+            // Collect all videos from Favorites section
+            const allVideos = collectFavoritesVideos();
+            openVideoViewerModal(videoUrl, videoName, allVideos);
         }
     });
 
@@ -4506,6 +4773,234 @@
             e.preventDefault();
             const direction = e.target.closest('#chatImagePrev') ? -1 : 1;
             window.navigateToMedia(direction);
+        }
+    });
+
+    // Navigation function for videos
+    window.navigateToVideo = function(direction) {
+        const videoModal = document.getElementById('videoViewerModal');
+        if (!videoModal || !videoModal.classList.contains('show')) return;
+        
+        let videoFiles = window.currentChatVideoFiles || window.currentVideoFiles || [];
+        
+        // Try to get from modal data attribute
+        if (videoFiles.length === 0 && videoModal.dataset.videoFiles) {
+            try {
+                videoFiles = JSON.parse(videoModal.dataset.videoFiles);
+            } catch(e) {
+                console.error('Error parsing modal video files:', e);
+            }
+        }
+        
+        if (videoFiles.length === 0) return;
+        
+        // If direction is 0, just update the current video (used when clicking thumbnails)
+        let nextIndex;
+        if (direction === 0) {
+            nextIndex = window.currentMediaIndex;
+            if (nextIndex < 0 || nextIndex >= videoFiles.length) {
+                nextIndex = 0;
+            }
+        } else {
+            nextIndex = window.currentMediaIndex + direction;
+            if (nextIndex < 0) {
+                nextIndex = videoFiles.length - 1;
+            } else if (nextIndex >= videoFiles.length) {
+                nextIndex = 0;
+            }
+        }
+        
+        window.currentMediaIndex = nextIndex;
+        const nextVideo = videoFiles[nextIndex];
+        if (!nextVideo) return;
+        
+        // Fix URL if needed
+        let finalUrl = nextVideo.url;
+        if (finalUrl.includes('admin.onlinesystems.info')) {
+            finalUrl = finalUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+        }
+        
+        // Update video source
+        const videoElement = document.getElementById('mainVideoViewerVideo');
+        if (videoElement) {
+            videoElement.pause();
+            videoElement.src = finalUrl;
+            videoElement.load();
+        }
+        
+        // Update title
+        const titleElement = videoModal.querySelector('.modal-title');
+        if (titleElement) {
+            titleElement.textContent = window.cleanImageName(nextVideo.name || 'Video');
+        }
+        
+        // Update download and share buttons
+        const downloadBtn = videoModal.querySelector('.video-download-btn');
+        const shareBtn = videoModal.querySelector('.video-share-btn');
+        if (downloadBtn) {
+            downloadBtn.setAttribute('data-video-url', finalUrl);
+            downloadBtn.setAttribute('data-video-name', nextVideo.name || 'Video');
+        }
+        if (shareBtn) {
+            shareBtn.setAttribute('data-video-url', finalUrl);
+            shareBtn.setAttribute('data-video-name', nextVideo.name || 'Video');
+        }
+        
+        // Update thumbnail highlights
+        updateChatVideoThumbnailHighlights();
+    };
+
+    // Load video thumbnails in footer
+    function loadChatVideoThumbnails() {
+        const thumbnailContainer = document.getElementById('videoThumbnails');
+        if (!thumbnailContainer) return;
+        
+        const videoFiles = window.currentChatVideoFiles || window.currentVideoFiles || [];
+        thumbnailContainer.innerHTML = '';
+        
+        videoFiles.forEach((video, index) => {
+            const thumbnail = document.createElement('div');
+            thumbnail.className = 'video-thumbnail';
+            thumbnail.style.cssText = 'position: relative; flex-shrink: 0; width: 80px; height: 80px; border-radius: 8px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: all 0.2s;';
+            
+            if (index === window.currentMediaIndex) {
+                thumbnail.style.borderColor = '#6338F6';
+                thumbnail.style.boxShadow = '0 0 0 2px rgba(99, 56, 246, 0.3)';
+            }
+            
+            thumbnail.innerHTML = `
+                <img src="${video.url}" alt="${video.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">
+                    <i class="ti ti-player-play-filled" style="font-size: 20px; color: white;"></i>
+                </div>
+            `;
+            
+            thumbnail.addEventListener('click', function() {
+                window.currentMediaIndex = index;
+                window.navigateToVideo(0);
+            });
+            
+            thumbnailContainer.appendChild(thumbnail);
+        });
+    }
+
+    // Load video gallery sidebar
+    function loadChatVideoGallerySidebar() {
+        const sidebarContainer = document.getElementById('videoGalleryThumbnails');
+        if (!sidebarContainer) return;
+        
+        const videoFiles = window.currentChatVideoFiles || window.currentVideoFiles || [];
+        sidebarContainer.innerHTML = '';
+        
+        videoFiles.forEach((video, index) => {
+            const thumbnail = document.createElement('div');
+            thumbnail.className = 'video-thumbnail';
+            thumbnail.style.cssText = 'position: relative; width: 100%; aspect-ratio: 1; border-radius: 8px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: all 0.2s;';
+            
+            if (index === window.currentMediaIndex) {
+                thumbnail.style.borderColor = '#6338F6';
+                thumbnail.style.boxShadow = '0 0 0 2px rgba(99, 56, 246, 0.3)';
+            }
+            
+            thumbnail.innerHTML = `
+                <img src="${video.url}" alt="${video.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">
+                    <i class="ti ti-player-play-filled" style="font-size: 16px; color: white;"></i>
+                </div>
+            `;
+            
+            thumbnail.addEventListener('click', function() {
+                window.currentMediaIndex = index;
+                window.navigateToVideo(0);
+            });
+            
+            sidebarContainer.appendChild(thumbnail);
+        });
+    }
+
+    // Update video thumbnail highlights
+    function updateChatVideoThumbnailHighlights() {
+        const videoFiles = window.currentChatVideoFiles || window.currentVideoFiles || [];
+        const currentIndex = window.currentMediaIndex || 0;
+        
+        // Update footer thumbnails
+        const footerThumbnails = document.querySelectorAll('#videoThumbnails .video-thumbnail');
+        footerThumbnails.forEach((thumb, index) => {
+            if (index === currentIndex) {
+                thumb.style.borderColor = '#6338F6';
+                thumb.style.boxShadow = '0 0 0 2px rgba(99, 56, 246, 0.3)';
+            } else {
+                thumb.style.borderColor = 'transparent';
+                thumb.style.boxShadow = 'none';
+            }
+        });
+        
+        // Update sidebar thumbnails
+        const sidebarThumbnails = document.querySelectorAll('#videoGalleryThumbnails .video-thumbnail');
+        sidebarThumbnails.forEach((thumb, index) => {
+            if (index === currentIndex) {
+                thumb.style.borderColor = '#6338F6';
+                thumb.style.boxShadow = '0 0 0 2px rgba(99, 56, 246, 0.3)';
+            } else {
+                thumb.style.borderColor = 'transparent';
+                thumb.style.boxShadow = 'none';
+            }
+        });
+    }
+
+    // Keyboard navigation for videos
+    document.addEventListener('keydown', function(e) {
+        const videoModal = document.getElementById('videoViewerModal');
+        if (!videoModal || !videoModal.classList.contains('show')) return;
+        
+        if (e.key === 'Escape') {
+            const modal = bootstrap.Modal.getInstance(videoModal);
+            if (modal) modal.hide();
+        }
+        
+        if (e.key === 'ArrowLeft') {
+            window.navigateToVideo(-1);
+        }
+        
+        if (e.key === 'ArrowRight') {
+            window.navigateToVideo(1);
+        }
+    });
+
+    // Handle arrow button clicks for videos
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('#chatVideoPrev') || e.target.closest('#chatVideoNext')) {
+            e.preventDefault();
+            const direction = e.target.closest('#chatVideoPrev') ? -1 : 1;
+            window.navigateToVideo(direction);
+        }
+    });
+
+    // Download and share handlers for videos
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.video-download-btn')) {
+            e.preventDefault();
+            const btn = e.target.closest('.video-download-btn');
+            const videoUrl = btn.getAttribute('data-video-url');
+            const videoName = btn.getAttribute('data-video-name') || 'video';
+            
+            const link = document.createElement('a');
+            link.href = videoUrl;
+            link.download = videoName;
+            link.click();
+        }
+        
+        if (e.target.closest('.video-share-btn')) {
+            e.preventDefault();
+            const btn = e.target.closest('.video-share-btn');
+            const videoUrl = btn.getAttribute('data-video-url');
+            const videoName = btn.getAttribute('data-video-name') || 'Video';
+            
+            if (window.groupChatManager && typeof window.groupChatManager.shareMediaInChat === 'function') {
+                window.groupChatManager.shareMediaInChat(videoUrl, videoName, 'video');
+            } else {
+                console.warn('Share media function not available');
+            }
         }
     });
 </script>

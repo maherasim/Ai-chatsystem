@@ -3089,9 +3089,9 @@ class GroupChatManager {
                     const favoriteIcon = isFavorite ? 'ti-heart-filled' : 'ti-heart';
                     videosHtml += `
                         <div class="video-item-wrapper mb-3" style="position: relative;">
-                            <a href="${video.file_url}" data-fancybox="gallery-videos" class="fancybox video-img" style="display: block;">
+                            <a class="media-view-video-btn" href="javascript:void(0);" data-video-url="${video.file_url}" data-video-name="${video.file_name}" style="display: block; position: relative;">
                                 <img src="${video.file_url}" alt="${video.file_name}" style="width: 100%; height: auto; border-radius: 8px;">
-                                <span><i class="ti ti-player-play-filled"></i></span>
+                                <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.7); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; cursor: pointer;"><i class="ti ti-player-play-filled" style="font-size: 28px; color: white;"></i></span>
                             </a>
                             <a href="#" class="favorite-btn ${favoriteClass}" 
                                data-message-id="${video.id || video._id}" 
@@ -3517,9 +3517,9 @@ class GroupChatManager {
             grouped.video.forEach(fav => {
                 html += `
                     <div class="video-item-wrapper mb-3" style="position: relative;">
-                        <a href="${fav.file_url}" data-fancybox="gallery-favorites-videos" class="fancybox video-img" style="display: block;">
+                        <a class="favorites-view-video-btn" href="javascript:void(0);" data-video-url="${fav.file_url}" data-video-name="${fav.file_name || 'Video'}" style="display: block; position: relative;">
                             <img src="${fav.file_url}" alt="${fav.file_name || 'Video'}" style="width: 100%; height: auto; border-radius: 8px;">
-                            <span><i class="ti ti-player-play-filled"></i></span>
+                            <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.7); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; cursor: pointer;"><i class="ti ti-player-play-filled" style="font-size: 28px; color: white;"></i></span>
                         </a>
                         <a href="#" class="favorite-btn favorited" 
                            data-message-id="${fav.message_id}" 
