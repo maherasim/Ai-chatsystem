@@ -3174,52 +3174,82 @@ class GroupChatManager {
                     try {
                         const urlObj = new URL(link.url);
                         const domain = urlObj.hostname.replace('www.', '');
-                        const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+                        const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+                        const displayUrl = link.url.length > 60 ? link.url.substring(0, 60) + '...' : link.url;
+                        
                         linksHtml += `
-                            <div class="link-item">
-                                <span class="link-icon">
-                                    <img src="${faviconUrl}" alt="${domain}" style="width: 20px; height: 20px; object-fit: contain;" onerror="this.src='${window.baseUrl || ''}/build/img/icons/info-icon.svg'">
-                                </span>
-                                <div class="ms-2" style="flex: 1; overflow: hidden;">
-                                    <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="text-decoration-none" style="color: inherit;">
-                                        <p class="mb-0" style="color: #8A8D93; word-break: break-all; font-size: 14px;">${link.url}</p>
+                            <div class="link-preview-card mb-3" style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; overflow: hidden; transition: all 0.3s ease; cursor: pointer; position: relative;" onclick="window.open('${link.url}', '_blank', 'noopener,noreferrer')">
+                                <div style="padding: 16px; display: flex; align-items: flex-start; gap: 12px;">
+                                    <div style="flex-shrink: 0; width: 48px; height: 48px; background: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid #e9ecef; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                        <img src="${faviconUrl}" alt="${domain}" style="width: 32px; height: 32px; object-fit: contain;" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\\'ti ti-link\\' style=\\'font-size: 24px; color: #6338F6;\\'></i>'">
+                                    </div>
+                                    <div style="flex: 1; min-width: 0; padding-right: 40px;">
+                                        <div style="font-weight: 600; font-size: 15px; color: #212529; margin-bottom: 4px; line-height: 1.4; word-break: break-word;">
+                                            ${domain}
+                                        </div>
+                                        <div style="font-size: 13px; color: #6c757d; line-height: 1.4; word-break: break-all; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                            ${displayUrl}
+                                        </div>
+                                    </div>
+                                    <a href="#" class="favorite-btn ${favoriteClass}" 
+                                       data-message-id="${link.id || link._id || link.message_id}" 
+                                       data-media-type="link" 
+                                       data-url="${link.url}"
+                                       data-group-id="${this.currentGroupId || ''}"
+                                       onclick="event.preventDefault(); event.stopPropagation(); window.groupChatManager.toggleFavorite(this);"
+                                       style="position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.9); border-radius: 50%; color: ${isFavorite ? '#e74c3c' : '#6c757d'}; text-decoration: none; transition: all 0.2s; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                        <i class="ti ${favoriteIcon}" style="font-size: 16px;"></i>
                                     </a>
                                 </div>
-                                <a href="#" class="favorite-btn ${favoriteClass}" 
-                                   data-message-id="${link.id || link._id || link.message_id}" 
-                                   data-media-type="link" 
-                                   data-url="${link.url}"
-                                   data-group-id="${this.currentGroupId || ''}"
-                                   onclick="event.preventDefault(); window.groupChatManager.toggleFavorite(this);">
-                                    <i class="ti ${favoriteIcon}"></i>
-                                </a>
                             </div>
                         `;
                     } catch (e) {
                         // If URL parsing fails, still show the link
+                        const displayUrl = link.url.length > 60 ? link.url.substring(0, 60) + '...' : link.url;
                         linksHtml += `
-                            <div class="link-item">
-                                <span class="link-icon">
-                                    <img src="${window.baseUrl || ''}/build/img/icons/info-icon.svg" alt="link" style="width: 20px; height: 20px;">
-                                </span>
-                                <div class="ms-2" style="flex: 1; overflow: hidden;">
-                                    <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="text-decoration-none" style="color: inherit;">
-                                        <p class="mb-0" style="color: #8A8D93; word-break: break-all; font-size: 14px;">${link.url}</p>
+                            <div class="link-preview-card mb-3" style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; overflow: hidden; transition: all 0.3s ease; cursor: pointer; position: relative;" onclick="window.open('${link.url}', '_blank', 'noopener,noreferrer')">
+                                <div style="padding: 16px; display: flex; align-items: flex-start; gap: 12px;">
+                                    <div style="flex-shrink: 0; width: 48px; height: 48px; background: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid #e9ecef; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                        <i class="ti ti-link" style="font-size: 24px; color: #6338F6;"></i>
+                                    </div>
+                                    <div style="flex: 1; min-width: 0; padding-right: 40px;">
+                                        <div style="font-weight: 600; font-size: 15px; color: #212529; margin-bottom: 4px; line-height: 1.4; word-break: break-word;">
+                                            Link
+                                        </div>
+                                        <div style="font-size: 13px; color: #6c757d; line-height: 1.4; word-break: break-all; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                            ${displayUrl}
+                                        </div>
+                                    </div>
+                                    <a href="#" class="favorite-btn ${favoriteClass}" 
+                                       data-message-id="${link.id || link._id || link.message_id}" 
+                                       data-media-type="link" 
+                                       data-url="${link.url}"
+                                       data-group-id="${this.currentGroupId || ''}"
+                                       onclick="event.preventDefault(); event.stopPropagation(); window.groupChatManager.toggleFavorite(this);"
+                                       style="position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.9); border-radius: 50%; color: ${isFavorite ? '#e74c3c' : '#6c757d'}; text-decoration: none; transition: all 0.2s; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                        <i class="ti ${favoriteIcon}" style="font-size: 16px;"></i>
                                     </a>
                                 </div>
-                                <a href="#" class="favorite-btn ${favoriteClass}" 
-                                   data-message-id="${link.id || link._id || link.message_id}" 
-                                   data-media-type="link" 
-                                   data-url="${link.url}"
-                                   data-group-id="${this.currentGroupId || ''}"
-                                   onclick="event.preventDefault(); window.groupChatManager.toggleFavorite(this);">
-                                    <i class="ti ${favoriteIcon}"></i>
-                                </a>
                             </div>
                         `;
                     }
                 });
                 linksContainer.innerHTML = linksHtml;
+                
+                // Add hover effects
+                const linkCards = linksContainer.querySelectorAll('.link-preview-card');
+                linkCards.forEach(card => {
+                    card.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-2px)';
+                        this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                        this.style.borderColor = '#6338F6';
+                    });
+                    card.addEventListener('mouseleave', function() {
+                        this.style.transform = 'translateY(0)';
+                        this.style.boxShadow = 'none';
+                        this.style.borderColor = '#e9ecef';
+                    });
+                });
             } else {
                 linksContainer.innerHTML = '<div class="text-center p-4 text-muted">No links shared yet</div>';
             }
@@ -3576,49 +3606,66 @@ class GroupChatManager {
 
         // Render Links
         if (grouped.link.length > 0) {
-            html += '<div class="mb-4"><h6 class="mb-3"><i class="ti ti-unlink me-2"></i>Links</h6>';
+            html += '<div class="mb-4"><h6 class="mb-3"><i class="ti ti-link me-2"></i>Links</h6>';
             grouped.link.forEach(fav => {
                 try {
                     const urlObj = new URL(fav.url);
                     const domain = urlObj.hostname.replace('www.', '');
-                    const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+                    const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+                    const displayUrl = fav.url.length > 60 ? fav.url.substring(0, 60) + '...' : fav.url;
+                    
                     html += `
-                        <div class="link-item">
-                            <span class="link-icon">
-                                <img src="${faviconUrl}" alt="${domain}" style="width: 20px; height: 20px; object-fit: contain;" onerror="this.src='${window.baseUrl || ''}/build/img/icons/info-icon.svg'">
-                            </span>
-                            <div class="ms-2 link-clickable" style="flex: 1; overflow: hidden; cursor: pointer;" data-url="${fav.url}">
-                                <a href="${fav.url}" target="_blank" rel="noopener noreferrer" class="text-decoration-none d-block" style="color: inherit;">
-                                    <p class="mb-0" style="color: #8A8D93; word-break: break-all; font-size: 14px; margin: 0;">${fav.url}</p>
+                        <div class="link-preview-card mb-3" style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; overflow: hidden; transition: all 0.3s ease; cursor: pointer; position: relative;" onclick="window.open('${fav.url}', '_blank', 'noopener,noreferrer')">
+                            <div style="padding: 16px; display: flex; align-items: flex-start; gap: 12px;">
+                                <div style="flex-shrink: 0; width: 48px; height: 48px; background: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid #e9ecef; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                    <img src="${faviconUrl}" alt="${domain}" style="width: 32px; height: 32px; object-fit: contain;" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\\'ti ti-link\\' style=\\'font-size: 24px; color: #6338F6;\\'></i>'">
+                                </div>
+                                <div style="flex: 1; min-width: 0; padding-right: 40px;">
+                                    <div style="font-weight: 600; font-size: 15px; color: #212529; margin-bottom: 4px; line-height: 1.4; word-break: break-word;">
+                                        ${domain}
+                                    </div>
+                                    <div style="font-size: 13px; color: #6c757d; line-height: 1.4; word-break: break-all; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                        ${displayUrl}
+                                    </div>
+                                </div>
+                                <a href="#" class="favorite-btn favorited" 
+                                   data-message-id="${fav.message_id}" 
+                                   data-media-type="${fav.media_type}" 
+                                   data-url="${fav.url}"
+                                   data-group-id="${fav.group_id || ''}"
+                                   onclick="event.preventDefault(); event.stopPropagation(); window.groupChatManager.toggleFavorite(this);"
+                                   style="position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.9); border-radius: 50%; color: #e74c3c; text-decoration: none; transition: all 0.2s; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                    <i class="ti ti-heart-filled" style="font-size: 16px;"></i>
                                 </a>
                             </div>
-                            <a href="#" class="favorite-btn favorited" 
-                               data-message-id="${fav.message_id}" 
-                               data-media-type="${fav.media_type}" 
-                               data-url="${fav.url}"
-                               data-group-id="${fav.group_id || ''}">
-                                <i class="ti ti-heart-filled"></i>
-                            </a>
                         </div>
                     `;
                 } catch (e) {
+                    const displayUrl = fav.url.length > 60 ? fav.url.substring(0, 60) + '...' : fav.url;
                     html += `
-                        <div class="link-item">
-                            <span class="link-icon">
-                                <img src="${window.baseUrl || ''}/build/img/icons/info-icon.svg" alt="link" style="width: 20px; height: 20px;">
-                            </span>
-                            <div class="ms-2 link-clickable" style="flex: 1; overflow: hidden; cursor: pointer;" data-url="${fav.url}">
-                                <a href="${fav.url}" target="_blank" rel="noopener noreferrer" class="text-decoration-none d-block" style="color: inherit;">
-                                    <p class="mb-0" style="color: #8A8D93; word-break: break-all; font-size: 14px; margin: 0;">${fav.url}</p>
+                        <div class="link-preview-card mb-3" style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; overflow: hidden; transition: all 0.3s ease; cursor: pointer; position: relative;" onclick="window.open('${fav.url}', '_blank', 'noopener,noreferrer')">
+                            <div style="padding: 16px; display: flex; align-items: flex-start; gap: 12px;">
+                                <div style="flex-shrink: 0; width: 48px; height: 48px; background: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid #e9ecef; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                    <i class="ti ti-link" style="font-size: 24px; color: #6338F6;"></i>
+                                </div>
+                                <div style="flex: 1; min-width: 0; padding-right: 40px;">
+                                    <div style="font-weight: 600; font-size: 15px; color: #212529; margin-bottom: 4px; line-height: 1.4; word-break: break-word;">
+                                        Link
+                                    </div>
+                                    <div style="font-size: 13px; color: #6c757d; line-height: 1.4; word-break: break-all; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                        ${displayUrl}
+                                    </div>
+                                </div>
+                                <a href="#" class="favorite-btn favorited" 
+                                   data-message-id="${fav.message_id}" 
+                                   data-media-type="${fav.media_type}" 
+                                   data-url="${fav.url}"
+                                   data-group-id="${fav.group_id || ''}"
+                                   onclick="event.preventDefault(); event.stopPropagation(); window.groupChatManager.toggleFavorite(this);"
+                                   style="position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.9); border-radius: 50%; color: #e74c3c; text-decoration: none; transition: all 0.2s; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                    <i class="ti ti-heart-filled" style="font-size: 16px;"></i>
                                 </a>
                             </div>
-                            <a href="#" class="favorite-btn favorited" 
-                               data-message-id="${fav.message_id}" 
-                               data-media-type="${fav.media_type}" 
-                               data-url="${fav.url}"
-                               data-group-id="${fav.group_id || ''}">
-                                <i class="ti ti-heart-filled"></i>
-                            </a>
                         </div>
                     `;
                 }
@@ -3662,44 +3709,18 @@ class GroupChatManager {
 
         container.innerHTML = html || '<div class="text-center p-4 text-muted">No favorites yet</div>';
         
-        // Ensure link clicks work properly - add event listeners after rendering
-        container.querySelectorAll('.link-item').forEach(linkItem => {
-            const linkDiv = linkItem.querySelector('.link-clickable');
-            const linkAnchor = linkItem.querySelector('a[target="_blank"]');
-            const favoriteBtn = linkItem.querySelector('.favorite-btn');
-            
-            if (linkDiv && linkAnchor) {
-                const url = linkDiv.getAttribute('data-url') || linkAnchor.getAttribute('href');
-                if (url) {
-                    // Make the entire link area clickable
-                    linkDiv.addEventListener('click', function(e) {
-                        // Only open if not clicking on favorite button
-                        if (favoriteBtn && (e.target === favoriteBtn || favoriteBtn.contains(e.target))) {
-                            return; // Don't open link if clicking favorite button
-                        }
-                        e.preventDefault();
-                        e.stopPropagation();
-                        window.open(url, '_blank', 'noopener,noreferrer');
-                    });
-                    
-                    // Ensure the anchor itself works
-                    linkAnchor.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        // Let default behavior happen (open in new tab)
-                    });
-                }
-            }
-            
-            // Ensure favorite button doesn't interfere with link clicks
-            if (favoriteBtn) {
-                favoriteBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    if (window.groupChatManager && typeof window.groupChatManager.toggleFavorite === 'function') {
-                        window.groupChatManager.toggleFavorite(this);
-                    }
-                });
-            }
+        // Add hover effects for link preview cards
+        container.querySelectorAll('.link-preview-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                this.style.borderColor = '#6338F6';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = 'none';
+                this.style.borderColor = '#e9ecef';
+            });
         });
     }
 
