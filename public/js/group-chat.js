@@ -3047,7 +3047,7 @@ class GroupChatManager {
                         <div class="img-wrap">
                             <img src="${photo.file_url}" alt="${photo.file_name}" style="width: 100%; height: 100%; object-fit: cover;">
                             <div class="img-overlay">
-                                <a class="gallery-img" data-fancybox="gallery-photos" href="${photo.file_url}" title="${photo.file_name}">
+                                <a class="media-view-image-btn" href="javascript:void(0);" data-image-url="${photo.file_url}" data-image-name="${photo.file_name}" title="View Image">
                                     <i class="ti ti-eye"></i>
                                 </a>
                                 <a href="${photo.file_url}" download="${photo.file_name}">
@@ -3489,7 +3489,7 @@ class GroupChatManager {
                     <div class="img-wrap">
                         <img src="${fav.file_url}" alt="${fav.file_name || 'Photo'}" style="width: 100%; height: 100%; object-fit: cover;">
                         <div class="img-overlay">
-                            <a class="gallery-img" data-fancybox="gallery-favorites-photos" href="${fav.file_url}" title="${fav.file_name || 'Photo'}">
+                            <a class="favorites-view-image-btn" href="javascript:void(0);" data-image-url="${fav.file_url}" data-image-name="${fav.file_name || 'Photo'}" title="View Image">
                                 <i class="ti ti-eye"></i>
                             </a>
                             <a href="${fav.file_url}" download="${fav.file_name || 'photo'}">

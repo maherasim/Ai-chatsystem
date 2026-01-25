@@ -3958,6 +3958,231 @@
         return imageFiles;
     }
 
+    // Function to collect all images from Media Details section
+    function collectMediaImages() {
+        const imageFiles = [];
+        const mediaPhotosContainer = document.getElementById('mediaPhotosContainer');
+        if (mediaPhotosContainer) {
+            const viewButtons = mediaPhotosContainer.querySelectorAll('.media-view-image-btn');
+            viewButtons.forEach(btn => {
+                const imgUrl = btn.getAttribute('data-image-url');
+                const imgName = btn.getAttribute('data-image-name') || 'Image';
+                
+                if (imgUrl && !imageFiles.find(f => f.url === imgUrl)) {
+                    imageFiles.push({
+                        url: imgUrl,
+                        name: window.cleanImageName(imgName)
+                    });
+                }
+            });
+        }
+        return imageFiles;
+    }
+
+    // Function to collect all images from Favorites section
+    function collectFavoritesImages() {
+        const imageFiles = [];
+        // Check both inline and offcanvas favorites containers
+        const favoritesContainers = [
+            document.getElementById('favoritesContainerInline'),
+            document.getElementById('favoritesContainer')
+        ];
+        
+        favoritesContainers.forEach(container => {
+            if (container) {
+                const viewButtons = container.querySelectorAll('.favorites-view-image-btn');
+                viewButtons.forEach(btn => {
+                    const imgUrl = btn.getAttribute('data-image-url');
+                    const imgName = btn.getAttribute('data-image-name') || 'Image';
+                    
+                    if (imgUrl && !imageFiles.find(f => f.url === imgUrl)) {
+                        imageFiles.push({
+                            url: imgUrl,
+                            name: window.cleanImageName(imgName)
+                        });
+                    }
+                });
+            }
+        });
+        
+        return imageFiles;
+    }
+
+    // Helper function to open image viewer modal
+    function openImageViewerModal(imageUrl, imageName, imageFiles) {
+        // Fix URL if needed
+        let finalUrl = imageUrl;
+        if (imageUrl.includes('admin.onlinesystems.info')) {
+            finalUrl = imageUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+        }
+        
+        // Filter for images only
+        const filteredImages = imageFiles.filter(file => {
+            if (!file || !file.url) return false;
+            const url = file.url.toLowerCase();
+            return url.match(/\.(jpg|jpeg|png|gif|webp|bmp|svg)(\?|$)/);
+        });
+        
+        // Find current image index
+        window.currentMediaIndex = filteredImages.findIndex(f => {
+            let fUrl = f.url || '';
+            let compareUrl = imageUrl || '';
+            if (fUrl.includes('admin.onlinesystems.info')) {
+                fUrl = fUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+            }
+            if (compareUrl.includes('admin.onlinesystems.info')) {
+                compareUrl = compareUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+            }
+            return fUrl === compareUrl || fUrl.includes(compareUrl) || compareUrl.includes(fUrl);
+        });
+        
+        if (window.currentMediaIndex === -1) {
+            window.currentMediaIndex = 0;
+        }
+        
+        // Store images globally
+        window.currentChatImageFiles = filteredImages;
+        window.currentImageFiles = filteredImages;
+        window.currentTodoFiles = filteredImages;
+        
+        // Clean image name
+        const cleanName = window.cleanImageName(imageName);
+        
+        // Create and show image modal
+        const navArrowStyle = 'display: flex; align-items: center; justify-content: center; background: transparent !important; border: none !important; box-shadow: none !important; padding: 0; cursor: pointer;';
+        const modalHtml = `
+            <div class="modal fade" id="imageViewerModal" tabindex="-1" style="z-index: 10000;" data-image-files='${JSON.stringify(filteredImages)}' data-all-files='${JSON.stringify(filteredImages)}'>
+                <div class="modal-dialog modal-dialog-centered" style="max-width: 70vw; width: 75%; margin: auto;">
+                    <div class="modal-content" style="background: #000; border: none; position: relative; max-width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+                        <!-- Navigation Arrows - Left -->
+                        <button type="button" class="gallery-nav-btn gallery-prev" id="chatImagePrev" title="Previous" style="${navArrowStyle} position: absolute; left: 20px; top: 50%; transform: translateY(-50%); z-index: 10001;" onclick="if(window.navigateToMedia) { window.navigateToMedia(-1); } return false;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
+                                <path d="M19 12H5M12 19l-7-7 7-7"/>
+                            </svg>
+                        </button>
+
+                        <div class="modal-header border-0 d-flex justify-content-end align-items-center" style="background: rgba(0,0,0,0.9); z-index: 2; padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <div class="d-flex align-items-center gap-2">
+                                <button type="button" class="btn btn-sm text-white image-group-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer;" title="Group">
+                                    <img src="{{ asset('assets/img/group.png') }}" alt="Group" style="width: 16px; height: 16px; object-fit: contain;">
+                                </button>
+                                <button type="button" class="btn btn-sm text-white image-download-btn" data-image-url="${finalUrl}" data-image-name="${cleanName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer;" title="Download">
+                                    <img src="{{ asset('assets/img/display-arrow-down 1.png') }}" alt="Download" style="width: 16px; height: 16px; object-fit: contain;">
+                                </button>
+                                <button type="button" class="btn btn-sm text-white image-share-btn" data-image-url="${finalUrl}" data-image-name="${cleanName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer;" title="Share in Chat">
+                                    <img src="{{ asset('assets/img/refer-arrow 1.png') }}" alt="Share" style="width: 16px; height: 16px; object-fit: contain;">
+                                </button>
+                                <button type="button" data-bs-dismiss="modal" style="background: transparent; border: none; padding: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;" aria-label="Close" title="Close">
+                                    <img src="{{ asset('assets/img/circle-xmark 1.png') }}" alt="Close" style="width: 20px; height: 20px; object-fit: contain;">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal-body p-0" style="display: flex; position: relative; min-height: 50vh; max-height: 65vh;">
+                            <!-- Main Image Area -->
+                            <div class="image-main-area" style="flex: 1; display: flex; align-items: center; justify-content: center; position: relative; padding: 20px;">
+                                <img id="mainImageViewerImage" src="${finalUrl}" alt="${cleanName}" style="max-width: 100%; max-height: 55vh; object-fit: contain; z-index: 1; border-radius: 8px;">
+                                
+                                <!-- Navigation Arrows - Right -->
+                                <button type="button" class="gallery-nav-btn gallery-next" id="chatImageNext" title="Next" style="${navArrowStyle} position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 10001;" onclick="if(window.navigateToMedia) { window.navigateToMedia(1); } return false;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
+                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <!-- Right Sidebar Gallery (hidden by default) -->
+                            <div id="imageGallerySidebar" class="image-gallery-sidebar" style="width: 0; overflow: hidden; background: rgba(30, 30, 30, 0.98); transition: width 0.3s ease, overflow 0.3s ease; border-left: 1px solid rgba(255,255,255,0.15); position: relative; flex-shrink: 0;">
+                                <div style="padding: 20px; height: 100%; overflow-y: auto; overflow-x: hidden; min-height: 400px;">
+                                    <h6 style="color: white; font-size: 14px; font-weight: 600; margin-bottom: 20px; text-align: center; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">Image Gallery</h6>
+                                    <div id="imageGalleryThumbnails" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%;">
+                                        <!-- Thumbnails will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer border-0" style="background: rgba(0,0,0,0.9); z-index: 2; padding: 15px 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <div class="w-100">
+                                <h6 class="modal-title text-white mb-2 text-center" style="font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.9);">${cleanName}</h6>
+                                <div id="imageThumbnails" class="d-flex gap-2" style="overflow-x: auto; width: 100%; padding: 5px 0;">
+                                    <!-- Thumbnails will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Remove existing modal if any
+        const existingModal = document.getElementById('imageViewerModal');
+        if (existingModal) existingModal.remove();
+        
+        // Add and show modal
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        const modalElement = document.getElementById('imageViewerModal');
+        const modal = new bootstrap.Modal(modalElement);
+        
+        // Load thumbnails when modal is shown
+        modalElement.addEventListener('shown.bs.modal', function() {
+            loadChatImageThumbnails();
+            loadChatImageGallerySidebar();
+            
+            // Add click handler for group button
+            const groupBtn = modalElement.querySelector('.image-group-btn');
+            if (groupBtn) {
+                groupBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const sidebar = document.getElementById('imageGallerySidebar');
+                    const mainArea = modalElement.querySelector('.image-main-area');
+                    const modalDialog = modalElement.querySelector('.modal-dialog');
+                    const rightArrow = document.getElementById('chatImageNext');
+                    
+                    if (sidebar) {
+                        const isActive = sidebar.classList.contains('active');
+                        
+                        if (isActive) {
+                            // Closing sidebar
+                            sidebar.classList.remove('active');
+                            sidebar.style.width = '0';
+                            sidebar.style.minWidth = '0';
+                            sidebar.style.overflow = 'hidden';
+                            sidebar.style.display = 'none';
+                            
+                            if (mainArea) mainArea.classList.remove('sidebar-open');
+                            if (modalDialog) {
+                                modalDialog.style.maxWidth = '70vw';
+                                modalDialog.style.width = '75%';
+                            }
+                            if (rightArrow) rightArrow.style.right = '20px';
+                        } else {
+                            // Opening sidebar
+                            sidebar.classList.add('active');
+                            sidebar.style.width = '240px';
+                            sidebar.style.minWidth = '240px';
+                            sidebar.style.overflow = 'visible';
+                            sidebar.style.display = 'block';
+                            
+                            if (mainArea) mainArea.classList.add('sidebar-open');
+                            if (modalDialog) {
+                                modalDialog.style.maxWidth = 'calc(70vw + 240px)';
+                            }
+                            if (rightArrow) rightArrow.style.right = '260px';
+                        }
+                    }
+                });
+            }
+        }, { once: true });
+        
+        modal.show();
+        
+        // Clean up on close
+        modalElement.addEventListener('hidden.bs.modal', function() {
+            this.remove();
+        }, { once: true });
+    }
+
     // Handle click on chat image view button
     document.addEventListener('click', function(e) {
         if (e.target.closest('.chat-view-image-btn')) {
@@ -3966,178 +4191,33 @@
             const imageUrl = btn.getAttribute('data-image-url');
             const imageName = btn.getAttribute('data-image-name') || 'Image';
             
-            // Fix URL if needed
-            let finalUrl = imageUrl;
-            if (imageUrl.includes('admin.onlinesystems.info')) {
-                finalUrl = imageUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
-            }
-            
             // Collect all images from current chat
             const allImages = collectChatImages();
-            window.currentChatImageFiles = allImages;
-            window.currentImageFiles = allImages;
-            window.currentTodoFiles = allImages; // Use same variable name as todos for compatibility
+            openImageViewerModal(imageUrl, imageName, allImages);
+        }
+        
+        // Handle click on Media Details photos view button
+        if (e.target.closest('.media-view-image-btn')) {
+            e.preventDefault();
+            const btn = e.target.closest('.media-view-image-btn');
+            const imageUrl = btn.getAttribute('data-image-url');
+            const imageName = btn.getAttribute('data-image-name') || 'Image';
             
-            // Filter for images only
-            const imageFiles = allImages.filter(file => {
-                if (!file || !file.url) return false;
-                const url = file.url.toLowerCase();
-                return url.match(/\.(jpg|jpeg|png|gif|webp|bmp|svg)(\?|$)/);
-            });
+            // Collect all images from Media Details section
+            const allImages = collectMediaImages();
+            openImageViewerModal(imageUrl, imageName, allImages);
+        }
+        
+        // Handle click on Favorites photos view button
+        if (e.target.closest('.favorites-view-image-btn')) {
+            e.preventDefault();
+            const btn = e.target.closest('.favorites-view-image-btn');
+            const imageUrl = btn.getAttribute('data-image-url');
+            const imageName = btn.getAttribute('data-image-name') || 'Image';
             
-            // Find current image index
-            window.currentMediaIndex = imageFiles.findIndex(f => {
-                let fUrl = f.url || '';
-                let compareUrl = imageUrl || '';
-                if (fUrl.includes('admin.onlinesystems.info')) {
-                    fUrl = fUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
-                }
-                if (compareUrl.includes('admin.onlinesystems.info')) {
-                    compareUrl = compareUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
-                }
-                return fUrl === compareUrl || fUrl.includes(compareUrl) || compareUrl.includes(fUrl);
-            });
-            
-            if (window.currentMediaIndex === -1) {
-                window.currentMediaIndex = 0;
-            }
-            
-            // Clean image name
-            const cleanName = window.cleanImageName(imageName);
-            
-            // Create and show image modal
-            const navArrowStyle = 'display: flex; align-items: center; justify-content: center; background: transparent !important; border: none !important; box-shadow: none !important; padding: 0; cursor: pointer;';
-            const modalHtml = `
-                <div class="modal fade" id="imageViewerModal" tabindex="-1" style="z-index: 10000;" data-image-files='${JSON.stringify(imageFiles)}' data-all-files='${JSON.stringify(imageFiles)}'>
-                    <div class="modal-dialog modal-dialog-centered" style="max-width: 70vw; width: 75%; margin: auto;">
-                        <div class="modal-content" style="background: #000; border: none; position: relative; max-width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
-                            <!-- Navigation Arrows - Left -->
-                            <button type="button" class="gallery-nav-btn gallery-prev" id="chatImagePrev" title="Previous" style="${navArrowStyle} position: absolute; left: 20px; top: 50%; transform: translateY(-50%); z-index: 10001;" onclick="if(window.navigateToMedia) { window.navigateToMedia(-1); } return false;">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
-                                    <path d="M19 12H5M12 19l-7-7 7-7"/>
-                                </svg>
-                            </button>
-
-                            <div class="modal-header border-0 d-flex justify-content-end align-items-center" style="background: rgba(0,0,0,0.9); z-index: 2; padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                                <div class="d-flex align-items-center gap-2">
-                                    <button type="button" class="btn btn-sm text-white image-group-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer;" title="Group">
-                                        <img src="{{ asset('assets/img/group.png') }}" alt="Group" style="width: 16px; height: 16px; object-fit: contain;">
-                                    </button>
-                                    <button type="button" class="btn btn-sm text-white image-download-btn" data-image-url="${finalUrl}" data-image-name="${cleanName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer;" title="Download">
-                                        <img src="{{ asset('assets/img/display-arrow-down 1.png') }}" alt="Download" style="width: 16px; height: 16px; object-fit: contain;">
-                                    </button>
-                                    <button type="button" class="btn btn-sm text-white image-share-btn" data-image-url="${finalUrl}" data-image-name="${cleanName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer;" title="Share in Chat">
-                                        <img src="{{ asset('assets/img/refer-arrow 1.png') }}" alt="Share" style="width: 16px; height: 16px; object-fit: contain;">
-                                    </button>
-                                    <button type="button" data-bs-dismiss="modal" style="background: transparent; border: none; padding: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;" aria-label="Close" title="Close">
-                                        <img src="{{ asset('assets/img/circle-xmark 1.png') }}" alt="Close" style="width: 20px; height: 20px; object-fit: contain;">
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="modal-body p-0" style="display: flex; position: relative; min-height: 50vh; max-height: 65vh;">
-                                <!-- Main Image Area -->
-                                <div class="image-main-area" style="flex: 1; display: flex; align-items: center; justify-content: center; position: relative; padding: 20px;">
-                                    <img id="mainImageViewerImage" src="${finalUrl}" alt="${cleanName}" style="max-width: 100%; max-height: 55vh; object-fit: contain; z-index: 1; border-radius: 8px;">
-                                    
-                                    <!-- Navigation Arrows - Right -->
-                                    <button type="button" class="gallery-nav-btn gallery-next" id="chatImageNext" title="Next" style="${navArrowStyle} position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 10001;" onclick="if(window.navigateToMedia) { window.navigateToMedia(1); } return false;">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
-                                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                                
-                                <!-- Right Sidebar Gallery (hidden by default) -->
-                                <div id="imageGallerySidebar" class="image-gallery-sidebar" style="width: 0; overflow: hidden; background: rgba(30, 30, 30, 0.98); transition: width 0.3s ease, overflow 0.3s ease; border-left: 1px solid rgba(255,255,255,0.15); position: relative; flex-shrink: 0;">
-                                    <div style="padding: 20px; height: 100%; overflow-y: auto; overflow-x: hidden; min-height: 400px;">
-                                        <h6 style="color: white; font-size: 14px; font-weight: 600; margin-bottom: 20px; text-align: center; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">Image Gallery</h6>
-                                        <div id="imageGalleryThumbnails" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%;">
-                                            <!-- Thumbnails will be populated here -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="modal-footer border-0" style="background: rgba(0,0,0,0.9); z-index: 2; padding: 15px 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-                                <div class="w-100">
-                                    <h6 class="modal-title text-white mb-2 text-center" style="font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.9);">${cleanName}</h6>
-                                    <div id="imageThumbnails" class="d-flex gap-2" style="overflow-x: auto; width: 100%; padding: 5px 0;">
-                                        <!-- Thumbnails will be populated here -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            // Remove existing modal if any
-            const existingModal = document.getElementById('imageViewerModal');
-            if (existingModal) existingModal.remove();
-            
-            // Add and show modal
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
-            const modalElement = document.getElementById('imageViewerModal');
-            const modal = new bootstrap.Modal(modalElement);
-            
-            // Load thumbnails when modal is shown
-            modalElement.addEventListener('shown.bs.modal', function() {
-                loadChatImageThumbnails();
-                loadChatImageGallerySidebar();
-                
-                // Add click handler for group button
-                const groupBtn = modalElement.querySelector('.image-group-btn');
-                if (groupBtn) {
-                    groupBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        const sidebar = document.getElementById('imageGallerySidebar');
-                        const mainArea = modalElement.querySelector('.image-main-area');
-                        const modalDialog = modalElement.querySelector('.modal-dialog');
-                        const rightArrow = document.getElementById('chatImageNext');
-                        
-                        if (sidebar) {
-                            const isActive = sidebar.classList.contains('active');
-                            
-                            if (isActive) {
-                                // Closing sidebar
-                                sidebar.classList.remove('active');
-                                sidebar.style.width = '0';
-                                sidebar.style.minWidth = '0';
-                                sidebar.style.overflow = 'hidden';
-                                sidebar.style.display = 'none';
-                                
-                                if (mainArea) mainArea.classList.remove('sidebar-open');
-                                if (modalDialog) {
-                                    modalDialog.style.maxWidth = '70vw';
-                                    modalDialog.style.width = '75%';
-                                }
-                                if (rightArrow) rightArrow.style.right = '20px';
-                            } else {
-                                // Opening sidebar
-                                sidebar.classList.add('active');
-                                sidebar.style.width = '240px';
-                                sidebar.style.minWidth = '240px';
-                                sidebar.style.overflow = 'visible';
-                                sidebar.style.display = 'block';
-                                
-                                if (mainArea) mainArea.classList.add('sidebar-open');
-                                if (modalDialog) {
-                                    modalDialog.style.maxWidth = 'calc(70vw + 240px)';
-                                }
-                                if (rightArrow) rightArrow.style.right = '260px';
-                            }
-                        }
-                    });
-                }
-            }, { once: true });
-            
-            modal.show();
-            
-            // Clean up on close
-            modalElement.addEventListener('hidden.bs.modal', function() {
-                this.remove();
-            }, { once: true });
+            // Collect all images from Favorites section
+            const allImages = collectFavoritesImages();
+            openImageViewerModal(imageUrl, imageName, allImages);
         }
     });
 
