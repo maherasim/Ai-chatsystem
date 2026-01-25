@@ -3091,14 +3091,14 @@
                     const memberName = member.name || member.email || 'User';
                     
                     memberCard.innerHTML = `
-                        <div style="position: relative; margin-bottom: 2px;">
+                        <span style="font-size: 16px; color: #2e3a59; font-weight: 500; text-align: center; max-width: 45px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 2px;">${memberName}</span>
+                        <div style="position: relative;">
                             <img src="${avatarUrl}" 
                                  alt="${memberName}" 
                                  style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 1.5px solid #e0e0e0;"
                                  onerror="this.onerror=null; this.src='${defaultAvatar}';">
                             ${onlineIndicator}
                         </div>
-                        <span style="font-size: 16px; color: #2e3a59; font-weight: 500; text-align: center; max-width: 45px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${memberName}</span>
                     `;
                     fragment.appendChild(memberCard);
                 });
