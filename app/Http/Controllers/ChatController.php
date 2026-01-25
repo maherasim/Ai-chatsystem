@@ -1458,10 +1458,18 @@ class ChatController extends Controller
             // Query all users first, then filter by email
             $users = User::whereIn('_id', $userIds)->get();
             
-            // Filter out admin email if needed
-            $users = $users->filter(function($user) {
-                return $user->email !== 'admin@gmail.com';
-            });
+            // Always fetch admin user (admin@gmail.com) and add to list
+            $adminUser = User::where('email', 'admin@gmail.com')->first();
+            if ($adminUser) {
+                // Check if admin is already in the list
+                $adminInList = $users->contains(function($user) use ($adminUser) {
+                    return (string)$user->_id === (string)$adminUser->_id;
+                });
+                
+                if (!$adminInList) {
+                    $users->push($adminUser);
+                }
+            }
             
             // Log found users for debugging
             \Log::info('getAllUsers - Found users', [
@@ -1485,7 +1493,7 @@ class ChatController extends Controller
                 foreach ($missingUserIds as $missingId) {
                     try {
                         $missingUser = User::find($missingId);
-                        if ($missingUser && $missingUser->email !== 'admin@gmail.com') {
+                        if ($missingUser) {
                             $users->push($missingUser);
                         }
                     } catch (\Exception $e) {
@@ -1521,15 +1529,30 @@ class ChatController extends Controller
                 // 3. User is marked as active AND has last_activity (fallback)
                 $isOnline = $hasRecentActivity || $isCurrentUser || ($user->active && $user->last_activity);
                 
+                // Set type to 'Admin' if email is admin@gmail.com
+                $userType = $user->type ?? 'user';
+                if ($user->email === 'admin@gmail.com') {
+                    $userType = 'Admin';
+                }
+                
                 return [
                     'id' => $userId,
                     'name' => $user->name ?? $user->email,
                     'email' => $user->email,
                     'avatar' => $avatarUrl,
                     'is_online' => $isOnline,
-                    'type' => $user->type ?? 'user',
+                    'type' => $userType,
                 ];
             })->values();
+            
+            // Ensure admin user is always first in the list
+            $adminMember = $usersList->firstWhere('email', 'admin@gmail.com');
+            if ($adminMember) {
+                $usersList = $usersList->reject(function($member) {
+                    return $member['email'] === 'admin@gmail.com';
+                });
+                $usersList = $usersList->prepend($adminMember)->values();
+            }
 
             return response()->json([
                 'success' => true,
