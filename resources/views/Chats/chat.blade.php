@@ -1008,6 +1008,136 @@
         font-weight: 600 !important;
         color: #495057 !important;
     }
+
+    /* Image Viewer Styles */
+    #imageViewerModal .modal-dialog {
+        max-width: 70vw;
+        width: 75%;
+        margin: auto;
+    }
+
+    #imageViewerModal .modal-content {
+        background: #000;
+        border: none;
+        position: relative;
+        max-width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+
+    #imageViewerModal .modal-header,
+    #imageViewerModal .modal-footer {
+        background: rgba(0,0,0,0.9);
+        z-index: 2;
+        border: none;
+    }
+
+    #imageViewerModal .modal-body {
+        display: flex;
+        position: relative;
+        min-height: 50vh;
+        max-height: 65vh;
+    }
+
+    .gallery-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent !important;
+        color: white;
+        border: none !important;
+        width: 50px;
+        height: 50px;
+        border-radius: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10001;
+        transition: all 0.3s ease;
+        box-shadow: none !important;
+        padding: 0;
+        margin: 0;
+    }
+
+    .gallery-nav-btn:hover {
+        background: transparent !important;
+        opacity: 0.8;
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: none !important;
+    }
+
+    .gallery-nav-btn svg {
+        width: 24px;
+        height: 24px;
+        color: white;
+    }
+
+    .gallery-prev {
+        left: 20px;
+    }
+
+    .gallery-next {
+        right: 20px;
+    }
+
+    .image-gallery-sidebar {
+        width: 0;
+        overflow: hidden;
+        background: rgba(30, 30, 30, 0.98);
+        transition: width 0.3s ease, overflow 0.3s ease;
+        border-left: 1px solid rgba(255,255,255,0.15);
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .image-gallery-sidebar.active {
+        width: 240px;
+        min-width: 240px;
+        overflow: visible;
+    }
+
+    #imageGalleryThumbnails > div {
+        width: 100%;
+        aspect-ratio: 1;
+        overflow: hidden;
+    }
+
+    .image-gallery-thumbnail {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+        border-radius: 4px;
+        transition: opacity 0.2s;
+    }
+
+    .image-gallery-thumbnail:hover {
+        opacity: 0.8;
+    }
+
+    .image-gallery-thumbnail.active {
+        border: 2px solid #6338F6;
+        box-sizing: border-box;
+    }
+
+    .image-thumbnail {
+        width: 60px;
+        height: 60px;
+        border-radius: 6px;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid transparent;
+        flex-shrink: 0;
+    }
+
+    .image-thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 </style>
 
 
@@ -3765,5 +3895,524 @@
 @if(isset($projects) && isset($teams) && isset($users))
 @include('Todos.todo-modal-partial', ['projects' => $projects, 'teams' => $teams, 'users' => $users])
 @endif
+
+<script>
+    // Initialize image viewer variables
+    window.currentChatImageFiles = [];
+    window.currentMediaIndex = -1;
+
+    // Helper function to clean image name (remove _@_ID suffix)
+    window.cleanImageName = function(filename) {
+        if (!filename) return 'Image';
+        if (filename.includes('_@_')) {
+            return filename.split('_@_')[0];
+        }
+        return filename;
+    };
+
+    // Function to collect all images from current chat group
+    function collectChatImages() {
+        const imageFiles = [];
+        const chatMessages = document.querySelectorAll('#chatMessagesContainer .message-content-wrapper');
+        
+        chatMessages.forEach(msgWrapper => {
+            const imgElement = msgWrapper.querySelector('img[src]');
+            if (imgElement) {
+                const imgUrl = imgElement.getAttribute('src');
+                const viewBtn = msgWrapper.querySelector('.chat-view-image-btn');
+                let imgName = 'Image';
+                
+                if (viewBtn) {
+                    imgName = viewBtn.getAttribute('data-image-name') || 'Image';
+                } else {
+                    // Try to extract name from URL
+                    const urlParts = imgUrl.split('/');
+                    imgName = urlParts[urlParts.length - 1] || 'Image';
+                }
+                
+                // Only add if not already in array (avoid duplicates)
+                if (imgUrl && !imageFiles.find(f => f.url === imgUrl)) {
+                    imageFiles.push({
+                        url: imgUrl,
+                        name: window.cleanImageName(imgName)
+                    });
+                }
+            }
+        });
+        
+        return imageFiles;
+    }
+
+    // Handle click on chat image view button
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.chat-view-image-btn')) {
+            e.preventDefault();
+            const btn = e.target.closest('.chat-view-image-btn');
+            const imageUrl = btn.getAttribute('data-image-url');
+            const imageName = btn.getAttribute('data-image-name') || 'Image';
+            
+            // Fix URL if needed
+            let finalUrl = imageUrl;
+            if (imageUrl.includes('admin.onlinesystems.info')) {
+                finalUrl = imageUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+            }
+            
+            // Collect all images from current chat
+            const allImages = collectChatImages();
+            window.currentChatImageFiles = allImages;
+            window.currentImageFiles = allImages;
+            window.currentTodoFiles = allImages; // Use same variable name as todos for compatibility
+            
+            // Filter for images only
+            const imageFiles = allImages.filter(file => {
+                if (!file || !file.url) return false;
+                const url = file.url.toLowerCase();
+                return url.match(/\.(jpg|jpeg|png|gif|webp|bmp|svg)(\?|$)/);
+            });
+            
+            // Find current image index
+            window.currentMediaIndex = imageFiles.findIndex(f => {
+                let fUrl = f.url || '';
+                let compareUrl = imageUrl || '';
+                if (fUrl.includes('admin.onlinesystems.info')) {
+                    fUrl = fUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                }
+                if (compareUrl.includes('admin.onlinesystems.info')) {
+                    compareUrl = compareUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                }
+                return fUrl === compareUrl || fUrl.includes(compareUrl) || compareUrl.includes(fUrl);
+            });
+            
+            if (window.currentMediaIndex === -1) {
+                window.currentMediaIndex = 0;
+            }
+            
+            // Clean image name
+            const cleanName = window.cleanImageName(imageName);
+            
+            // Create and show image modal
+            const navArrowStyle = 'display: flex; align-items: center; justify-content: center; background: transparent !important; border: none !important; box-shadow: none !important; padding: 0; cursor: pointer;';
+            const modalHtml = `
+                <div class="modal fade" id="imageViewerModal" tabindex="-1" style="z-index: 10000;" data-image-files='${JSON.stringify(imageFiles)}' data-all-files='${JSON.stringify(imageFiles)}'>
+                    <div class="modal-dialog modal-dialog-centered" style="max-width: 70vw; width: 75%; margin: auto;">
+                        <div class="modal-content" style="background: #000; border: none; position: relative; max-width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+                            <!-- Navigation Arrows - Left -->
+                            <button type="button" class="gallery-nav-btn gallery-prev" id="chatImagePrev" title="Previous" style="${navArrowStyle} position: absolute; left: 20px; top: 50%; transform: translateY(-50%); z-index: 10001;" onclick="if(window.navigateToMedia) { window.navigateToMedia(-1); } return false;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
+                                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                                </svg>
+                            </button>
+
+                            <div class="modal-header border-0 d-flex justify-content-end align-items-center" style="background: rgba(0,0,0,0.9); z-index: 2; padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                <div class="d-flex align-items-center gap-2">
+                                    <button type="button" class="btn btn-sm text-white image-group-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer;" title="Group">
+                                        <img src="{{ asset('assets/img/group.png') }}" alt="Group" style="width: 16px; height: 16px; object-fit: contain;">
+                                    </button>
+                                    <button type="button" class="btn btn-sm text-white image-download-btn" data-image-url="${finalUrl}" data-image-name="${cleanName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer;" title="Download">
+                                        <img src="{{ asset('assets/img/display-arrow-down 1.png') }}" alt="Download" style="width: 16px; height: 16px; object-fit: contain;">
+                                    </button>
+                                    <button type="button" class="btn btn-sm text-white image-share-btn" data-image-url="${finalUrl}" data-image-name="${cleanName}" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer;" title="Share in Chat">
+                                        <img src="{{ asset('assets/img/refer-arrow 1.png') }}" alt="Share" style="width: 16px; height: 16px; object-fit: contain;">
+                                    </button>
+                                    <button type="button" data-bs-dismiss="modal" style="background: transparent; border: none; padding: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;" aria-label="Close" title="Close">
+                                        <img src="{{ asset('assets/img/circle-xmark 1.png') }}" alt="Close" style="width: 20px; height: 20px; object-fit: contain;">
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="modal-body p-0" style="display: flex; position: relative; min-height: 50vh; max-height: 65vh;">
+                                <!-- Main Image Area -->
+                                <div class="image-main-area" style="flex: 1; display: flex; align-items: center; justify-content: center; position: relative; padding: 20px;">
+                                    <img id="mainImageViewerImage" src="${finalUrl}" alt="${cleanName}" style="max-width: 100%; max-height: 55vh; object-fit: contain; z-index: 1; border-radius: 8px;">
+                                    
+                                    <!-- Navigation Arrows - Right -->
+                                    <button type="button" class="gallery-nav-btn gallery-next" id="chatImageNext" title="Next" style="${navArrowStyle} position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 10001;" onclick="if(window.navigateToMedia) { window.navigateToMedia(1); } return false;">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
+                                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                
+                                <!-- Right Sidebar Gallery (hidden by default) -->
+                                <div id="imageGallerySidebar" class="image-gallery-sidebar" style="width: 0; overflow: hidden; background: rgba(30, 30, 30, 0.98); transition: width 0.3s ease, overflow 0.3s ease; border-left: 1px solid rgba(255,255,255,0.15); position: relative; flex-shrink: 0;">
+                                    <div style="padding: 20px; height: 100%; overflow-y: auto; overflow-x: hidden; min-height: 400px;">
+                                        <h6 style="color: white; font-size: 14px; font-weight: 600; margin-bottom: 20px; text-align: center; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">Image Gallery</h6>
+                                        <div id="imageGalleryThumbnails" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%;">
+                                            <!-- Thumbnails will be populated here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer border-0" style="background: rgba(0,0,0,0.9); z-index: 2; padding: 15px 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                                <div class="w-100">
+                                    <h6 class="modal-title text-white mb-2 text-center" style="font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.9);">${cleanName}</h6>
+                                    <div id="imageThumbnails" class="d-flex gap-2" style="overflow-x: auto; width: 100%; padding: 5px 0;">
+                                        <!-- Thumbnails will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Remove existing modal if any
+            const existingModal = document.getElementById('imageViewerModal');
+            if (existingModal) existingModal.remove();
+            
+            // Add and show modal
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            const modalElement = document.getElementById('imageViewerModal');
+            const modal = new bootstrap.Modal(modalElement);
+            
+            // Load thumbnails when modal is shown
+            modalElement.addEventListener('shown.bs.modal', function() {
+                loadChatImageThumbnails();
+                loadChatImageGallerySidebar();
+                
+                // Add click handler for group button
+                const groupBtn = modalElement.querySelector('.image-group-btn');
+                if (groupBtn) {
+                    groupBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const sidebar = document.getElementById('imageGallerySidebar');
+                        const mainArea = modalElement.querySelector('.image-main-area');
+                        const modalDialog = modalElement.querySelector('.modal-dialog');
+                        const rightArrow = document.getElementById('chatImageNext');
+                        
+                        if (sidebar) {
+                            const isActive = sidebar.classList.contains('active');
+                            
+                            if (isActive) {
+                                // Closing sidebar
+                                sidebar.classList.remove('active');
+                                sidebar.style.width = '0';
+                                sidebar.style.minWidth = '0';
+                                sidebar.style.overflow = 'hidden';
+                                sidebar.style.display = 'none';
+                                
+                                if (mainArea) mainArea.classList.remove('sidebar-open');
+                                if (modalDialog) {
+                                    modalDialog.style.maxWidth = '70vw';
+                                    modalDialog.style.width = '75%';
+                                }
+                                if (rightArrow) rightArrow.style.right = '20px';
+                            } else {
+                                // Opening sidebar
+                                sidebar.classList.add('active');
+                                sidebar.style.width = '240px';
+                                sidebar.style.minWidth = '240px';
+                                sidebar.style.overflow = 'visible';
+                                sidebar.style.display = 'block';
+                                
+                                if (mainArea) mainArea.classList.add('sidebar-open');
+                                if (modalDialog) {
+                                    modalDialog.style.maxWidth = 'calc(70vw + 240px)';
+                                }
+                                if (rightArrow) rightArrow.style.right = '260px';
+                            }
+                        }
+                    });
+                }
+            }, { once: true });
+            
+            modal.show();
+            
+            // Clean up on close
+            modalElement.addEventListener('hidden.bs.modal', function() {
+                this.remove();
+            }, { once: true });
+        }
+    });
+
+    // Navigation function for chat images (similar to todos)
+    window.navigateToMedia = function(direction) {
+        const imageModal = document.getElementById('imageViewerModal');
+        if (!imageModal || !imageModal.classList.contains('show')) return;
+        
+        let mediaFiles = window.currentChatImageFiles || window.currentImageFiles || [];
+        
+        // Try to get from modal data attribute
+        if (mediaFiles.length === 0 && imageModal.dataset.imageFiles) {
+            try {
+                mediaFiles = JSON.parse(imageModal.dataset.imageFiles);
+            } catch(e) {
+                console.error('Error parsing modal image files:', e);
+            }
+        }
+        
+        if (mediaFiles.length === 0) return;
+        
+        // If direction is 0, just update the current image (used when clicking thumbnails)
+        let nextIndex;
+        if (direction === 0) {
+            // Use current index (already set)
+            nextIndex = window.currentMediaIndex;
+            if (nextIndex < 0 || nextIndex >= mediaFiles.length) {
+                nextIndex = 0;
+            }
+        } else {
+            // Find current index if not set
+            if (window.currentMediaIndex === -1 || window.currentMediaIndex >= mediaFiles.length) {
+                const img = imageModal.querySelector('#mainImageViewerImage');
+                const currentUrl = img ? img.getAttribute('src') : '';
+                if (currentUrl) {
+                    window.currentMediaIndex = mediaFiles.findIndex(f => {
+                        let fUrl = f.url || '';
+                        let cUrl = currentUrl;
+                        if (fUrl.includes('admin.onlinesystems.info')) {
+                            fUrl = fUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                        }
+                        if (cUrl.includes('admin.onlinesystems.info')) {
+                            cUrl = cUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+                        }
+                        return fUrl === cUrl || fUrl.includes(cUrl) || cUrl.includes(fUrl);
+                    });
+                    if (window.currentMediaIndex === -1) window.currentMediaIndex = 0;
+                } else {
+                    window.currentMediaIndex = 0;
+                }
+            }
+            
+            // Calculate next index with wrap-around
+            nextIndex = window.currentMediaIndex + direction;
+            if (nextIndex < 0) nextIndex = mediaFiles.length - 1;
+            if (nextIndex >= mediaFiles.length) nextIndex = 0;
+        }
+        
+        window.currentMediaIndex = nextIndex;
+        const nextFile = mediaFiles[nextIndex];
+        
+        if (!nextFile) return;
+        
+        // Update image
+        const img = imageModal.querySelector('#mainImageViewerImage');
+        const modalTitle = imageModal.querySelector('.modal-footer .modal-title');
+        const downloadBtn = imageModal.querySelector('.image-download-btn');
+        const shareBtn = imageModal.querySelector('.image-share-btn');
+        
+        if (img) {
+            let finalUrl = nextFile.url || '';
+            if (finalUrl.includes('admin.onlinesystems.info')) {
+                finalUrl = finalUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+            }
+            
+            const separator = finalUrl.includes('?') ? '&' : '?';
+            img.src = finalUrl + separator + '_t=' + Date.now();
+            img.alt = window.cleanImageName(nextFile.name || 'Image');
+        }
+        
+        if (modalTitle) {
+            modalTitle.textContent = window.cleanImageName(nextFile.name || 'Image');
+        }
+        
+        if (downloadBtn && nextFile.url) {
+            let finalUrl = nextFile.url;
+            if (finalUrl.includes('admin.onlinesystems.info')) {
+                finalUrl = finalUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+            }
+            downloadBtn.setAttribute('data-image-url', finalUrl);
+            downloadBtn.setAttribute('data-image-name', nextFile.name || 'image.jpg');
+        }
+        
+        if (shareBtn && nextFile.url) {
+            let finalUrl = nextFile.url;
+            if (finalUrl.includes('admin.onlinesystems.info')) {
+                finalUrl = finalUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+            }
+            shareBtn.setAttribute('data-image-url', finalUrl);
+            shareBtn.setAttribute('data-image-name', nextFile.name || 'image.jpg');
+        }
+        
+        // Update thumbnails
+        updateChatThumbnailHighlights();
+    };
+
+    // Function to load chat image thumbnails in footer
+    function loadChatImageThumbnails() {
+        const thumbnailsContainer = document.getElementById('imageThumbnails');
+        if (!thumbnailsContainer) return;
+        
+        const imageFiles = window.currentChatImageFiles || window.currentImageFiles || [];
+        thumbnailsContainer.innerHTML = '';
+        
+        const imageModal = document.getElementById('imageViewerModal');
+        const currentImageUrl = imageModal ? (imageModal.querySelector('#mainImageViewerImage')?.getAttribute('src') || '') : '';
+        
+        imageFiles.forEach((file) => {
+            if (!file || !file.url) return;
+            
+            let thumbnailUrl = file.url;
+            if (thumbnailUrl.includes('admin.onlinesystems.info')) {
+                thumbnailUrl = thumbnailUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+            }
+            
+            const isActive = currentImageUrl && (thumbnailUrl === currentImageUrl || thumbnailUrl.includes(currentImageUrl) || currentImageUrl.includes(thumbnailUrl));
+            
+            const thumbnail = document.createElement('div');
+            thumbnail.className = 'image-thumbnail';
+            thumbnail.style.cssText = `width: 60px; height: 60px; border-radius: 6px; overflow: hidden; cursor: pointer; border: ${isActive ? '2px solid #6338F6' : '2px solid transparent'}; flex-shrink: 0;`;
+            thumbnail.innerHTML = `<img src="${thumbnailUrl}" style="width: 100%; height: 100%; object-fit: cover;">`;
+            
+            thumbnail.addEventListener('click', function() {
+                const index = imageFiles.findIndex(f => f.url === file.url);
+                if (index !== -1) {
+                    window.currentMediaIndex = index;
+                    window.navigateToMedia(0); // Navigate to this image
+                }
+            });
+            
+            thumbnailsContainer.appendChild(thumbnail);
+        });
+    }
+
+    // Function to load chat image gallery sidebar
+    function loadChatImageGallerySidebar() {
+        const sidebarContainer = document.getElementById('imageGalleryThumbnails');
+        if (!sidebarContainer) return;
+        
+        const imageFiles = window.currentChatImageFiles || window.currentImageFiles || [];
+        sidebarContainer.innerHTML = '';
+        
+        if (imageFiles.length === 0) {
+            sidebarContainer.innerHTML = '<p style="color: rgba(255,255,255,0.6); text-align: center; padding: 20px;">No images available</p>';
+            return;
+        }
+        
+        const imageModal = document.getElementById('imageViewerModal');
+        const currentImageUrl = imageModal ? (imageModal.querySelector('#mainImageViewerImage')?.getAttribute('src') || '') : '';
+        
+        imageFiles.forEach((file, index) => {
+            if (!file || !file.url) return;
+            
+            let thumbnailUrl = file.url;
+            if (thumbnailUrl.includes('admin.onlinesystems.info')) {
+                thumbnailUrl = thumbnailUrl.replace('admin.onlinesystems.info', 'team.onlinesystems.info');
+            }
+            
+            const isActive = currentImageUrl && (thumbnailUrl === currentImageUrl || thumbnailUrl.includes(currentImageUrl) || currentImageUrl.includes(thumbnailUrl));
+            
+            const thumbnailWrapper = document.createElement('div');
+            thumbnailWrapper.style.cssText = 'width: 100%; aspect-ratio: 1; overflow: hidden; position: relative; cursor: pointer;';
+            
+            const thumbnail = document.createElement('img');
+            thumbnail.className = 'image-gallery-thumbnail' + (isActive ? ' active' : '');
+            thumbnail.src = thumbnailUrl;
+            thumbnail.alt = window.cleanImageName(file.name || 'Image');
+            thumbnail.style.cssText = 'width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;';
+            
+            thumbnail.addEventListener('click', function() {
+                window.currentMediaIndex = index;
+                window.navigateToMedia(0);
+                
+                // Update active state
+                document.querySelectorAll('.image-gallery-thumbnail').forEach(thumb => {
+                    thumb.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+            
+            thumbnailWrapper.appendChild(thumbnail);
+            sidebarContainer.appendChild(thumbnailWrapper);
+        });
+    }
+
+    // Function to update thumbnail highlights
+    function updateChatThumbnailHighlights() {
+        const imageModal = document.getElementById('imageViewerModal');
+        if (!imageModal) return;
+        
+        const img = imageModal.querySelector('#mainImageViewerImage');
+        const currentUrl = img ? img.getAttribute('src') : '';
+        
+        // Update footer thumbnails
+        document.querySelectorAll('.image-thumbnail').forEach(thumb => {
+            const thumbImg = thumb.querySelector('img');
+            if (thumbImg) {
+                let thumbUrl = thumbImg.src.split('?')[0];
+                let compareUrl = currentUrl.split('?')[0];
+                thumb.style.border = (thumbUrl === compareUrl || thumbUrl.includes(compareUrl) || compareUrl.includes(thumbUrl)) 
+                    ? '2px solid #6338F6' : '2px solid transparent';
+            }
+        });
+        
+        // Update sidebar thumbnails
+        document.querySelectorAll('.image-gallery-thumbnail').forEach(thumb => {
+            let thumbUrl = thumb.src.split('?')[0];
+            let compareUrl = currentUrl.split('?')[0];
+            if (thumbUrl === compareUrl || thumbUrl.includes(compareUrl) || compareUrl.includes(thumbUrl)) {
+                thumb.classList.add('active');
+            } else {
+                thumb.classList.remove('active');
+            }
+        });
+    }
+
+    // Handle download and share buttons
+    document.addEventListener('click', function(e) {
+        // Download image
+        if (e.target.closest('.image-download-btn')) {
+            e.preventDefault();
+            const btn = e.target.closest('.image-download-btn');
+            const imageUrl = btn.getAttribute('data-image-url');
+            const imageName = btn.getAttribute('data-image-name');
+            
+            const a = document.createElement('a');
+            a.href = imageUrl;
+            a.download = imageName || 'image.jpg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+        
+        // Share image in chat
+        if (e.target.closest('.image-share-btn')) {
+            e.preventDefault();
+            const btn = e.target.closest('.image-share-btn');
+            const imageUrl = btn.getAttribute('data-image-url');
+            const imageName = btn.getAttribute('data-image-name');
+            
+            sessionStorage.setItem('shareInChat', JSON.stringify({
+                type: 'image',
+                url: imageUrl,
+                name: imageName
+            }));
+            
+            const modal = bootstrap.Modal.getInstance(document.getElementById('imageViewerModal'));
+            if (modal) modal.hide();
+            
+            alert('Image ready to share! Go to chat and paste or select this file.');
+        }
+    });
+
+    // Keyboard navigation for chat image viewer
+    document.addEventListener('keydown', function(e) {
+        const imageModal = document.getElementById('imageViewerModal');
+        if (!imageModal || !imageModal.classList.contains('show')) return;
+        
+        if (e.key === 'Escape') {
+            const modal = bootstrap.Modal.getInstance(imageModal);
+            if (modal) modal.hide();
+        }
+        
+        if (e.key === 'ArrowLeft') {
+            window.navigateToMedia(-1);
+        }
+        
+        if (e.key === 'ArrowRight') {
+            window.navigateToMedia(1);
+        }
+    });
+
+    // Handle arrow button clicks
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('#chatImagePrev') || e.target.closest('#chatImageNext')) {
+            e.preventDefault();
+            const direction = e.target.closest('#chatImagePrev') ? -1 : 1;
+            window.navigateToMedia(direction);
+        }
+    });
+</script>
 
 @endsection

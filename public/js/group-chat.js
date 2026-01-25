@@ -1187,7 +1187,7 @@ class GroupChatManager {
                         <div class="img-wrap" style="height: auto !important; min-height: 120px; max-height: 500px; max-width: 100%; flex: none !important;">
                             <img src="${message.file_url}" alt="Image" style="width: 100% !important; height: auto !important; max-width: 100%; max-height: 500px; object-fit: contain !important; object-position: center;">
                             <div class="img-overlay">
-                                <a class="gallery-img" data-fancybox="gallery-img" href="${message.file_url}" title="Image">
+                                <a class="chat-view-image-btn" href="javascript:void(0);" data-image-url="${message.file_url}" data-image-name="${message.file_name || 'Image'}" title="View Image">
                                     <i class="ti ti-eye"></i>
                                 </a>
                                 <a href="${message.file_url}" download><i class="ti ti-download"></i></a>
