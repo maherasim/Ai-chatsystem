@@ -638,7 +638,7 @@ class GroupChatManager {
     /**
      * Update chat header with group name and photo
      */
-    updateChatHeader(groupName, photoUrl) {
+    updateChatHeader(groupName, photoUrl, userType = null) {
         // Update group name
         const headerName = document.getElementById('chatHeaderName') || document.querySelector('.user-details h6');
         if (headerName) {
@@ -650,6 +650,16 @@ class GroupChatManager {
         if (headerAvatar && photoUrl) {
             headerAvatar.src = photoUrl;
             headerAvatar.alt = groupName || 'Group';
+        }
+
+        // Update user type if provided
+        if (userType) {
+            const headerType = document.getElementById('chatHeaderType') || document.querySelector('.user-details .last-seen');
+            if (headerType) {
+                // Capitalize first letter
+                const displayType = userType.charAt(0).toUpperCase() + userType.slice(1);
+                headerType.textContent = displayType;
+            }
         }
 
         // Load and display online members in the header
@@ -823,6 +833,11 @@ class GroupChatManager {
                 const profileStatus = document.getElementById('contactProfileStatus');
                 if (profileStatus) {
                     profileStatus.textContent = `${group.member_count || 0} members`;
+                }
+
+                // Update chat header with admin type
+                if (group.admin_type) {
+                    this.updateChatHeader(group.name || 'Untitled Group', group.photo, group.admin_type);
                 }
 
                 // Update contact info details

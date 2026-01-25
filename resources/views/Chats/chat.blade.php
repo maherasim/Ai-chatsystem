@@ -1075,7 +1075,7 @@
                     </div>
                     <div class="ms-2 overflow-hidden">
                         <h6 id="chatHeaderName" style="font-size: 20px; margin-bottom: 2px; line-height: 1.2;">{{$header->first_name ?? 'Chat'}}</h6>
-                        <span class="last-seen" style="font-size: 16px; line-height: 1.2;">Online</span>
+                        <span id="chatHeaderType" class="last-seen" style="font-size: 16px; line-height: 1.2; display: block;">Online</span>
                     </div>
                 </div>
 

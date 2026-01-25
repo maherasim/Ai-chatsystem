@@ -1157,10 +1157,12 @@ class ChatController extends Controller
             // Get admin user
             $admin = null;
             $adminEmail = '';
+            $adminType = '';
             if ($group->admin_id) {
                 $admin = User::find($group->admin_id);
                 if ($admin) {
                     $adminEmail = $admin->email ?? '';
+                    $adminType = $admin->type ?? '';
                 }
             }
 
@@ -1187,6 +1189,7 @@ class ChatController extends Controller
                     'photo' => $teamPhoto,
                     'member_count' => $memberCount,
                     'admin_name' => $admin ? ($admin->name ?? $admin->email ?? 'Unknown') : 'Unknown',
+                    'admin_type' => $adminType,
                 ],
             ]);
         } catch (\Exception $e) {
