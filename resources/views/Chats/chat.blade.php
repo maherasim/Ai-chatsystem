@@ -3089,6 +3089,7 @@
                     const defaultAvatar = '{{ asset("build/img/profile.svg") }}';
                     const avatarUrl = member.avatar || defaultAvatar;
                     const memberName = member.name || member.email || 'User';
+                    const memberType = member.type ? (member.type.charAt(0).toUpperCase() + member.type.slice(1)) : '';
                     
                     memberCard.innerHTML = `
                         <div style="position: relative; flex-shrink: 0;">
@@ -3098,7 +3099,10 @@
                                  onerror="this.onerror=null; this.src='${defaultAvatar}';">
                             ${onlineIndicator}
                         </div>
-                        <span style="font-size: 16px; color: #2e3a59; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${memberName}</span>
+                        <div style="display: flex; flex-direction: column; min-width: 0;">
+                            <span style="font-size: 16px; color: #2e3a59; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${memberName}</span>
+                            ${memberType ? `<span style="font-size: 12px; color: #7d7f85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${memberType}</span>` : ''}
+                        </div>
                     `;
                     fragment.appendChild(memberCard);
                 });
