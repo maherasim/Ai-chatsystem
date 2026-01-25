@@ -3197,7 +3197,9 @@
                 
                 const fragment = document.createDocumentFragment();
                 const addedMemberIds = new Set();
+                const validMembers = [];
                 
+                // First, collect all valid members
                 data.members.forEach(member => {
                     const memberId = String(member.id || member._id || member.email || '').trim();
                     if (!memberId || addedMemberIds.has(memberId)) {
@@ -3207,6 +3209,12 @@
                         return;
                     }
                     addedMemberIds.add(memberId);
+                    validMembers.push(member);
+                });
+                
+                // Then create cards with separators
+                validMembers.forEach((member, index) => {
+                    const memberId = String(member.id || member._id || member.email || '').trim();
                     
                     const memberCard = document.createElement('div');
                     memberCard.setAttribute('data-member-id', memberId);
@@ -3235,6 +3243,13 @@
                         </div>
                     `;
                     fragment.appendChild(memberCard);
+                    
+                    // Add separator after each member (except the last one)
+                    if (index < validMembers.length - 1) {
+                        const separator = document.createElement('div');
+                        separator.style.cssText = 'width: 1px; height: 40px; background-color: #e0e0e0; margin: 0 8px; flex-shrink: 0;';
+                        fragment.appendChild(separator);
+                    }
                 });
                 
                 // Append fragment to list (single append operation)
