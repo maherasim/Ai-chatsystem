@@ -10112,7 +10112,7 @@
             display: none !important;
         }
     </style>
-    <div class="modal fade" id="totaltask" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal fade" id="totaltask" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content" style="border-radius: 15px; overflow: hidden;">
 
