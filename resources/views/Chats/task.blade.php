@@ -2952,15 +2952,28 @@
                     badgeCounter += 1;
                     taskData.number = badgeCounter;
                     taskData.color = currentColor;
+                    taskData.shape = currentShape || 'circle';
                     taskData.position = (function() {
                         var layerRect = markerLayer.getBoundingClientRect();
                         var mRect = (currentMarker || {}).getBoundingClientRect ? currentMarker
                             .getBoundingClientRect() : layerRect;
                         return {
                             left: (mRect.left - layerRect.left) + mRect.width / 2,
-                            top: (mRect.top - layerRect.top) + mRect.height / 2
+                            top: (mRect.top - layerRect.top) + mRect.height / 2,
+                            width: mRect.width || 80,
+                            height: mRect.height || 80
                         };
                     })();
+                    // Store the current layer size for later scaling in viewer
+                    try {
+                        var lRectPersist = markerLayer.getBoundingClientRect();
+                        taskData.layer = {
+                            width: Math.round(lRectPersist.width || 0),
+                            height: Math.round(lRectPersist.height || 0)
+                        };
+                    } catch (_) {
+                        taskData.layer = null;
+                    }
                     createdTasks.push(taskData);
                 // Issue is added to createdTasks array, will be saved when user clicks green "Save and Close" button
                 // Add task card to list (visual feedback only)
@@ -3802,8 +3815,8 @@
                     checkpoints: Array.from((checkpointsList || {}).children || []).map(function(row) {
                         return row.querySelector('input')?.value || '';
                     }).filter(Boolean),
-                    shape: currentShape,
-                    color: currentColor,
+                    shape: currentShape || 'circle',
+                    color: currentColor || '#28c76f',
                     mark_image: cropMarkerToBase64(),
                     project_id: (projectSelect || {}).value || null,
                     ticket_id: (ticketSelect || {}).value || null,
@@ -3814,10 +3827,23 @@
                             currentMarker.getBoundingClientRect() : layerRect;
                         return {
                             left: (markerRect.left - layerRect.left) + markerRect.width / 2,
-                            top: (markerRect.top - layerRect.top) + markerRect.height / 2
+                            top: (markerRect.top - layerRect.top) + markerRect.height / 2,
+                            width: markerRect.width || 80,
+                            height: markerRect.height || 80
                         };
                     })(),
-                    number: badgeCounter + 1
+                    number: badgeCounter + 1,
+                    layer: (function() {
+                        try {
+                            var layerRect = markerLayer.getBoundingClientRect();
+                            return {
+                                width: Math.round(layerRect.width || 0),
+                                height: Math.round(layerRect.height || 0)
+                            };
+                        } catch (_) {
+                            return null;
+                        }
+                    })()
                 };
                 // If editing an existing task, do NOT update immediately; accumulate locally
                 try {
@@ -3832,6 +3858,7 @@
                 badgeCounter += 1;
                 taskData.number = badgeCounter;
                 taskData.color = currentColor;
+                taskData.shape = currentShape || 'circle'; // Ensure shape is set
                 taskData.position = (function() {
                     var layerRect = markerLayer.getBoundingClientRect();
                     var mRect = (currentMarker || {}).getBoundingClientRect ? currentMarker
@@ -3843,7 +3870,9 @@
                     var free = findFreePosition(base.left, base.top);
                     return {
                         left: free.left,
-                        top: free.top
+                        top: free.top,
+                        width: mRect.width || 80,
+                        height: mRect.height || 80
                     };
                 })();
                 // Store the current layer size for later scaling in viewer
@@ -6624,14 +6653,16 @@
                     description: desc,
                     start_date: s,
                     end_date: e,
-                    shape: wtCurrentShape,
-                    color: wtCurrentColor,
+                    shape: wtCurrentShape || 'circle',
+                    color: wtCurrentColor || '#ea5455',
                     mark_image: wtCropMarker(),
                     project_id: (wtProjectSelect || {}).value || null,
                     ticket_id: (wtTicketSelect || {}).value || null,
                     position: {
                         left: (mRect.left - layerRect.left) + mRect.width / 2,
-                        top: (mRect.top - layerRect.top) + mRect.height / 2
+                        top: (mRect.top - layerRect.top) + mRect.height / 2,
+                        width: mRect.width || 80,
+                        height: mRect.height || 80
                     },
                     number: wtBadgeCounter,
                     layer: {
@@ -8235,6 +8266,66 @@
                                     var start = (it && it.start_date) ? it.start_date : '-';
                                     var end = (it && it.end_date) ? it.end_date : '-';
                                     var accent = (it && it.color) ? it.color : '#28c76f';
+                                    
+                                    // Get mark image URL from board attribute
+                                    var markImageUrl = board || '';
+                                    
+                                    // Get issue position and shape data
+                                    var issuePos = it.position || {};
+                                    var issueShape = it.shape || 'circle';
+                                    // Get saved width and height, or use defaults
+                                    var issueWidth = (it.position && it.position.width) ? it.position.width : (issueShape === 'circle' ? 80 : 80);
+                                    var issueHeight = (it.position && it.position.height) ? it.position.height : (issueShape === 'circle' ? 80 : 80);
+                                    // Position is stored as center point, so we need to calculate top-left corner
+                                    var issueCenterX = issuePos.left || 0;
+                                    var issueCenterY = issuePos.top || 0;
+                                    var issueLeft = issueCenterX - (issueWidth / 2);
+                                    var issueTop = issueCenterY - (issueHeight / 2);
+                                    
+                                    // Get layer dimensions for scaling
+                                    var layerW = savedW || (img ? img.naturalWidth : 800);
+                                    var layerH = savedH || (img ? img.naturalHeight : 600);
+                                    
+                                    // Create image with marked area visualization
+                                    var imageHtml = '';
+                                    if (markImageUrl) {
+                                        // Create a container with the image and overlay showing the marked area
+                                        var displayWidth = 400; // Fixed width for popup
+                                        var displayHeight = (displayWidth / layerW) * layerH;
+                                        var scaleX = displayWidth / layerW;
+                                        var scaleY = displayHeight / layerH;
+                                        
+                                        var overlayLeft = issueLeft * scaleX;
+                                        var overlayTop = issueTop * scaleY;
+                                        var overlayWidth = issueWidth * scaleX;
+                                        var overlayHeight = issueHeight * scaleY;
+                                        
+                                        var shapeOverlay = '';
+                                        if (issueShape === 'circle') {
+                                            var radius = Math.min(overlayWidth, overlayHeight) / 2;
+                                            shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + (radius * 2) + 'px; height:' + (radius * 2) + 'px; border:3px solid ' + accent + '; border-radius:50%; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
+                                        } else if (issueShape === 'rectangle') {
+                                            shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + overlayWidth + 'px; height:' + overlayHeight + 'px; border:3px solid ' + accent + '; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
+                                        } else if (issueShape === 'triangle') {
+                                            // Triangle shape - create using SVG
+                                            var centerX = overlayLeft + overlayWidth / 2;
+                                            var centerY = overlayTop + overlayHeight / 2;
+                                            var size = Math.max(overlayWidth, overlayHeight);
+                                            shapeOverlay = '<svg style="position:absolute; left:' + (centerX - size/2) + 'px; top:' + (centerY - size/2) + 'px; width:' + size + 'px; height:' + size + 'px; pointer-events:none;"><polygon points="' + (size/2) + ',0 ' + size + ',' + size + ' 0,' + size + '" fill="none" stroke="' + accent + '" stroke-width="3" style="filter:drop-shadow(0 0 2px rgba(0,0,0,0.3));"/></svg>';
+                                        } else {
+                                            // Default to circle
+                                            var radius = Math.min(overlayWidth, overlayHeight) / 2;
+                                            shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + (radius * 2) + 'px; height:' + (radius * 2) + 'px; border:3px solid ' + accent + '; border-radius:50%; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
+                                        }
+                                        
+                                        imageHtml = '<div style="margin-bottom:12px; border-radius:8px; overflow:hidden; border:1px solid #e5e7eb; background:#fff;">' +
+                                            '<div style="position:relative; width:' + displayWidth + 'px; height:' + displayHeight + 'px; max-width:100%;">' +
+                                            '<img src="' + markImageUrl + '" style="width:100%; height:100%; object-fit:contain; display:block;" onload="this.parentElement.style.height=this.offsetHeight+\'px\';">' +
+                                            shapeOverlay +
+                                            '</div>' +
+                                            '</div>';
+                                    }
+                                    
                                     Swal.fire({
                                         title: '',
                                         html: (
@@ -8243,6 +8334,7 @@
                                                     '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+accent+';"></span>' +
                                                     '<div style="font-weight:700; font-size:15px; color:#111827;">' + titleText + '</div>' +
                                                 '</div>' +
+                                                imageHtml +
                                                 '<div style="background:#f8fafc; border:1px solid #eef2f7; border-radius:10px; padding:10px; color:#334155; margin-bottom:10px; font-size:13px; line-height:1.5;">' +
                                                     (String(desc||'').trim() || '-') +
                                                 '</div>' +
@@ -8252,7 +8344,7 @@
                                                 '</div>' +
                                             '</div>'
                                         ),
-                                        width: 420,
+                                        width: 500,
                                         showCloseButton: true,
                                         focusConfirm: false,
                                         confirmButtonText: 'Close',
@@ -10381,6 +10473,80 @@
                                             const start = (it && it.start_date) ? it.start_date : '-';
                                             const end = (it && it.end_date) ? it.end_date : '-';
                                             const accent = (it && it.color) ? it.color : '#28c76f';
+                                            
+                                            // Get mark image URL
+                                            const clickedItem = document.querySelector('.totaltask-item.active');
+                                            let markImageUrl = '';
+                                            if (clickedItem) {
+                                                const markImagePath = clickedItem.getAttribute('data-mark-image-path') || '';
+                                                if (markImagePath) {
+                                                    if (markImagePath.startsWith('http://') || markImagePath.startsWith('https://')) {
+                                                        markImageUrl = markImagePath;
+                                                    } else if (markImagePath.startsWith('storage/')) {
+                                                        markImageUrl = '{{ asset("") }}' + markImagePath;
+                                                    } else {
+                                                        const cleanPath = markImagePath.replace(/^\/+/, '');
+                                                        markImageUrl = '{{ asset("storage") }}/' + cleanPath;
+                                                    }
+                                                }
+                                            }
+                                            
+                                            // Get issue position and shape data
+                                            const issuePos = it.position || {};
+                                            const issueShape = it.shape || 'circle';
+                                            // Get saved width and height, or use defaults
+                                            const issueWidth = (it.position && it.position.width) ? it.position.width : (issueShape === 'circle' ? 80 : 80);
+                                            const issueHeight = (it.position && it.position.height) ? it.position.height : (issueShape === 'circle' ? 80 : 80);
+                                            // Position is stored as center point, so we need to calculate top-left corner
+                                            const issueCenterX = issuePos.left || 0;
+                                            const issueCenterY = issuePos.top || 0;
+                                            const issueLeft = issueCenterX - (issueWidth / 2);
+                                            const issueTop = issueCenterY - (issueHeight / 2);
+                                            
+                                            // Get layer dimensions for scaling
+                                            const layerW = (it.layer && it.layer.width) ? it.layer.width : (markImageElement ? markImageElement.naturalWidth : 800);
+                                            const layerH = (it.layer && it.layer.height) ? it.layer.height : (markImageElement ? markImageElement.naturalHeight : 600);
+                                            
+                                            // Create image with marked area visualization
+                                            let imageHtml = '';
+                                            if (markImageUrl) {
+                                                // Create a container with the image and overlay showing the marked area
+                                                const displayWidth = 400; // Fixed width for popup
+                                                const displayHeight = (displayWidth / layerW) * layerH;
+                                                const scaleX = displayWidth / layerW;
+                                                const scaleY = displayHeight / layerH;
+                                                
+                                                const overlayLeft = issueLeft * scaleX;
+                                                const overlayTop = issueTop * scaleY;
+                                                const overlayWidth = issueWidth * scaleX;
+                                                const overlayHeight = issueHeight * scaleY;
+                                                
+                                                let shapeOverlay = '';
+                                                if (issueShape === 'circle') {
+                                                    const radius = Math.min(overlayWidth, overlayHeight) / 2;
+                                                    shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + (radius * 2) + 'px; height:' + (radius * 2) + 'px; border:3px solid ' + accent + '; border-radius:50%; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
+                                                } else if (issueShape === 'rectangle') {
+                                                    shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + overlayWidth + 'px; height:' + overlayHeight + 'px; border:3px solid ' + accent + '; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
+                                                } else if (issueShape === 'triangle') {
+                                                    // Triangle shape - create using SVG or CSS
+                                                    const centerX = overlayLeft + overlayWidth / 2;
+                                                    const centerY = overlayTop + overlayHeight / 2;
+                                                    const size = Math.max(overlayWidth, overlayHeight);
+                                                    shapeOverlay = '<svg style="position:absolute; left:' + (centerX - size/2) + 'px; top:' + (centerY - size/2) + 'px; width:' + size + 'px; height:' + size + 'px; pointer-events:none;"><polygon points="' + (size/2) + ',0 ' + size + ',' + size + ' 0,' + size + '" fill="none" stroke="' + accent + '" stroke-width="3" style="filter:drop-shadow(0 0 2px rgba(0,0,0,0.3));"/></svg>';
+                                                } else {
+                                                    // Default to circle
+                                                    const radius = Math.min(overlayWidth, overlayHeight) / 2;
+                                                    shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + (radius * 2) + 'px; height:' + (radius * 2) + 'px; border:3px solid ' + accent + '; border-radius:50%; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
+                                                }
+                                                
+                                                imageHtml = '<div style="margin-bottom:12px; border-radius:8px; overflow:hidden; border:1px solid #e5e7eb; background:#fff;">' +
+                                                    '<div style="position:relative; width:' + displayWidth + 'px; height:' + displayHeight + 'px; max-width:100%;">' +
+                                                    '<img src="' + markImageUrl + '" style="width:100%; height:100%; object-fit:contain; display:block;" onload="this.parentElement.style.height=this.offsetHeight+\'px\';">' +
+                                                    shapeOverlay +
+                                                    '</div>' +
+                                                    '</div>';
+                                            }
+                                            
                                             Swal.fire({
                                                 title: '',
                                                 html: (
@@ -10389,6 +10555,7 @@
                                                             '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+accent+';"></span>' +
                                                             '<div style="font-weight:700; font-size:15px; color:#111827;">' + titleText + '</div>' +
                                                         '</div>' +
+                                                        imageHtml +
                                                         '<div style="background:#f8fafc; border:1px solid #eef2f7; border-radius:10px; padding:10px; color:#334155; margin-bottom:10px; font-size:13px; line-height:1.5;">' +
                                                             (String(desc||'').trim() || '-') +
                                                         '</div>' +
@@ -10398,7 +10565,7 @@
                                                         '</div>' +
                                                     '</div>'
                                                 ),
-                                                width: 420,
+                                                width: 500,
                                                 showCloseButton: true,
                                                 focusConfirm: false,
                                                 confirmButtonText: 'Close',
@@ -10590,6 +10757,80 @@
                                                 const start = (it && it.start_date) ? it.start_date : '-';
                                                 const end = (it && it.end_date) ? it.end_date : '-';
                                                 const accent = (it && it.color) ? it.color : '#28c76f';
+                                                
+                                                // Get mark image URL
+                                                const clickedItem = document.querySelector('.totaltask-item.active');
+                                                let markImageUrl = '';
+                                                if (clickedItem) {
+                                                    const markImagePath = clickedItem.getAttribute('data-mark-image-path') || '';
+                                                    if (markImagePath) {
+                                                        if (markImagePath.startsWith('http://') || markImagePath.startsWith('https://')) {
+                                                            markImageUrl = markImagePath;
+                                                        } else if (markImagePath.startsWith('storage/')) {
+                                                            markImageUrl = '{{ asset("") }}' + markImagePath;
+                                                        } else {
+                                                            const cleanPath = markImagePath.replace(/^\/+/, '');
+                                                            markImageUrl = '{{ asset("storage") }}/' + cleanPath;
+                                                        }
+                                                    }
+                                                }
+                                                
+                                                // Get issue position and shape data
+                                                const issuePos = it.position || {};
+                                                const issueShape = it.shape || 'circle';
+                                                // Get saved width and height, or use defaults
+                                                const issueWidth = (it.position && it.position.width) ? it.position.width : (issueShape === 'circle' ? 80 : 80);
+                                                const issueHeight = (it.position && it.position.height) ? it.position.height : (issueShape === 'circle' ? 80 : 80);
+                                                // Position is stored as center point, so we need to calculate top-left corner
+                                                const issueCenterX = issuePos.left || 0;
+                                                const issueCenterY = issuePos.top || 0;
+                                                const issueLeft = issueCenterX - (issueWidth / 2);
+                                                const issueTop = issueCenterY - (issueHeight / 2);
+                                                
+                                                // Get layer dimensions for scaling
+                                                const layerW = (it.layer && it.layer.width) ? it.layer.width : (markImageElement ? markImageElement.naturalWidth : 800);
+                                                const layerH = (it.layer && it.layer.height) ? it.layer.height : (markImageElement ? markImageElement.naturalHeight : 600);
+                                                
+                                                // Create image with marked area visualization
+                                                let imageHtml = '';
+                                                if (markImageUrl) {
+                                                    // Create a container with the image and overlay showing the marked area
+                                                    const displayWidth = 400; // Fixed width for popup
+                                                    const displayHeight = (displayWidth / layerW) * layerH;
+                                                    const scaleX = displayWidth / layerW;
+                                                    const scaleY = displayHeight / layerH;
+                                                    
+                                                    const overlayLeft = issueLeft * scaleX;
+                                                    const overlayTop = issueTop * scaleY;
+                                                    const overlayWidth = issueWidth * scaleX;
+                                                    const overlayHeight = issueHeight * scaleY;
+                                                    
+                                                    let shapeOverlay = '';
+                                                    if (issueShape === 'circle') {
+                                                        const radius = Math.min(overlayWidth, overlayHeight) / 2;
+                                                        shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + (radius * 2) + 'px; height:' + (radius * 2) + 'px; border:3px solid ' + accent + '; border-radius:50%; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
+                                                    } else if (issueShape === 'rectangle') {
+                                                        shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + overlayWidth + 'px; height:' + overlayHeight + 'px; border:3px solid ' + accent + '; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
+                                                    } else if (issueShape === 'triangle') {
+                                                        // Triangle shape - create using SVG or CSS
+                                                        const centerX = overlayLeft + overlayWidth / 2;
+                                                        const centerY = overlayTop + overlayHeight / 2;
+                                                        const size = Math.max(overlayWidth, overlayHeight);
+                                                        shapeOverlay = '<svg style="position:absolute; left:' + (centerX - size/2) + 'px; top:' + (centerY - size/2) + 'px; width:' + size + 'px; height:' + size + 'px; pointer-events:none;"><polygon points="' + (size/2) + ',0 ' + size + ',' + size + ' 0,' + size + '" fill="none" stroke="' + accent + '" stroke-width="3" style="filter:drop-shadow(0 0 2px rgba(0,0,0,0.3));"/></svg>';
+                                                    } else {
+                                                        // Default to circle
+                                                        const radius = Math.min(overlayWidth, overlayHeight) / 2;
+                                                        shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + (radius * 2) + 'px; height:' + (radius * 2) + 'px; border:3px solid ' + accent + '; border-radius:50%; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
+                                                    }
+                                                    
+                                                    imageHtml = '<div style="margin-bottom:12px; border-radius:8px; overflow:hidden; border:1px solid #e5e7eb; background:#fff;">' +
+                                                        '<div style="position:relative; width:' + displayWidth + 'px; height:' + displayHeight + 'px; max-width:100%;">' +
+                                                        '<img src="' + markImageUrl + '" style="width:100%; height:100%; object-fit:contain; display:block;" onload="this.parentElement.style.height=this.offsetHeight+\'px\';">' +
+                                                        shapeOverlay +
+                                                        '</div>' +
+                                                        '</div>';
+                                                }
+                                                
                                                 Swal.fire({
                                                     title: '',
                                                     html: (
@@ -10598,6 +10839,7 @@
                                                                 '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+accent+';"></span>' +
                                                                 '<div style="font-weight:700; font-size:15px; color:#111827;">' + titleText + '</div>' +
                                                             '</div>' +
+                                                            imageHtml +
                                                             '<div style="background:#f8fafc; border:1px solid #eef2f7; border-radius:10px; padding:10px; color:#334155; margin-bottom:10px; font-size:13px; line-height:1.5;">' +
                                                                 (String(desc||'').trim() || '-') +
                                                             '</div>' +
@@ -10607,7 +10849,7 @@
                                                             '</div>' +
                                                         '</div>'
                                                     ),
-                                                    width: 420,
+                                                    width: 500,
                                                     showCloseButton: true,
                                                     focusConfirm: false,
                                                     confirmButtonText: 'Close',
