@@ -806,6 +806,12 @@
                             $norm = function($v) {
                                 return is_string($v) ? strtolower(str_replace([' ', '-'], '_', $v)) : $v;
                             };
+                            // Initialize global task counter for sequential Task IDs (Tk001, Tk002, etc.)
+                            $globalTaskCounter = 0;
+                            $getTaskId = function() use (&$globalTaskCounter) {
+                                $globalTaskCounter++;
+                                return 'Tk' . str_pad($globalTaskCounter, 3, '0', STR_PAD_LEFT);
+                            };
                         @endphp
                         @if(request()->has('debug'))
                             @php
@@ -987,7 +993,7 @@
                                                 $endDate = optional($task->end_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->end_date ?? null))->format('d.m.Y') ?: '--');
                                                 
                                                 // Determine task type and ID
-                                                $taskId = (string)($task->_id ?? $task->id ?? '');
+                                                $taskId = $getTaskId(); // Use sequential format: Tk001, Tk002, etc.
                                                 $taskType = 'task'; // default
                                                 if ($task instanceof \App\Models\WebTask) {
                                                     $taskType = 'webtask';
@@ -1135,7 +1141,7 @@
                                                 $rejectionReason = $latestRejection['reason'] ?? 'No rejection reason provided';
                                                 
                                                 // Get task info for modal
-                                                $taskId = (string)($task->_id ?? $task->id ?? '');
+                                                $taskId = $getTaskId(); // Use sequential format: Tk001, Tk002, etc.
                                                 $taskType = 'task';
                                                 if ($task instanceof \App\Models\WebTask) {
                                                     $taskType = 'webtask';
@@ -1243,7 +1249,7 @@
                                         @forelse ($holdTasks as $task)
                                             @php
                                                 // Get hold reason and task info for modal
-                                                $taskId = (string)($task->_id ?? $task->id ?? '');
+                                                $taskId = $getTaskId(); // Use sequential format: Tk001, Tk002, etc.
                                                 $taskType = 'task';
                                                 if ($task instanceof \App\Models\WebTask) {
                                                     $taskType = 'webtask';
@@ -1525,7 +1531,7 @@
                                 @forelse ($newTasks as $task)
                                     @php
                                         // Prepare task data for modal
-                                        $taskId = (string)($task->_id ?? $task->id ?? '');
+                                        $taskId = $getTaskId(); // Use sequential format: Tk001, Tk002, etc.
                                         $taskType = 'task';
                                         if ($task instanceof \App\Models\WebTask) {
                                             $taskType = 'webtask';
@@ -5817,7 +5823,7 @@
                                         data-project-logo="{{ $logo }}"
                                         data-ticket-code="{{ e(optional($task->ticket)->code ?? '') }}"
                                         data-ticket-title="{{ e(optional($task->ticket)->title ?? '') }}"
-                                        data-task-id="{{ 'WTSK-' . str_pad((string) (1000 + $loop->iteration), 4, '0', STR_PAD_LEFT) }}"
+                                        data-task-id="{{ $getTaskId() }}"
                                         data-section="{{ e(optional($task->ticket)->section_name ?? 'Section') }}"
                                         data-start="{{ optional($task->ticket)->start_date ? \Carbon\Carbon::parse(optional($task->ticket)->start_date)->toDateString() : ($task->start_date ? \Carbon\Carbon::parse($task->start_date)->toDateString() : '') }}"
                                         data-deliver="{{ optional($task->ticket)->end_date ? \Carbon\Carbon::parse(optional($task->ticket)->end_date)->toDateString() : ($task->end_date ? \Carbon\Carbon::parse($task->end_date)->toDateString() : '') }}"
@@ -8395,9 +8401,7 @@
                                 style="max-width: 100%; max-height: 400px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto;">
 
                             <!-- Close Button (positioned lower) -->
-                            <div style="margin-top: 25px;">
-                                <button class="btn btn-success px-4" data-bs-dismiss="modal">Close</button>
-                            </div>
+                          
 
                         </div>
                         <!-- Notes -->
@@ -8566,10 +8570,7 @@
                                 alt="Task Image"
                                 style="max-width: 100%; max-height: 400px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto;">
 
-                            <!-- Close Button (positioned lower) -->
-                            <div style="margin-top: 25px;">
-                                <button class="btn btn-success px-4" data-bs-dismiss="modal">Close</button>
-                            </div>
+                          
 
                         </div>
                         <!-- Notes -->
@@ -8758,10 +8759,7 @@
                                 alt="Task Image"
                                 style="max-width: 100%; max-height: 400px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto;">
 
-                            <!-- Close Button (positioned lower) -->
-                            <div style="margin-top: 25px;">
-                                <button class="btn btn-success px-4" data-bs-dismiss="modal">Close</button>
-                            </div>
+                            
 
                         </div>
                         <!-- Notes -->
@@ -8949,9 +8947,7 @@
                                 style="max-width: 100%; max-height: 400px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto;">
 
                             <!-- Close Button (positioned lower) -->
-                            <div style="margin-top: 25px;">
-                                <button class="btn btn-success px-4" data-bs-dismiss="modal">Close</button>
-                            </div>
+                          
 
                         </div>
                         <!-- Notes -->
@@ -9133,9 +9129,7 @@
                                 style="max-width: 100%; max-height: 400px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto;">
 
                             <!-- Close Button (positioned lower) -->
-                            <div style="margin-top: 25px;">
-                                <button class="btn btn-success px-4" data-bs-dismiss="modal">Close</button>
-                            </div>
+                          
 
                         </div>
                         <!-- Notes -->
@@ -9308,9 +9302,7 @@
                                 style="max-width: 100%; max-height: 400px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto;">
                             
                             <!-- Close Button (positioned lower) -->
-                            <div style="margin-top: 25px;">
-                                <button class="btn btn-success px-4" data-bs-dismiss="modal">Close</button>
-                            </div>
+                          
 
                         </div>
                         <!-- Notes -->
@@ -10113,7 +10105,14 @@
     </script>
 
     <!-- in done -->
-    <div class="modal fade" id="totaltask" tabindex="-1" aria-hidden="true">
+    <style>
+        #totaltask .btn-close,
+        #totaltask button[data-bs-dismiss="modal"],
+        #totaltask .modal-header .btn-close {
+            display: none !important;
+        }
+    </style>
+    <div class="modal fade" id="totaltask" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content" style="border-radius: 15px; overflow: hidden;">
 
@@ -10204,9 +10203,7 @@
                         </div>
                         
                         <!-- Close Button (positioned lower) -->
-                        <div class="text-center" style="margin-top: 20px;">
-                            <button class="btn btn-success px-4" data-bs-dismiss="modal">Close</button>
-                        </div>
+                         
                         <!-- Notes -->
                         <!-- Notes Section-->
                         <div class="p-3" style="background-color: #f5f5f5; border-radius: 10px;">
