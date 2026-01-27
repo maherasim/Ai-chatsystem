@@ -373,8 +373,11 @@ class UsersController extends Controller
         'type'      => 'required',
       //  'phone'     => 'nullable|string',
        // 'department'=> 'nullable|string',
-        'image'     => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-        'banner'    => 'nullable|image|mimes:jpg,jpeg,png,gif|max:4096',
+        'image'     => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',   // 10 MB
+        'banner'    => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',   // 10 MB
+    ], [
+        'image.max'  => 'Profile image must not be larger than 10 MB.',
+        'banner.max' => 'Banner image must not be larger than 10 MB.',
     ]);
     // Step 2: Handle Image Upload
     $imagePath = null;
@@ -433,8 +436,8 @@ class UsersController extends Controller
         'title' => $validated['title'] ?? null,
         'email' => $validated['email'],
         'password' => Hash::make($rawPassword),
-        'phone' => $validated['phone'] ?? null,
-        'department' => $validated['department'] ?? null,
+        'phone' => $request->input('phone'),
+        'department' => $request->input('department'),
         'image' => $imagePath,
         'banner' => $banPath,
         'user_description' => $validated['user_description'] ?? null,

@@ -177,6 +177,23 @@ function confirmDelete(deleteUrl, userName) {
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="ti ti-x"></i></button>
             </div>
             @endif
+            @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin: 10px;">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="ti ti-x"></i></button>
+            </div>
+            @endif
+            @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin: 10px;" id="addUserValidationErrors">
+                <strong>Please fix the following:</strong>
+                <ul class="mb-0 mt-1">
+                    @foreach ($errors->all() as $err)
+                    <li>{{ $err }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="ti ti-x"></i></button>
+            </div>
+            @endif
 
             <!-- Wrapper -->
             <div style="visibility:visible;height: 92vh; overflow-y: auto; scrollbar-width: thin;">
@@ -2955,7 +2972,7 @@ function confirmDelete(deleteUrl, userName) {
                     style="text-align: center; color: #9ca3af; z-index: 1;">
                     <div style="font-size: 28px; font-weight: 400;">+</div>
                     <div style="font-size: 14px; font-weight: 500;">Upload banner</div>
-                    <div style="font-size: 12px;">JPG or PNG</div>
+                    <div style="font-size: 12px;">JPG or PNG, max 10 MB</div>
                 </div>
 
                 <input name="banner"
@@ -2963,7 +2980,7 @@ function confirmDelete(deleteUrl, userName) {
                     id="bannerInput"
                     accept=".png, .jpg" required="required"
                     style="display: none;"
-                    onchange="(function(event) { const input = event.target; const file = input.files && input.files[0]; const preview = document.getElementById('bannerPreview'); const placeholder = document.getElementById('bannerPlaceholder'); const errorEl = document.getElementById('bannerError'); if (!file) { return; } const ext = (file.name.split('.').pop() || '').toLowerCase(); const allowedExt = ['jpg','png']; const allowedMime = ['image/jpeg','image/png']; if (allowedExt.indexOf(ext) === -1 || allowedMime.indexOf(file.type) === -1) { if (errorEl) { errorEl.textContent = 'Only .jpg or .png files are allowed.'; errorEl.style.display = 'block'; } preview.style.display = 'none'; preview.src = ''; if (placeholder) placeholder.style.display = 'block'; input.value = ''; return; } if (errorEl) { errorEl.textContent = ''; errorEl.style.display = 'none'; } const reader = new FileReader(); reader.onload = function(e) { preview.src = e.target.result; preview.style.display = 'block'; if (placeholder) placeholder.style.display = 'none'; }; reader.readAsDataURL(file); })(event)" />
+                    onchange="(function(event) { const input = event.target; const file = input.files && input.files[0]; const preview = document.getElementById('bannerPreview'); const placeholder = document.getElementById('bannerPlaceholder'); const errorEl = document.getElementById('bannerError'); if (!file) { return; } const ext = (file.name.split('.').pop() || '').toLowerCase(); const allowedExt = ['jpg','png']; const allowedMime = ['image/jpeg','image/png']; if (allowedExt.indexOf(ext) === -1 || allowedMime.indexOf(file.type) === -1) { if (errorEl) { errorEl.textContent = 'Only .jpg or .png files are allowed.'; errorEl.style.display = 'block'; } preview.style.display = 'none'; preview.src = ''; if (placeholder) placeholder.style.display = 'block'; input.value = ''; return; } if (file.size > 10*1024*1024) { if (errorEl) { errorEl.textContent = 'File too large. Max 10 MB for banner.'; errorEl.style.display = 'block'; } preview.style.display = 'none'; preview.src = ''; if (placeholder) placeholder.style.display = 'block'; input.value = ''; return; } if (errorEl) { errorEl.textContent = ''; errorEl.style.display = 'none'; } const reader = new FileReader(); reader.onload = function(e) { preview.src = e.target.result; preview.style.display = 'block'; if (placeholder) placeholder.style.display = 'none'; }; reader.readAsDataURL(file); })(event)" />
             </div>
             <div id="bannerError" style="color: #ef4444; font-size: 12px; margin-top: 6px; display: none;"></div>
             </div>
@@ -2982,9 +2999,10 @@ function confirmDelete(deleteUrl, userName) {
                 </select>
 
 
-                <!-- User Image Upload -->
+                <!-- User Image Upload (JPG/PNG, max 10 MB) -->
                 <div
                     onclick="document.getElementById('userImgInput').click();"
+                    title="JPG or PNG, max 10 MB"
                     style="flex: 0 0 100px; height: 100px; background-color: #f9fafb; border: 2px dashed #e5e7eb; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative;">
                     <img
                         id="userImgPreview"
@@ -3001,7 +3019,7 @@ function confirmDelete(deleteUrl, userName) {
                         id="userImgInput"
                         accept=".png, .jpg" required="required"
                         style="display: none;"
-                        onchange="(function(event){ const input = event.target; const preview = document.getElementById('userImgPreview'); const placeholder = document.getElementById('userImgPlaceholder'); const errorEl = document.getElementById('userImgError'); if (input.files && input.files[0]) { const file = input.files[0]; const ext = (file.name.split('.').pop() || '').toLowerCase(); const allowedExt = ['jpg','png']; const allowedMime = ['image/jpeg','image/png']; if (allowedExt.indexOf(ext) === -1 || allowedMime.indexOf(file.type) === -1) { if (errorEl) { errorEl.textContent = 'Only .jpg or .png files are allowed.'; errorEl.style.display = 'block'; } preview.style.display = 'none'; preview.src = ''; if (placeholder) placeholder.style.display = 'block'; input.value=''; return; } if (errorEl) { errorEl.textContent = ''; errorEl.style.display = 'none'; } const reader = new FileReader(); reader.onload = function (e) { preview.src = e.target.result;  preview.style.display = 'block';  if (placeholder) placeholder.style.display = 'none'; }; reader.readAsDataURL(file); } })(event)" />
+                        onchange="(function(event){ const input = event.target; const preview = document.getElementById('userImgPreview'); const placeholder = document.getElementById('userImgPlaceholder'); const errorEl = document.getElementById('userImgError'); if (input.files && input.files[0]) { const file = input.files[0]; const ext = (file.name.split('.').pop() || '').toLowerCase(); const allowedExt = ['jpg','png']; const allowedMime = ['image/jpeg','image/png']; if (allowedExt.indexOf(ext) === -1 || allowedMime.indexOf(file.type) === -1) { if (errorEl) { errorEl.textContent = 'Only .jpg or .png files are allowed.'; errorEl.style.display = 'block'; } preview.style.display = 'none'; preview.src = ''; if (placeholder) placeholder.style.display = 'block'; input.value=''; return; } if (file.size > 10*1024*1024) { if (errorEl) { errorEl.textContent = 'File too large. Max 10 MB for profile image.'; errorEl.style.display = 'block'; } preview.style.display = 'none'; preview.src = ''; if (placeholder) placeholder.style.display = 'block'; input.value=''; return; } if (errorEl) { errorEl.textContent = ''; errorEl.style.display = 'none'; } const reader = new FileReader(); reader.onload = function (e) { preview.src = e.target.result;  preview.style.display = 'block';  if (placeholder) placeholder.style.display = 'none'; }; reader.readAsDataURL(file); } })(event)" />
                 </div>
                 <div id="userImgError" style="color: #ef4444; font-size: 12px; margin-top: 6px; display: none;"></div>
 
@@ -3824,6 +3842,13 @@ function confirmDelete(deleteUrl, userName) {
             addUserModalEl.addEventListener('shown.bs.modal', function(){
                 if (typeof updateUserFormSections === 'function') { updateUserFormSections(); }
             });
+            // If validation errors exist (e.g. after failed add-user submit), open modal so user sees form + errors
+            if (document.getElementById('addUserValidationErrors') && typeof bootstrap !== 'undefined') {
+                try {
+                    var addUserModal = bootstrap.Modal.getOrCreateInstance(addUserModalEl);
+                    addUserModal.show();
+                } catch (e) {}
+            }
         }
 
         function applyEditViewToggles() {
