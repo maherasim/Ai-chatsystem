@@ -515,6 +515,180 @@
         z-index: 101 !important;
     }
 
+    /* WhatsApp-style attachment composer - image centered and large like WhatsApp */
+    .chat-attachment-preview-panel {
+        display: none;
+        background: #f0f2f5;
+        border-radius: 12px 12px 0 0;
+        padding: 16px;
+        margin: 0 -1px 0 0;
+        border-bottom: 1px solid #e9edef;
+        position: relative;
+        min-height: 0;
+    }
+    .chat-attachment-preview-panel.has-attachments {
+        display: flex;
+        flex-direction: column;
+        min-height: 320px;
+    }
+    .chat-attachment-preview-panel .preview-close {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(0,0,0,0.5);
+        color: #fff;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 2;
+        font-size: 18px;
+    }
+    .chat-attachment-preview-panel .preview-close:hover { background: rgba(0,0,0,0.7); }
+    /* Center and large image preview - WhatsApp style */
+    .chat-attachment-preview-panel .large-preview-wrap {
+        position: relative;
+        width: 100%;
+        flex: 1;
+        min-height: 260px;
+        max-height: 380px;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #e4e6eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px;
+    }
+    .chat-attachment-preview-panel .large-preview-wrap img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        display: block;
+    }
+    .chat-attachment-thumbnails-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 0 0;
+        flex-wrap: wrap;
+        min-height: 56px;
+    }
+    /* Thumbnails + plus inline with input (WhatsApp: left of "Type a message") */
+    .chat-wa-thumbnails-inline {
+        display: none;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: nowrap;
+        flex-shrink: 0;
+    }
+    .chat-wa-thumbnails-inline.has-attachments { display: flex; }
+    #chatAttachmentThumbnailsRow.has-attachments { display: flex; }
+    #chatAttachmentThumbnails { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; }
+    .chat-attachment-thumb {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        overflow: hidden;
+        flex-shrink: 0;
+        position: relative;
+        cursor: pointer;
+        border: 2px solid transparent;
+        background: #e4e6eb;
+    }
+    .chat-attachment-thumb.selected { border-color: #25D366; box-shadow: 0 0 0 1px #25D366; }
+    .chat-attachment-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .chat-attachment-thumb .thumb-remove {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: rgba(0,0,0,0.6);
+        color: #fff;
+        border: none;
+        font-size: 12px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+    .chat-attachment-thumb .thumb-icon { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #667781; font-size: 20px; }
+    .chat-attachment-add-more {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        background: #e9edef;
+        border: 2px dashed #c5c9cc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #667781;
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+    .chat-attachment-add-more:hover { background: #d1d7db; color: #54656f; }
+    .chat-footer-wrap-wa {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        background: #f0f2f5;
+        border-radius: 0 0 12px 12px;
+        flex-wrap: nowrap;
+    }
+    .chat-footer-wrap-wa .form-wrap { min-width: 80px; }
+    .chat-footer-wrap-wa .form-control-wa {
+        flex: 1;
+        min-width: 0;
+        padding: 10px 14px;
+        border-radius: 20px;
+        border: none;
+        background: #fff;
+        font-size: 15px;
+        resize: none;
+        max-height: 120px;
+    }
+    .chat-footer-wrap-wa .form-control-wa:focus { outline: none; box-shadow: 0 0 0 1px #25D366; }
+    .chat-footer-wrap-wa .btn-emoji-wa, .chat-footer-wrap-wa .btn-timer-wa {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: #667781;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+    .chat-footer-wrap-wa .btn-emoji-wa:hover, .chat-footer-wrap-wa .btn-timer-wa:hover { background: #e9edef; color: #111; }
+    .chat-footer-wrap-wa .send-btn-wa {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: #25D366;
+        border: none;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+    .chat-footer-wrap-wa .send-btn-wa:hover { background: #20bd5a; }
+    .chat-footer-wrap-wa .send-btn-wa:disabled { opacity: 0.7; cursor: not-allowed; }
+
     /* Drag and Drop Styles */
     .chat-footer.drag-over,
     .chat-body.drag-over,
@@ -618,6 +792,15 @@
     .chats-right .chat-content .message-content,
     .chats-right .chat-info .message-content {
         border-radius: 16px 16px 2px 16px !important;
+    }
+
+    /* Caption below image/file/audio (WhatsApp-style - same bubble) */
+    .message-media-caption {
+        max-width: 100%;
+    }
+    .chats-right .message-media-caption {
+        color: inherit;
+        text-align: left;
     }
 
     /* Message Alignment Fix */
@@ -1303,7 +1486,7 @@
             </div>
         </div>
         <div class="chat-footer">
-            <form class="footer-form">
+            <form class="footer-form" id="chatFooterForm">
                 <div class="chats reply-chat reply-div" id="reply-div" style="display: none; padding: 0; margin-bottom: 0; background: white; border-radius: 8px 8px 0 0;">
                     <div style="background: #f0f2f5; padding: 8px 12px; border-left: 3px solid #25D366; border-radius: 4px 0 0 0; display: flex; align-items: center; gap: 8px; min-height: 60px;">
                         <div style="flex: 1; min-width: 0;">
@@ -1317,15 +1500,27 @@
                         </a>
                     </div>
                 </div>
-                <div class="chat-footer-wrap">
-                    <div class="form-item">
+                <!-- WhatsApp-style: large centered image preview (above footer) -->
+                <div class="chat-attachment-preview-panel" id="chatAttachmentPreviewPanel">
+                    <button type="button" class="preview-close" id="chatAttachmentPreviewClose" aria-label="Close"><i class="ti ti-x"></i></button>
+                    <div class="large-preview-wrap" id="chatAttachmentLargePreview">
+                        <div class="chat-attachment-thumb-icon d-flex align-items-center justify-content-center" style="width:100%;height:200px;color:#667781;"><i class="ti ti-photo" style="font-size:48px;"></i></div>
+                    </div>
+                </div>
+                <!-- Bottom row: thumbnails + plus (left) | message input | emoji | attach | timer | send (WhatsApp style) -->
+                <div class="chat-footer-wrap chat-footer-wrap-wa" id="chatFooterWrapWa">
+                    <div class="chat-wa-thumbnails-inline" id="chatAttachmentThumbnailsRow">
+                        <div id="chatAttachmentThumbnails"></div>
+                        <div class="chat-attachment-add-more" id="chatAttachmentAddMore" title="Add another image or file"><i class="ti ti-plus" style="font-size:22px;"></i></div>
+                    </div>
+                    <div class="form-item d-none d-md-flex">
                         <a href="#" class="action-circle"><i class="ti ti-microphone"></i></a>
                     </div>
-                    <div class="form-wrap">
-                        <input type="text" class="form-control" placeholder="Type Your Message">
+                    <div class="form-wrap" style="flex:1;min-width:0;">
+                        <input type="text" class="form-control form-control-wa" id="chatMessageInput" placeholder="Type a message" autocomplete="off">
                     </div>
                     <div class="form-item emoj-action-foot">
-                        <a href="#" class="action-circle"><i class="ti ti-mood-smile"></i></a>
+                        <a href="#" class="action-circle btn-emoji-wa"><i class="ti ti-mood-smile"></i></a>
                         <div class="emoj-group-list-foot down-emoji-circle">
                             <ul>
                                 <li><a href="javascript:void(0);"><img src="{{URL::asset('/build/img/icons/emonji-02.svg')}}" alt="Icon"></a></li>
@@ -1337,29 +1532,24 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="form-item position-relative d-flex align-items-center justify-content-center ">
-                        <a href="#" class="action-circle file-action position-absolute">
-                            <i class="ti ti-folder"></i>
+                    <div class="form-item position-relative d-flex align-items-center justify-content-center">
+                        <a href="#" class="action-circle file-action btn-emoji-wa" id="chatAttachTrigger" title="Attach file">
+                            <i class="ti ti-photo-plus"></i>
                         </a>
-                        <input type="file" class="open-file position-relative" name="files" id="files" accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar">
+                        <input type="file" class="open-file position-relative" name="files" id="files" accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar" multiple>
                     </div>
                     <div class="form-item">
-                        <a href="#" data-bs-toggle="dropdown">
-                            <i class="ti ti-dots-vertical"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end p-3">
-                            <a href="#" class="dropdown-item"><i class="ti ti-camera-selfie me-2"></i>Camera</a>
-                            <a href="#" class="dropdown-item"><i class="ti ti-photo-up me-2"></i>Gallery</a>
-                            <a href="#" class="dropdown-item"><i class="ti ti-music me-2"></i>Audio</a>
-                            <a href="#" class="dropdown-item"><i class="ti ti-map-pin-share me-2"></i>Location</a>
-                            <a href="#" class="dropdown-item"><i class="ti ti-user-check me-2"></i>Contact</a>
-                        </div>
+                        <a href="#" class="btn-timer-wa" title="Timer"><i class="ti ti-clock"></i></a>
                     </div>
                     <div class="form-btn">
-                        <button class="btn btn-primary" type="submit">
+                        <button class="btn send-btn-wa" type="button" id="chatSendBtn" title="Send">
                             <i class="ti ti-send"></i>
                         </button>
                     </div>
+                </div>
+                <!-- Keep legacy chat-footer-wrap for selectors used by JS (hidden) -->
+                <div class="chat-footer-wrap d-none" aria-hidden="true">
+                    <div class="form-wrap"><input type="text" class="form-control" id="chatMessageInputLegacy" placeholder="Type Your Message"></div>
                 </div>
             </form>
         </div>
@@ -2267,51 +2457,138 @@
             });
         }
         
-        // Store selected file for sending
+        // Store selected file(s) for sending (WhatsApp-style: multiple attachments)
         window.selectedFile = null;
         window.selectedFileType = null;
-        
-        // Handle file input for file sharing
-        if (fileInput) {
-            fileInput.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (!file) {
-                    window.selectedFile = null;
-                    window.selectedFileType = null;
-                    removeFilePreview();
-                    return;
-                }
-                
-                if (!window.groupChatManager || !window.groupChatManager.currentGroupId) {
-                    alert('Please select a group first');
-                    fileInput.value = '';
-                    window.selectedFile = null;
-                    window.selectedFileType = null;
-                    return;
-                }
-                
-                // Determine message type based on file type
-                let messageType = 'file';
-                const fileType = file.type.toLowerCase();
-                
-                if (fileType.startsWith('image/')) {
-                    messageType = 'img';
-                } else if (fileType.startsWith('audio/')) {
-                    messageType = 'audio';
-                } else if (fileType.startsWith('video/')) {
-                    messageType = 'video';
+        window.selectedFiles = [];
+        window.selectedFileIndex = 0;
+
+        function getMessageType(file) {
+            const fileType = (file.type || '').toLowerCase();
+            if (fileType.startsWith('image/')) return 'img';
+            if (fileType.startsWith('audio/')) return 'audio';
+            if (fileType.startsWith('video/')) return 'video';
+            return 'file';
+        }
+
+        function renderChatAttachmentPanel() {
+            const panel = document.getElementById('chatAttachmentPreviewPanel');
+            const largeWrap = document.getElementById('chatAttachmentLargePreview');
+            const thumbsContainer = document.getElementById('chatAttachmentThumbnails');
+            const thumbsRow = document.getElementById('chatAttachmentThumbnailsRow');
+            const list = window.selectedFiles || [];
+            if (!panel || !largeWrap || !thumbsContainer) return;
+            if (list.length === 0) {
+                panel.classList.remove('has-attachments');
+                if (thumbsRow) thumbsRow.classList.remove('has-attachments');
+                window.selectedFile = null;
+                window.selectedFileType = null;
+                removeFilePreview();
+                return;
+            }
+            panel.classList.add('has-attachments');
+            if (thumbsRow) thumbsRow.classList.add('has-attachments');
+            const idx = Math.min(window.selectedFileIndex || 0, list.length - 1);
+            window.selectedFileIndex = idx;
+            const current = list[idx];
+            window.selectedFile = current.file;
+            window.selectedFileType = current.messageType;
+            // Large preview
+            if (current.messageType === 'img' && current.dataUrl) {
+                largeWrap.innerHTML = '<img src="' + current.dataUrl + '" alt="Preview" />';
+            } else {
+                let icon = '<i class="ti ti-file"></i>';
+                if (current.messageType === 'audio') icon = '<i class="ti ti-music"></i>';
+                else if (current.messageType === 'video') icon = '<i class="ti ti-video"></i>';
+                largeWrap.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;gap:12px;padding:16px;"><div class="chat-attachment-thumb-icon">' + icon + '</div><span style="font-weight:500;">' + (current.file.name || 'File') + '</span></div>';
+            }
+            // Thumbnails row
+            thumbsContainer.innerHTML = '';
+            list.forEach(function(item, i) {
+                const thumb = document.createElement('div');
+                thumb.className = 'chat-attachment-thumb' + (i === idx ? ' selected' : '');
+                thumb.dataset.index = i;
+                if (item.messageType === 'img' && item.dataUrl) {
+                    thumb.innerHTML = '<img src="' + item.dataUrl + '" alt="" /><button type="button" class="thumb-remove" aria-label="Remove"><i class="ti ti-x"></i></button>';
                 } else {
-                    messageType = 'file';
+                    let icon = 'ti-file';
+                    if (item.messageType === 'audio') icon = 'ti-music';
+                    else if (item.messageType === 'video') icon = 'ti-video';
+                    thumb.innerHTML = '<div class="thumb-icon"><i class="ti ' + icon + '"></i></div><button type="button" class="thumb-remove" aria-label="Remove"><i class="ti ti-x"></i></button>';
                 }
-                
-                // Store file for later sending
-                window.selectedFile = file;
-                window.selectedFileType = messageType;
-                
-                // Show file preview
-                showFilePreview(file, messageType);
+                thumb.querySelector('.thumb-remove').addEventListener('click', function(ev) { ev.stopPropagation(); removeChatAttachmentAt(i); });
+                thumb.addEventListener('click', function(ev) { if (!ev.target.closest('.thumb-remove')) { window.selectedFileIndex = i; renderChatAttachmentPanel(); } });
+                thumbsContainer.appendChild(thumb);
             });
         }
+
+        function removeChatAttachmentAt(index) {
+            window.selectedFiles = window.selectedFiles || [];
+            window.selectedFiles.splice(index, 1);
+            if (window.selectedFileIndex >= window.selectedFiles.length) window.selectedFileIndex = Math.max(0, window.selectedFiles.length - 1);
+            renderChatAttachmentPanel();
+        }
+
+        window.clearChatAttachments = function() {
+            window.selectedFiles = [];
+            window.selectedFileIndex = 0;
+            window.selectedFile = null;
+            window.selectedFileType = null;
+            removeFilePreview();
+            const panel = document.getElementById('chatAttachmentPreviewPanel');
+            if (panel) panel.classList.remove('has-attachments');
+            const thumbsRow = document.getElementById('chatAttachmentThumbnailsRow');
+            if (thumbsRow) thumbsRow.classList.remove('has-attachments');
+            const fileInput = document.getElementById('files');
+            if (fileInput) fileInput.value = '';
+        };
+
+        function addFilesToAttachments(files) {
+            if (!files || !files.length) return;
+            if (!window.groupChatManager || !window.groupChatManager.currentGroupId) {
+                alert('Please select a group first');
+                return;
+            }
+            window.selectedFiles = window.selectedFiles || [];
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const messageType = getMessageType(file);
+                const item = { file: file, messageType: messageType, dataUrl: null };
+                if (messageType === 'img') {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        item.dataUrl = e.target.result;
+                        renderChatAttachmentPanel();
+                    };
+                    reader.readAsDataURL(file);
+                }
+                window.selectedFiles.push(item);
+            }
+            renderChatAttachmentPanel();
+        }
+
+        // Handle file input for file sharing (supports multiple files)
+        if (fileInput) {
+            fileInput.addEventListener('change', function(e) {
+                const files = e.target.files;
+                if (!files || !files.length) return;
+                addFilesToAttachments(Array.from(files));
+                e.target.value = '';
+            });
+        }
+        const addMoreBtn = document.getElementById('chatAttachmentAddMore');
+        if (addMoreBtn && fileInput) {
+            addMoreBtn.addEventListener('click', function(ev) { ev.preventDefault(); fileInput.click(); });
+        }
+        const attachTrigger = document.getElementById('chatAttachTrigger');
+        if (attachTrigger && fileInput) {
+            attachTrigger.addEventListener('click', function(ev) { ev.preventDefault(); fileInput.click(); });
+        }
+        const previewClose = document.getElementById('chatAttachmentPreviewClose');
+        if (previewClose) {
+            previewClose.addEventListener('click', function(ev) { ev.preventDefault(); window.clearChatAttachments(); });
+        }
+        window.renderChatAttachmentPanel = renderChatAttachmentPanel;
         
         // Function to show file preview
         function showFilePreview(file, messageType) {
@@ -2560,41 +2837,19 @@
                     return;
                 }
                 
-                // Handle the first file
-                const file = files[0];
-                
-                if (!file) {
-                    return;
-                }
-                
-                // Determine message type based on file type
-                let messageType = 'file';
-                const fileType = file.type ? file.type.toLowerCase() : '';
-                const fileName = file.name ? file.name.toLowerCase() : '';
-                
-                if (fileType.startsWith('image/') || /\.(jpg|jpeg|png|gif|bmp|webp|svg)$/i.test(fileName)) {
-                    messageType = 'img';
-                } else if (fileType.startsWith('audio/') || /\.(mp3|wav|ogg|m4a)$/i.test(fileName)) {
-                    messageType = 'audio';
-                } else if (fileType.startsWith('video/') || /\.(mp4|avi|mov|wmv|flv|webm)$/i.test(fileName)) {
-                    messageType = 'video';
+                // Add all dropped files (WhatsApp-style)
+                if (typeof addFilesToAttachments === 'function') {
+                    addFilesToAttachments(Array.from(files));
                 } else {
-                    messageType = 'file';
+                    const file = files[0];
+                    if (file) {
+                        window.selectedFile = file;
+                        window.selectedFileType = getMessageType ? getMessageType(file) : 'file';
+                        if (typeof showFilePreview === 'function') showFilePreview(file, window.selectedFileType);
+                    }
                 }
-                
-                // Store file for later sending
-                window.selectedFile = file;
-                window.selectedFileType = messageType;
-                
-                // Show file preview
-                if (typeof showFilePreview === 'function') {
-                    showFilePreview(file, messageType);
-                }
-                
-                // Focus on message input so user can type a message with the file
-                if (messageInput) {
-                    messageInput.focus();
-                }
+                const inp = document.getElementById('chatMessageInput') || messageInput;
+                if (inp) inp.focus();
             }, false);
         }
         
@@ -2672,28 +2927,15 @@
                         // Prevent default to stop image from being pasted as text
                         e.preventDefault();
                         
-                        // Create a File object from the blob
                         const fileName = 'pasted-image-' + Date.now() + '.png';
                         const file = new File([blob], fileName, { type: blob.type });
-                        
-                        // Determine message type
-                        let messageType = 'img';
-                        if (blob.type.startsWith('image/')) {
-                            messageType = 'img';
-                        } else if (blob.type.startsWith('audio/')) {
-                            messageType = 'audio';
-                        } else if (blob.type.startsWith('video/')) {
-                            messageType = 'video';
+                        if (typeof addFilesToAttachments === 'function') {
+                            addFilesToAttachments([file]);
                         } else {
-                            messageType = 'file';
+                            window.selectedFile = file;
+                            window.selectedFileType = 'img';
+                            showFilePreview(file, 'img');
                         }
-                        
-                        // Store file for later sending
-                        window.selectedFile = file;
-                        window.selectedFileType = messageType;
-                        
-                        // Show file preview
-                        showFilePreview(file, messageType);
                         
                         // Get any text from clipboard and paste it manually
                         const textData = e.clipboardData.getData('text/plain');

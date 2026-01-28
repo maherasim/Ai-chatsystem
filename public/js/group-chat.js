@@ -1179,10 +1179,15 @@ class GroupChatManager {
 
         let messageContent = '';
 
+        // Helper: caption below media (WhatsApp-style - text associated with image/file/audio in same bubble)
+        const captionHtml = (message.content && String(message.content).trim()) 
+            ? `<div class="message-media-caption" style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.06); font-size: 14px; line-height: 1.5; color: inherit; word-wrap: break-word; text-align: left;">${this.formatMessageWithMentions(message.content)}</div>` 
+            : '';
+
         // Handle different message types
         if (message.message_type === 'img' && message.file_url) {
             messageContent = `
-                <div class="message-content-wrapper" style="position: relative; display: inline-block;">
+                <div class="message-content-wrapper" style="position: relative; display: inline-block; max-width: 100%;">
                     <div class="chat-img" style="max-width: 100%; width: 100%;">
                         <div class="img-wrap" style="height: auto !important; min-height: 120px; max-height: 500px; max-width: 100%; flex: none !important;">
                             <img src="${message.file_url}" alt="Image" style="width: 100% !important; height: auto !important; max-width: 100%; max-height: 500px; object-fit: contain !important; object-position: center;">
@@ -1194,6 +1199,7 @@ class GroupChatManager {
                             </div>
                         </div>
                     </div>
+                    ${captionHtml}
                 </div>
             `;
         } else if (message.message_type === 'file' && message.file_url) {
@@ -1224,11 +1230,12 @@ class GroupChatManager {
                         </a>
                     </div>
                 </div>
+                ${captionHtml}
                 </div>
             `;
         } else if (message.message_type === 'audio' && message.file_url) {
             messageContent = `
-                <div class="message-content-wrapper" style="position: relative; display: inline-block;">
+                <div class="message-content-wrapper" style="position: relative; display: inline-block; max-width: 100%;">
                     <div class="message-content bg-transparent p-0">
                         <div class="message-audio">
                             <audio controls>
@@ -1237,6 +1244,7 @@ class GroupChatManager {
                             </audio>
                         </div>
                     </div>
+                    ${captionHtml}
                 </div>
             `;
         } else {
@@ -4304,56 +4312,58 @@ document.addEventListener('DOMContentLoaded', async () => {
         await window.groupChatManager.initAgora();
     }
 
-    // Setup message input handler
-    const messageInput = document.querySelector('.chat-footer-wrap .form-control');
-    const sendButton = document.querySelector('.chat-footer-wrap .form-btn button, .chat-footer-wrap .form-btn a');
+    // Setup message input handler (WhatsApp-style: prefer #chatMessageInput and #chatSendBtn)
+    const messageInput = document.getElementById('chatMessageInput') || document.querySelector('.chat-footer-wrap .form-control');
+    const sendButton = document.getElementById('chatSendBtn') || document.querySelector('.chat-footer-wrap .form-btn button, .chat-footer-wrap .form-btn a');
+
+    async function sendAllAttachmentsAndText(content) {
+        const selectedFiles = window.selectedFiles || [];
+        if (selectedFiles.length === 0) return false;
+        const fileInput = document.getElementById('files');
+        for (let i = 0; i < selectedFiles.length; i++) {
+            const item = selectedFiles[i];
+            const messageContent = (i === 0 && content) ? content : (item.messageType === 'img' ? 'Image' : (item.file.name || ''));
+            await window.groupChatManager.sendMessage(messageContent, item.messageType, item.file);
+        }
+        if (window.clearChatAttachments) window.clearChatAttachments();
+        if (fileInput) fileInput.value = '';
+        if (messageInput) messageInput.value = '';
+        return true;
+    }
 
     if (messageInput) {
         messageInput.addEventListener('keypress', async (e) => {
-            // Don't send if mention dropdown is open and user presses Enter
             if (e.key === 'Enter' && !e.shiftKey) {
                 const mentionDropdown = document.querySelector('.mention-dropdown');
-                if (mentionDropdown && mentionDropdown.parentElement) {
-                    // Let mention handler deal with it
-                    return;
-                }
-
+                if (mentionDropdown && mentionDropdown.parentElement) return;
                 e.preventDefault();
                 const content = messageInput.value.trim();
+                const selectedFiles = window.selectedFiles || [];
                 const selectedFile = window.selectedFile || null;
                 const selectedFileType = window.selectedFileType || null;
-
-                // Send message if there's content or a file
-                if (content || selectedFile) {
-                    // If file is selected, send it with text content
-                    if (selectedFile) {
+                if (content || selectedFiles.length > 0 || selectedFile) {
+                    if (selectedFiles.length > 0) {
                         try {
-                            // Send image with text content (if user typed something)
-                            // If no text, use default caption
-                            const messageContent = content.trim() || (selectedFileType === 'img' ? 'Image' : selectedFile.name);
-                            await window.groupChatManager.sendMessage(
-                                messageContent,
-                                selectedFileType,
-                                selectedFile
-                            );
-
-                            // Clear file selection
+                            await sendAllAttachmentsAndText(content);
+                        } catch (err) {
+                            console.error('Error sending files:', err);
+                            alert('Failed to send: ' + (err.message || 'Unknown error'));
+                        }
+                    } else if (selectedFile) {
+                        try {
+                            const messageContent = content || (selectedFileType === 'img' ? 'Image' : selectedFile.name);
+                            await window.groupChatManager.sendMessage(messageContent, selectedFileType, selectedFile);
                             window.selectedFile = null;
                             window.selectedFileType = null;
                             const fileInput = document.getElementById('files');
                             if (fileInput) fileInput.value = '';
-                            if (window.removeFilePreview) {
-                                window.removeFilePreview();
-                            }
-
-                            // Clear message input
+                            if (window.removeFilePreview) window.removeFilePreview();
                             if (messageInput) messageInput.value = '';
                         } catch (error) {
                             console.error('Error sending file:', error);
                             alert('Failed to send file: ' + (error.message || 'Unknown error'));
                         }
                     } else {
-                        // Send text message only
                         window.groupChatManager.sendMessage(content);
                     }
                 }
@@ -4373,52 +4383,46 @@ document.addEventListener('DOMContentLoaded', async () => {
         sendButton.addEventListener('click', async (e) => {
             e.preventDefault();
             const content = messageInput ? messageInput.value.trim() : '';
+            const selectedFiles = window.selectedFiles || [];
             const selectedFile = window.selectedFile || null;
             const selectedFileType = window.selectedFileType || null;
             const fileInput = document.getElementById('files');
-
-            // Send message if there's content or a file
-            if (content || selectedFile) {
-                // If file is selected, send it with text content
-                if (selectedFile) {
-                    try {
-                        sendButton.disabled = true;
-                        const originalContent = sendButton.innerHTML;
-                        sendButton.innerHTML = '<i class="ti ti-loader-2"></i>';
-
-                        // Send image with text content (if user typed something)
-                        // If no text, use default caption
-                        const messageContent = content.trim() || (selectedFileType === 'img' ? 'Image' : selectedFile.name);
-                        await window.groupChatManager.sendMessage(
-                            messageContent,
-                            selectedFileType,
-                            selectedFile
-                        );
-
-                        // Clear file selection
-                        window.selectedFile = null;
-                        window.selectedFileType = null;
-                        if (fileInput) fileInput.value = '';
-                        if (window.removeFilePreview) {
-                            window.removeFilePreview();
-                        }
-
-                        // Clear message input
-                        if (messageInput) messageInput.value = '';
-
-                        sendButton.disabled = false;
-                        sendButton.innerHTML = originalContent;
-                    } catch (error) {
-                        console.error('Error sending file:', error);
-                        alert('Failed to send file: ' + (error.message || 'Unknown error'));
-                        sendButton.disabled = false;
-                        sendButton.innerHTML = '<i class="ti ti-send"></i>';
-                    }
-                } else {
-                    // Send text message only
-                    window.groupChatManager.sendMessage(content);
+            if (!content && selectedFiles.length === 0 && !selectedFile) return;
+            if (selectedFiles.length > 0) {
+                try {
+                    sendButton.disabled = true;
+                    sendButton.innerHTML = '<i class="ti ti-loader-2"></i>';
+                    await sendAllAttachmentsAndText(content);
+                } catch (err) {
+                    console.error('Error sending files:', err);
+                    alert('Failed to send: ' + (err.message || 'Unknown error'));
+                } finally {
+                    sendButton.disabled = false;
+                    sendButton.innerHTML = '<i class="ti ti-send"></i>';
                 }
+                return;
             }
+            if (selectedFile) {
+                try {
+                    sendButton.disabled = true;
+                    sendButton.innerHTML = '<i class="ti ti-loader-2"></i>';
+                    const messageContent = content || (selectedFileType === 'img' ? 'Image' : selectedFile.name);
+                    await window.groupChatManager.sendMessage(messageContent, selectedFileType, selectedFile);
+                    window.selectedFile = null;
+                    window.selectedFileType = null;
+                    if (fileInput) fileInput.value = '';
+                    if (window.removeFilePreview) window.removeFilePreview();
+                    if (messageInput) messageInput.value = '';
+                } catch (error) {
+                    console.error('Error sending file:', error);
+                    alert('Failed to send file: ' + (error.message || 'Unknown error'));
+                } finally {
+                    sendButton.disabled = false;
+                    sendButton.innerHTML = '<i class="ti ti-send"></i>';
+                }
+                return;
+            }
+            window.groupChatManager.sendMessage(content);
         });
     }
 
