@@ -1188,8 +1188,9 @@ class GroupChatManager {
         const bubbleMetaHtml = `<div class="message-bubble-meta" style="display: flex; align-items: center; justify-content: flex-end; gap: 4px; padding: 2px 12px 8px; font-size: 11px; color: inherit; opacity: 0.85;"><span class="chat-time">${time}</span><span class="msg-read success"><i class="ti ti-checks" style="font-size: 12px;"></i></span></div>`;
         const wrapInBubble = (inner) => `<div class="message-content message-bubble-with-media" style="padding: 0; overflow: hidden; max-width: 85%;">${inner}${bubbleMetaHtml}</div>`;
 
-        // Handle different message types
-        if (message.message_type === 'img' && message.file_url) {
+        // Handle different message types (accept 'img' or 'image')
+        const isImageMessage = (message.message_type === 'img' || message.message_type === 'image') && message.file_url;
+        if (isImageMessage) {
             messageContent = wrapInBubble(`
                 <div class="message-content-wrapper" style="position: relative; display: inline-block; max-width: 100%;">
                     <div class="chat-img" style="max-width: 100%; width: 100%;">
@@ -1505,16 +1506,22 @@ class GroupChatManager {
             this.notifiedMessageIds.add(messageId);
         }
 
-        // Add message to UI
+        // Add message to UI (include file_url for image/file/audio/video from Agora)
+        const msgType = message.type || message.message_type || 'txt';
         const messageData = {
             _id: message.id || message.serverMsgId || message._id,
             sender_id: senderId,
             content: message.msg || message.content || message.body?.content || '',
-            message_type: message.type || message.message_type || 'txt',
+            message_type: msgType,
             created_at: message.time || message.timestamp || new Date().toISOString(),
             sender_name: senderName,
             sender_avatar: senderAvatar,
         };
+        if (message.url) {
+            messageData.file_url = message.url;
+            messageData.file_name = message.filename || message.fileName || (msgType === 'img' ? 'Image' : 'File');
+            messageData.file_size = message.file_length || message.fileSize || 0;
+        }
 
         console.log('📝 Adding message to UI:', messageData);
 
@@ -4355,6 +4362,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         }
                     } else if (selectedFile) {
                         try {
+                            // One message: image + your text as caption in same frame
                             const messageContent = content || (selectedFileType === 'img' ? 'Image' : selectedFile.name);
                             await window.groupChatManager.sendMessage(messageContent, selectedFileType, selectedFile);
                             window.selectedFile = null;
@@ -4410,6 +4418,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 try {
                     sendButton.disabled = true;
                     sendButton.innerHTML = '<i class="ti ti-loader-2"></i>';
+                    // Image + text in ONE message: content is the caption, shown in same bubble as image
                     const messageContent = content || (selectedFileType === 'img' ? 'Image' : selectedFile.name);
                     await window.groupChatManager.sendMessage(messageContent, selectedFileType, selectedFile);
                     window.selectedFile = null;

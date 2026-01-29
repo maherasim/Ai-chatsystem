@@ -2342,8 +2342,8 @@
     window.currentUserAvatar = "{{ $avatarUrl }}";
 </script>
 
-<!-- Group Chat Manager -->
-<script src="{{ asset('js/group-chat.js') }}"></script>
+<!-- Group Chat Manager (cache-bust so UI updates load) -->
+<script src="{{ asset('js/group-chat.js') }}?v={{ file_exists(public_path('js/group-chat.js')) ? filemtime(public_path('js/group-chat.js')) : time() }}"></script>
 
 <script>
     // CRITICAL: Prevent default browser behavior for file drops (opening in new tab)
