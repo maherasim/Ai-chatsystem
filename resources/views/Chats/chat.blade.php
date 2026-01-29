@@ -803,6 +803,24 @@
         text-align: left;
     }
 
+    /* Single frame for image + text: one bubble so caption clearly belongs to the image */
+    .message-bubble-with-media {
+        border-radius: 12px 12px 12px 0 !important;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    }
+    .chats-right .message-bubble-with-media {
+        border-radius: 16px 16px 2px 16px !important;
+        background: linear-gradient(135deg, #0d6efd 0%, #0052cc 100%) !important;
+        box-shadow: 0 2px 5px rgba(13, 110, 253, 0.2);
+    }
+    .chats:not(.chats-right) .message-bubble-with-media {
+        background: #f0f2f5 !important;
+    }
+    .chats-right .message-bubble-with-media .message-media-caption {
+        color: rgba(255, 255, 255, 0.95);
+        border-top-color: rgba(255, 255, 255, 0.2);
+    }
+
     /* Message Alignment Fix */
     .chats.chats-right {
         justify-content: flex-end !important;

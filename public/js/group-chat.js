@@ -1179,14 +1179,17 @@ class GroupChatManager {
 
         let messageContent = '';
 
-        // Helper: caption below media (WhatsApp-style - text associated with image/file/audio in same bubble)
+        // Helper: caption below media (WhatsApp-style - text in same bubble/frame as image)
         const captionHtml = (message.content && String(message.content).trim()) 
-            ? `<div class="message-media-caption" style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.06); font-size: 14px; line-height: 1.5; color: inherit; word-wrap: break-word; text-align: left;">${this.formatMessageWithMentions(message.content)}</div>` 
+            ? `<div class="message-media-caption" style="margin-top: 0; padding: 10px 12px 12px; border-top: 1px solid rgba(0,0,0,0.08); font-size: 14px; line-height: 1.5; color: inherit; word-wrap: break-word; text-align: left;">${this.formatMessageWithMentions(message.content)}</div>` 
             : '';
+
+        // Wrap media+caption in one bubble so image and text clearly belong together
+        const wrapInBubble = (inner) => `<div class="message-content message-bubble-with-media" style="padding: 0; overflow: hidden; max-width: 85%;">${inner}</div>`;
 
         // Handle different message types
         if (message.message_type === 'img' && message.file_url) {
-            messageContent = `
+            messageContent = wrapInBubble(`
                 <div class="message-content-wrapper" style="position: relative; display: inline-block; max-width: 100%;">
                     <div class="chat-img" style="max-width: 100%; width: 100%;">
                         <div class="img-wrap" style="height: auto !important; min-height: 120px; max-height: 500px; max-width: 100%; flex: none !important;">
@@ -1201,10 +1204,10 @@ class GroupChatManager {
                     </div>
                     ${captionHtml}
                 </div>
-            `;
+            `);
         } else if (message.message_type === 'file' && message.file_url) {
             const fileInfo = this.getFileTypeInfo(message.file_name || 'file');
-            messageContent = `
+            messageContent = wrapInBubble(`
                 <div class="message-content-wrapper" style="position: relative; display: inline-block;">
                     <div class="file-attach-professional" style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 16px; max-width: 400px; transition: all 0.3s ease;">
                     <div class="file-icon-wrapper" style="width: 56px; height: 56px; border-radius: 12px; background: ${fileInfo.bgColor}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
@@ -1232,9 +1235,9 @@ class GroupChatManager {
                 </div>
                 ${captionHtml}
                 </div>
-            `;
+            `);
         } else if (message.message_type === 'audio' && message.file_url) {
-            messageContent = `
+            messageContent = wrapInBubble(`
                 <div class="message-content-wrapper" style="position: relative; display: inline-block; max-width: 100%;">
                     <div class="message-content bg-transparent p-0">
                         <div class="message-audio">
@@ -1246,7 +1249,7 @@ class GroupChatManager {
                     </div>
                     ${captionHtml}
                 </div>
-            `;
+            `);
         } else {
             // Text message with reply support
             let replySection = '';
