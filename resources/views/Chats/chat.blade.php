@@ -803,18 +803,18 @@
         text-align: left;
     }
 
-    /* Single frame for image + text: one bubble so caption clearly belongs to the image */
+    /* Single frame for image + text: one bubble, lighter look */
     .message-bubble-with-media {
         border-radius: 12px 12px 12px 0 !important;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
     .chats-right .message-bubble-with-media {
         border-radius: 16px 16px 2px 16px !important;
-        background: linear-gradient(135deg, #0d6efd 0%, #0052cc 100%) !important;
-        box-shadow: 0 2px 5px rgba(13, 110, 253, 0.2);
+        background: linear-gradient(135deg, #74c0fc 0%, #4dabf7 100%) !important;
+        box-shadow: 0 1px 3px rgba(77, 171, 247, 0.15);
     }
     .chats:not(.chats-right) .message-bubble-with-media {
-        background: #f0f2f5 !important;
+        background: #f5f6f8 !important;
     }
     .chats-right .message-bubble-with-media .message-media-caption {
         color: rgba(255, 255, 255, 0.95);
