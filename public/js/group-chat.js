@@ -1179,13 +1179,14 @@ class GroupChatManager {
 
         let messageContent = '';
 
-        // Helper: caption below media (WhatsApp-style - text in same bubble/frame as image)
+        // Helper: caption below media (WhatsApp-style - text in same bubble, clean like WhatsApp)
         const captionHtml = (message.content && String(message.content).trim()) 
-            ? `<div class="message-media-caption" style="margin-top: 0; padding: 10px 12px 12px; border-top: 1px solid rgba(0,0,0,0.08); font-size: 14px; line-height: 1.5; color: inherit; word-wrap: break-word; text-align: left;">${this.formatMessageWithMentions(message.content)}</div>` 
+            ? `<div class="message-media-caption" style="margin: 0; padding: 8px 12px 10px; font-size: 14px; line-height: 1.45; color: inherit; word-wrap: break-word; text-align: left;">${this.formatMessageWithMentions(message.content)}</div>` 
             : '';
 
-        // Wrap media+caption in one bubble so image and text clearly belong together
-        const wrapInBubble = (inner) => `<div class="message-content message-bubble-with-media" style="padding: 0; overflow: hidden; max-width: 85%;">${inner}</div>`;
+        // WhatsApp-style: time + checkmarks inside the bubble at bottom right
+        const bubbleMetaHtml = `<div class="message-bubble-meta" style="display: flex; align-items: center; justify-content: flex-end; gap: 4px; padding: 2px 12px 8px; font-size: 11px; color: inherit; opacity: 0.85;"><span class="chat-time">${time}</span><span class="msg-read success"><i class="ti ti-checks" style="font-size: 12px;"></i></span></div>`;
+        const wrapInBubble = (inner) => `<div class="message-content message-bubble-with-media" style="padding: 0; overflow: hidden; max-width: 85%;">${inner}${bubbleMetaHtml}</div>`;
 
         // Handle different message types
         if (message.message_type === 'img' && message.file_url) {

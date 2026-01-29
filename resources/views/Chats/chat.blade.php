@@ -818,7 +818,20 @@
     }
     .chats-right .message-bubble-with-media .message-media-caption {
         color: rgba(255, 255, 255, 0.95);
-        border-top-color: rgba(255, 255, 255, 0.2);
+    }
+    /* WhatsApp: time + checks are inside the bubble, so hide the duplicate row below */
+    .chat-content:has(.message-bubble-with-media) > .chat-time-status {
+        display: none !important;
+    }
+    /* Time/checks inside bubble - subtle like WhatsApp */
+    .message-bubble-with-media .message-bubble-meta {
+        margin-top: 0;
+    }
+    .chats-right .message-bubble-with-media .message-bubble-meta {
+        color: rgba(255, 255, 255, 0.8);
+    }
+    .chats-right .message-bubble-with-media .message-bubble-meta .msg-read i {
+        color: rgba(255, 255, 255, 0.9);
     }
 
     /* Message Alignment Fix */
