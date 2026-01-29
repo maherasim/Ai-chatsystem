@@ -803,18 +803,21 @@
         text-align: left;
     }
 
-    /* Single frame for image + text: one bubble, lighter look */
+    /* Single frame for image + text: clean, professional look */
     .message-bubble-with-media {
         border-radius: 12px 12px 12px 0 !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     }
     .chats-right .message-bubble-with-media {
         border-radius: 16px 16px 2px 16px !important;
-        background: linear-gradient(135deg, #74c0fc 0%, #4dabf7 100%) !important;
-        box-shadow: 0 1px 3px rgba(77, 171, 247, 0.15);
+        background: linear-gradient(135deg, #0d6efd 0%, #0052cc 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
     }
     .chats:not(.chats-right) .message-bubble-with-media {
-        background: #f5f6f8 !important;
+        background: #f0f2f5 !important;
+        border: 1px solid rgba(0, 0, 0, 0.06);
     }
     .chats-right .message-bubble-with-media .message-media-caption {
         color: rgba(255, 255, 255, 0.95);
