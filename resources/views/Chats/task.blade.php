@@ -2772,6 +2772,8 @@
                             markerLayer.style.display = 'none';
                             markerLayer.innerHTML = '';
                         }
+                        var wrap = document.getElementById('markerToolbarWrap');
+                        if (wrap) wrap.style.display = 'none';
                         var tb = document.getElementById('markerToolbar');
                         if (tb) tb.style.display = 'none';
                         if (markerActions) markerActions.style.display = 'none';
@@ -3656,6 +3658,8 @@
                     markerLayer.style.display = 'none';
                     markerLayer.innerHTML = '';
                 }
+                var markerToolbarWrap = document.getElementById('markerToolbarWrap');
+                if (markerToolbarWrap) markerToolbarWrap.style.display = 'none';
                 var markerToolbar = document.getElementById('markerToolbar');
                 if (markerToolbar) markerToolbar.style.display = 'none';
                 var markerActions = document.getElementById('markerActions');
@@ -3688,6 +3692,7 @@
                         var p = document.getElementById('previewImage');
                         var t = document.getElementById('uploadText');
                         var ml = document.getElementById('markerLayer');
+                        var mwrap = document.getElementById('markerToolbarWrap');
                         var mt = document.getElementById('markerToolbar');
                         if (p) {
                             p.src = '';
@@ -3701,9 +3706,8 @@
                             ml.style.display = 'none';
                             ml.innerHTML = '';
                         }
-                        if (mt) {
-                            mt.style.display = 'none';
-                        }
+                        if (mwrap) mwrap.style.display = 'none';
+                        if (mt) mt.style.display = 'none';
                         var fi = document.getElementById('fileInput');
                         if (fi) fi.value = '';
                         var wfi = document.getElementById('web-fileInput');
@@ -4697,7 +4701,7 @@
                     style="background: #fff;border-bottom:none;">
                     <!-- Title + Subtitle -->
                     <div>
-                        <h5 class="modal-title mb-0" style="font-weight: 600;">Create new Task</h5>
+                        <h5 class="modal-title mb-0" style="font-weight: 600;">Create new Task </h5>
                         <small class="text-muted">Create Task</small>
                     </div>
 
@@ -4911,41 +4915,9 @@
                         </script>
                         <!-- Left Upload Area -->
                         <div class="col-md-5" style="max-width: 450px;">
-
-                            <div id="uploadBox" onclick="var p=document.getElementById('select-project'); var t=document.getElementById('select-ticket'); if(!(p&&p.value)){ alert('Please select the Project first'); return false;} if(!(t&&t.value)){ alert('Please select the Ticket first'); return false;} document.getElementById('fileInput').click();"
-                                ondragover="event.preventDefault(); this.style.border='3px dashed #28c76f';"
-                                ondragleave="this.style.border='3px dashed #ccc';"
-                                ondrop="event.preventDefault(); this.style.border='3px dashed #ccc'; var P=document.getElementById('select-project'); var T=document.getElementById('select-ticket'); if(!(P&&P.value&&T&&T.value)){ alert('Please select Project and Ticket first'); return; } var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.src=e.target.result; previewImg.style.display='block'; previewImg.style.filter='brightness(0.65)'; text.style.display='none'; if(markerLayer){ markerLayer.style.display='block'; } if(markerToolbar){ markerToolbar.style.display='flex'; } if(markerActions){ markerActions.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.style.display='none'; previewImg.style.filter=''; text.innerHTML='📄 ' + dtFile.name; if(markerLayer){ markerLayer.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } if(markerActions){ markerActions.style.display='none'; } }"
-                                style="background-color: #f7f7f7;
-      height: 640px;
-      min-height: 640px;
-      cursor: pointer;
-      border: 3px dashed #ccc;
-      border-radius: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      flex-direction: column;
-      position: relative;
-    ">
-                                <p id="uploadText" class="text-muted m-0" style="display: flex; flex-direction: column; align-items: center; gap: 8px;"> 
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6c757d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
-                                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    </svg>
-                                    <span style="font-size: 14px; color: #6c757d; font-weight: 500;">Upload Or Drag</span>
-                                    <small style="font-size: 12px; color: #9ca3af;">PDF, JPG, PNG</small>
-                                </p>
-                                <img id="previewImage" src=""
-                                    style="display:none; position:absolute; top:0; right:0; bottom:0; left:0; width:100%; height:100%; object-fit: cover;" />
-                                <div id="markerLayer"
-                                    style="display:none; position:absolute; top:0; right:0; bottom:0; left:0; pointer-events:auto;"
-                                    ondragover="event.preventDefault();"
-                                    ondrop="event.preventDefault(); var P=document.getElementById('select-project'); var T=document.getElementById('select-ticket'); if(!(P&&P.value&&T&&T.value)){ alert('Please select Project and Ticket first'); return; } var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.src=e.target.result; previewImg.style.display='block'; previewImg.style.filter='brightness(0.65)'; if(text){ text.style.display='none'; } if(markerLayer){ markerLayer.style.display='block'; } if(markerToolbar){ markerToolbar.style.display='flex'; } if(markerActions){ markerActions.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); if(previewImg){ previewImg.style.display='none'; previewImg.style.filter=''; } if(text){ text.innerHTML='📄 ' + dtFile.name; } var ml=document.getElementById('markerLayer'); if(ml){ ml.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } if(markerActions){ markerActions.style.display='none'; } }">
-                                </div>
-                                <div id="markerToolbar"
-                                    style="display:none; position:absolute; top:10px; left:10px; z-index:11; gap:6px; background:#ffffff; padding:6px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                            <!-- Shape toolbar + cancel: above image so they don't hide any part of it -->
+                            <div id="markerToolbarWrap" style="display:none; margin-bottom:8px; flex-wrap:wrap; align-items:center; gap:8px;">
+                                <div id="markerToolbar" style="display:flex; gap:6px; background:#ffffff; padding:6px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08); border:1px solid #eee;">
                                     <button id="marker-shape-square" type="button" class="btn btn-sm"
                                         style="background:transparent; border:0; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
                                         <svg width="24" height="24" viewBox="0 0 24 24"
@@ -4979,8 +4951,7 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <div id="markerActions"
-                                    style="display:none; position:absolute; top:10px; right:10px; z-index:12; gap:6px; background:#ffffff; padding:6px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                                <div id="markerActions" style="display:flex; gap:6px;">
                                     <button id="marker-cancel" type="button" class="btn btn-sm"
                                         title="Cancel and upload new"
                                         style="width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; background:#ffffff; border:2px solid #ea5455;">
@@ -4988,6 +4959,39 @@
                                             <path d="M18 6L6 18M6 6l12 12" fill="none" stroke="#ea5455" stroke-width="2" stroke-linecap="round"/>
                                         </svg>
                                     </button>
+                                </div>
+                            </div>
+                            <div id="uploadBox" onclick="var p=document.getElementById('select-project'); var t=document.getElementById('select-ticket'); if(!(p&&p.value)){ alert('Please select the Project first'); return false;} if(!(t&&t.value)){ alert('Please select the Ticket first'); return false;} document.getElementById('fileInput').click();"
+                                ondragover="event.preventDefault(); this.style.border='3px dashed #28c76f';"
+                                ondragleave="this.style.border='3px dashed #ccc';"
+                                ondrop="event.preventDefault(); this.style.border='3px dashed #ccc'; var P=document.getElementById('select-project'); var T=document.getElementById('select-ticket'); if(!(P&&P.value&&T&&T.value)){ alert('Please select Project and Ticket first'); return; } var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var wrap=document.getElementById('markerToolbarWrap'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.src=e.target.result; previewImg.style.display='block'; previewImg.style.filter='brightness(0.65)'; text.style.display='none'; if(markerLayer){ markerLayer.style.display='block'; } if(wrap){ wrap.style.display='flex'; } if(markerToolbar){ markerToolbar.style.display='flex'; } if(markerActions){ markerActions.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var wrap=document.getElementById('markerToolbarWrap'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.style.display='none'; previewImg.style.filter=''; text.innerHTML='📄 ' + dtFile.name; if(markerLayer){ markerLayer.style.display='none'; } if(wrap){ wrap.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } if(markerActions){ markerActions.style.display='none'; } }"
+                                style="background-color: #f7f7f7;
+      height: 640px;
+      min-height: 640px;
+      cursor: pointer;
+      border: 3px dashed #ccc;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      flex-direction: column;
+      position: relative;
+    ">
+                                <p id="uploadText" class="text-muted m-0" style="display: flex; flex-direction: column; align-items: center; gap: 8px;"> 
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6c757d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    <span style="font-size: 14px; color: #6c757d; font-weight: 500;">Upload Or Drag</span>
+                                    <small style="font-size: 12px; color: #9ca3af;">PDF, JPG, PNG</small>
+                                </p>
+                                <img id="previewImage" src=""
+                                    style="display:none; position:absolute; top:0; right:0; bottom:0; left:0; width:100%; height:100%; object-fit: cover;" />
+                                <div id="markerLayer"
+                                    style="display:none; position:absolute; top:0; right:0; bottom:0; left:0; pointer-events:auto;"
+                                    ondragover="event.preventDefault();"
+                                    ondrop="event.preventDefault(); var P=document.getElementById('select-project'); var T=document.getElementById('select-ticket'); if(!(P&&P.value&&T&&T.value)){ alert('Please select Project and Ticket first'); return; } var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var markerLayer=document.getElementById('markerLayer'); var wrap=document.getElementById('markerToolbarWrap'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); previewImg.src=e.target.result; previewImg.style.display='block'; previewImg.style.filter='brightness(0.65)'; if(text){ text.style.display='none'; } if(markerLayer){ markerLayer.style.display='block'; } if(wrap){ wrap.style.display='flex'; } if(markerToolbar){ markerToolbar.style.display='flex'; } if(markerActions){ markerActions.style.display='flex'; } }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('previewImage'); var text=document.getElementById('uploadText'); var wrap=document.getElementById('markerToolbarWrap'); var markerToolbar=document.getElementById('markerToolbar'); var markerActions=document.getElementById('markerActions'); if(previewImg){ previewImg.style.display='none'; previewImg.style.filter=''; } if(text){ text.innerHTML='📄 ' + dtFile.name; } var ml=document.getElementById('markerLayer'); if(ml){ ml.style.display='none'; } if(wrap){ wrap.style.display='none'; } if(markerToolbar){ markerToolbar.style.display='none'; } if(markerActions){ markerActions.style.display='none'; } }">
                                 </div>
                             </div>
 
@@ -4998,6 +5002,7 @@
       var previewImg = document.getElementById('previewImage');
       var text = document.getElementById('uploadText');
       var markerLayer = document.getElementById('markerLayer');
+      var wrap = document.getElementById('markerToolbarWrap');
       var markerToolbar = document.getElementById('markerToolbar');
       var markerActions = document.getElementById('markerActions');
       var selProj = document.getElementById('select-project');
@@ -5014,15 +5019,16 @@
           previewImg.style.filter = 'brightness(0.65)';
           text.style.display = 'none';
           markerLayer.style.display = 'block';
+          if (wrap) wrap.style.display = 'flex';
           if (markerToolbar) markerToolbar.style.display = 'flex';
           if (markerActions) markerActions.style.display = 'flex';
-          // Removed auto-persist to server to avoid 404 GET on preview
         };
         reader.readAsDataURL(file);
       } else {
         previewImg.style.display = 'none';
         text.innerHTML = '📄 ' + file.name;
         markerLayer.style.display = 'none';
+        if (wrap) wrap.style.display = 'none';
         if (markerToolbar) markerToolbar.style.display = 'none';
         if (markerActions) markerActions.style.display = 'none';
       }
@@ -5054,10 +5060,19 @@
                         </div>
                             <div style="border: 3px solid #f7f7f7;margin-top:12px;padding:6px;border-radius:12px;">
                                 <div class="d-flex justify-content-between align-items-start mb-2" style="border-bottom:2px solid #ECECEC">
-                                    <!-- Left Side: Title + Subtitle -->
+                                    <!-- Left Side: Title + Subtitle (dynamic from mobile task list) -->
                                     <div>
-                                        <div class="fw-bold" style="color: #2b2d42;">Project Title Task</div>
-                                        <small class="text-muted">Total Task: 5 – Total Checkpoint: 20 </small>
+                                        @php
+                                            $mobileTasks = $tasks ?? collect();
+                                            $mobileTaskCount = $mobileTasks->count();
+                                            $mobileTaskProjectTitle = 'Mobile Tasks';
+                                            if ($mobileTaskCount > 0 && $mobileTasks->pluck('project_id')->filter()->unique()->count() === 1) {
+                                                $firstTask = $mobileTasks->first();
+                                                $mobileTaskProjectTitle = optional($firstTask->project)->title ?? 'Mobile Tasks';
+                                            }
+                                        @endphp
+                                        <div class="fw-bold" style="color: #2b2d42;" id="mobileTaskListTitle">{{ $mobileTaskProjectTitle }}</div>
+                                        <small class="text-muted" id="mobileTaskListCount">Total Task: {{ $mobileTaskCount }}</small>
                                     </div>
 
                                     <!-- Right Side: Red note -->
@@ -5188,7 +5203,7 @@
                                 </div>
 
                                 <!-- Add New Task Button -->
-                                <div class="d-flex justify-content-center mt-3">
+                                {{-- <div class="d-flex justify-content-center mt-3">
                                     <button type="button" 
                                         style="background-color: #f3f4f6; 
                                                border: 2px dashed #d1d5db; 
@@ -5204,7 +5219,7 @@
                                         <span style="color: #1e293b; font-size: 14px; font-weight: 500;">+ Add new Task</span>
                                         <span style="color: #9ca3af; font-size: 12px;">Ticket ID</span>
                                     </button>
-                                </div>
+                                </div> --}}
 
                                 <!-- 2 -->
 
@@ -5413,7 +5428,7 @@
                                     <!-- Left Side: Title + Subtitle -->
                                     <div>
                                         <div class="fw-bold" style="color: #2b2d42;">Project Title Task</div>
-                                        <small class="text-muted">Total Task: 5 – Total Checkpoint: 20</small>
+                                        <small class="text-muted">Total Task: 5 – Total Checkpoint: 20 nice</small>
                                     </div>
 
                                     <!-- Right Side: Red note -->
@@ -5746,21 +5761,9 @@
 
                     <div class="row">
                         <div class="col-md-7">
-                            <div id="wt-uploadBox" onclick="var p=document.getElementById('wt-select-project'); var t=document.getElementById('wt-select-ticket'); if(!(p&&p.value)){ alert('Please select the Project first'); return false;} if(!(t&&t.value)){ alert('Please select the Ticket first'); return false;} document.getElementById('wt-fileInput').click();"
-                                ondragover="event.preventDefault(); this.style.borderColor='#28c76f';"
-                                ondragleave="this.style.borderColor='#ccc';"
-                                ondrop="event.preventDefault(); this.style.borderColor='#ccc'; var P=document.getElementById('wt-select-project'); var T=document.getElementById('wt-select-ticket'); if(!(P&&P.value&&T&&T.value)){ alert('Please select Project and Ticket first'); return; } var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('wt-fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); var bar=document.getElementById('wt-browserBar'); var box=document.getElementById('wt-uploadBox'); var _src=e.target.result; previewImg.src=_src; previewImg.style.display='block'; previewImg.style.filter='brightness(0.65)'; text.style.display='none'; if(layer){ layer.style.display='block'; } if(tb){ tb.style.display='flex'; } if(act){ act.style.display='flex'; } if(bar){ bar.style.display='flex'; } var adj=function(){ try{ var w=box.clientWidth; var h=Math.round(w*0.5); var containerH=box.clientHeight||h; var topOffset=Math.round((containerH-h)/2); previewImg.style.top=topOffset+'px'; previewImg.style.height=h+'px'; previewImg.style.width='100%'; previewImg.style.objectFit='cover'; previewImg.style.left='0'; previewImg.style.right='0'; layer.style.top=topOffset+'px'; layer.style.height=h+'px'; layer.style.left='0'; layer.style.right='0'; box.style.height=Math.max(h,containerH)+'px'; }catch(_){ } }; var tmp=new Image(); tmp.onload=function(){ adj(); window.addEventListener('resize', adj); }; tmp.src=_src; }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); var bar=document.getElementById('wt-browserBar'); var box=document.getElementById('wt-uploadBox'); previewImg.style.display='none'; previewImg.style.filter=''; text.innerHTML='📄 ' + dtFile.name; if(layer){ layer.style.display='none'; layer.style.height=''; layer.style.top='0'; } if(tb){ tb.style.display='none'; } if(act){ act.style.display='none'; } if(bar){ bar.style.display='none'; } if(box){ box.style.height='300px'; } }"
-                                style="background-color: #f7f7f7; height: 300px; min-height: 300px; cursor: pointer; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; text-align: center; flex-direction: column; position: relative;">
-                                <p id="wt-uploadText" class="text-muted m-0">Upload Or Drag<br><small>PDF, JPG,
-                                        PNG</small></p>
-                                <!-- Browser-like top bar for desktop screenshots -->
-                                
-                                <img id="wt-previewImage" src=""
-                                    style="display:none; position:absolute; top:0; right:0; bottom:0; left:0; width:100%; height:100%; object-fit:cover;" />
-                                <div id="wt-markerLayer"
-                                    style="display:none; position:absolute; top:0; right:0; bottom:0; left:0; pointer-events:auto; height:100%;"></div>
-                                <div id="wt-markerToolbar"
-                                    style="display:none; position:absolute; top:10px; left:10px; z-index:11; gap:6px; background:#ffffff; padding:6px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                            <!-- Shape toolbar + cancel: above image so they don't hide any part of it -->
+                            <div id="wt-markerToolbarWrap" style="display:none; margin-bottom:8px; flex-wrap:wrap; align-items:center; gap:8px;">
+                                <div id="wt-markerToolbar" style="display:flex; gap:6px; background:#ffffff; padding:6px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08); border:1px solid #eee;">
                                     <button id="wt-marker-shape-square" type="button" class="btn btn-sm"
                                         style="background:transparent; border:0; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
                                         <svg width="24" height="24" viewBox="0 0 24 24"
@@ -5794,8 +5797,7 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <div id="wt-markerActions"
-                                    style="display:none; position:absolute; top:10px; right:10px; z-index:12; gap:6px; background:#ffffff; padding:6px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                                <div id="wt-markerActions" style="display:flex; gap:6px;">
                                     <button id="wt-marker-cancel" type="button" class="btn btn-sm"
                                         title="Cancel and upload new"
                                         style="width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; background:#ffffff; border:2px solid #ea5455;">
@@ -5805,9 +5807,21 @@
                                     </button>
                                 </div>
                             </div>
+                            <div id="wt-uploadBox" onclick="var p=document.getElementById('wt-select-project'); var t=document.getElementById('wt-select-ticket'); if(!(p&&p.value)){ alert('Please select the Project first'); return false;} if(!(t&&t.value)){ alert('Please select the Ticket first'); return false;} document.getElementById('wt-fileInput').click();"
+                                ondragover="event.preventDefault(); this.style.borderColor='#28c76f';"
+                                ondragleave="this.style.borderColor='#ccc';"
+                                ondrop="event.preventDefault(); this.style.borderColor='#ccc'; var P=document.getElementById('wt-select-project'); var T=document.getElementById('wt-select-ticket'); if(!(P&&P.value&&T&&T.value)){ alert('Please select Project and Ticket first'); return; } var dtFile=(event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0])||null; if(!dtFile) return; var input=document.getElementById('wt-fileInput'); try{var dT=new DataTransfer(); dT.items.add(dtFile); input.files=dT.files;}catch(_){ } if(dtFile.type.startsWith('image/')){ var reader=new FileReader(); reader.onload=function(e){ var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var wrap=document.getElementById('wt-markerToolbarWrap'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); var bar=document.getElementById('wt-browserBar'); var box=document.getElementById('wt-uploadBox'); var _src=e.target.result; previewImg.src=_src; previewImg.style.display='block'; previewImg.style.filter='brightness(0.65)'; text.style.display='none'; if(layer){ layer.style.display='block'; } if(wrap){ wrap.style.display='flex'; } if(tb){ tb.style.display='flex'; } if(act){ act.style.display='flex'; } if(bar){ bar.style.display='flex'; } var adj=function(){ try{ var w=box.clientWidth; var h=Math.round(w*0.5); var containerH=box.clientHeight||h; var topOffset=Math.round((containerH-h)/2); previewImg.style.top=topOffset+'px'; previewImg.style.height=h+'px'; previewImg.style.width='100%'; previewImg.style.objectFit='cover'; previewImg.style.left='0'; previewImg.style.right='0'; layer.style.top=topOffset+'px'; layer.style.height=h+'px'; layer.style.left='0'; layer.style.right='0'; box.style.height=Math.max(h,containerH)+'px'; }catch(_){ } }; var tmp=new Image(); tmp.onload=function(){ adj(); window.addEventListener('resize', adj); }; tmp.src=_src; }; reader.readAsDataURL(dtFile); } else { var previewImg=document.getElementById('wt-previewImage'); var text=document.getElementById('wt-uploadText'); var layer=document.getElementById('wt-markerLayer'); var wrap=document.getElementById('wt-markerToolbarWrap'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); var bar=document.getElementById('wt-browserBar'); var box=document.getElementById('wt-uploadBox'); previewImg.style.display='none'; previewImg.style.filter=''; text.innerHTML='📄 ' + dtFile.name; if(layer){ layer.style.display='none'; layer.style.height=''; layer.style.top='0'; } if(wrap){ wrap.style.display='none'; } if(tb){ tb.style.display='none'; } if(act){ act.style.display='none'; } if(bar){ bar.style.display='none'; } if(box){ box.style.height='300px'; } }"
+                                style="background-color: #f7f7f7; height: 300px; min-height: 300px; cursor: pointer; border: 2px dashed #ccc; border-radius: 10px; display: flex; justify-content: center; align-items: center; text-align: center; flex-direction: column; position: relative;">
+                                <p id="wt-uploadText" class="text-muted m-0">Upload Or Drag<br><small>PDF, JPG,
+                                        PNG</small></p>
+                                <img id="wt-previewImage" src=""
+                                    style="display:none; position:absolute; top:0; right:0; bottom:0; left:0; width:100%; height:100%; object-fit:cover;" />
+                                <div id="wt-markerLayer"
+                                    style="display:none; position:absolute; top:0; right:0; bottom:0; left:0; pointer-events:auto; height:100%;"></div>
+                            </div>
                             <input type="file" id="wt-fileInput" accept=".jpg,.jpeg,.png,.pdf"
                                 style="display:none;"
-                                onchange="var f=this.files[0]; var p=document.getElementById('wt-previewImage'); var t=document.getElementById('wt-uploadText'); var l=document.getElementById('wt-markerLayer'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); var selProj=document.getElementById('wt-select-project'); var selTick=document.getElementById('wt-select-ticket'); var box=document.getElementById('wt-uploadBox'); var bar=document.getElementById('wt-browserBar'); if(!(selProj&&selProj.value&&selTick&&selTick.value)){ try{ this.value=''; }catch(_){} alert('Please select Project and Ticket first'); return; } if(!f) return; if(f.type.startsWith('image/')){ var r=new FileReader(); r.onload=function(e){ var _src=e.target.result; p.src=_src; p.style.display='block'; p.style.filter='brightness(0.65)'; t.style.display='none'; l.style.display='block'; if(tb) tb.style.display='flex'; if(act) act.style.display='flex'; if(bar) bar.style.display='flex'; var adj=function(){ try{ var w=box.clientWidth; var h=Math.round(w*0.5); var containerH=box.clientHeight||h; var topOffset=Math.round((containerH-h)/2); p.style.top=topOffset+'px'; p.style.height=h+'px'; p.style.width='100%'; p.style.objectFit='cover'; p.style.left='0'; p.style.right='0'; l.style.top=topOffset+'px'; l.style.height=h+'px'; l.style.left='0'; l.style.right='0'; box.style.height=Math.max(h,containerH)+'px'; }catch(_){ } }; var tmp=new Image(); tmp.onload=function(){ adj(); window.addEventListener('resize', adj); }; tmp.src=_src; }; r.readAsDataURL(f);} else { p.style.display='none'; p.style.filter=''; t.innerHTML='📄 '+f.name; l.style.display='none'; if(tb) tb.style.display='none'; if(act) act.style.display='none'; if(bar) bar.style.display='none'; box.style.height='640px'; }" />
+                                onchange="var f=this.files[0]; var p=document.getElementById('wt-previewImage'); var t=document.getElementById('wt-uploadText'); var l=document.getElementById('wt-markerLayer'); var wrap=document.getElementById('wt-markerToolbarWrap'); var tb=document.getElementById('wt-markerToolbar'); var act=document.getElementById('wt-markerActions'); var selProj=document.getElementById('wt-select-project'); var selTick=document.getElementById('wt-select-ticket'); var box=document.getElementById('wt-uploadBox'); var bar=document.getElementById('wt-browserBar'); if(!(selProj&&selProj.value&&selTick&&selTick.value)){ try{ this.value=''; }catch(_){} alert('Please select Project and Ticket first'); return; } if(!f) return; if(f.type.startsWith('image/')){ var r=new FileReader(); r.onload=function(e){ var _src=e.target.result; p.src=_src; p.style.display='block'; p.style.filter='brightness(0.65)'; t.style.display='none'; l.style.display='block'; if(wrap) wrap.style.display='flex'; if(tb) tb.style.display='flex'; if(act) act.style.display='flex'; if(bar) bar.style.display='flex'; var adj=function(){ try{ var w=box.clientWidth; var h=Math.round(w*0.5); var containerH=box.clientHeight||h; var topOffset=Math.round((containerH-h)/2); p.style.top=topOffset+'px'; p.style.height=h+'px'; p.style.width='100%'; p.style.objectFit='cover'; p.style.left='0'; p.style.right='0'; l.style.top=topOffset+'px'; l.style.height=h+'px'; l.style.left='0'; l.style.right='0'; box.style.height=Math.max(h,containerH)+'px'; }catch(_){ } }; var tmp=new Image(); tmp.onload=function(){ adj(); window.addEventListener('resize', adj); }; tmp.src=_src; }; r.readAsDataURL(f);} else { p.style.display='none'; p.style.filter=''; t.innerHTML='📄 '+f.name; l.style.display='none'; if(wrap) wrap.style.display='none'; if(tb) tb.style.display='none'; if(act) act.style.display='none'; if(bar) bar.style.display='none'; box.style.height='640px'; }" />
                         </div>
                         <div class="col-md-5">
                              <div style="background-color:#F7F7FF;border-radius:10px;padding:6px;">
@@ -6047,6 +6061,7 @@
             var wtPreview = document.getElementById('wt-previewImage');
             var wtToolbar = document.getElementById('wt-markerToolbar');
             var wtActions = document.getElementById('wt-markerActions');
+            var wtToolbarWrap = document.getElementById('wt-markerToolbarWrap');
             var wtCancelBtn = document.getElementById('wt-marker-cancel');
             var wtCurrentMarker = null;
             var wtCurrentShape = 'square';
@@ -6073,6 +6088,7 @@
                             wtLayer.style.display = 'none';
                             wtLayer.innerHTML = '';
                         }
+                        if (wtToolbarWrap) wtToolbarWrap.style.display = 'none';
                         if (wtToolbar) wtToolbar.style.display = 'none';
                         if (wtActions) wtActions.style.display = 'none';
                         var fi = document.getElementById('wt-fileInput');
@@ -6159,6 +6175,7 @@
                     var p = document.getElementById('wt-previewImage');
                     var txt = document.getElementById('wt-uploadText');
                     var l = document.getElementById('wt-markerLayer');
+                    var wrap = document.getElementById('wt-markerToolbarWrap');
                     var tb = document.getElementById('wt-markerToolbar');
                     var act = document.getElementById('wt-markerActions');
                     if (p) {
@@ -6174,12 +6191,9 @@
                         l.style.display = 'none';
                         l.innerHTML = '';
                     }
-                    if (tb) {
-                        tb.style.display = 'none';
-                    }
-                    if (act) {
-                        act.style.display = 'none';
-                    }
+                    if (wrap) wrap.style.display = 'none';
+                    if (tb) tb.style.display = 'none';
+                    if (act) act.style.display = 'none';
                     var fi = document.getElementById('wt-fileInput');
                     if (fi) fi.value = '';
                 } catch (_) {}
@@ -6210,6 +6224,7 @@
                         wtLayer.style.display = 'none';
                         wtLayer.innerHTML = '';
                     }
+                    if (wtToolbarWrap) wtToolbarWrap.style.display = 'none';
                     if (wtToolbar) wtToolbar.style.display = 'none';
                     if (wtActions) wtActions.style.display = 'none';
                     var fi = document.getElementById('wt-fileInput');
@@ -6533,6 +6548,7 @@
                     try {
                         if (wtPreview) wtPreview.style.display = 'block';
                         if (wtLayer) wtLayer.style.display = 'block';
+                        if (wtToolbarWrap) wtToolbarWrap.style.display = 'flex';
                         if (wtToolbar) wtToolbar.style.display = 'flex';
                     } catch (_) {}
                     // Inline color palette and Create Issue button (web)
@@ -7103,6 +7119,7 @@
                                     wtLayer.style.display = 'none';
                                     wtLayer.innerHTML = '';
                                 }
+                                if (wtToolbarWrap) wtToolbarWrap.style.display = 'none';
                                 if (wtToolbar) {
                                     wtToolbar.style.display = 'none';
                                 }
@@ -7292,6 +7309,7 @@
                                         wtLayer.style.display = 'block';
                                         wtLayer.innerHTML = '';
                                     }
+                                    if (wtToolbarWrap) wtToolbarWrap.style.display = 'flex';
                                     if (wtToolbar) wtToolbar.style.display = 'flex';
                                     var issues = Array.isArray(t.issues) ? t.issues : [];
                                     var rect = wtLayer ? wtLayer.getBoundingClientRect() : {
