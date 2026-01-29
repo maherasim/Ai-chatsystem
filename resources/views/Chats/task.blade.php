@@ -4790,16 +4790,31 @@
                                 etRenderDates(t || null);
                             });
 
-                            // When Employee Task modal opens, reset ticket list and dates
+                            // When Employee Task modal opens, reset project, ticket, dates (and et2 form in emptask)
                             try {
                                 var etModal = document.getElementById('emptask');
                                 if (etModal) {
                                     etModal.addEventListener('shown.bs.modal', function() {
+                                        if (etProjectSelect) etProjectSelect.value = '';
                                         if (etTicketSelect) {
                                             etTicketSelect.innerHTML = '<option value=\"\">Select the Ticket</option>';
                                             etTicketSelect.disabled = true;
                                         }
                                         etRenderDates(null);
+                                        // Reset et2 form (Create new Task modal body)
+                                        var et2Proj = document.getElementById('et2-select-project');
+                                        var et2Tick = document.getElementById('et2-select-ticket');
+                                        var et2Start = document.getElementById('et2-ticket-start-date');
+                                        var et2End = document.getElementById('et2-ticket-end-date');
+                                        var etImg = document.getElementById('et-selected-image');
+                                        if (et2Proj) et2Proj.value = '';
+                                        if (et2Tick) {
+                                            et2Tick.innerHTML = '<option value="">Select the Ticket</option>';
+                                            et2Tick.disabled = true;
+                                        }
+                                        if (et2Start) et2Start.textContent = '--';
+                                        if (et2End) et2End.textContent = '--';
+                                        if (etImg) etImg.value = '';
                                     });
                                 }
                             } catch (_) {}
@@ -6169,6 +6184,41 @@
                     if (fi) fi.value = '';
                 } catch (_) {}
             });
+
+            // Reset Web Task form whenever modal is opened (clear project, ticket, file, preview)
+            var wtModal = document.getElementById('webtask2');
+            if (wtModal) {
+                wtModal.addEventListener('shown.bs.modal', function() {
+                    if (wtProjectSelect) wtProjectSelect.value = '';
+                    if (wtTicketSelect) {
+                        wtTicketSelect.innerHTML = '<option value="">Select the Ticket</option>';
+                        wtTicketSelect.disabled = true;
+                    }
+                    if (wtStartDateSpan) wtStartDateSpan.textContent = '--';
+                    if (wtEndDateSpan) wtEndDateSpan.textContent = '--';
+                    if (wtPreview) {
+                        wtPreview.src = '';
+                        wtPreview.style.display = 'none';
+                        wtPreview.style.filter = '';
+                    }
+                    var txt = document.getElementById('wt-uploadText');
+                    if (txt) {
+                        txt.style.display = 'block';
+                        txt.innerHTML = 'Upload Or Drag<br><small>PDF, JPG, PNG</small>';
+                    }
+                    if (wtLayer) {
+                        wtLayer.style.display = 'none';
+                        wtLayer.innerHTML = '';
+                    }
+                    if (wtToolbar) wtToolbar.style.display = 'none';
+                    if (wtActions) wtActions.style.display = 'none';
+                    var fi = document.getElementById('wt-fileInput');
+                    if (fi) fi.value = '';
+                    var box = document.getElementById('wt-uploadBox');
+                    if (box) box.style.height = '300px';
+                    try { wtIssues = []; } catch (_) {}
+                });
+            }
 
             var wtSq = document.getElementById('wt-marker-shape-square');
             var wtCi = document.getElementById('wt-marker-shape-circle');

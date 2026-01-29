@@ -1567,10 +1567,10 @@
                         </div>
                     </div>
                     <div class="form-item position-relative d-flex align-items-center justify-content-center">
-                        <a href="#" class="action-circle file-action btn-emoji-wa" id="chatAttachTrigger" title="Attach file">
+                        <a href="javascript:void(0)" class="action-circle file-action btn-emoji-wa" id="chatAttachTrigger" title="Attach file" role="button">
                             <i class="ti ti-photo-plus"></i>
                         </a>
-                        <input type="file" class="open-file position-relative" name="files" id="files" accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar" multiple>
+                        <input type="file" class="open-file position-relative" name="files" id="files" accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar" multiple style="position:absolute;width:0.1px;height:0.1px;opacity:0;overflow:hidden;z-index:-1;">
                     </div>
                     <div class="form-item">
                         <a href="#" class="btn-timer-wa" title="Timer"><i class="ti ti-clock"></i></a>
@@ -2604,19 +2604,32 @@
         // Handle file input for file sharing (supports multiple files)
         if (fileInput) {
             fileInput.addEventListener('change', function(e) {
-                const files = e.target.files;
-                if (!files || !files.length) return;
+                const input = e.target;
+                const files = input.files;
+                if (!files || !files.length) {
+                    input.value = '';
+                    return;
+                }
                 addFilesToAttachments(Array.from(files));
-                e.target.value = '';
+                input.value = ''; // Reset so same file can be selected again
             });
+        }
+        function openFilePicker() {
+            if (!fileInput) return;
+            fileInput.value = ''; // Clear before opening so change fires even if user re-selects same file
+            setTimeout(function() { fileInput.click(); }, 0); // Defer so first selection works reliably
         }
         const addMoreBtn = document.getElementById('chatAttachmentAddMore');
         if (addMoreBtn && fileInput) {
-            addMoreBtn.addEventListener('click', function(ev) { ev.preventDefault(); fileInput.click(); });
+            addMoreBtn.addEventListener('click', function(ev) { ev.preventDefault(); openFilePicker(); });
         }
         const attachTrigger = document.getElementById('chatAttachTrigger');
         if (attachTrigger && fileInput) {
-            attachTrigger.addEventListener('click', function(ev) { ev.preventDefault(); fileInput.click(); });
+            attachTrigger.addEventListener('click', function(ev) {
+                ev.preventDefault();
+                ev.stopPropagation();
+                openFilePicker();
+            });
         }
         const previewClose = document.getElementById('chatAttachmentPreviewClose');
         if (previewClose) {
