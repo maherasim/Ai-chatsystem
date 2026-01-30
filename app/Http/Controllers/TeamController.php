@@ -475,7 +475,7 @@ class TeamController extends Controller
     }
 
     // List developers for assignment (include profile image URL for avatar)
-    // Standard: base URL + /upload/users/ + filename (e.g. .../upload/users/profile_xxx.None.jpg)
+    // Supports: profiles/xxx (storage) and upload/users/ filename
     public function developers(Request $request)
     {
         $developers = User::query()
@@ -487,8 +487,13 @@ class TeamController extends Controller
                 $imageUrl = null;
                 if (!empty($imgPath)) {
                     $path = ltrim((string) $imgPath, '/');
-                    $filename = basename($path);
-                    $imageUrl = asset('upload/users/' . $filename);
+                    // profiles/... from User collection → storage (e.g. profiles/HhYTteBKB2LOAuaN54kuiFyfr0wWvmMlltUGXTN2.png)
+                    if (str_starts_with($path, 'profiles/')) {
+                        $imageUrl = asset('storage/' . $path);
+                    } else {
+                        // upload/users/ standard (e.g. profile_6978bfde16caa.None.jpg)
+                        $imageUrl = asset('upload/users/' . basename($path));
+                    }
                 }
                 return [
                     'id' => (string) ($u->_id ?? $u->id),

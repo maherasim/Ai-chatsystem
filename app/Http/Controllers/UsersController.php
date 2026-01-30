@@ -439,6 +439,7 @@ class UsersController extends Controller
         'phone' => $request->input('phone'),
         'department' => $request->input('department'),
         'image' => $imagePath,
+        'profile_image' => $imagePath,
         'banner' => $banPath,
         'user_description' => $validated['user_description'] ?? null,
         'gender' => $validated['gender'] ?? null,
@@ -537,8 +538,8 @@ class UsersController extends Controller
             'banner'    => 'nullable|image|mimes:jpg,jpeg,png,gif|max:4096',
         ]);
 
-        // Images
-        $imagePath = $user->image;
+        // Images: preserve existing from image or profile_image when no new upload
+        $imagePath = $user->image ?? $user->profile_image ?? null;
         $banPath = $user->banner;
 
         if ($request->hasFile('image')) {
@@ -577,6 +578,7 @@ class UsersController extends Controller
         $user->gender = $validated['gender'] ?? $user->gender;
         $user->type = $validated['type'] ?? $user->type;
         $user->image = $imagePath;
+        $user->profile_image = $imagePath; // keep in sync for profile_image (teams/developers etc.)
         $user->banner = $banPath;
         if (!empty($validated['passw'])) {
             $user->password = \Illuminate\Support\Facades\Hash::make($validated['passw']);

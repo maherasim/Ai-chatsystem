@@ -350,13 +350,25 @@ function confirmDelete(deleteUrl, userName) {
                         @if((strtolower($user->type ?? '') === 'member') && (strtolower($user->email ?? '') === 'admin@gmail.com'))
                         @continue
                         @endif
+                        @php
+                            // Banner: stored in User.banner → upload/users/banner/ (Add/Edit User form)
+                            $userBannerUrl = $user->banner ? asset($user->banner) : asset('build/img/bgblack.svg');
+                            // Profile image: User.image = upload/users/ (Add/Edit form) OR User.profile_image = profiles/ (storage)
+                            $userProfileImageUrl = asset('build/img/profileuser.svg');
+                            if (!empty($user->image)) {
+                                $userProfileImageUrl = asset($user->image);
+                            } elseif (!empty($user->profile_image)) {
+                                $p = ltrim((string)$user->profile_image, '/');
+                                $userProfileImageUrl = str_starts_with($p, 'profiles/') ? asset('storage/' . $p) : asset('upload/users/' . basename($p));
+                            }
+                        @endphp
                         <!-- card 4 -->
                         <div class="col-md-3 col-sm-6 mb-4">
                             <div class="card " style=" border-radius: 15px; overflow: hidden; font-family: sans-serif; position: relative;">
 
                                 <!-- Top Background with Overlay Elements -->
                                 <div style="position: relative;">
-                                    <img src="{{ $user->banner ? asset($user->banner) : asset('build/img/bgblack.svg') }}" class="img-fluid" style="width: 100%; height: 80px; object-fit: cover;" alt="BG Image">
+                                    <img src="{{ $userBannerUrl }}" class="img-fluid" style="width: 100%; height: 80px; object-fit: cover;" alt="BG Image">
 
                                     <!-- Top-right overlay group -->
                                     <div style="position: absolute; top: 7px; right: 10px; z-index: 5;">
@@ -393,7 +405,7 @@ function confirmDelete(deleteUrl, userName) {
                                                         "user_description" => $user->user_description ?? "",
                                                         "gender" => $user->gender,
                                                         "type" => $user->type,
-                                                        "image_url" => $user->image ? asset($user->image) : "",
+                                                        "image_url" => $userProfileImageUrl,
                                                         "banner_url" => $user->banner ? asset($user->banner) : "",
                                                         "card_image" => $user->card_image ? asset($user->card_image) : "",
                                                         "permissions" => $user->permissions,
@@ -412,7 +424,7 @@ function confirmDelete(deleteUrl, userName) {
 
                                     <!-- Profile Image (overlapping) -->
                                     <div style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); border: 3px solid #fff; border-radius: 50%; background: white;">
-                                        <img src="{{ $user->image ? asset($user->image) : asset('build/img/profileuser.svg') }}" class="rounded-circle" style="width: 80px; height: 80px;" alt="Profile">
+                                        <img src="{{ $userProfileImageUrl }}" class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover;" alt="Profile">
                                     </div>
                                 </div>
 
@@ -441,7 +453,7 @@ function confirmDelete(deleteUrl, userName) {
                                                                     "size"      => $attachment->size ?? "",
                                                                 ];
                                                             })->toArray(),
-                                                        "image_url" => $user->image ? asset($user->image) : "",
+                                                        "image_url" => $userProfileImageUrl,
                                                         "join_date" => optional($user->created_at)->format('d.m.Y')
                                                     ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) }}' onclick="openUserOffcanvas(JSON.parse(this.getAttribute('data-user')))"> {{$user->name}}</div>
                                     @if(!empty($user->title))
