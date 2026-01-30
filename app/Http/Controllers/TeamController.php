@@ -474,7 +474,7 @@ class TeamController extends Controller
         return response()->json($result);
     }
 
-    // List developers for assignment
+    // List developers for assignment (include profile image URL for avatar)
     public function developers(Request $request)
     {
         $developers = User::query()
@@ -482,9 +482,20 @@ class TeamController extends Controller
             ->orderBy('name')
             ->get()
             ->map(function ($u) {
+                $imgPath = $u->profile_image ?? $u->image ?? null;
+                $imageUrl = null;
+                if (!empty($imgPath)) {
+                    $path = ltrim((string) $imgPath, '/');
+                    if (str_starts_with($path, 'storage/')) {
+                        $imageUrl = asset($path);
+                    } else {
+                        $imageUrl = asset('storage/' . $path);
+                    }
+                }
                 return [
-                    'id' => (string) ($u->_id ?? $u->id), 
-                    'name' => $u->name ?? $u->email ?? 'Developer'
+                    'id' => (string) ($u->_id ?? $u->id),
+                    'name' => $u->name ?? $u->email ?? 'Developer',
+                    'image' => $imageUrl,
                 ];
             })
             ->values();
