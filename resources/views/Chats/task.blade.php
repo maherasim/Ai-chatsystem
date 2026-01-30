@@ -366,7 +366,20 @@
                                         <!-- project tag 4 -->
                                          
 
-                                        <!-- Marker details modal -->
+                                        <!-- Marker details modal: hide default date icon, use custom date icon to open picker -->
+                                        <style>
+                                            #markerDetailsModal input[type="date"]::-webkit-calendar-picker-indicator {
+                                                opacity: 0;
+                                                position: absolute;
+                                                right: 0;
+                                                width: 100%;
+                                                height: 100%;
+                                                cursor: pointer;
+                                            }
+                                            #markerDetailsModal input[type="date"]::-webkit-date-and-time-value {
+                                                text-align: left;
+                                            }
+                                        </style>
                                         <div class="modal fade" id="markerDetailsModal" tabindex="-1"
                                             aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
@@ -417,8 +430,9 @@
                                                                         class="form-control form-control-sm"
                                                                         style="padding-right:38px;border-radius:10px;" />
                                                                     <img src="{{ asset('assets/img/date.png') }}"
-                                                                        alt="date"
-                                                                        style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;" />
+                                                                        alt="date" role="button" title="Pick date"
+                                                                        style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;cursor:pointer;pointer-events:auto;"
+                                                                        onclick="var inp=document.getElementById('marker-start'); if(inp){ inp.focus(); if(inp.showPicker) inp.showPicker(); else inp.click(); }" />
                                                                 </div>
                                                             </div>
                                                             <div class="flex-fill">
@@ -428,8 +442,9 @@
                                                                         class="form-control form-control-sm"
                                                                         style="padding-right:38px;border-radius:10px;" />
                                                                     <img src="{{ asset('assets/img/date.png') }}"
-                                                                        alt="date"
-                                                                        style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;" />
+                                                                        alt="date" role="button" title="Pick date"
+                                                                        style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;cursor:pointer;pointer-events:auto;"
+                                                                        onclick="var inp=document.getElementById('marker-end'); if(inp){ inp.focus(); if(inp.showPicker) inp.showPicker(); else inp.click(); }" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -870,11 +885,14 @@
                                                 <div style="font-size: 13px; color: #7ED957;">Total Tasks: {{ $progressTasks->count() }}</div>
                                             </div>
                                             <div>
-                                                <select class="form-select form-select-sm"
+                                                <select class="form-select form-select-sm task-filter-project" id="filter-project-progress" data-section="progress"
                                                     style="width: 140px; font-size: 13px;">
-                                                    <option selected>Select Projects</option>
-                                                    <option selected>Yekbon</option>
-                                                    <option selected>CMS</option>
+                                                    <option value="">Select Projects</option>
+                                                    @if (isset($projects) && count($projects))
+                                                        @foreach ($projects as $project)
+                                                            <option value="{{ (string) ($project->_id ?? $project->id) }}">{{ $project->title }}</option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
                                         </div>
@@ -891,6 +909,7 @@
                                                 $markImagePath = $task->mark_image_path ?? '';
                                             @endphp
                                             <div class="d-flex p-2 rounded mt-2 task-progress-item" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#progressmodel"
+                                                data-project-id="{{ (string) ($task->project_id ?? optional($task->project)->_id ?? optional($task->project)->id ?? '') }}"
                                                 data-mark-image-path="{{ $markImagePath }}">
                                                 <!-- Task Image -->
                                                 <div class="me-2">
@@ -961,11 +980,14 @@
                                                 <div style="font-size: 13px; color: purple;">Total Tasks: {{ $checkedTasks->count() }}</div>
                                             </div>
                                             <div>
-                                                <select class="form-select form-select-sm"
+                                                <select class="form-select form-select-sm task-filter-project" id="filter-project-checking" data-section="checking"
                                                     style="width: 140px; font-size: 13px;">
-                                                    <option selected>Select Projects</option>
-                                                    <option selected>Yekbon</option>
-                                                    <option selected>CMS</option>
+                                                    <option value="">Select Projects</option>
+                                                    @if (isset($projects) && count($projects))
+                                                        @foreach ($projects as $project)
+                                                            <option value="{{ (string) ($project->_id ?? $project->id) }}">{{ $project->title }}</option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
                                         </div>
@@ -1117,11 +1139,14 @@
                                                 <div style="font-size: 13px; color: red;">Total Tasks: {{ $rejectedTasks->count() }}</div>
                                             </div>
                                             <div>
-                                                <select class="form-select form-select-sm"
+                                                <select class="form-select form-select-sm task-filter-project" id="filter-project-rejected" data-section="rejected"
                                                     style="width: 140px; font-size: 13px;">
-                                                    <option selected>Select Projects</option>
-                                                    <option selected>Yekbon</option>
-                                                    <option selected>CMS</option>
+                                                    <option value="">Select Projects</option>
+                                                    @if (isset($projects) && count($projects))
+                                                        @foreach ($projects as $project)
+                                                            <option value="{{ (string) ($project->_id ?? $project->id) }}">{{ $project->title }}</option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
                                         </div>
@@ -1158,6 +1183,7 @@
                                                 $endDate = optional($task->end_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->end_date ?? null))->format('d.m.Y') ?: '--');
                                             @endphp
                                             <div class="d-flex p-2 rounded mt-2 task-rejected-item" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#inreject"
+                                                data-project-id="{{ (string) ($task->project_id ?? optional($task->project)->_id ?? optional($task->project)->id ?? '') }}"
                                                 data-task-id="{{ $taskId }}"
                                                 data-task-type="{{ $taskType }}"
                                                 data-task-title="{{ $taskTitle }}"
@@ -1269,6 +1295,7 @@
                                             <div class="d-flex p-2 rounded mt-2 task-hold-item" style="background-color: #ebebeb;cursor:pointer" 
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#inhold"
+                                                data-project-id="{{ (string) ($task->project_id ?? optional($task->project)->_id ?? optional($task->project)->id ?? '') }}"
                                                 data-task-id="{{ $taskId }}"
                                                 data-task-type="{{ $taskType }}"
                                                 data-task-title="{{ $taskTitle }}"
@@ -1349,11 +1376,14 @@
                                                 <div style="font-size: 13px; color:#f28b82;">Total Tasks: {{ $delayedTasks->count() }}</div>
                                             </div>
                                             <div>
-                                                <select class="form-select form-select-sm"
+                                                <select class="form-select form-select-sm task-filter-project" id="filter-project-delayed" data-section="delayed"
                                                     style="width: 140px; font-size: 13px;">
-                                                    <option selected>Select Projects</option>
-                                                    <option selected>Yekbon</option>
-                                                    <option selected>CMS</option>
+                                                    <option value="">Select Projects</option>
+                                                    @if (isset($projects) && count($projects))
+                                                        @foreach ($projects as $project)
+                                                            <option value="{{ (string) ($project->_id ?? $project->id) }}">{{ $project->title }}</option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
                                         </div>
@@ -1363,6 +1393,7 @@
                                                 $markImagePath = $task->mark_image_path ?? '';
                                             @endphp
                                             <div class="d-flex p-2 rounded mt-2 task-delayed-item" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#indelayed"
+                                                data-project-id="{{ (string) ($task->project_id ?? optional($task->project)->_id ?? optional($task->project)->id ?? '') }}"
                                                 data-mark-image-path="{{ $markImagePath }}">
                                                 <!-- Task Image -->
                                                 <div class="me-2">
@@ -1433,11 +1464,14 @@
                                                 <div style="font-size: 13px; color:#1ec963;">Total Tasks: {{ $doneTasks->count() }}</div>
                                             </div>
                                             <div>
-                                                <select class="form-select form-select-sm"
+                                                <select class="form-select form-select-sm task-filter-project" id="filter-project-done" data-section="done"
                                                     style="width: 140px; font-size: 13px;">
-                                                    <option selected>Select Projects</option>
-                                                    <option selected>Yekbon</option>
-                                                    <option selected>CMS</option>
+                                                    <option value="">Select Projects</option>
+                                                    @if (isset($projects) && count($projects))
+                                                        @foreach ($projects as $project)
+                                                            <option value="{{ (string) ($project->_id ?? $project->id) }}">{{ $project->title }}</option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
                                         </div>
@@ -1446,9 +1480,10 @@
                                             @php
                                                 $doneMarkImagePath = $task->mark_image_path ?? '';
                                             @endphp
-                                            <div class="d-flex p-2 rounded mt-2" style="background-color: #ebebeb;cursor:pointer" 
+                                            <div class="d-flex p-2 rounded mt-2 task-done-item" style="background-color: #ebebeb;cursor:pointer" 
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#indone"
+                                                data-project-id="{{ (string) ($task->project_id ?? optional($task->project)->_id ?? optional($task->project)->id ?? '') }}"
                                                 data-mark-image-path="{{ $doneMarkImagePath }}">
                                                 <!-- Task Image -->
                                                 <div class="me-2">
@@ -1519,11 +1554,14 @@
                                         <div style="font-size: 13px; color: #869da2;">Total Tasks: {{ $newTasks->count() }}</div>
                                             </div>
                                             <div>
-                                                <select class="form-select form-select-sm"
+                                                <select class="form-select form-select-sm task-filter-project" id="filter-project-new" data-section="new"
                                                     style="width: 140px; font-size: 13px;">
-                                                    <option selected>Select Projects</option>
-                                                    <option selected>Yekbon</option>
-                                                    <option selected>CMS</option>
+                                                    <option value="">Select Projects</option>
+                                                    @if (isset($projects) && count($projects))
+                                                        @foreach ($projects as $project)
+                                                            <option value="{{ (string) ($project->_id ?? $project->id) }}">{{ $project->title }}</option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
                                         </div>
@@ -1591,6 +1629,7 @@
                                     <div class="d-flex p-2 rounded mt-2 totaltask-item" style="background-color: #ebebeb;cursor:pointer" 
                                         data-bs-toggle="modal" 
                                         data-bs-target="#totaltask"
+                                        data-project-id="{{ (string) ($task->project_id ?? optional($task->project)->_id ?? optional($task->project)->id ?? '') }}"
                                         data-task-id="{{ $taskId }}"
                                         data-task-type="{{ $taskType }}"
                                         data-task-title="{{ $taskTitle }}"
@@ -2121,6 +2160,50 @@
                         markImageElement.src = '{{ asset('build/img/dooted img.svg') }}';
                     }
                 });
+            });
+        });
+        // Filter task cards by project when project dropdown changes
+        document.addEventListener('DOMContentLoaded', function() {
+            var sectionToClass = {
+                progress: 'task-progress-item',
+                checking: 'task-checked-item',
+                rejected: 'task-rejected-item',
+                hold: 'task-hold-item',
+                delayed: 'task-delayed-item',
+                done: 'task-done-item',
+                new: 'totaltask-item'
+            };
+            function normalizeId(id) {
+                return (id == null ? '' : String(id)).trim().toLowerCase();
+            }
+            function applyProjectFilter(sel) {
+                var section = (sel.getAttribute('data-section') || '').toLowerCase();
+                var projectId = normalizeId(sel.value);
+                var itemClass = sectionToClass[section];
+                if (!itemClass) return;
+                var items = document.querySelectorAll('.' + itemClass);
+                items.forEach(function(el) {
+                    var cardProjectId = normalizeId(el.getAttribute('data-project-id'));
+                    if (projectId === '') {
+                        el.classList.remove('d-none');
+                        el.style.display = '';
+                    } else {
+                        var match = cardProjectId === projectId;
+                        if (match) {
+                            el.classList.remove('d-none');
+                            el.style.display = '';
+                        } else {
+                            el.classList.add('d-none');
+                            el.style.display = 'none';
+                        }
+                    }
+                });
+            }
+            document.querySelectorAll('.task-filter-project').forEach(function(sel) {
+                sel.addEventListener('change', function() {
+                    applyProjectFilter(this);
+                });
+                if (sel.value) applyProjectFilter(sel);
             });
         });
         (function () {
@@ -5991,12 +6074,26 @@
     </script>
 
     <!-- Web Task Issue Modal -->
+    <style>
+        /* Hide browser default date picker icon so only custom icon shows */
+        #wt-markerDetailsModal input[type="date"]::-webkit-calendar-picker-indicator {
+            opacity: 0;
+            position: absolute;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        #wt-markerDetailsModal input[type="date"]::-webkit-date-and-time-value {
+            text-align: left;
+        }
+    </style>
     <div class="modal fade" id="wt-markerDetailsModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="border-radius:12px;">
                 <div class="modal-header" style="background:#fff;">
                     <div>
-                        <h6 class="modal-title mb-0" style="font-weight:600;">Add Issue</h6>
+                        <h6 class="modal-title mb-0" style="font-weight:600;">Add Issue </h6>
                         <small class="text-muted">Create an Issue</small>
                     </div>
                 </div>
@@ -6027,8 +6124,9 @@
                             <div style="position:relative;">
                                 <input type="date" id="wt-marker-start" class="form-control form-control-sm"
                                     style="padding-right:38px;border-radius:10px;" />
-                                <img src="{{ asset('assets/img/date.png') }}" alt="date"
-                                    style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;" />
+                                <img src="{{ asset('assets/img/date.png') }}" alt="date" role="button" title="Pick date"
+                                    style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;cursor:pointer;pointer-events:auto;"
+                                    onclick="var inp=document.getElementById('wt-marker-start'); if(inp){ inp.focus(); if(inp.showPicker) inp.showPicker(); else inp.click(); }" />
                             </div>
                         </div>
                         <div class="flex-fill">
@@ -6036,8 +6134,9 @@
                             <div style="position:relative;">
                                 <input type="date" id="wt-marker-end" class="form-control form-control-sm"
                                     style="padding-right:38px;border-radius:10px;" />
-                                <img src="{{ asset('assets/img/date.png') }}" alt="date"
-                                    style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;" />
+                                <img src="{{ asset('assets/img/date.png') }}" alt="date" role="button" title="Pick date"
+                                    style="position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.8;cursor:pointer;pointer-events:auto;"
+                                    onclick="var inp=document.getElementById('wt-marker-end'); if(inp){ inp.focus(); if(inp.showPicker) inp.showPicker(); else inp.click(); }" />
                             </div>
                         </div>
                     </div>
