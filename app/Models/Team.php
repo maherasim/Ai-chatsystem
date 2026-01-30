@@ -23,6 +23,7 @@ class Team extends Model
         'tasks',
         'task_priorities',
         'task_developers',
+        'task_developers_by_task',
         'user_id',
     ];
 
@@ -31,6 +32,7 @@ class Team extends Model
         'tasks' => 'array',
         'task_priorities' => 'array',
         'task_developers' => 'array',
+        'task_developers_by_task' => 'array',
     ];
 }
 

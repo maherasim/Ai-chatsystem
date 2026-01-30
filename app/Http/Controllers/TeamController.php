@@ -597,52 +597,44 @@ class TeamController extends Controller
         }
 
         try {
-            // Priorities as per-task map: [taskId => 'low'|'medium'|'high']
-            $priorityValues = collect((array) $request->input('task_priorities', []))
-                ->map(function ($v) {
-                    if (is_array($v)) return null;
-                    $vv = strtolower((string) $v);
-                    return in_array($vv, ['low','medium','high'], true) ? $vv : null;
-                })
-                ->filter()
-                ->all();
+            // Priorities as per-task map: [taskId => 'low'|'medium'|'high'] (preserve task ID keys)
+            $priorityInput = (array) $request->input('task_priorities', []);
+            $priorityValues = [];
+            foreach ($priorityInput as $taskId => $v) {
+                if (is_array($v)) continue;
+                $vv = strtolower(trim((string) $v));
+                if (in_array($vv, ['low', 'medium', 'high'], true)) {
+                    $priorityValues[(string) $taskId] = $vv;
+                }
+            }
 
-            // Keep original task_developers structure: [taskId => [developerName, ...]]
+            // Form sends task_developers[taskId] = [developerId]
             $devInput = (array) $request->input('task_developers', []);
             $devMap = [];
-            
-            // Collect all unique developer names/IDs from all tasks
-            $allDevelopers = collect($devInput)->flatten()->unique()->filter()->values();
-            
-            // For each developer (could be name or ID), find the user and create the map
-            foreach ($allDevelopers as $developer) {
-                $developerStr = trim((string) $developer);
-                if (empty($developerStr)) continue;
-                
-                $user = null;
-                
-                // Check if it's an ObjectId (user ID)
-                if (preg_match('/^[a-f0-9]{24}$/i', $developerStr)) {
-                    try { 
-                        $user = User::find($developerStr); 
-                    } catch (\Throwable $e) {}
-                    
-                    if (!$user) {
-                        try { 
-                            $user = User::query()->where('id', $developerStr)->orWhere('_id', $developerStr)->first(); 
-                        } catch (\Throwable $e) {}
+            $taskDevelopersByTask = [];
+
+            foreach ($devInput as $taskId => $devs) {
+                $taskIdStr = (string) $taskId;
+                $devList = is_array($devs) ? $devs : [ $devs ];
+                $resolvedIds = [];
+                foreach ($devList as $developer) {
+                    $developerStr = trim((string) $developer);
+                    if (empty($developerStr)) continue;
+                    $user = null;
+                    if (preg_match('/^[a-f0-9]{24}$/i', $developerStr)) {
+                        try { $user = User::find($developerStr); } catch (\Throwable $e) {}
+                        if (!$user) try { $user = User::query()->where('id', $developerStr)->orWhere('_id', $developerStr)->first(); } catch (\Throwable $e) {}
+                    } else {
+                        try { $user = User::where('name', $developerStr)->first(); } catch (\Throwable $e) {}
                     }
-                } else {
-                    // It's a name, look up by name
-                    try {
-                        $user = User::where('name', $developerStr)->first();
-                    } catch (\Throwable $e) {}
+                    if ($user) {
+                        $userIdString = (string) ($user->_id ?? $user->id);
+                        $resolvedIds[] = $userIdString;
+                        $devMap[$userIdString] = [$user->name];
+                    }
                 }
-                
-                if ($user && $user->name) {
-                    $userIdString = (string) ($user->_id ?? $user->id);
-                    // Store as {user_id: [developer_name]}
-                    $devMap[$userIdString] = [$user->name];
+                if ($taskIdStr !== '' && !empty($resolvedIds)) {
+                    $taskDevelopersByTask[$taskIdStr] = $resolvedIds;
                 }
             }
 
@@ -655,9 +647,9 @@ class TeamController extends Controller
                 'thumb_path' => $thumbPath,
                 'tickets' => $ticketIds,
                 'tasks' => $taskIds->values()->all(),
-                // store per-task maps with simple values and names
                 'task_priorities' => $priorityValues,
                 'task_developers' => $devMap,
+                'task_developers_by_task' => $taskDevelopersByTask,
                 'user_id' => Auth::id(),
             ]);
 
@@ -939,52 +931,43 @@ class TeamController extends Controller
                 }
             }
 
-            // Priorities per-task map
-            $priorityValues = collect((array) $request->input('task_priorities', []))
-                ->map(function ($v) {
-                    if (is_array($v)) return null;
-                    $vv = strtolower((string) $v);
-                    return in_array($vv, ['low','medium','high'], true) ? $vv : null;
-                })
-                ->filter()
-                ->all();
+            // Priorities per-task map: [taskId => 'low'|'medium'|'high'] (preserve task ID keys)
+            $priorityInput = (array) $request->input('task_priorities', []);
+            $priorityValues = [];
+            foreach ($priorityInput as $taskId => $v) {
+                if (is_array($v)) continue;
+                $vv = strtolower(trim((string) $v));
+                if (in_array($vv, ['low', 'medium', 'high'], true)) {
+                    $priorityValues[(string) $taskId] = $vv;
+                }
+            }
 
-            // Restructure task_developers: from [taskId => [developerName, ...]] to [userId => [developerName]]
             $devInput = (array) $request->input('task_developers', []);
             $devMap = [];
-            
-            // Collect all unique developer names/IDs from all tasks
-            $allDevelopers = collect($devInput)->flatten()->unique()->filter()->values();
-            
-            // For each developer (could be name or ID), find the user and create the map
-            foreach ($allDevelopers as $developer) {
-                $developerStr = trim((string) $developer);
-                if (empty($developerStr)) continue;
-                
-                $user = null;
-                
-                // Check if it's an ObjectId (user ID)
-                if (preg_match('/^[a-f0-9]{24}$/i', $developerStr)) {
-                    try { 
-                        $user = User::find($developerStr); 
-                    } catch (\Throwable $e) {}
-                    
-                    if (!$user) {
-                        try { 
-                            $user = User::query()->where('id', $developerStr)->orWhere('_id', $developerStr)->first(); 
-                        } catch (\Throwable $e) {}
+            $taskDevelopersByTask = [];
+
+            foreach ($devInput as $taskId => $devs) {
+                $taskIdStr = (string) $taskId;
+                $devList = is_array($devs) ? $devs : [ $devs ];
+                $resolvedIds = [];
+                foreach ($devList as $developer) {
+                    $developerStr = trim((string) $developer);
+                    if (empty($developerStr)) continue;
+                    $user = null;
+                    if (preg_match('/^[a-f0-9]{24}$/i', $developerStr)) {
+                        try { $user = User::find($developerStr); } catch (\Throwable $e) {}
+                        if (!$user) try { $user = User::query()->where('id', $developerStr)->orWhere('_id', $developerStr)->first(); } catch (\Throwable $e) {}
+                    } else {
+                        try { $user = User::where('name', $developerStr)->first(); } catch (\Throwable $e) {}
                     }
-                } else {
-                    // It's a name, look up by name
-                    try {
-                        $user = User::where('name', $developerStr)->first();
-                    } catch (\Throwable $e) {}
+                    if ($user) {
+                        $userIdString = (string) ($user->_id ?? $user->id);
+                        $resolvedIds[] = $userIdString;
+                        $devMap[$userIdString] = [$user->name];
+                    }
                 }
-                
-                if ($user && $user->name) {
-                    $userIdString = (string) ($user->_id ?? $user->id);
-                    // Store as {user_id: [developer_name]}
-                    $devMap[$userIdString] = [$user->name];
+                if ($taskIdStr !== '' && !empty($resolvedIds)) {
+                    $taskDevelopersByTask[$taskIdStr] = $resolvedIds;
                 }
             }
 
@@ -994,14 +977,13 @@ class TeamController extends Controller
             $team->pm_id = $validated['pm_id'] ?? $team->pm_id;
             $team->timeline_color = $validated['timeline_color'] ?? $team->timeline_color;
 
-            // Store old developers before updating (for comparison)
             $oldDevMap = $team->task_developers ?? [];
 
-            // Update arrays
             $team->tickets = $ticketIds;
             $team->tasks = $taskIds->values()->all();
             $team->task_priorities = $priorityValues;
             $team->task_developers = $devMap;
+            $team->task_developers_by_task = $taskDevelopersByTask;
 
             $team->save();
 

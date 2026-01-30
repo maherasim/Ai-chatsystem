@@ -1881,15 +1881,15 @@
                                 <select class="custom-input custom-input-select" name="pm_id" style="color:#64748b;">
                                 <option value="" selected>Select PM</option>
                                 @foreach($developers ?? [] as $developer)
-                                    <option value="{{ $developer->_id }}">{{ $developer->name }} - {{ ucfirst($developer->type ?? 'user') }}</option>
+                                    <option value="{{ (string)($developer->_id ?? $developer->id ?? '') }}">{{ $developer->name }} - {{ ucfirst($developer->type ?? 'user') }}</option>
                                 @endforeach
                             </select>
                         </div>
                             <div class="col-md-6 custom-select-wrap">
                                 <select class="custom-input custom-input-select" name="timeline_color" style="color:#64748b;">
-                                <option selected>Timeline Color</option>
-                                <option>Red</option>
-                                <option>Blue</option>
+                                <option value="Timeline Color" selected>Timeline Color</option>
+                                <option value="Red">Red</option>
+                                <option value="Blue">Blue</option>
                             </select>
                             </div>
                         </div>
@@ -2064,14 +2064,15 @@
                     const startDate = task.start_date ? new Date(task.start_date).toLocaleDateString('de-DE') : '12.10.2025';
                     const endDate = task.end_date ? new Date(task.end_date).toLocaleDateString('de-DE') : '15.10.2025';
                     
-                    // Developer Options
+                    // Developer Options (use id or _id for MongoDB compatibility)
                     const devOptions = developersList.map(d => 
-                        `<option value="${d.id}" data-img="${d.image || '{{ URL::asset("/build/img/profile.svg") }}'}">${d.name}</option>`
+                        `<option value="${String(d.id || d._id || '')}" data-img="${d.image || '{{ URL::asset("/build/img/profile.svg") }}'}">${d.name}</option>`
                     ).join('');
 
+                    const taskIdVal = String(task.id || task._id || '');
                     // --- HTML TEMPLATE ---
                     const cardHtml = `
-                    <div class="task-wrapper">
+                    <div class="task-wrapper" data-task-id="${taskIdVal}">
                     <div class="task-row">
                         <div class="task-image-box">
                             <div class="task-badge">${String(idx + 1).padStart(2, '0')}</div>
@@ -2112,7 +2113,7 @@
                                 <span class="dot" style="width:8px; height:8px; border-radius:50%; background:#22c55e; margin-right:8px;"></span>
                                 <span class="text flex-grow-1" style="font-size:12px; color:#475569;">Low</span>
                                 <i class="ti ti-chevron-down" style="font-size:10px; color:#94a3b8;"></i>
-                                <select class="control-select-overlay" name="task_priorities[${task.id || task._id}]" onchange="updateUI(this, 'priority')">
+                                <select class="control-select-overlay" name="task_priorities[${taskIdVal}]" onchange="updateUI(this, 'priority')">
                                     <option value="low" data-color="#22c55e">Low</option>
                                     <option value="medium" data-color="#f59e0b">Medium</option>
                                     <option value="high" data-color="#ef4444">High</option>
@@ -2123,7 +2124,7 @@
                                 <img class="avatar" src="{{ URL::asset('/build/img/profile.svg') }}" style="width:20px; height:20px; border-radius:50%; margin-right:8px;">
                                 <span class="text flex-grow-1" style="font-size:12px; color:#475569;">Name</span>
                                 <i class="ti ti-chevron-down" style="font-size:10px; color:#94a3b8;"></i>
-                                <select class="control-select-overlay" name="task_developers[${task.id || task._id}]" onchange="updateUI(this, 'dev')">
+                                <select class="control-select-overlay" name="task_developers[${taskIdVal}]" onchange="updateUI(this, 'dev')">
                                     <option value="">Select User</option>
                                     ${devOptions}
                              </select>
@@ -2135,6 +2136,64 @@
                     const div = document.createElement('div');
                     div.innerHTML = cardHtml;
                     tasksContainer.appendChild(div);
+                });
+
+                // When editing, apply saved task_priorities and task_developers from team data (defer so DOM is ready)
+                if (window.currentEditingTeamId && window.teamsData && window.teamsData[window.currentEditingTeamId]) {
+                    var teamDataForEdit = window.teamsData[window.currentEditingTeamId];
+                    setTimeout(function () { applySavedTaskSelections(teamDataForEdit); }, 100);
+                }
+            }
+
+            function applySavedTaskSelections(teamData) {
+                if (!teamData || !tasksContainer) return;
+                var priorsRaw = teamData.task_priorities;
+                var priors = (typeof priorsRaw === 'string') ? (function(){ try { return JSON.parse(priorsRaw); } catch(e) { return {}; } })() : (priorsRaw || {});
+                if (!priors || typeof priors !== 'object') priors = {};
+                var devsByTaskRaw = teamData.task_developers_by_task;
+                var devsByTask = (typeof devsByTaskRaw === 'string') ? (function(){ try { return JSON.parse(devsByTaskRaw); } catch(e) { return {}; } })() : (devsByTaskRaw || {});
+                if (!devsByTask || typeof devsByTask !== 'object') devsByTask = {};
+                var devsLegacy = teamData.task_developers || {};
+                if (typeof devsLegacy === 'string') { try { devsLegacy = JSON.parse(devsLegacy); } catch(e) { devsLegacy = {}; } }
+
+                var wrappers = tasksContainer.querySelectorAll('.task-wrapper');
+                wrappers.forEach(function (wrapper) {
+                    var taskId = (wrapper.getAttribute('data-task-id') || '').trim();
+                    if (!taskId) return;
+                    var priorityVal = priors[taskId] || priors[String(taskId)];
+                    if (priorityVal) {
+                        var sel = wrapper.querySelector('select[name="task_priorities[' + taskId + ']"]') || wrapper.querySelector('select[name^="task_priorities["]');
+                        if (sel) {
+                            var pv = String(priorityVal).toLowerCase();
+                            if (['low','medium','high'].indexOf(pv) >= 0) {
+                                sel.value = pv;
+                                if (typeof updateUI === 'function') updateUI(sel, 'priority');
+                            }
+                        }
+                    }
+                    var devVal = devsByTask[taskId] || devsByTask[String(taskId)];
+                    if (devVal == null || (Array.isArray(devVal) && devVal.length === 0)) devVal = devsLegacy[taskId] || devsLegacy[String(taskId)];
+                    if ((devVal == null || (Array.isArray(devVal) && devVal.length === 0)) && Object.keys(devsLegacy).length > 0) {
+                        var firstKey = Object.keys(devsLegacy)[0];
+                        devVal = devsLegacy[firstKey];
+                    }
+                    if (devVal != null && devVal !== '') {
+                        var first = Array.isArray(devVal) ? devVal[0] : devVal;
+                        var devId = first;
+                        if (typeof first === 'string' && first.length > 0) {
+                            var byId = developersList.find(function (d) { return String(d.id || d._id || '') === String(first); });
+                            if (byId) devId = byId.id || byId._id;
+                            else {
+                                var byName = developersList.find(function (d) { return (d.name || '').trim() === (first || '').trim(); });
+                                if (byName) devId = byName.id || byName._id;
+                            }
+                        }
+                        var selDev = wrapper.querySelector('select[name="task_developers[' + taskId + ']"]') || wrapper.querySelector('select[name^="task_developers["]');
+                        if (selDev && devId) {
+                            selDev.value = String(devId);
+                            if (typeof updateUI === 'function') updateUI(selDev, 'dev');
+                        }
+                    }
                 });
             }
 
@@ -2288,7 +2347,7 @@
                                 style="background-color: #fff; border: none; border-radius: 8px; font-size: 13px; color: #666;  background-size: 12px; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-position: right 10px center;">
                                 <option value="" selected>Select PM</option>
                                 @foreach($developers ?? [] as $developer)
-                                    <option value="{{ $developer->_id }}">{{ $developer->name }} - {{ ucfirst($developer->type ?? 'user') }}</option>
+                                    <option value="{{ (string)($developer->_id ?? $developer->id ?? '') }}">{{ $developer->name }} - {{ ucfirst($developer->type ?? 'user') }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -3204,18 +3263,30 @@
         // Build teams data map for edit prefill
         window.teamsData = window.teamsData || {};
         @foreach(($teams ?? []) as $t)
+            @php
+                $priors = $t->task_priorities ?? [];
+                if (is_string($priors)) { $priors = json_decode($priors, true); }
+                $priors = is_array($priors) ? $priors : [];
+                $devsByTask = $t->task_developers_by_task ?? [];
+                if (is_string($devsByTask)) { $devsByTask = json_decode($devsByTask, true); }
+                $devsByTask = is_array($devsByTask) ? $devsByTask : [];
+                $devsLegacy = $t->task_developers ?? [];
+                if (is_string($devsLegacy)) { $devsLegacy = json_decode($devsLegacy, true); }
+                $devsLegacy = is_array($devsLegacy) ? $devsLegacy : [];
+            @endphp
             window.teamsData['{{ (string) ($t->_id ?? $t->id) }}'] = {
                 id: '{{ (string) ($t->_id ?? $t->id) }}',
                 title: {!! json_encode($t->title) !!},
                 project_id: {!! json_encode((string)($t->project_id ?? '')) !!},
-                pm_id: {!! json_encode($t->pm_id) !!},
-                timeline_color: {!! json_encode($t->timeline_color) !!},
+                pm_id: {!! json_encode((string)($t->pm_id ?? '')) !!},
+                timeline_color: {!! json_encode($t->timeline_color ? ucfirst(strtolower(trim((string)$t->timeline_color))) : '') !!},
                 banner_path: {!! json_encode($t->banner_path ? asset('storage/'.$t->banner_path) : null) !!},
                 thumb_path: {!! json_encode($t->thumb_path ? asset('storage/'.$t->thumb_path) : null) !!},
                 tickets: {!! json_encode((array) ($t->tickets ?? [])) !!},
                 tasks: {!! json_encode((array) ($t->tasks ?? [])) !!},
-                task_priorities: {!! json_encode($t->task_priorities ?? []) !!},
-                task_developers: {!! json_encode($t->task_developers ?? []) !!}
+                task_priorities: {!! json_encode($priors) !!},
+                task_developers: {!! json_encode($devsLegacy) !!},
+                task_developers_by_task: {!! json_encode($devsByTask) !!}
             };
         @endforeach
 
@@ -3237,7 +3308,7 @@
             var pmSelect = form.querySelector('select[name="pm_id"]');
             if (pmSelect) pmSelect.value = '';
             var tlSelect = form.querySelector('select[name="timeline_color"]');
-            if (tlSelect) tlSelect.value = 'Timeline Color';
+            if (tlSelect) { tlSelect.value = 'Timeline Color'; }
 
             // Clear previews
             var bannerPicker = document.getElementById('bannerInput') ? document.getElementById('bannerInput').previousElementSibling : null;
@@ -3286,9 +3357,9 @@
             var projSelect = document.getElementById('addProjectSelect');
             if (projSelect) projSelect.value = data && data.project_id ? data.project_id : '';
             var pmSelect = form.querySelector('select[name="pm_id"]');
-            if (pmSelect) pmSelect.value = data && data.pm_id ? data.pm_id : '';
+            if (pmSelect) pmSelect.value = (data && data.pm_id != null && data.pm_id !== '') ? String(data.pm_id) : '';
             var tlSelect = form.querySelector('select[name="timeline_color"]');
-            if (tlSelect) tlSelect.value = data && data.timeline_color ? data.timeline_color : 'Timeline Color';
+            if (tlSelect) tlSelect.value = (data && data.timeline_color) ? String(data.timeline_color) : 'Timeline Color';
 
             // Previews for banner/thumb
             var bannerPicker = document.getElementById('bannerInput') ? document.getElementById('bannerInput').previousElementSibling : null;
