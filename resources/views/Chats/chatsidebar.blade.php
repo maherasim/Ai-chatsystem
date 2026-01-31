@@ -1,6 +1,13 @@
 @php
     $menuItems = [
         [
+            'title' => 'Chats',
+            'route' => route('chat.index'),
+            'iconWhite' => '/build/img/Chat-White.svg',
+            'iconBlack' => '/build/img/Chat-Black.svg',
+            'activePattern' => 'chat'
+        ],
+        [
             'title' => 'Meeting',
             'route' => route('chat-meetings'),
             'iconWhite' => '/build/img/Meeting - White.svg',
@@ -14,13 +21,7 @@
             'iconBlack' => '/build/img/ToDo - Black.svg',
             'activePattern' => 'todos'
         ],
-        [
-            'title' => 'Chats',
-            'route' => route('chat.index'),
-            'iconWhite' => '/build/img/Chat-White.svg',
-            'iconBlack' => '/build/img/Chat-Black.svg',
-            'activePattern' => 'chat'
-        ],
+       
         [
             'title' => 'Ticket',
             'route' => route('chat-ticket'),
