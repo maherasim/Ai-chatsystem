@@ -22,13 +22,13 @@
             'activePattern' => 'todos'
         ],
        
-        [
-            'title' => 'Ticket',
-            'route' => route('chat-ticket'),
-            'iconWhite' => '/build/img/ticket_icon_white.svg',
-            'iconBlack' => '/build/img/ticket_icon_black.svg',
-            'activePattern' => 'ticket'
-        ],
+        // [
+        //     'title' => 'Ticket',
+        //     'route' => route('chat-ticket'),
+        //     'iconWhite' => '/build/img/ticket_icon_white.svg',
+        //     'iconBlack' => '/build/img/ticket_icon_black.svg',
+        //     'activePattern' => 'ticket'
+        // ],
         [
             'title' => 'Task',
             'route' => route('chat-task'),
