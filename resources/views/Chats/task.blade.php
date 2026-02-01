@@ -8472,9 +8472,9 @@
                                     // Get mark image URL from board attribute
                                     var markImageUrl = board || '';
                                     
-                                    // Get issue position and shape data
+                                    // Get issue position and shape data (normalize shape for comparison)
                                     var issuePos = it.position || {};
-                                    var issueShape = it.shape || 'circle';
+                                    var issueShape = (it.shape && String(it.shape).toLowerCase()) || 'circle';
                                     // Get saved width and height, or use defaults
                                     var issueWidth = (it.position && it.position.width) ? it.position.width : (issueShape === 'circle' ? 80 : 80);
                                     var issueHeight = (it.position && it.position.height) ? it.position.height : (issueShape === 'circle' ? 80 : 80);
@@ -10704,9 +10704,9 @@
                                                 }
                                             }
                                             
-                                            // Get issue position and shape data
+                                            // Get issue position and shape data (normalize shape for comparison)
                                             const issuePos = it.position || {};
-                                            const issueShape = it.shape || 'circle';
+                                            const issueShape = (it.shape && String(it.shape).toLowerCase()) || 'circle';
                                             // Get saved width and height, or use defaults
                                             const issueWidth = (it.position && it.position.width) ? it.position.width : (issueShape === 'circle' ? 80 : 80);
                                             const issueHeight = (it.position && it.position.height) ? it.position.height : (issueShape === 'circle' ? 80 : 80);
@@ -10738,7 +10738,7 @@
                                                 if (issueShape === 'circle') {
                                                     const radius = Math.min(overlayWidth, overlayHeight) / 2;
                                                     shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + (radius * 2) + 'px; height:' + (radius * 2) + 'px; border:3px solid ' + accent + '; border-radius:50%; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
-                                                } else if (issueShape === 'rectangle') {
+                                                } else if (issueShape === 'square' || issueShape === 'rectangle') {
                                                     shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + overlayWidth + 'px; height:' + overlayHeight + 'px; border:3px solid ' + accent + '; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
                                                 } else if (issueShape === 'triangle') {
                                                     // Triangle shape - create using SVG or CSS
@@ -11001,7 +11001,7 @@
                                                 
                                                 // Get issue position and shape data
                                                 const issuePos = it.position || {};
-                                                const issueShape = it.shape || 'circle';
+                                                const issueShape = (it.shape && String(it.shape).toLowerCase()) || 'circle';
                                                 // Get saved width and height, or use defaults
                                                 const issueWidth = (it.position && it.position.width) ? it.position.width : (issueShape === 'circle' ? 80 : 80);
                                                 const issueHeight = (it.position && it.position.height) ? it.position.height : (issueShape === 'circle' ? 80 : 80);
@@ -11033,7 +11033,7 @@
                                                     if (issueShape === 'circle') {
                                                         const radius = Math.min(overlayWidth, overlayHeight) / 2;
                                                         shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + (radius * 2) + 'px; height:' + (radius * 2) + 'px; border:3px solid ' + accent + '; border-radius:50%; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
-                                                    } else if (issueShape === 'rectangle') {
+                                                    } else if (issueShape === 'square' || issueShape === 'rectangle') {
                                                         shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + overlayWidth + 'px; height:' + overlayHeight + 'px; border:3px solid ' + accent + '; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
                                                     } else if (issueShape === 'triangle') {
                                                         // Triangle shape - create using SVG or CSS
