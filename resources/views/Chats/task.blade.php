@@ -5328,7 +5328,7 @@
                 </div>
 
                 <div class="modal-footer d-flex justify-content-between" style="border-top:none;">
-                    <button type="button" class="btn btn-secondary" style="border-radius: 6px;"
+                    <button type="button" class="btn text-white" style="background-color: #28c76f; border-radius: 6px;"
                         data-bs-dismiss="modal" aria-label="Close">Close</button>
                     <div class="d-flex gap-2">
                         <button id="create-task-save" type="button" class="btn text-white"
@@ -6051,7 +6051,7 @@
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-between" style="border-top:none;">
-                    <button type="button" class="btn btn-secondary" style="border-radius: 6px;"
+                    <button type="button" class="btn text-white" style="background-color: #28c76f; border-radius: 6px;"
                         data-bs-dismiss="modal" aria-label="Close">Close</button>
                     <div class="d-flex gap-2">
                         <button id="wt-create-task-save" type="button" class="btn text-white"
