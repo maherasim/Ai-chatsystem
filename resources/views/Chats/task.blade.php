@@ -5328,17 +5328,14 @@
                 </div>
 
                 <div class="modal-footer d-flex justify-content-between" style="border-top:none;">
-                    <!-- Save and Close (Green) -->
-                    <button id="create-task-save" type="button" class="btn text-white"
-                        style="background-color: #28c76f; border-radius: 6px;">
-                          Close
-                    </button>
-
-                    <!-- Save & add Task (Orange) -->
-                    <button id="create-task-save-add" type="button" class="btn text-white"
-                        style="background-color: #f98f3e; border-radius: 6px;">
-                        Save & add Task
-                    </button>
+                    <button type="button" class="btn btn-secondary" style="border-radius: 6px;"
+                        data-bs-dismiss="modal" aria-label="Close">Close</button>
+                    <div class="d-flex gap-2">
+                        <button id="create-task-save" type="button" class="btn text-white"
+                            style="background-color: #28c76f; border-radius: 6px;">Save and Close</button>
+                        <button id="create-task-save-add" type="button" class="btn text-white"
+                            style="background-color: #f98f3e; border-radius: 6px;">Save & add Task</button>
+                    </div>
                 </div>
 
             </div>
@@ -6054,11 +6051,14 @@
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-between" style="border-top:none;">
-                    <button id="wt-create-task-save" type="button" class="btn text-white"
-                        style="background-color: #28c76f; border-radius: 6px;" data-bs-dismiss="modal"> 
-                        Close</button>
-                    <button id="wt-create-task-save-add" type="button" class="btn text-white"
-                        style="background-color: #f98f3e; border-radius: 6px;">Save & add Task </button>
+                    <button type="button" class="btn btn-secondary" style="border-radius: 6px;"
+                        data-bs-dismiss="modal" aria-label="Close">Close</button>
+                    <div class="d-flex gap-2">
+                        <button id="wt-create-task-save" type="button" class="btn text-white"
+                            style="background-color: #28c76f; border-radius: 6px;">Save and Close</button>
+                        <button id="wt-create-task-save-add" type="button" class="btn text-white"
+                            style="background-color: #f98f3e; border-radius: 6px;">Save & add Task</button>
+                    </div>
                 </div>
             </div>
         </div>
