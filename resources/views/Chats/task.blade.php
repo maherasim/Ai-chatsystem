@@ -6856,11 +6856,25 @@
                 badge.style.top = item.position.top + 'px';
                 badge.style.transform = 'translate(-50%, -50%)';
                 badge.style.color = item.color || '#28c76f';
+                badge.style.borderColor = item.color || '#28c76f';
                 badge.style.fontWeight = '800';
                 badge.style.fontSize = '18px';
                 badge.style.textShadow = '0 1px 2px rgba(0,0,0,0.25)';
                 badge.style.cursor = 'pointer';
                 badge.style.zIndex = '25';
+                // Apply selected shape (circle, square, triangle) so badge matches user choice
+                var wtShape = (item.shape) ? String(item.shape).toLowerCase() : 'circle';
+                if (wtShape === 'square') {
+                    badge.style.borderRadius = '6px';
+                    badge.style.clipPath = 'none';
+                } else if (wtShape === 'triangle') {
+                    badge.style.borderRadius = '0';
+                    badge.style.webkitClipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+                    badge.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+                } else {
+                    badge.style.borderRadius = '999px';
+                    badge.style.clipPath = 'none';
+                }
                 badge.addEventListener('mousedown', function(ev) {
                     ev.stopPropagation();
                 });
@@ -8432,6 +8446,19 @@
                             badge.style.fontWeight = '800';
                             badge.style.fontSize = '18px';
                             badge.style.textShadow = '0 1px 2px rgba(0,0,0,0.25)';
+                            // Apply the saved shape (circle, square, triangle) so viewer shows correct shape
+                            var issueShape = (it && it.shape) ? String(it.shape).toLowerCase() : 'circle';
+                            if (issueShape === 'square') {
+                                badge.style.borderRadius = '6px';
+                                badge.style.clipPath = 'none';
+                            } else if (issueShape === 'triangle') {
+                                badge.style.borderRadius = '0';
+                                badge.style.webkitClipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+                                badge.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+                            } else {
+                                badge.style.borderRadius = '999px';
+                                badge.style.clipPath = 'none';
+                            }
                             badge.addEventListener('click', function(ev) {
                                 ev.stopPropagation();
                                 // Show issue details popup if SweetAlert is available
@@ -8479,8 +8506,8 @@
                                         if (issueShape === 'circle') {
                                             var radius = Math.min(overlayWidth, overlayHeight) / 2;
                                             shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + (radius * 2) + 'px; height:' + (radius * 2) + 'px; border:3px solid ' + accent + '; border-radius:50%; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
-                                        } else if (issueShape === 'rectangle') {
-                                            shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + overlayWidth + 'px; height:' + overlayHeight + 'px; border:3px solid ' + accent + '; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
+                                        } else if (issueShape === 'square' || issueShape === 'rectangle') {
+                                            shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + overlayWidth + 'px; height:' + overlayHeight + 'px; border:3px solid ' + accent + '; border-radius:6px; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
                                         } else if (issueShape === 'triangle') {
                                             // Triangle shape - create using SVG
                                             var centerX = overlayLeft + overlayWidth / 2;
@@ -10639,7 +10666,18 @@
                                     const badgeColor = it.color || '#28c76f';
                                     badge.style.borderColor = badgeColor;
                                     badge.style.color = badgeColor;
-                                    
+                                    var issueShape = (it && it.shape) ? String(it.shape).toLowerCase() : 'circle';
+                                    if (issueShape === 'square') {
+                                        badge.style.borderRadius = '6px';
+                                        badge.style.clipPath = 'none';
+                                    } else if (issueShape === 'triangle') {
+                                        badge.style.borderRadius = '0';
+                                        badge.style.webkitClipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+                                        badge.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+                                    } else {
+                                        badge.style.borderRadius = '999px';
+                                        badge.style.clipPath = 'none';
+                                    }
                                     badge.addEventListener('click', function(ev) {
                                         ev.stopPropagation();
                                         if (window.Swal && typeof Swal.fire === 'function') {
@@ -10922,7 +10960,18 @@
                                         const badgeColor = it.color || '#28c76f';
                                         badge.style.borderColor = badgeColor;
                                         badge.style.color = badgeColor;
-                                        
+                                        var issueShape = (it && it.shape) ? String(it.shape).toLowerCase() : 'circle';
+                                        if (issueShape === 'square') {
+                                            badge.style.borderRadius = '6px';
+                                            badge.style.clipPath = 'none';
+                                        } else if (issueShape === 'triangle') {
+                                            badge.style.borderRadius = '0';
+                                            badge.style.webkitClipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+                                            badge.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+                                        } else {
+                                            badge.style.borderRadius = '999px';
+                                            badge.style.clipPath = 'none';
+                                        }
                                         // Add click handler to show issue details
                                         badge.addEventListener('click', function(ev) {
                                             ev.stopPropagation();
