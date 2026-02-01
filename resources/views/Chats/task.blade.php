@@ -4031,7 +4031,13 @@
                     currentMarker = null;
                 }
 
-                // Keep the Issue modal open so user can add more without closing
+                // Trigger main "Save and Close" so task is persisted to DB (user expects Save & Close = save to DB)
+                setTimeout(function() {
+                    var mainSave = document.getElementById('create-task-save');
+                    if (mainSave && !mainSave.disabled && mainSave.dataset.saving !== '1') {
+                        mainSave.click();
+                    }
+                }, 150);
             });
             // Save aggregated issues into a single task on main modal Save & Close
             try {
@@ -5325,7 +5331,7 @@
                     <!-- Save and Close (Green) -->
                     <button id="create-task-save" type="button" class="btn text-white"
                         style="background-color: #28c76f; border-radius: 6px;">
-                        Save and Close
+                          Close
                     </button>
 
                     <!-- Save & add Task (Orange) -->
@@ -6049,7 +6055,7 @@
                 </div>
                 <div class="modal-footer d-flex justify-content-between" style="border-top:none;">
                     <button id="wt-create-task-save" type="button" class="btn text-white"
-                        style="background-color: #28c76f; border-radius: 6px;" data-bs-dismiss="modal">Save and
+                        style="background-color: #28c76f; border-radius: 6px;" data-bs-dismiss="modal"> 
                         Close</button>
                     <button id="wt-create-task-save-add" type="button" class="btn text-white"
                         style="background-color: #f98f3e; border-radius: 6px;">Save & add Task </button>
@@ -6093,7 +6099,7 @@
             <div class="modal-content" style="border-radius:12px;">
                 <div class="modal-header" style="background:#fff;">
                     <div>
-                        <h6 class="modal-title mb-0" style="font-weight:600;">Add Issue </h6>
+                        <h6 class="modal-title mb-0" style="font-weight:600;">Add Issue</h6>
                         <small class="text-muted">Create an Issue</small>
                     </div>
                 </div>
@@ -6799,7 +6805,9 @@
             } catch (_) {}
 
             var wtSave = document.getElementById('wt-save-marker');
-            if (wtSave) wtSave.addEventListener('click', function() {
+            if (wtSave) wtSave.addEventListener('click', function(ev) {
+                ev.preventDefault();
+                ev.stopPropagation();
                 var title = (document.getElementById('wt-marker-title') || {}).value || '';
                 var desc = (document.getElementById('wt-marker-description') || {}).value || '';
                 var s = (document.getElementById('wt-marker-start') || {}).value || '';
@@ -6866,7 +6874,7 @@
                     } catch (_) {}
                     wtCurrentMarker = null;
                 }
-                // Close the Add Issue modal after saving
+                // Close only the Add Issue modal; main popup stays open with footer/buttons visible. User clicks main "Save and Close" to persist.
                 try {
                     bootstrap.Modal.getOrCreateInstance(document.getElementById('wt-markerDetailsModal')).hide();
                 } catch (_) {}
