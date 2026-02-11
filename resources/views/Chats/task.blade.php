@@ -6844,10 +6844,8 @@
                     }
                 };
                 wtIssues.push(item);
-                // Issue is added to wtIssues array, will be saved when user clicks green "Save and Close" button
-                // Add task card to list (visual feedback only)
-                addTaskCardToList(item, 'wtTaskList', wtProjectSelect, wtTicketSelect, wtPreview, wtIssues);
-                
+                // Issue is added to wtIssues array; task is only created when user clicks "Save and Close" or "Save & add Task" on the main modal
+                // Do not add a task card here – task list updates only after main modal save
                 var badge = document.createElement('div');
                 badge.className = 'marker-badge';
                 badge.textContent = String(item.number);
