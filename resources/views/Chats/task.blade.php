@@ -463,7 +463,7 @@
                                                     </div>
                                                     <div class="modal-footer d-flex justify-content-between">
                                                         <button type="button" id="save-marker"
-                                                            class="btn btn-light btn-sm">Save & Close</button>
+                                                            class="btn btn-light btn-sm">Add Task</button>
                                                         <button type="button" class="btn btn-light btn-sm"
                                                             data-bs-dismiss="modal">Close</button>
                                                     </div>
@@ -3973,9 +3973,8 @@
                     taskData.layer = null;
                 }
                 createdTasks.push(taskData);
-                // Issue is added to createdTasks array, will be saved when user clicks green "Save and Close" button
-                // Add task card to list (visual feedback only)
-                addTaskCardToList(taskData, 'taskList', projectSelect, ticketSelect, previewImg, createdTasks);
+                // Issue is added to createdTasks array; task is saved only when user clicks "Save and Close" or "Save & add Task" on the main modal
+                // Do not add a task card here – list updates only after main modal save
 
                 var badge = document.createElement('div');
                 badge.className = 'marker-badge';
@@ -4031,13 +4030,10 @@
                     currentMarker = null;
                 }
 
-                // Trigger main "Save and Close" so task is persisted to DB (user expects Save & Close = save to DB)
-                setTimeout(function() {
-                    var mainSave = document.getElementById('create-task-save');
-                    if (mainSave && !mainSave.disabled && mainSave.dataset.saving !== '1') {
-                        mainSave.click();
-                    }
-                }, 150);
+                // Close Add Issue modal only; save happens when user clicks "Save and Close" or "Save & add Task" on the main modal
+                try {
+                    bootstrap.Modal.getOrCreateInstance(document.getElementById('markerDetailsModal')).hide();
+                } catch (_) {}
             });
             // Save aggregated issues into a single task on main modal Save & Close
             try {
@@ -4133,9 +4129,9 @@
                                         try {
                                             createdTasks = [];
                                         } catch (_) {}
-                                        setTimeout(function() {
-                                            window.location.reload();
-                                        }, 300);
+                                        createTaskSaveBtn.disabled = false;
+                                        createTaskSaveBtn.dataset.saving = '0';
+                                        createTaskSaveBtn.textContent = originalText;
                                     } else {
                                         alert('Failed to update task');
                                         // Re-enable button on error
@@ -4221,6 +4217,7 @@
                                 return res.json();
                             }).then(function(resp) {
                                 if (resp && resp.success) {
+                                    var issuesForCard = (Array.isArray(createdTasks) ? createdTasks : []).slice();
                                     try {
                                         var note = document.createElement('div');
                                         note.className = 'position-fixed top-0 end-0 p-3';
@@ -4234,13 +4231,48 @@
                                             } catch (_) {}
                                         }, 1500);
                                     } catch (_) {}
-                                    
-                                    // Close modal and reload page to show new task
                                     try {
-                                        var modal = bootstrap.Modal.getInstance(document.getElementById('createTaskModal'));
-                                        if (modal) {
-                                            modal.hide();
+                                        createdTasks = [];
+                                        badgeCounter = 0;
+                                        var existing = markerLayer ? markerLayer.querySelectorAll('.marker-badge') : [];
+                                        existing.forEach?.(function(n) {
+                                            try { n.remove(); } catch (_) {}
+                                        });
+                                    } catch (_) {}
+                                    try {
+                                        var list = document.getElementById('taskList');
+                                        if (list) {
+                                            var card = document.createElement('div');
+                                            card.className = 'd-flex p-2 rounded mt-2 task-card';
+                                            card.style.cssText = 'background:#ebebeb; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px; border-radius: 10px;';
+                                            var imgSrc = (previewImg && previewImg.src) ? previewImg.src : '{{ asset('build/img/dooted img.svg') }}';
+                                            var sStr = (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t&&t.start_date ? (''+t.start_date).substring(0,10) : '--'; }catch(_){ return '--'; }})();
+                                            var eStr = (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t&&t.end_date ? (''+t.end_date).substring(0,10) : '--'; }catch(_){ return '--'; }})();
+                                            var ticketOpt = ticketSelect && ticketSelect.selectedOptions && ticketSelect.selectedOptions[0];
+                                            var ticketLabel = ticketOpt ? ticketOpt.textContent : '';
+                                            card.setAttribute('data-board', imgSrc);
+                                            card.setAttribute('data-issues', JSON.stringify(issuesForCard||[]));
+                                            card.setAttribute('data-title', taskTitle || 'Task');
+                                            card.onclick = function(){ try{ openTaskViewer(card); }catch(_){} };
+                                            var projectLogo = '{{ asset('build/img/yekbon.svg') }}';
+                                            var num = String((issuesForCard||[]).length || 1).padStart(2,'0');
+                                            card.innerHTML =
+                                                '<div style="padding: 3.95px 0 3.95px 4.05px; flex-shrink: 0;">' +
+                                                '<img src="'+imgSrc+'" alt="Task Image" style="width: 110px; height: 140px; border-radius: 8px; background: transparent; border: none; padding: 0; display:block; object-fit: cover;">' +
+                                                '</div><div class="flex-grow-1">' +
+                                                '<div class="d-flex justify-content-between align-items-center"><div style="font-weight: 600; font-size: 14px; display: flex; align-items: center;">' +
+                                                '<img src="'+projectLogo+'" alt="" style="width: 30px; height: 30px; margin-right: 6px;">' + (taskTitle || 'Task') + '</div></div>' +
+                                                '<div style="font-size: 12px; color: #6c757d;">' + (ticketLabel || '') + '</div>' +
+                                                '<div class="d-flex align-items-center justify-content-between mt-2 flex-nowrap gap-2" style="background-color: #fff; border-radius: 10px; padding: 4px;">' +
+                                                '<div class="d-flex align-items-center gap-1" style="font-size: 14px;">' +
+                                                '<span style="color: #1BC469; font-weight: 500;">Start:</span><span style="color: #1C274C;">' + (sStr === '--' ? '--' : sStr) + '</span>' +
+                                                '<span style="color: #1C274C; margin: 0 4px;">|</span>' +
+                                                '<span style="color: #1BC469; font-weight: 500;">Deliver:</span><span style="color: #1C274C;">' + (eStr === '--' ? '--' : eStr) + '</span></div>' +
+                                                '<div class="d-flex align-items-center gap-1" style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 4px 8px; border-radius: 6px; font-weight: 600;">' + num + '</div></div></div>';
+                                            list.prepend(card);
                                         }
+                                        var modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('createTaskModal'));
+                                        if (modal) modal.hide();
                                     } catch (e) {
                                         try {
                                             document.getElementById('createTaskModal').classList.remove('show');
@@ -4249,11 +4281,9 @@
                                             if (backdrop) backdrop.remove();
                                         } catch (_) {}
                                     }
-                                    
-                                    // Reload page after a short delay to show the new task
-                                    setTimeout(function() {
-                                        window.location.reload();
-                                    }, 500);
+                                    createTaskSaveBtn.disabled = false;
+                                    createTaskSaveBtn.dataset.saving = '0';
+                                    createTaskSaveBtn.textContent = originalText;
                                 } else {
                                     alert('Failed to create task: ' + (resp.message || 'Unknown error'));
                                     // Re-enable button on error
@@ -4539,6 +4569,40 @@
                                 return res.json();
                             }).then(function(resp) {
                                 if (resp && resp.success) {
+                                    var issuesForCard = (Array.isArray(createdTasks) ? createdTasks : []).slice();
+                                    var imgSrc = (previewImg && previewImg.src) ? previewImg.src : '{{ asset('build/img/dooted img.svg') }}';
+                                    var sStr = (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t&&t.start_date ? (''+t.start_date).substring(0,10) : '--'; }catch(_){ return '--'; }})();
+                                    var eStr = (function(){ try{ var t=ticketCache[(ticketSelect||{}).value]; return t&&t.end_date ? (''+t.end_date).substring(0,10) : '--'; }catch(_){ return '--'; }})();
+                                    var ticketOpt = ticketSelect && ticketSelect.selectedOptions && ticketSelect.selectedOptions[0];
+                                    var ticketLabel = ticketOpt ? ticketOpt.textContent : '';
+                                    try {
+                                        var list = document.getElementById('taskList');
+                                        if (list) {
+                                            var card = document.createElement('div');
+                                            card.className = 'd-flex p-2 rounded mt-2 task-card';
+                                            card.style.cssText = 'background:#ebebeb; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px; border-radius: 10px;';
+                                            card.setAttribute('data-board', imgSrc);
+                                            card.setAttribute('data-issues', JSON.stringify(issuesForCard||[]));
+                                            card.setAttribute('data-title', taskTitle || 'Task');
+                                            card.onclick = function(){ try{ openTaskViewer(card); }catch(_){} };
+                                            var projectLogo = '{{ asset('build/img/yekbon.svg') }}';
+                                            var num = String((issuesForCard||[]).length || 1).padStart(2,'0');
+                                            card.innerHTML =
+                                                '<div style="padding: 3.95px 0 3.95px 4.05px; flex-shrink: 0;">' +
+                                                '<img src="'+imgSrc+'" alt="Task Image" style="width: 110px; height: 140px; border-radius: 8px; background: transparent; border: none; padding: 0; display:block; object-fit: cover;">' +
+                                                '</div><div class="flex-grow-1">' +
+                                                '<div class="d-flex justify-content-between align-items-center"><div style="font-weight: 600; font-size: 14px; display: flex; align-items: center;">' +
+                                                '<img src="'+projectLogo+'" alt="" style="width: 30px; height: 30px; margin-right: 6px;">' + (taskTitle || 'Task') + '</div></div>' +
+                                                '<div style="font-size: 12px; color: #6c757d;">' + (ticketLabel || '') + '</div>' +
+                                                '<div class="d-flex align-items-center justify-content-between mt-2 flex-nowrap gap-2" style="background-color: #fff; border-radius: 10px; padding: 4px;">' +
+                                                '<div class="d-flex align-items-center gap-1" style="font-size: 14px;">' +
+                                                '<span style="color: #1BC469; font-weight: 500;">Start:</span><span style="color: #1C274C;">' + (sStr === '--' ? '--' : sStr) + '</span>' +
+                                                '<span style="color: #1C274C; margin: 0 4px;">|</span>' +
+                                                '<span style="color: #1BC469; font-weight: 500;">Deliver:</span><span style="color: #1C274C;">' + (eStr === '--' ? '--' : eStr) + '</span></div>' +
+                                                '<div class="d-flex align-items-center gap-1" style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 4px 8px; border-radius: 6px; font-weight: 600;">' + num + '</div></div></div>';
+                                            list.prepend(card);
+                                        }
+                                    } catch (_) {}
                                     try {
                                         var note = document.createElement('div');
                                         note.className = 'position-fixed top-0 end-0 p-3';
@@ -4547,55 +4611,48 @@
                                             '<div class="alert alert-success shadow" role="alert" style="border-radius:8px;">Task added</div>';
                                         document.body.appendChild(note);
                                         setTimeout(function() {
-                                            try {
-                                                note.remove();
-                                            } catch (_) {}
+                                            try { note.remove(); } catch (_) {}
                                         }, 1200);
                                     } catch (_) {}
-                                    // Reset for next task: clear selections, dates, image, badges
+                                    // Reset for next task: clear project, ticket, dates, image, badges
                                     try {
                                         createdTasks = [];
                                         badgeCounter = 0;
                                         currentMarker = null;
-                                        // clear badges
-                                        var existing = markerLayer?.querySelectorAll(
-                                            '.marker-badge') || [];
+                                        var existing = markerLayer ? markerLayer.querySelectorAll('.marker-badge') : [];
                                         existing.forEach?.(function(n) {
-                                            try {
-                                                n.remove();
-                                            } catch (_) {}
+                                            try { n.remove(); } catch (_) {}
                                         });
-                                        // reset ticket select (keep project as is)
+                                        if (projectSelect) projectSelect.value = '';
                                         if (ticketSelect) {
-                                            try {
-                                                ticketSelect.value = '';
-                                            } catch (_) {}
+                                            ticketSelect.innerHTML = '<option value="">Select the Ticket</option>';
+                                            ticketSelect.disabled = true;
                                         }
-                                        // reset developer select
-                                        // reset dates
                                         try {
                                             (startDateSpan || {}).textContent = '--';
                                             (endDateSpan || {}).textContent = '--';
                                         } catch (_) {}
-                                        // reset image area
                                         var ut = document.getElementById('uploadText');
                                         var fi = document.getElementById('fileInput');
+                                        var box = document.getElementById('uploadBox');
                                         if (previewImg) {
                                             previewImg.src = '';
                                             previewImg.style.display = 'none';
                                         }
                                         if (ut) {
                                             ut.style.display = 'block';
-                                            ut.innerHTML =
-                                                'Upload Or Drag<br><small>PDF, JPG, PNG</small>';
+                                            ut.innerHTML = 'Upload Or Drag<br><small>PDF, JPG, PNG</small>';
                                         }
                                         if (markerLayer) {
                                             markerLayer.style.display = 'none';
                                             markerLayer.innerHTML = '';
                                         }
                                         var mtb = document.getElementById('markerToolbar');
+                                        var mtw = document.getElementById('markerToolbarWrap');
                                         if (mtb) mtb.style.display = 'none';
+                                        if (mtw) mtw.style.display = 'none';
                                         if (fi) fi.value = '';
+                                        if (box) box.style.height = '640px';
                                     } catch (_) {}
                                 } else {
                                     alert('Failed to create task');
