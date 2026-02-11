@@ -6148,7 +6148,7 @@
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
-                    <button type="button" id="wt-save-marker" class="btn btn-light btn-sm">Save & Close</button>
+                    <button type="button" id="wt-save-marker" class="btn btn-light btn-sm">Add task</button>
                     <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -7055,9 +7055,6 @@
                                         bootstrap.Modal.getOrCreateInstance(document.getElementById(
                                             'webtask2')).hide();
                                     } catch (e) {}
-                                    setTimeout(function() {
-                                        window.location.reload();
-                                    }, 300);
                                 } else {
                                     alert('Failed to update web task');
                                     // Re-enable button on error
@@ -7123,6 +7120,7 @@
                         }).then(function(resp) {
                             if (resp && resp.success) {
                                 try {
+                                    var issuesForCard = (Array.isArray(wtIssues) ? wtIssues : []).slice();
                                     wtIssues = [];
                                     wtBadgeCounter = 0;
                                     var existing = wtLayer?.querySelectorAll('.marker-badge') || [];
@@ -7132,7 +7130,7 @@
                                         } catch (_) {}
                                     });
                                 } catch (_) {}
-                                // Keep main web modal open; append to list without reload
+                                // Add new task to list without page refresh, then close modal
                                 try {
                                     var wlist = document.getElementById('wtTaskList');
                                     if (wlist) {
@@ -7140,11 +7138,11 @@
                                         wcard.className = 'd-flex p-2 rounded mt-2 task-card mb-1';
                                         wcard.style.cssText = 'background:#ebebeb; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px;';
                                         var imgSrc = (wtPreview && wtPreview.src) ? wtPreview.src : '';
-                                        var urgent = String((wtIssues || []).length || 1).padStart(2,'0');
+                                        var urgent = String((issuesForCard || []).length || 1).padStart(2,'0');
                                         var sStr = (function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t&&t.start_date ? (''+t.start_date).substring(0,10) : '--'; }catch(_){ return '--'; }})();
                                         var eStr = (function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t&&t.end_date ? (''+t.end_date).substring(0,10) : '--'; }catch(_){ return '--'; }})();
                                         wcard.setAttribute('data-board', imgSrc);
-                                        try { wcard.setAttribute('data-issues', JSON.stringify(wtIssues||[])); } catch (_) {}
+                                        try { wcard.setAttribute('data-issues', JSON.stringify(issuesForCard||[])); } catch (_) {}
                                         wcard.setAttribute('data-title', taskTitle || 'Task');
                                         wcard.onclick = function(){ try{ openTaskViewer(wcard); }catch(_){ } };
                                         wcard.innerHTML =
@@ -7166,7 +7164,11 @@
                                             + '</div>';
                                         wlist.prepend(wcard);
                                     }
+                                    bootstrap.Modal.getOrCreateInstance(document.getElementById('webtask2')).hide();
                                 } catch (_) {}
+                                wtCreateSave.disabled = false;
+                                wtCreateSave.dataset.saving = '0';
+                                wtCreateSave.textContent = originalText;
                             } else {
                                 alert('Failed to create web task');
                                 // Re-enable button on error
@@ -7218,17 +7220,21 @@
                                         n.remove();
                                     } catch (_) {}
                                 });
+                                if (wtProjectSelect) wtProjectSelect.value = '';
                                 if (wtTicketSelect) {
-                                    try {
-                                        wtTicketSelect.value = '';
-                                    } catch (_) {}
+                                    wtTicketSelect.innerHTML = '<option value="">Select the Ticket</option>';
+                                    wtTicketSelect.disabled = true;
                                 }
+                                if (wtStartDateSpan) wtStartDateSpan.textContent = '--';
+                                if (wtEndDateSpan) wtEndDateSpan.textContent = '--';
                                 wtRenderDates(null);
                                 var txt = document.getElementById('wt-uploadText');
                                 var fi = document.getElementById('wt-fileInput');
+                                var box = document.getElementById('wt-uploadBox');
                                 if (wtPreview) {
                                     wtPreview.src = '';
                                     wtPreview.style.display = 'none';
+                                    wtPreview.style.filter = '';
                                 }
                                 if (txt) {
                                     txt.style.display = 'block';
@@ -7239,10 +7245,10 @@
                                     wtLayer.innerHTML = '';
                                 }
                                 if (wtToolbarWrap) wtToolbarWrap.style.display = 'none';
-                                if (wtToolbar) {
-                                    wtToolbar.style.display = 'none';
-                                }
+                                if (wtToolbar) wtToolbar.style.display = 'none';
+                                if (wtActions) wtActions.style.display = 'none';
                                 if (fi) fi.value = '';
+                                if (box) box.style.height = '640px';
                             } catch (_) {}
                         };
                         if (editingId) {
@@ -7344,7 +7350,56 @@
                             return r.json();
                         }).then(function(resp) {
                             if (resp && resp.success) {
+                                var issuesForCard = (Array.isArray(wtIssues) ? wtIssues : []).slice();
+                                var imgSrc = (wtPreview && wtPreview.src) ? wtPreview.src : '';
+                                var sStr = (function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t&&t.start_date ? (''+t.start_date).substring(0,10) : '--'; }catch(_){ return '--'; }})();
+                                var eStr = (function(){ try{ var t=wtTicketCache[(wtTicketSelect||{}).value]; return t&&t.end_date ? (''+t.end_date).substring(0,10) : '--'; }catch(_){ return '--'; }})();
+                                var ticketLabel = (wtTicketSelect && wtTicketSelect.selectedOptions && wtTicketSelect.selectedOptions[0]) ? (wtTicketSelect.selectedOptions[0].text || '') : '';
+                                try {
+                                    var wlist = document.getElementById('wtTaskList');
+                                    if (wlist) {
+                                        var wcard = document.createElement('div');
+                                        wcard.className = 'd-flex p-2 rounded mt-2 task-card mb-1';
+                                        wcard.style.cssText = 'background:#ebebeb; border:1px solid #e9ecef; box-shadow:0 2px 8px rgba(0,0,0,.04); cursor:pointer; align-items:center; gap:8px;';
+                                        var urgent = String((issuesForCard || []).length || 1).padStart(2,'0');
+                                        wcard.setAttribute('data-board', imgSrc);
+                                        try { wcard.setAttribute('data-issues', JSON.stringify(issuesForCard||[])); } catch (_) {}
+                                        wcard.setAttribute('data-title', taskTitle || 'Task');
+                                        wcard.onclick = function(){ try{ openTaskViewer(wcard); }catch(_){ } };
+                                        wcard.innerHTML =
+                                            '<div class=\"me-2\">'
+                                            +   '<img src=\"'+ imgSrc +'\" alt=\"Task Image\" style=\"width:100px;height:100px;border-radius:8px;background:transparent;border:none;padding:0;display:block;\">'
+                                            + '</div>'
+                                            + '<div class=\"flex-grow-1\">'
+                                            +   '<div class=\"d-flex justify-content-between align-items-center\">'
+                                            +     '<div style=\"font-weight:600;font-size:14px;display:flex;align-items:center;\">'
+                                            +       (taskTitle || 'Task')
+                                            +     '</div>'
+                                            +   '</div>'
+                                            +   '<div style=\"font-size:12px;color:#6c757d;\">'+ (ticketLabel || '') +'</div>'
+                                            +   '<div class=\"d-flex justify-content-between mt-2 flex-nowrap\" style=\"background-color:#fff;border-radius:10px;padding:4px;\">'
+                                            +     '<div style=\"font-size:14px;background-color:#e6fff2;border-radius:6px;color:#00aa55;\"><small>Start: '+ sStr +'</small></div>'
+                                            +     '<div style=\"font-size:14px;background-color:#e6fff2;border-radius:6px;color:#00aa55;\"><small>Deliver: '+ eStr +'</small></div>'
+                                            +     '<div class=\"d-flex align-items-center\" style=\"font-size:11px;background-color:#ff4d4f;color:#fff;padding:2px 6px;border-radius:6px;\"><img src=\"https://img.icons8.com/ios-filled/16/ffffff/flash-on.png\" style=\"margin-right:4px;\">'+ urgent +'</div>'
+                                            +   '</div>'
+                                            + '</div>';
+                                        wlist.prepend(wcard);
+                                    }
+                                } catch (_) {}
                                 resetForNext();
+                                if (window.Swal && typeof window.Swal.fire === 'function') {
+                                    window.Swal.fire({
+                                        icon: 'success',
+                                        title: 'Task saved',
+                                        text: 'Web task saved successfully. You can add another.',
+                                        timer: 2500,
+                                        showConfirmButton: false,
+                                        toast: true,
+                                        position: 'top-end'
+                                    });
+                                } else {
+                                    alert('Task saved successfully. You can add another.');
+                                }
                             } else {
                                 alert('Failed to create web task');
                             }
