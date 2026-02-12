@@ -238,10 +238,19 @@ class TodoController extends Controller
         // Fetch all projects for the dropdown
         $projects = Project::orderBy('title', 'asc')->get(['_id', 'title']);
         
-        // Fetch all teams for the dropdown
-        $teams = Team::orderBy('title', 'asc')->get(['_id', 'title']);
+        // Fetch all teams with task_developers (keys = user IDs in that team)
+        $teams = Team::orderBy('title', 'asc')->get(['_id', 'title', 'task_developers']);
+        $teamMemberIds = [];
+        foreach ($teams as $t) {
+            $devs = $t->task_developers ?? [];
+            if (is_array($devs)) {
+                $teamMemberIds[(string) $t->_id] = array_map('strval', array_keys($devs));
+            } else {
+                $teamMemberIds[(string) $t->_id] = [];
+            }
+        }
         
-        return view('Todos.index', compact('user', 'users', 'prevTodos', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting', 'ctime', 'headers', 'groups', 'projects', 'teams'));
+        return view('Todos.index', compact('user', 'users', 'prevTodos', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting', 'ctime', 'headers', 'groups', 'projects', 'teams', 'teamMemberIds'));
     }
 
     public function destroy($id)

@@ -4256,9 +4256,57 @@ document.querySelectorAll('.time-btn').forEach(btn => {
 // Global variable to track selected users
 window.selectedUsers = [];
 
+// Team ID -> array of user IDs (from task_developers keys). Used to filter users when a team is selected.
+window.teamMemberIds = @json($teamMemberIds ?? []);
+
+function filterUsersByTeam() {
+    const teamSelect = document.getElementById('select_team');
+    const membersSelect = document.getElementById('members');
+    const allowedIds = teamSelect && teamSelect.value && window.teamMemberIds
+        ? (window.teamMemberIds[teamSelect.value] || [])
+        : [];
+    const allowedSet = new Set(allowedIds.map(function(id) { return String(id); }));
+
+    document.querySelectorAll('.user_div').forEach(function(div) {
+        var uid = div.getAttribute('data-user-id');
+        if (allowedSet.size === 0) {
+            div.style.display = 'none';
+            div.classList.remove('user_active');
+        } else {
+            var show = allowedSet.has(String(uid));
+            div.style.display = show ? '' : 'none';
+            if (!show) div.classList.remove('user_active');
+        }
+    });
+
+    if (membersSelect) {
+        membersSelect.querySelectorAll('option').forEach(function(opt) {
+            if (!opt.value) return;
+            if (allowedSet.size === 0) {
+                opt.disabled = true;
+                opt.style.display = 'none';
+                opt.selected = false;
+            } else {
+                var inTeam = allowedSet.has(String(opt.value));
+                opt.disabled = !inTeam;
+                opt.style.display = inTeam ? '' : 'none';
+                if (!inTeam) opt.selected = false;
+            }
+        });
+    }
+    window.selectedUsers = window.selectedUsers.filter(function(id) { return allowedSet.has(String(id)); });
+    var su = document.getElementById('selected_user');
+    if (su) su.value = window.selectedUsers.join(',');
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     const membersSelect = document.getElementById("members");
-    
+    const teamSelect = document.getElementById("select_team");
+    if (teamSelect) {
+        teamSelect.addEventListener("change", filterUsersByTeam);
+        filterUsersByTeam();
+    }
+
     document.querySelectorAll(".user_div").forEach(div => {
         div.addEventListener("click", function () {
             let userId = this.getAttribute("data-user-id");
