@@ -845,6 +845,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
                         'content')
                 },
@@ -852,8 +853,13 @@
                     pin: pin
                 })
             }).then(function(r) {
+                if (r.status === 419 || r.status === 401) {
+                    window.location.reload();
+                    return null;
+                }
                 return r.json();
             }).then(function(res) {
+                if (!res) return;
                 if (res && res.ok) {
                     overlay.style.display = 'none';
                     resetUI();
@@ -865,15 +871,20 @@
                     var errorMsg = (res && res.message) ? res.message : 'Incorrect PIN. Try again.';
                     errorBox.textContent = errorMsg;
                     errorBox.style.display = 'block';
-                    resetUI();
+                    // Do not use resetUI() as it hides the error box
+                    pinInput.value = '';
+                    digitVals.forEach(function(s) { s.textContent = ''; });
+                    digitBoxes.forEach(function(b) { b.classList.remove('hidden', 'focused'); });
+                    if (digitBoxes[0]) digitBoxes[0].classList.add('focused');
                     pinInput.focus();
                 }
             }).catch(function(err) {
                 // Show error on network failure
-                errorBox.textContent = 'Incorrect PIN. Try again.';
+                // Check if it might be a JSON parse error from a non-JSON 419/500 response
+                console.error(err);
+                errorBox.textContent = 'Connection error. Reloading...';
                 errorBox.style.display = 'block';
-                resetUI();
-                pinInput.focus();
+                setTimeout(function(){ window.location.reload(); }, 1500);
             });
         }
 
