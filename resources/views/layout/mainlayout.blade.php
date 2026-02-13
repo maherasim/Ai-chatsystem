@@ -706,6 +706,33 @@
         var digitVals = Array.from(document.querySelectorAll('#app-pin .app-pin-digit-value'));
         var PIN_LEN = digitBoxes.length;
 
+        var autoLogoutTimer = null;
+        var LOGOUT_DELAY = 5 * 60 * 1000; // 5 minutes
+
+        function performLogout() {
+            // Attempt to call logout route, then redirect to login
+            fetch('{{ route('logout') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            }).finally(function() {
+                window.location.href = '{{ route('login') }}';
+            });
+        }
+
+        function startAutoLogout() {
+            stopAutoLogout();
+            autoLogoutTimer = setTimeout(performLogout, LOGOUT_DELAY);
+        }
+
+        function stopAutoLogout() {
+            if (autoLogoutTimer) {
+                clearTimeout(autoLogoutTimer);
+                autoLogoutTimer = null;
+            }
+        }
+
         function seg(n) {
             return n < 10 ? ('0' + n) : ('' + n);
         }
@@ -861,6 +888,7 @@
             }).then(function(res) {
                 if (!res) return;
                 if (res && res.ok) {
+                    stopAutoLogout();
                     overlay.style.display = 'none';
                     resetUI();
                     document.dispatchEvent(new Event('mousemove'));
@@ -955,6 +983,7 @@
         }
 
         window.showLockOverlay = function() {
+            startAutoLogout();
             overlay.style.display = 'flex';
             overlay.setAttribute('data-step', 'out');
             setTemp();
@@ -963,6 +992,7 @@
             try { if (window.__lockSetUrl) window.__lockSetUrl(); } catch(e) {}
         };
         window.hideLockOverlay = function() {
+            stopAutoLogout();
             overlay.style.display = 'none';
             resetUI();
             try { localStorage.removeItem(LOCK_KEY); } catch(e) {}
@@ -1024,6 +1054,7 @@
             var sessionLocked = {{ auth()->check() && session('screen_locked') === true ? 'true' : 'false' }};
             
             if (isLocked || sessionLocked) {
+                startAutoLogout();
                 overlay.style.display = 'flex';
                 overlay.setAttribute('data-step', 'out');
                 resetUI();
