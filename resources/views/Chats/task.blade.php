@@ -5221,14 +5221,11 @@
                                         <small class="text-muted" id="mobileTaskListCount">Total Task: {{ $mobileTaskCount }}</small>
                                     </div>
 
-                                    <!-- Right Side: Red note -->
+                                    {{-- Right Side: Red note + Task Cards (taskList) - commented out
                                     <div style="color: #ea5455; font-size: 12px;">
                                         Max. 4 Tasks each Ticket
                                     </div>
                                 </div>
-
-
-                                <!-- Task Cards -->
                                 <div id="taskList" style="max-height: 380px; overflow-y: auto; padding-right: 4px;">
                                 @foreach ($tasks ?? [] as $task)
                                     @php
@@ -5325,16 +5322,13 @@
                                                         ];
                                                         $priorityColor = $priorityColors[$priority] ?? $priorityColors['low'];
                                                     @endphp
-                                                    <!-- Priority Badge -->
                                                     <div class="d-flex align-items-center gap-1" style="background-color: #f3f4f6; border-radius: 6px; padding: 4px 8px;">
                                                         <div style="width: 8px; height: 8px; background-color: {{ $priorityColor }}; border-radius: 50%;"></div>
                                                         <span style="font-size: 12px; color: #374151; font-weight: 500; text-transform: capitalize;">{{ $priority }}</span>
                                                     </div>
-                                                    <!-- Lightning Bolt Icon -->
                                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
                                                         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                                                     </svg>
-                                                    <!-- Number Badge -->
                                                     <div class="d-flex align-items-center gap-1"
                                                         style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 4px 8px; border-radius: 6px; font-weight: 600;">
                                                         <span style="font-size: 8px;">•</span>
@@ -5346,6 +5340,8 @@
                                         </div>
                                     </div>
                                 @endforeach
+                                </div>
+                                --}}
                                 </div>
 
                                 <!-- Add New Task Button -->
@@ -5996,7 +5992,7 @@
                                     </div>
                                     <div style="color: #ea5455; font-size: 12px;">Max. 4 Tasks each Ticket</div>
                                 </div>
-
+                                {{-- wtTaskList (webtasks listing) - commented out
                                 <div id="wtTaskList" style="max-height: 500px; overflow-y: auto; padding-right: 4px;">
                                 @foreach ($webtasks ?? [] as $task)
                                     @php
@@ -6088,16 +6084,14 @@
                                                 </div>
                                                 <div class="d-flex align-items-center"
                                                     style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                                    {{-- <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
-                                                        alt="Urgent" style="margin-right: 4px;"> --}}
                                                     {{ str_pad((string) ($task->number ?? $loop->iteration), 2, '0', STR_PAD_LEFT) }}
                                                 </div>
                                             </div>
-                                            
                                         </div>
                                     </div>
                                 @endforeach
                                 </div>
+                                --}}
                             </div>
                             <input type="file" id="addwebFileInput" style="display: none;"
                                     onchange="document.getElementById('addwebBox').innerText = '+ ' + this.files[0].name">
@@ -8133,7 +8127,7 @@
                             <!-- Inline success message placeholder -->
                             <div id="emptask-success" style="display:none; margin-bottom:8px;"></div>
 
-                            <!-- Task Cards -->
+                            {{-- Employee task listing in popup (emptask-list) - commented out
                             <div id="emptask-list" style="overflow-y: auto; max-height: 420px;">
                             @foreach ($emptasks ?? [] as $task)
                                 @php
@@ -8205,8 +8199,6 @@
                                             </div>
                                             <div class="d-flex align-items-center"
                                                 style="font-size: 11px; background-color: #ff4d4f; color: white; padding: 2px 6px; border-radius: 6px;">
-                                                {{-- <img src="https://img.icons8.com/ios-filled/16/ffffff/flash-on.png"
-                                                    alt="Urgent" style="margin-right: 4px;"> --}}
                                                 {{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}
                                             </div>
                                         </div>
@@ -8214,6 +8206,8 @@
                                 </div>
                             @endforeach
                             </div>
+                            --}}
+                            <div id="emptask-list" style="overflow-y: auto; max-height: 420px;"></div>
 
 
 
