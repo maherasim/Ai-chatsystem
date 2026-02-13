@@ -25,6 +25,43 @@ if (!function_exists('storage_url')) {
     }
 }
 
+if (!function_exists('storage_base_url')) {
+    /**
+     * Base URL for storage and download links (admin vs team domain).
+     * When APP_USE_STATIC_STORAGE=true use APP_STORAGE_STATIC_URL (admin);
+     * otherwise use current app URL (team domain).
+     *
+     * @return string Base URL without trailing slash
+     */
+    function storage_base_url()
+    {
+        if (config('app.use_static_storage') && config('app.storage_static_url')) {
+            return config('app.storage_static_url');
+        }
+        return rtrim(config('app.url'), '/');
+    }
+}
+
+if (!function_exists('todo_file_url')) {
+    /**
+     * Full URL for a todo attachment (or any storage file) for display/download.
+     * Uses static URL on admin domain, current base URL on team domain.
+     *
+     * @param string $path Relative path (e.g. uploads/todos/xxx.png)
+     * @return string Full URL to the file
+     */
+    function todo_file_url($path)
+    {
+        if (empty($path)) {
+            return asset('build/img/profiles/avatar-16.jpg');
+        }
+        $path = ltrim($path, '/');
+        $path = preg_replace('#^storage/#', '', $path);
+        $base = storage_base_url();
+        return $base . '/storage/' . $path;
+    }
+}
+
 if (!function_exists('project_logo_url')) {
     /**
      * Generate a URL for a project logo.

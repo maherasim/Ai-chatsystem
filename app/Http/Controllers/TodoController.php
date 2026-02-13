@@ -11,6 +11,7 @@ use App\Models\Todo;
 use App\Models\TodoAttachment;
 use App\Models\Task;
 use App\Models\Project;
+use App\Models\Teams;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\CustomMail;
@@ -460,10 +461,30 @@ class TodoController extends Controller
         
         // Optional variables for profile modal (set to empty collections if not needed)
         $userTodos = collect();
-        $projects = collect();
         $assignedTickets = collect();
+        // Projects for Add Todo dropdown (from Project model)
+        $projects = Project::orderBy('title', 'asc')->get(['_id', 'title']);
+        // Teams for Add Todo dropdown; map each team to list of user IDs and full member data from task_developers
+        $teams = Teams::orderBy('title', 'asc')->get(['_id', 'title', 'project_id', 'task_developers']);
+        $teamMemberIds = [];
+        $teamMembersData = [];
+        foreach ($teams as $t) {
+            $teamKey = (string) ($t->_id ?? $t->id);
+            $devs = is_string($t->task_developers ?? '') ? json_decode($t->task_developers, true) : ($t->task_developers ?? []);
+            $ids = is_array($devs) ? array_values(array_map('strval', array_keys($devs))) : [];
+            $teamMemberIds[$teamKey] = $ids;
+            // Load only users that appear in task_developers (dynamic: 2 ids => 2 users, etc.)
+            $usersInTeam = empty($ids) ? collect() : User::whereIn('_id', $ids)->get(['_id', 'name', 'profile_image']);
+            $teamMembersData[$teamKey] = $usersInTeam->map(function ($u) {
+                return [
+                    'id'   => (string) ($u->_id ?? $u->id),
+                    'name' => $u->name ?? '',
+                    'profile_image' => $u->profile_image ? asset('storage/' . $u->profile_image) : asset('build/img/profileuser.svg'),
+                ];
+            })->values()->toArray();
+        }
         
-        return view('Todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting', 'ctime', 'reminders', 'taskStats', 'userTodos', 'projects', 'assignedTickets', 'newTasks', 'inProgressTasks', 'inHoldTasks', 'inCheckTasks', 'rejectedTasks'));
+        return view('Todos.index', compact('user', 'users', 'todayTodos', 'privateTodos', 'sharedTodos', 'setting', 'ctime', 'reminders', 'taskStats', 'userTodos', 'projects', 'teams', 'teamMemberIds', 'teamMembersData', 'assignedTickets', 'newTasks', 'inProgressTasks', 'inHoldTasks', 'inCheckTasks', 'rejectedTasks'));
     }
 
     public function destroy($id)

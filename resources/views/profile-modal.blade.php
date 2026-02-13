@@ -756,8 +756,9 @@
                                     </div>
                                     <div class="text-center" style="flex: 1; min-width: 100px;">
                                         <div style="color: #2b3e5f; font-weight: 600; font-size: 13px;">Developers</div>
-                                        <div class="position-relative d-inline-block mt-1" style="height: 32px; width: {{ min($project['team_members']->count(), 3) * 50 }}px;">
-                                            @foreach($project['team_members']->take(3) as $index => $member)
+                                        @php $teamMembers = $project['team_members'] ?? collect(); @endphp
+                                        <div class="position-relative d-inline-block mt-1" style="height: 32px; width: {{ min($teamMembers->count(), 3) * 50 }}px;">
+                                            @foreach($teamMembers->take(3) as $index => $member)
                                             <img src="{{ $member->profile_image ? asset('storage/' . $member->profile_image) : asset('build/img/profileuser.svg') }}" class="rounded-circle border border-white shadow-sm" style="width: 32px; height: 32px; position: absolute; left: {{ $index * 18 }}px; z-index: {{ 3 - $index }};">
                                             @endforeach
                                         </div>
@@ -768,15 +769,16 @@
                                     </div>
                                 </div>
                                 <!-- sections -->
-                                @if($project['sections']->count() > 0)
+                                @php $sections = $project['sections'] ?? collect(); @endphp
+                                @if($sections->count() > 0)
                                 <div class="flex-grow-1 mt-1" style="background:#f8f9fa;border-radius:10px;">
                                     <div class="d-flex justify-content-between flex-wrap mb-2" style="font-size: 13px; font-weight: 600; color: #2e3a59; margin-left:10px;margin-right:10px;">
-                                        @foreach($project['sections']->take(4) as $section)
+                                        @foreach($sections->take(4) as $section)
                                         <span style="margin-left:10px;margin-right:10px;">{{ $section['name'] }} {{ $section['progress'] }}%</span>
                                         @endforeach
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center gap-2" style="margin-left:10px;margin-right:10px;margin-bottom:10px;">
-                                        @foreach($project['sections']->take(3) as $section)
+                                        @foreach($sections->take(3) as $section)
                                         <div class="progress" style="width: 24%; height: 10px; background-color: #d3f4dc; border-radius: 10px;">
                                             <div class="progress-bar" style="width: {{ $section['progress'] }}%; background-color: {{ $section['progress'] >= 75 ? '#28c76f' : ($section['progress'] >= 50 ? '#ffc107' : '#ea5455') }}; border-radius: 10px;"></div>
                                         </div>

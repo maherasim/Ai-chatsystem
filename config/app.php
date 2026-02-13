@@ -56,6 +56,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Storage base URL (admin vs team domain)
+    |--------------------------------------------------------------------------
+    | When on admin domain, set APP_USE_STATIC_STORAGE=true and
+    | APP_STORAGE_STATIC_URL=https://logiadmin.it-supportline.de so shared
+    | todo images/files use the static URL. On team domain leave
+    | APP_USE_STATIC_STORAGE=false (or unset) to use current app base URL.
+    */
+    'use_static_storage' => env('APP_USE_STATIC_STORAGE', false),
+    'storage_static_url' => rtrim(env('APP_STORAGE_STATIC_URL', ''), '/'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |

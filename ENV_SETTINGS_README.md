@@ -17,6 +17,12 @@ SESSION_ENCRYPT=false
 APP_URL=https://logiteam.it-supportline.de
 APP_ENV=production
 APP_DEBUG=false
+
+# Storage base URL (admin vs team domain) – for shared todo files/images
+# On admin domain (e.g. logiadmin): use static URL so images load from admin server
+# On team domain: leave false/unset to use current APP_URL
+APP_USE_STATIC_STORAGE=true
+APP_STORAGE_STATIC_URL=https://logiadmin.it-supportline.de
 ```
 
 ## Key Settings Explained:
@@ -36,6 +42,10 @@ APP_DEBUG=false
 4. **SESSION_DRIVER=database**
    - Make sure your `sessions` table exists
    - Run: `php artisan session:table` and `php artisan migrate` if needed
+
+5. **Storage base URL (todo shared files/images)**
+   - **Admin domain**: set `APP_USE_STATIC_STORAGE=true` and `APP_STORAGE_STATIC_URL=https://logiadmin.it-supportline.de` so todo attachment images and downloads use the admin (static) URL.
+   - **Team domain**: set `APP_USE_STATIC_STORAGE=false` or leave unset so the app uses `APP_URL` (current base URL) for storage links.
 
 ## After updating .env:
 

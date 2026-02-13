@@ -8,6 +8,13 @@ $ratingCategories = ['Reliability', 'Punctuality', 'Accuracy', 'Quality', 'Work 
 <?php $page = 'chat'; ?>
 @extends('layout.mainlayout')
 @section('content')
+@php
+    $todoStorageBaseUrl = (config('app.use_static_storage') && config('app.storage_static_url'))
+        ? rtrim(config('app.storage_static_url'), '/')
+        : rtrim(config('app.url'), '/');
+    $todoFileFallbackUrl = asset('build/img/profiles/avatar-16.jpg');
+@endphp
+<script>window.TODO_STORAGE_BASE_URL = @json($todoStorageBaseUrl);</script>
 
 <style>
 
@@ -576,8 +583,11 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
 
                                
                                     $imageUrl = asset('storage/' . $todo->user->profile_image);
-                                
-
+                                $todoFilesData = $todo->attachments->map(function($a) use ($todoStorageBaseUrl, $todoFileFallbackUrl) {
+                                    $path = $a->file_path ? ltrim(preg_replace('#^storage/#', '', $a->file_path), '/') : null;
+                                    $url = $path ? ($todoStorageBaseUrl . '/storage/' . $path) : $todoFileFallbackUrl;
+                                    return ['name' => $a->file_name.'_@_'.$a->_id, 'size' => $a->size, 'url' => $url];
+                                })->values()->toArray();
                             @endphp
                             <div class="col-12 col-sm-6 col-lg-4 col-xxl-3 {{$todo->priority}} {{$todotyp}}">
                                 <div class="card viewTodo" data-id="{{ $todo->id }}"
@@ -597,11 +607,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
     data-image="{{ $imageUrl }}"
     data-sections='@json($todo->description)'
     data-members='@json($todo->members_data)'
-    data-files='@json($todo->attachments->map(fn($a) => [
-            "name" => $a->file_name."_@_".$a->_id,
-            "size" => $a->size,
-            "url"  => "https://logiadmin.it-supportline.de/storage/{$a->file_path}"
-        ]))'
+    data-files='@json($todoFilesData)'
     data-own="today"
     data-bs-toggle="modal"
     data-bs-target="#inreject" style=" cursor:pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
@@ -610,7 +616,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                         <div class="d-flex">
                                             <img src="{{ $imageUrl }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-top:0px; margin-left:0px; margin-bottom:0px;">
                                             <div>
-                                                <div style="font-weight: bold;">{{$todo->user->name;}}</div>
+                                                <div style="font-weight: bold;">{{ $todo->user->name }}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
                                             </div>
                                         </div>
@@ -966,8 +972,11 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 $part = $reminderSeconds / 3;
 
                                     $imageUrl = asset('storage/' . $todo->user->profile_image);
-                                
-
+                                $todoFilesData = $todo->attachments->map(function($a) use ($todoStorageBaseUrl, $todoFileFallbackUrl) {
+                                    $path = $a->file_path ? ltrim(preg_replace('#^storage/#', '', $a->file_path), '/') : null;
+                                    $url = $path ? ($todoStorageBaseUrl . '/storage/' . $path) : $todoFileFallbackUrl;
+                                    return ['name' => $a->file_name.'_@_'.$a->_id, 'size' => $a->size, 'url' => $url];
+                                })->values()->toArray();
                             @endphp    
                             <div class="col-12 col-sm-6 col-lg-4 col-xxl-3 {{$todo->priority}}">
                                 <div class="card viewTodo" data-id="{{ $todo->id }}"
@@ -984,11 +993,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
     data-image="{{ $imageUrl }}"
     data-sections='@json($todo->description)'
     data-own="private"
-    data-files='@json($todo->attachments->map(fn($a) => [
-            "name" => $a->file_name."_@_".$a->_id,
-            "size" => $a->size,
-            "url"  => "https://logiadmin.it-supportline.de/storage/{$a->file_path}"
-        ]))'
+    data-files='@json($todoFilesData)'
     data-members='@json($todo->members_data)'
     data-bs-toggle="modal"
     data-bs-target="#inreject" style=" cursor:pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height:max-content;">
@@ -997,7 +1002,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                         <div class="d-flex align-items-center">
                                             <img src="{{ $imageUrl }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
                                             <div>
-                                                <div style="font-weight: bold;">{{$todo->user->name;}}</div>
+                                                <div style="font-weight: bold;">{{ $todo->user->name }}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
                                             </div>
                                         </div>
@@ -1333,8 +1338,11 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                 $part = $reminderSeconds / 3;
 
                                     $imageUrl = asset('storage/' . $todo->user->profile_image);
-                                
-
+                                $todoFilesData = $todo->attachments->map(function($a) use ($todoStorageBaseUrl, $todoFileFallbackUrl) {
+                                    $path = $a->file_path ? ltrim(preg_replace('#^storage/#', '', $a->file_path), '/') : null;
+                                    $url = $path ? ($todoStorageBaseUrl . '/storage/' . $path) : $todoFileFallbackUrl;
+                                    return ['name' => $a->file_name.'_@_'.$a->_id, 'size' => $a->size, 'url' => $url];
+                                })->values()->toArray();
                             @endphp  
                             <!-- Start of Card 1 -->
                             <div class="col-12 col-sm-6 col-lg-4 col-xxl-3 {{$todo->priority}}">
@@ -1349,11 +1357,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
     data-priority="{{ $todo->priority }}"
     data-reminder="{{ $todo->reminder }}"
     data-own="0"
-    data-files='@json($todo->attachments->map(fn($a) => [
-            "name" => $a->file_name."_@_".$a->_id,
-            "size" => $a->size,
-            "url"  => "https://logiadmin.it-supportline.de/storage/{$a->file_path}"
-        ]))'
+    data-files='@json($todoFilesData)'
     data-image="{{ $imageUrl }}"
     data-total="{{ $todo->total_time }}"
     data-sections='@json($todo->description)'
@@ -1365,7 +1369,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                         <div class="d-flex">
                                             <img src="{{ $imageUrl }}" class=" me-2" alt="image" style="width: 42px; height: 42px; margin:5px; margin-left:0px; margin-top:0px; margin-bottom:0px;">
                                             <div>
-                                                <div style="font-weight: bold;">{{$todo->user->name;}}</div>
+                                                <div style="font-weight: bold;">{{ $todo->user->name }}</div>
                                                 <small style="color: gray;">{{ $todo->created_at->format('d:m:Y - H:i') }}</small>
                                             </div>
                                         </div>
@@ -1826,15 +1830,17 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                         <div class="col-md-6">
                             <select id="select_project" class="form-control selection">
                                 <option value="">Select Project</option>
-                                <option value="1">Project1</option>
-                                <option value="2">Project2</option>
+                                @foreach($projects ?? [] as $project)
+                                    <option value="{{ $project->_id ?? $project->id }}">{{ $project->title }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-6">
                             <select id="select_team" class="form-control selection">
                                 <option value="">Select Team</option>
-                                <option value="1">Team 1</option>
-                                <option value="2">Team 2</option>
+                                @foreach($teams ?? [] as $team)
+                                    <option value="{{ $team->_id ?? $team->id }}" data-project-id="{{ $team->project_id ?? '' }}">{{ $team->title }}</option>
+                                @endforeach
                             </select>
                         </div>
                         
@@ -1849,17 +1855,7 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                                     display: none;
                                 }
                             </style>
-
-                            @foreach($users as $cuser)
-                                <div class="user_div" style="flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 135px;" 
-                                    id="user_{{$cuser->_id}}" 
-                                    data-user-id="{{$cuser->_id}}">
-                                    <div class="invit-img">
-                                        <img src="{{ asset('storage/' . $cuser->profile_image) }}" />
-                                    </div>
-                                    <div class="invit-txt">{{$cuser->name}}</div>
-                                </div>
-                            @endforeach
+                            <div id="userScrollerPlaceholder" class="text-muted" style="padding: 12px;">Select a team to load members</div>
 
                         </div>
                         <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
@@ -2077,9 +2073,6 @@ $remaining = max(0, \Carbon\Carbon::createFromTimestamp($ctime, 'Europe/Berlin')
                             
                             <select class="form-control" id="members" multiple name="members[]">
                                 <option value="">Select Members</option>
-                                @foreach($users as $cuser)
-                                    <option value="{{$cuser->_id}}">{{$cuser->name}}</option>
-                                @endforeach
                             </select>
                         </div>
                         
@@ -3737,6 +3730,114 @@ document.addEventListener("DOMContentLoaded", function () {
         btnShared.classList.remove("active");
         selectUsersBox.style.display = "none"; // hide
     });
+});
+
+// Team dropdown: filter by project; load members dynamically from task_developers (e.g. 2 ids => 2 users)
+document.addEventListener("DOMContentLoaded", function () {
+    window.teamMemberIds = @json($teamMemberIds ?? []);
+    window.teamMembersData = @json($teamMembersData ?? []);
+    const selectProject = document.getElementById("select_project");
+    const selectTeam = document.getElementById("select_team");
+    const userScroller = document.getElementById("userScroller");
+    const membersSelect = document.getElementById("members");
+    const teamOptions = selectTeam ? Array.from(selectTeam.querySelectorAll('option[data-project-id]')) : [];
+
+    function filterTeamOptionsByProject() {
+        const projectId = (selectProject && selectProject.value) || '';
+        teamOptions.forEach(opt => {
+            const match = !projectId || (opt.getAttribute('data-project-id') === projectId);
+            opt.style.display = match ? '' : 'none';
+            opt.disabled = !match;
+        });
+        if (selectTeam && selectTeam.value) {
+            const selectedOpt = selectTeam.options[selectTeam.selectedIndex];
+            if (selectedOpt && selectedOpt.getAttribute('data-project-id') !== projectId) {
+                selectTeam.value = '';
+                renderTeamMembers();
+            }
+        }
+    }
+
+    function bindUserDivClicks() {
+        if (!membersSelect) return;
+        userScroller.querySelectorAll(".user_div").forEach(div => {
+            div.onclick = function () {
+                const userId = this.getAttribute("data-user-id");
+                const opt = membersSelect.querySelector('option[value="' + userId + '"]');
+                // Toggle: multi-select (add/remove this user from selection)
+                const isSelected = this.classList.contains("user_active");
+                if (isSelected) {
+                    this.classList.remove("user_active");
+                    if (opt) opt.selected = false;
+                } else {
+                    this.classList.add("user_active");
+                    if (opt) opt.selected = true;
+                }
+                const su = document.getElementById("selected_user");
+                if (su) {
+                    const selectedIds = Array.from(userScroller.querySelectorAll(".user_div.user_active")).map(d => d.getAttribute("data-user-id")).filter(Boolean);
+                    su.value = selectedIds.join(",");
+                }
+            };
+        });
+    }
+
+    function renderTeamMembers() {
+        const teamId = (selectTeam && selectTeam.value) || '';
+        const placeholder = document.getElementById("userScrollerPlaceholder");
+        if (!teamId) {
+            userScroller.innerHTML = "";
+            const ph = document.createElement("div");
+            ph.id = "userScrollerPlaceholder";
+            ph.className = "text-muted";
+            ph.style.padding = "12px";
+            ph.textContent = "Select a team to load members";
+            userScroller.appendChild(ph);
+            if (membersSelect) {
+                membersSelect.innerHTML = '<option value="">Select Members</option>';
+            }
+            const su = document.getElementById("selected_user");
+            if (su) su.value = '';
+            return;
+        }
+        if (placeholder) placeholder.remove();
+        const members = (window.teamMembersData && window.teamMembersData[teamId]) ? window.teamMembersData[teamId] : [];
+        userScroller.innerHTML = "";
+        if (members.length === 0) {
+            const empty = document.createElement("div");
+            empty.className = "text-muted";
+            empty.style.padding = "12px";
+            empty.textContent = "No members in this team";
+            userScroller.appendChild(empty);
+        } else {
+            members.forEach(function (m) {
+                const div = document.createElement("div");
+                div.className = "user_div";
+                div.setAttribute("data-user-id", m.id);
+                div.id = "user_" + m.id;
+                div.style.cssText = "flex: 0 0 auto; width: 110px; border-radius: 16px; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; height: 135px; cursor: pointer;";
+                div.innerHTML = '<div class="invit-img"><img src="' + (m.profile_image || '') + '" /></div><div class="invit-txt">' + (m.name || '') + '</div>';
+                userScroller.appendChild(div);
+            });
+            bindUserDivClicks();
+        }
+        if (membersSelect) {
+            membersSelect.innerHTML = '<option value="">Select Members</option>';
+            members.forEach(function (m) {
+                const opt = document.createElement("option");
+                opt.value = m.id;
+                opt.textContent = m.name || m.id;
+                membersSelect.appendChild(opt);
+            });
+        }
+        const su = document.getElementById("selected_user");
+        if (su) su.value = '';
+    }
+
+    if (selectProject) selectProject.addEventListener("change", filterTeamOptionsByProject);
+    if (selectTeam) selectTeam.addEventListener("change", renderTeamMembers);
+    filterTeamOptionsByProject();
+    renderTeamMembers();
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -5510,8 +5611,9 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Handle download buttons - use static base URL
+// Handle download buttons - use storage base URL (static on admin, current on team)
 document.addEventListener('click', function(e) {
+    const baseUrl = window.TODO_STORAGE_BASE_URL || '';
     // Image download button
     if (e.target.closest('.image-download-btn')) {
         e.preventDefault();
@@ -5521,9 +5623,10 @@ document.addEventListener('click', function(e) {
         const imageUrl = btn.getAttribute('data-image-url');
         const imageName = btn.getAttribute('data-image-name');
         
-        if (fileId) {
-            // Use static base URL for download
-            window.open(`https://logiadmin.it-supportline.de/download/${fileId}`, '_blank');
+        if (fileId && baseUrl) {
+            window.open(`${baseUrl}/download/${fileId}`, '_blank');
+        } else if (fileId) {
+            window.open(`/download/${fileId}`, '_blank');
         } else {
             // Fallback: direct download from URL
             const link = document.createElement('a');
@@ -5543,9 +5646,10 @@ document.addEventListener('click', function(e) {
             const videoUrl = videoPlayer.getAttribute('data-video-url') || videoPlayer.src;
             const videoName = videoPlayer.getAttribute('data-video-name') || 'video';
             
-            if (fileId) {
-                // Use static base URL for download
-                window.open(`https://logiadmin.it-supportline.de/download/${fileId}`, '_blank');
+            if (fileId && baseUrl) {
+                window.open(`${baseUrl}/download/${fileId}`, '_blank');
+            } else if (fileId) {
+                window.open(`/download/${fileId}`, '_blank');
             } else {
                 // Fallback: direct download from URL
                 const link = document.createElement('a');
