@@ -1906,22 +1906,11 @@
                 <div id="issueImageBox"
                      style="display:none;
                         text-align:center;
-                        margin-bottom:12px;">
-
-                    <!-- ⭐ WRAPPER: removed max-width, will be set by JS -->
-                    <div id="issueImageWrapper"
-                         style="position:relative;
-                            display:inline-block;">
-
-                        <img id="issueImage"
-                             style="height:220px;
-                                width:auto;
-                                display:block;
-                                border-radius:8px;">
-
-                    </div>
+                        margin-bottom:12px;
+                        width:100%;
+                        overflow:hidden;">
+                    <!-- imageHtml will be inserted here by JavaScript -->
                 </div>
-
                 <!-- Description -->
                 <div id="issueDetailDescription"
                      style="background:#f8fafc;
@@ -2942,389 +2931,190 @@
             issuesModal.show();
         }
 
-
-        //
-        // function openIssueDetail(issueIndex) {
-        //     if (!window.currentTaskIssues || !window.currentTaskIssues[issueIndex]) {
-        //         alert('Issue not found.');
-        //         return;
-        //     }
-        //
-        //     const issue = window.currentTaskIssues[issueIndex];
-        //
-        //     // Close issues selection modal if open
-        //     const issuesModalEl = document.getElementById('issuesSelectionModal');
-        //     const issuesModal = bootstrap.Modal.getInstance(issuesModalEl);
-        //     if (issuesModal) {
-        //         issuesModal.hide();
-        //     }
-        //
-        //     // Populate issue details
-        //     document.getElementById('issueDetailTitle').textContent = issue.title || 'No Title';
-        //     document.getElementById('issueDetailDescription').textContent = issue.description || 'No description available.';
-        //
-        //     console.log('issue data',issue);
-        //     // Format dates
-        //     let startDate = '-';
-        //     let endDate = '-';
-        //     if (issue.start_date) {
-        //         try {
-        //             const start = new Date(issue.start_date);
-        //             startDate = start.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
-        //         } catch (e) {
-        //             startDate = issue.start_date;
-        //         }
-        //     }
-        //     if (issue.end_date) {
-        //         try {
-        //             const end = new Date(issue.end_date);
-        //             endDate = end.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
-        //         } catch (e) {
-        //             endDate = issue.end_date;
-        //         }
-        //     }
-        //
-        //     document.getElementById('issueDetailStartDate').textContent = startDate;
-        //     document.getElementById('issueDetailEndDate').textContent = endDate;
-        //     const dotEl   = document.getElementById('issueAccentDot');
-        //     dotEl.style.background = issue.color;
-        //
-        //     // document.getElementById('issueDetailTaskId').textContent = window.currentFullTaskId || '-';
-        //     setIssueImage(window.location.origin + '/storage/' + issue.mark_image_path, issue);
-        //     // Show issue detail modal with backdrop
-        //     const detailModalEl = document.getElementById('issueDetailModal');
-        //     const detailModal = new bootstrap.Modal(detailModalEl, {
-        //         backdrop: true,
-        //         keyboard: true
-        //     });
-        //
-        //     // Enhance backdrop after modal is shown - light gray
-        //     detailModalEl.addEventListener('shown.bs.modal', function() {
-        //         setTimeout(function() {
-        //             const backdrop = document.querySelector('.modal-backdrop.show');
-        //             if (backdrop) {
-        //                 backdrop.style.backgroundColor = 'rgba(148, 163, 184, 0.75)';
-        //                 backdrop.style.opacity = '1';
-        //                 backdrop.classList.add('issue-modal-backdrop');
-        //             }
-        //         }, 10);
-        //     });
-        //
-        //     // Also update backdrop before modal shows
-        //     detailModalEl.addEventListener('show.bs.modal', function() {
-        //         setTimeout(function() {
-        //             const backdrop = document.querySelector('.modal-backdrop.show');
-        //             if (backdrop) {
-        //                 backdrop.style.backgroundColor = 'rgba(148, 163, 184, 0.75)';
-        //             }
-        //         }, 10);
-        //     });
-        //
-        //     detailModal.show();
-        // }
-        //
-        // function setIssueImage(imageUrl, issue) {
-        //     console.log('image box', issue);
-        //     const box = document.getElementById('issueImageBox');
-        //     const img = document.getElementById('issueImage');
-        //     const wrapper = document.getElementById('issueImageWrapper');
-        //
-        //     if (!imageUrl) {
-        //         box.style.display = 'none';
-        //         return;
-        //     }
-        //
-        //     img.src = imageUrl;
-        //     box.style.display = 'block';
-        //
-        //     img.onload = function () {
-        //         // Remove old overlay
-        //         const old = wrapper.querySelector('.issue-overlay');
-        //         if (old) old.remove();
-        //
-        //         const accent = issue.color || '#28c76f';
-        //
-        //         const issuePos = issue.position || {};
-        //         const issueShape = (issue.shape || 'circle').toLowerCase();
-        //
-        //         const issueWidth = issuePos.width || 80;
-        //         const issueHeight = issuePos.height || 80;
-        //
-        //         // Position is center point, calculate top-left
-        //         const issueCenterX = issuePos.left || 0;
-        //         const issueCenterY = issuePos.top || 0;
-        //         const issueLeft = issueCenterX - (issueWidth / 2);
-        //         const issueTop = issueCenterY - (issueHeight / 2);
-        //
-        //         // ⭐ KEY FIX: Get layer dimensions from issue data or image natural size
-        //         const layerW = (issue.layer && issue.layer.width) ? issue.layer.width : img.naturalWidth;
-        //         const layerH = (issue.layer && issue.layer.height) ? issue.layer.height : img.naturalHeight;
-        //
-        //         // ⭐ KEY FIX: Calculate display dimensions based on image's actual rendered size
-        //         const displayWidth = img.offsetWidth;
-        //         const displayHeight = img.offsetHeight;
-        //
-        //         // ⭐ KEY FIX: Calculate scale ratios
-        //         const scaleX = displayWidth / layerW;
-        //         const scaleY = displayHeight / layerH;
-        //
-        //         // ⭐ KEY FIX: Apply scaling to position and dimensions
-        //         const overlayLeft = issueLeft * scaleX;
-        //         const overlayTop = issueTop * scaleY;
-        //         const overlayWidth = issueWidth * scaleX;
-        //         const overlayHeight = issueHeight * scaleY;
-        //
-        //         let overlay;
-        //
-        //         // ===== SAME SHAPE LOGIC AS SWAL =====
-        //         if (issueShape === 'triangle') {
-        //             const size = Math.max(overlayWidth, overlayHeight);
-        //             overlay = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        //             overlay.setAttribute('class', 'issue-overlay');
-        //             overlay.style.position = 'absolute';
-        //             overlay.style.left = overlayLeft + 'px';
-        //             overlay.style.top = overlayTop + 'px';
-        //             overlay.style.width = size + 'px';
-        //             overlay.style.height = size + 'px';
-        //             overlay.style.pointerEvents = 'none';
-        //
-        //             overlay.innerHTML =
-        //                 `<polygon points="${size/2},0 ${size},${size} 0,${size}"
-        //          fill="none" stroke="${accent}" stroke-width="3"/>`;
-        //
-        //         } else {
-        //             overlay = document.createElement('div');
-        //             overlay.className = 'issue-overlay';
-        //
-        //             overlay.style.position = 'absolute';
-        //             overlay.style.left = overlayLeft + 'px';
-        //             overlay.style.top = overlayTop + 'px';
-        //             overlay.style.width = overlayWidth + 'px';
-        //             overlay.style.height = overlayHeight + 'px';
-        //             overlay.style.border = '3px solid ' + accent;
-        //             overlay.style.pointerEvents = 'none';
-        //
-        //             overlay.style.borderRadius =
-        //                 issueShape === 'circle' ? '50%' : '6px';
-        //         }
-        //
-        //         overlay.style.boxShadow =
-        //             '0 0 0 2px rgba(255,255,255,.8), 0 0 10px rgba(0,0,0,.3)';
-        //
-        //         wrapper.appendChild(overlay);
-        //     };
-        // }
         function openIssueDetail(issueIndex) {
-    if (!window.currentTaskIssues || !window.currentTaskIssues[issueIndex]) {
-        alert('Issue not found.');
-        return;
-    }
-
-    const issue = window.currentTaskIssues[issueIndex];
-
-    // Close issues selection modal if open
-    const issuesModalEl = document.getElementById('issuesSelectionModal');
-    const issuesModal = bootstrap.Modal.getInstance(issuesModalEl);
-    if (issuesModal) {
-        issuesModal.hide();
-    }
-
-    // Populate issue details
-    document.getElementById('issueDetailTitle').textContent = issue.title || 'No Title';
-    document.getElementById('issueDetailDescription').textContent = issue.description || 'No description available.';
-
-    console.log('issue data', issue);
-
-    // Format dates
-    let startDate = '-';
-    let endDate = '-';
-    if (issue.start_date) {
-        try {
-            const start = new Date(issue.start_date);
-            startDate = start.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
-        } catch (e) {
-            startDate = issue.start_date;
-        }
-    }
-    if (issue.end_date) {
-        try {
-            const end = new Date(issue.end_date);
-            endDate = end.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
-        } catch (e) {
-            endDate = issue.end_date;
-        }
-    }
-
-    document.getElementById('issueDetailStartDate').textContent = startDate;
-    document.getElementById('issueDetailEndDate').textContent = endDate;
-    const dotEl = document.getElementById('issueAccentDot');
-    dotEl.style.background = issue.color;
-
-    // Show issue detail modal with backdrop
-    const detailModalEl = document.getElementById('issueDetailModal');
-    const detailModal = new bootstrap.Modal(detailModalEl, {
-        backdrop: true,
-        keyboard: true
-    });
-
-    // Enhance backdrop and set image after modal is shown
-    detailModalEl.addEventListener('shown.bs.modal', function handleModalShown() {
-        setTimeout(function() {
-            const backdrop = document.querySelector('.modal-backdrop.show');
-            if (backdrop) {
-                backdrop.style.backgroundColor = 'rgba(148, 163, 184, 0.75)';
-                backdrop.style.opacity = '1';
-                backdrop.classList.add('issue-modal-backdrop');
+            if (!window.currentTaskIssues || !window.currentTaskIssues[issueIndex]) {
+                alert('Issue not found.');
+                return;
             }
 
-            // Set image after modal is fully shown
-            setIssueImage(window.location.origin + '/storage/' + issue.mark_image_path, issue);
-        }, 50);
+            const issue = window.currentTaskIssues[issueIndex];
 
-        detailModalEl.removeEventListener('shown.bs.modal', handleModalShown);
-    }, { once: true });
-
-    // Also update backdrop before modal shows
-    detailModalEl.addEventListener('show.bs.modal', function() {
-        setTimeout(function() {
-            const backdrop = document.querySelector('.modal-backdrop.show');
-            if (backdrop) {
-                backdrop.style.backgroundColor = 'rgba(148, 163, 184, 0.75)';
+            // Close issues selection modal if open
+            const issuesModalEl = document.getElementById('issuesSelectionModal');
+            const issuesModal = bootstrap.Modal.getInstance(issuesModalEl);
+            if (issuesModal) {
+                issuesModal.hide();
             }
-        }, 10);
-    });
 
-    detailModal.show();
-}
+            // Populate issue details
+            document.getElementById('issueDetailTitle').textContent = issue.title || 'No Title';
+            document.getElementById('issueDetailDescription').textContent = issue.description || 'No description available.';
 
-function setIssueImage(imageUrl, issue) {
-    const box = document.getElementById('issueImageBox');
-    const img = document.getElementById('issueImage');
-    const wrapper = document.getElementById('issueImageWrapper');
+            console.log('issue data', issue);
 
-    if (!imageUrl) {
-        box.style.display = 'none';
-        return;
-    }
+            // Get accent color for overlay
+            const accent = issue.color || '#ef4444';
 
-    img.src = imageUrl;
-    box.style.display = 'block';
+            // Build markImageUrl
+            let markImageUrl = '';
+            const markImagePath = issue.mark_image_path || '';
+            if (markImagePath) {
+                if (markImagePath.startsWith('http://') || markImagePath.startsWith('https://')) {
+                    markImageUrl = markImagePath;
+                } else if (markImagePath.startsWith('storage/')) {
+                    markImageUrl = window.location.origin + '/' + markImagePath;
+                } else {
+                    const cleanPath = markImagePath.replace(/^\/+/, '');
+                    markImageUrl = window.location.origin + '/storage/' + cleanPath;
+                }
+            }
 
-    img.onload = function () {
-        // Remove ALL old overlays
-        const allOldOverlays = wrapper.querySelectorAll('.issue-overlay');
-        allOldOverlays.forEach(function(el) {
-            el.remove();
-        });
+            console.log('markImageUrl:', markImageUrl);
 
-        // Wait for image to fully render
-        setTimeout(function() {
-            renderOverlay();
-        }, 100);
-    };
+            // Get issue position and shape data (normalize shape for comparison)
+            const issuePos = issue.position || {};
+            const issueShape = (issue.shape && String(issue.shape).toLowerCase()) || 'circle';
 
-    // If image is already cached
-    if (img.complete && img.naturalWidth > 0) {
-        const allOldOverlays = wrapper.querySelectorAll('.issue-overlay');
-        allOldOverlays.forEach(function(el) {
-            el.remove();
-        });
+            // Get saved width and height, or use defaults
+            const issueWidth = (issue.position && issue.position.width) ? issue.position.width : (issueShape === 'circle' ? 80 : 80);
+            const issueHeight = (issue.position && issue.position.height) ? issue.position.height : (issueShape === 'circle' ? 80 : 80);
 
-        setTimeout(function() {
-            renderOverlay();
-        }, 100);
-    }
+            // Position is stored as center point, so we need to calculate top-left corner
+            const issueCenterX = issuePos.left || 0;
+            const issueCenterY = issuePos.top || 0;
+            const issueLeft = issueCenterX - (issueWidth / 2);
+            const issueTop = issueCenterY - (issueHeight / 2);
 
-function renderOverlay() {
-        // Remove any existing overlays one more time
-        const existingOverlays = wrapper.querySelectorAll('.issue-overlay');
-        existingOverlays.forEach(function(el) {
-            el.remove();
-        });
+            // Get layer dimensions for scaling
+            const layerW = (issue.layer && issue.layer.width) ? issue.layer.width : 800;
+            const layerH = (issue.layer && issue.layer.height) ? issue.layer.height : 600;
 
-        const accent = issue.color || '#28c76f';
-        const issuePos = issue.position || {};
-        const issueShape = (issue.shape || 'circle').toLowerCase();
+            console.log('Layer dimensions:', layerW, 'x', layerH);
+            console.log('Issue position:', {issueLeft, issueTop, issueWidth, issueHeight});
 
-        const issueWidth = issuePos.width || 80;
-        const issueHeight = issuePos.height || 80;
+            // Create image with marked area visualization
+            let imageHtml = '';
+            if (markImageUrl) {
+                // Create a container with the image and overlay showing the marked area
+                const displayWidth = 400; // Fixed width for popup
+                const displayHeight = (displayWidth / layerW) * layerH;
+                const scaleX = displayWidth / layerW;
+                const scaleY = displayHeight / layerH;
 
-        const issueCenterX = issuePos.left || 0;
-        const issueCenterY = issuePos.top || 0;
-        const issueLeft = issueCenterX - (issueWidth / 2);
-        const issueTop = issueCenterY - (issueHeight / 2);
+                const overlayLeft = issueLeft * scaleX;
+                const overlayTop = issueTop * scaleY;
+                const overlayWidth = issueWidth * scaleX;
+                const overlayHeight = issueHeight * scaleY;
 
-        const layerW = (issue.layer && issue.layer.width) ? issue.layer.width : img.naturalWidth;
-        const layerH = (issue.layer && issue.layer.height) ? issue.layer.height : img.naturalHeight;
+                console.log('Overlay position:', {overlayLeft, overlayTop, overlayWidth, overlayHeight});
 
-        const displayWidth = wrapper.clientWidth;
-        const displayHeight = wrapper.clientHeight;
+                let shapeOverlay = '';
+                if (issueShape === 'circle') {
+                    const radius = Math.min(overlayWidth, overlayHeight) / 2;
+                    shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + (radius * 2) + 'px; height:' + (radius * 2) + 'px; border:3px solid ' + accent + '; border-radius:50%; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none; z-index:10;"></div>';
+                } else if (issueShape === 'square' || issueShape === 'rectangle') {
+                    shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + overlayWidth + 'px; height:' + overlayHeight + 'px; border:3px solid ' + accent + '; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none; z-index:10;"></div>';
+                } else if (issueShape === 'triangle') {
+                    // Triangle shape - create using SVG
+                    const centerX = overlayLeft + overlayWidth / 2;
+                    const centerY = overlayTop + overlayHeight / 2;
+                    const size = Math.max(overlayWidth, overlayHeight);
+                    shapeOverlay = '<svg style="position:absolute; left:' + (centerX - size/2) + 'px; top:' + (centerY - size/2) + 'px; width:' + size + 'px; height:' + size + 'px; pointer-events:none; z-index:10;"><polygon points="' + (size/2) + ',0 ' + size + ',' + size + ' 0,' + size + '" fill="none" stroke="' + accent + '" stroke-width="3" style="filter:drop-shadow(0 0 2px rgba(0,0,0,0.3));"/></svg>';
+                } else {
+                    // Default to circle
+                    const radius = Math.min(overlayWidth, overlayHeight) / 2;
+                    shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + (radius * 2) + 'px; height:' + (radius * 2) + 'px; border:3px solid ' + accent + '; border-radius:50%; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none; z-index:10;"></div>';
+                }
 
-        console.log('=== Modal Overlay Calculation ===');
-        console.log('Layer (original) dimensions:', layerW, 'x', layerH);
-        console.log('Image natural dimensions:', img.naturalWidth, 'x', img.naturalHeight);
-        console.log('Image offset dimensions:', img.offsetWidth, 'x', img.offsetHeight);
-        console.log('Wrapper client dimensions:', displayWidth, 'x', displayHeight);
-        console.log('Issue position (center):', issueCenterX, ',', issueCenterY);
-        console.log('Issue position (top-left):', issueLeft, ',', issueTop);
-        console.log('Issue dimensions:', issueWidth, 'x', issueHeight);
+                imageHtml = '<div style="display:inline-block; margin:0 auto; border-radius:8px; overflow:hidden; border:1px solid #e5e7eb; background:#fff;">' +
+                    '<div style="position:relative; width:' + displayWidth + 'px; height:' + displayHeight + 'px;">' +
+                    '<img src="' + markImageUrl + '" style="width:100%; height:100%; object-fit:contain; display:block;">' +
+                    shapeOverlay +
+                    '</div>' +
+                    '</div>';
+            }
 
-        const scaleX = displayWidth / layerW;
-        const scaleY = displayHeight / layerH;
+            console.log('imageHtml generated:', imageHtml ? 'Yes' : 'No');
 
-        console.log('Scale factors:', scaleX, 'x', scaleY);
+            // ⭐ SET IMAGE HTML INTO MODAL
+            const issueImageBox = document.getElementById('issueImageBox');
+            if (imageHtml && imageHtml.length > 0) {
+                issueImageBox.innerHTML = imageHtml;
+                issueImageBox.style.display = 'block';
+                console.log('Image box set to display:block');
+            } else {
+                issueImageBox.innerHTML = '';
+                issueImageBox.style.display = 'none';
+                console.log('No image to display');
+            }
 
-        const overlayLeft = issueLeft * scaleX;
-        const overlayTop = issueTop * scaleY;
-        const overlayWidth = issueWidth * scaleX;
-        const overlayHeight = issueHeight * scaleY;
+            // Format dates
+            let startDate = '-';
+            let endDate = '-';
+            if (issue.start_date) {
+                try {
+                    const start = new Date(issue.start_date);
+                    startDate = start.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                } catch (e) {
+                    startDate = issue.start_date;
+                }
+            }
+            if (issue.end_date) {
+                try {
+                    const end = new Date(issue.end_date);
+                    endDate = end.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                } catch (e) {
+                    endDate = issue.end_date;
+                }
+            }
 
-        console.log('Final overlay position:', overlayLeft, ',', overlayTop);
-        console.log('Final overlay dimensions:', overlayWidth, 'x', overlayHeight);
-        console.log('Shape:', issueShape, '| Color:', accent);
+            document.getElementById('issueDetailStartDate').textContent = startDate;
+            document.getElementById('issueDetailEndDate').textContent = endDate;
 
-        let overlay;
+            const dotEl = document.getElementById('issueAccentDot');
+            dotEl.style.background = issue.color || '#ef4444';
 
-        if (issueShape === 'triangle') {
-            const size = Math.max(overlayWidth, overlayHeight);
-            overlay = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            overlay.setAttribute('class', 'issue-overlay');
-            overlay.style.position = 'absolute';
-            overlay.style.left = overlayLeft + 'px';
-            overlay.style.top = overlayTop + 'px';
-            overlay.style.width = size + 'px';
-            overlay.style.height = size + 'px';
-            overlay.style.pointerEvents = 'none';
+            // Show issue detail modal with backdrop
+            const detailModalEl = document.getElementById('issueDetailModal');
+            const detailModal = new bootstrap.Modal(detailModalEl, {
+                backdrop: true,
+                keyboard: true
+            });
 
-            overlay.innerHTML =
-                `<polygon points="${size/2},0 ${size},${size} 0,${size}"
-                 fill="none" stroke="${accent}" stroke-width="3"/>`;
+            // Enhance backdrop when modal is shown
+            detailModalEl.addEventListener('shown.bs.modal', function handleModalShown() {
+                setTimeout(function() {
+                    const backdrop = document.querySelector('.modal-backdrop.show');
+                    if (backdrop) {
+                        backdrop.style.backgroundColor = 'rgba(148, 163, 184, 0.75)';
+                        backdrop.style.opacity = '1';
+                        backdrop.classList.add('issue-modal-backdrop');
+                    }
 
-        } else {
-            overlay = document.createElement('div');
-            overlay.className = 'issue-overlay';
+                    // Double check image visibility
+                    const imageBox = document.getElementById('issueImageBox');
+                    console.log('Modal shown - imageBox display:', imageBox.style.display);
+                    console.log('Modal shown - imageBox innerHTML length:', imageBox.innerHTML.length);
+                }, 50);
 
-            overlay.style.position = 'absolute';
-            overlay.style.left = overlayLeft + 'px';
-            overlay.style.top = overlayTop + 'px';
-            overlay.style.width = overlayWidth + 'px';
-            overlay.style.height = overlayHeight + 'px';
-            overlay.style.border = '3px solid ' + accent;
-            overlay.style.pointerEvents = 'none';
+                detailModalEl.removeEventListener('shown.bs.modal', handleModalShown);
+            }, { once: true });
 
-            overlay.style.borderRadius =
-                issueShape === 'circle' ? '50%' : '6px';
+            // Also update backdrop before modal shows
+            detailModalEl.addEventListener('show.bs.modal', function() {
+                setTimeout(function() {
+                    const backdrop = document.querySelector('.modal-backdrop.show');
+                    if (backdrop) {
+                        backdrop.style.backgroundColor = 'rgba(148, 163, 184, 0.75)';
+                    }
+                }, 10);
+            });
+
+            detailModal.show();
         }
 
-        overlay.style.boxShadow =
-            '0 0 0 2px rgba(255,255,255,.8), 0 0 10px rgba(0,0,0,.3)';
 
-        wrapper.appendChild(overlay);
 
-        console.log('✅ Overlay rendered');
-        console.log('Total overlays in wrapper:', wrapper.querySelectorAll('.issue-overlay').length);
-    }
-}
         function createIssueBadges() {
             const badgesContainer = document.getElementById('issueBadgesContainer');
             const imageArea = document.getElementById('modalImageArea');
