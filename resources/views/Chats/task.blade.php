@@ -2027,170 +2027,203 @@
     </div>
 </div>
 
-
     <div class="modal fade" id="extraActionModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered" style="max-width:500px;">
             <div class="modal-content" style="
-                border-radius:24px;
-                padding:30px;
+                border-radius:20px;
+                padding:0;
                 border:none;
-                background:#e6e6e8;
+                background:#ffffff;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.15);
             ">
 
+                <!-- Header -->
                 <h3 style="
                     font-weight:600;
-                    margin:-30px -30px 24px;
-                    padding:16px 30px;
-                    color:#2f3c5f;
-                    background:#d7d7d9;
+                    margin:0;
+                    padding:18px 28px;
+                    color:#3a4a6b;
+                    background:#ededef;
                     font-family:'Outfit',sans-serif;
+                    font-size:21px;
+                    border-radius:20px 20px 0 0;
                 ">
                     Start the Task
                 </h3>
 
-                <div style="text-align:center; margin-bottom:22px;">
-                    <div style="
-                        width:120px;
-                        height:120px;
-                        background:#73bc67;
-                        border-radius:18px;
+                <div style="padding:28px 28px 26px;">
+
+                    <!-- Icon -->
+                    <div style="text-align:center; margin-bottom:20px;">
+                        <div style="
+                        width:105px;
+                        height:105px;
+                        background:#52c655;
+                        border-radius:14px;
                         margin:0 auto;
                         display:flex;
                         align-items:center;
                         justify-content:center;
                     ">
-                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                            <path d="M4.5 16.5c-1.5 1.25-2 5-2 5s3.75-.5 5-2c.71-.71.71-1.79 0-2.5-.71-.71-1.79-.71-2.5 0z"></path>
-                            <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
-                            <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
-                            <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
-                        </svg>
-                    </div>
-                </div>
-
-                <div style="
-                    background:#dfdfe1;
-                    border-radius:16px;
-                    padding:22px;
-                    margin-bottom:20px;
-                ">
-
-                    <h6 style="
-                        text-align:center;
-                        font-weight:600;
-                        margin-bottom:16px;
-                        color:#2f3c5f;
-                        font-size:20px;
-                        font-family:'Outfit',sans-serif;
-                    ">
-                        Task Start Date and Time
-                    </h6>
-
-                    <div style="
-                        background:#d1d1d3;
-                        border-radius:12px;
-                        padding:10px 12px;
-                        display:flex;
-                        align-items:center;
-                        justify-content:space-between;
-                        gap:10px;
-                    ">
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <div style="position:relative; width:30px; height:30px;">
-                                <span style="position:absolute; top:2px; left:0; width:22px; height:22px; border-radius:5px; background:#a7ce2f; transform:rotate(6deg);"></span>
-                                <span style="position:absolute; right:0; bottom:0; width:22px; height:22px; border-radius:6px; background:#ececef; display:flex; align-items:center; justify-content:center;">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7d84a0" stroke-width="2">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <polyline points="12 7 12 12 15 15"></polyline>
-                                    </svg>
-                                </span>
-                            </div>
-
-                            <div style="
-                                background:#efeff1;
-                                border-radius:9px;
-                                padding:7px 14px;
-                                display:flex;
-                                align-items:center;
-                                justify-content:space-between;
-                                gap:12px;
-                                min-width:0;
-                                flex:1;
-                            ">
-                                <div style="font-family:'Outfit',sans-serif; font-size:16px; white-space:nowrap;">
-                                    <span style="color:#67b95d; font-weight:600;">Started:</span>
-                                    <span style="font-weight:600; color:#2f3c5f;">23.10.2024</span>
-                                </div>
-
-                                <div style="width:1px; height:26px; background:#c7ccd5;"></div>
-
-                                <div style="font-family:'Outfit',sans-serif; font-size:16px; white-space:nowrap;">
-                                    <span style="color:#67b95d; font-weight:600;">Time:</span>
-                                    <span style="font-weight:600; color:#2f3c5f;">12:45</span>
-                                </div>
-                            </div>
+                            <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4.5 16.5c-1.5 1.25-2 5-2 5s3.75-.5 5-2c.71-.71.71-1.79 0-2.5-.71-.71-1.79-.71-2.5 0z"></path>
+                                <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+                                <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
+                                <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
+                            </svg>
                         </div>
                     </div>
 
+                    <!-- Content Box -->
                     <div style="
+                    background:#f2f2f4;
+                    border-radius:12px;
+                    padding:20px 18px;
+                    margin-bottom:24px;
+                ">
+
+                        <!-- Title -->
+                        <h6 style="
                         text-align:center;
-                        margin-top:16px;
-                        font-size:16px;
-                        color:#2f3c5f;
+                        font-weight:600;
+                        margin-bottom:16px;
+                        color:#3a4a6b;
+                        font-size:17px;
                         font-family:'Outfit',sans-serif;
                     ">
-                        Task will move to the Section
-                        <span style="color:#8fb43c; font-weight:600;">"In Progress"</span>
+                            Task Start Date and Time
+                        </h6>
+
+                        <!-- Date Time Container -->
+                        <div style="
+                        background:#e2e2e4;
+                        border-radius:11px;
+                        padding:11px 13px;
+                        display:flex;
+                        align-items:center;
+                        gap:11px;
+                    ">
+                            <!-- Icon with layers -->
+                            <div style="position:relative; width:36px; height:36px; flex-shrink:0;">
+                                <!-- Green tilted background -->
+                                <span style="
+                                position:absolute;
+                                top:2px;
+                                left:1px;
+                                width:26px;
+                                height:26px;
+                                border-radius:6px;
+                                background:#a3d142;
+                                transform:rotate(7deg);
+                            "></span>
+                                <!-- Clock icon on white background -->
+                                <span style="
+                                position:absolute;
+                                right:0;
+                                bottom:0;
+                                width:27px;
+                                height:27px;
+                                border-radius:6px;
+                                background:#ffffff;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                            ">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7a8599" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 7 12 12 15 15"></polyline>
+                                </svg>
+                            </span>
+                            </div>
+
+                            <!-- Date and Time Info -->
+                            <div style="
+                            background:#ffffff;
+                            border-radius:9px;
+                            padding:8px 15px;
+                            display:flex;
+                            align-items:center;
+                            gap:12px;
+                            flex:1;
+                        ">
+                                <!-- Started Date -->
+                                <div style="font-family:'Outfit',sans-serif; font-size:15px; white-space:nowrap;">
+                                    <span style="color:#52c655; font-weight:600;">Started:</span>
+                                    <span style="font-weight:600; color:#3a4a6b;"> 23.10.2024</span>
+                                </div>
+
+                                <!-- Divider -->
+                                <div style="width:1px; height:22px; background:#d0d2d8;"></div>
+
+                                <!-- Time -->
+                                <div style="font-family:'Outfit',sans-serif; font-size:15px; white-space:nowrap;">
+                                    <span style="color:#52c655; font-weight:600;">Time:</span>
+                                    <span style="font-weight:600; color:#3a4a6b;"> 12:45</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status Message -->
+                        <div style="
+                        text-align:center;
+                        margin-top:16px;
+                        font-size:15px;
+                        color:#3a4a6b;
+                        font-family:'Outfit',sans-serif;
+                    ">
+                            Task will move to the Section
+                            <span style="color:#8bb63f; font-weight:600;">"In Progress"</span>
+                        </div>
                     </div>
-                </div>
 
-                <div style="
+                    <!-- Buttons -->
+                    <div style="
                     display:flex;
-                    gap:10px;
-                    width:min(100%,340px);
-                    margin:0 auto;
-                    background:#e9e9eb;
-                    border-radius:8px;
-                    padding:2px;
+                    gap:16px;
                 ">
-                    <button
-                        class="btn"
-                        data-bs-dismiss="modal"
-                        style="
+                        <button
+                            class="btn"
+                            data-bs-dismiss="modal"
+                            style="
                             flex:1;
-                            padding:10px;
-                            border-radius:10px;
-                            background:#e3e4e6;
-                            color:#74808f;
+                            padding:12px;
+                            border-radius:9px;
+                            background:#e5e5e7;
+                            color:#7a8599;
                             font-weight:600;
                             border:none;
                             font-family:'Outfit',sans-serif;
+                            font-size:15px;
                         "
-                    >
-                        Close
-                    </button>
+                        >
+                            Close
+                        </button>
 
-                    <button
-                        class="btn"
-                        style="
+                        <button
+                            class="btn"
+                            style="
                             flex:1;
-                            padding:10px;
-                            border-radius:10px;
-                            background:#e3e4e6;
-                            color:#74808f;
+                            padding:12px;
+                            border-radius:9px;
+                            background:#e5e5e7;
+                            color:#7a8599;
                             font-weight:600;
                             border:none;
                             font-family:'Outfit',sans-serif;
+                            font-size:15px;
                         "
-                    >
-                        Move on
-                    </button>
+                        >
+                            Move on
+                        </button>
+                    </div>
+
                 </div>
 
             </div>
         </div>
     </div>
-    {{--<!-- Add Task Modals (Keeping simplified placeholders or including existing ones if verified) -->--}}
+
+        {{--<!-- Add Task Modals (Keeping simplified placeholders or including existing ones if verified) -->--}}
     @include('Chats.partials.modals')
 
     <script>
