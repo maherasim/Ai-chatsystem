@@ -30,10 +30,10 @@
 </head>
 <body>
     <!-- Main Wrapper -->
-    @if (Route::is(['signup','signin','success','reset-password','otp','forgot-password']))
+    @if (Route::is(['signup','signin','success','reset-password','otp','forgot-password', 'locked.page']))
     <div class="main-wrapper d-block">
      @endif
-     @if (!Route::is(['signup','signin','success','reset-password','otp','forgot-password']))
+     @if (!Route::is(['signup','signin','success','reset-password','otp','forgot-password', 'locked.page']))
     <div class="main-wrapper">
      @endif
     @yield('content')

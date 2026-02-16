@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Setting;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 
 class SettingController extends Controller
@@ -339,4 +340,23 @@ public function saveAgreement(Request $request)
 }
 
 
+    public function lockScreen(Request $request)
+    {
+        session(['screen_locked' => true]);
+        return redirect()->route('locked.page');
+    }
+
+    public function unlockScreen(Request $request)
+    {
+        $request->validate([
+            'password' => 'required',
+        ]);
+
+        if (Hash::check($request->password, auth()->user()->password)) {
+            session(['screen_locked' => false]);
+            return redirect()->route('home');
+        }
+
+        return back()->with('error', 'Incorrect password.');
+    }
 }
