@@ -971,8 +971,16 @@
         });
 
         overlay.addEventListener('click', function(e) {
-            if (e.target === overlay) {
-                pinInput.focus();
+            // If in PIN mode, ensure input gets focus unless clicking an interactive element
+            if (overlay.getAttribute('data-step') === 'pin') {
+                if (!e.target.closest('button') && !e.target.closest('a') && e.target !== cancelText) {
+                    pinInput.focus();
+                }
+            } else {
+                // In non-PIN mode, keep original behavior if needed (which was focusing if clicking bg)
+                if (e.target === overlay) {
+                    pinInput.focus(); 
+                }
             }
         });
         if (clearBtn) {
