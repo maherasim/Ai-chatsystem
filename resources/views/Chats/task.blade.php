@@ -1550,6 +1550,64 @@
                         </button>
                     </div>
 
+                    <div style="margin-top:18px; width:100%;">
+
+                        <button
+                            type="button"
+                            onclick="openExtraActionModal()"
+                            style="
+                            width:100%;
+                            background:#f1f5f9;
+                            border:none;
+                            border-radius:14px;
+                            padding:12px 16px;
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            gap:12px;
+                            box-shadow:0 2px 6px rgba(0,0,0,0.06);
+                            cursor:pointer;
+                        "
+                        >
+
+                            <!-- Green Icon Box -->
+                            <div style="
+                                    display:flex;
+                                    flex-direction:column;
+                                    align-items:center;
+                                    gap:6px;
+                                ">
+
+                                <!-- Icon Button -->
+                                <div style="
+                                    width:32px;
+                                    height:32px;
+                                    background:#22c55e;
+                                    border-radius:8px;
+                                    display:flex;
+                                    align-items:center;
+                                    justify-content:center;
+                                ">
+                                    <i class="ti ti-rocket" style="color:white; font-size:16px;"></i>
+                                </div>
+
+                                <!-- Text -->
+                                <span style="
+                                font-weight:600;
+                                font-size:14px;
+                                font-family:'Genos', sans-serif;
+                                color:#334155;
+                                text-transform:lowercase;
+                                text-align:center;
+                            ">
+                                start the task
+                            </span>
+
+                            </div>
+
+                        </button>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -1969,6 +2027,169 @@
     </div>
 </div>
 
+
+    <div class="modal fade" id="extraActionModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" style="max-width:500px;">
+            <div class="modal-content" style="
+                border-radius:24px;
+                padding:30px;
+                border:none;
+                background:#e6e6e8;
+            ">
+
+                <h3 style="
+                    font-weight:600;
+                    margin:-30px -30px 24px;
+                    padding:16px 30px;
+                    color:#2f3c5f;
+                    background:#d7d7d9;
+                    font-family:'Outfit',sans-serif;
+                ">
+                    Start the Task
+                </h3>
+
+                <div style="text-align:center; margin-bottom:22px;">
+                    <div style="
+                        width:120px;
+                        height:120px;
+                        background:#73bc67;
+                        border-radius:18px;
+                        margin:0 auto;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                    ">
+                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <path d="M4.5 16.5c-1.5 1.25-2 5-2 5s3.75-.5 5-2c.71-.71.71-1.79 0-2.5-.71-.71-1.79-.71-2.5 0z"></path>
+                            <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+                            <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
+                            <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div style="
+                    background:#dfdfe1;
+                    border-radius:16px;
+                    padding:22px;
+                    margin-bottom:20px;
+                ">
+
+                    <h6 style="
+                        text-align:center;
+                        font-weight:600;
+                        margin-bottom:16px;
+                        color:#2f3c5f;
+                        font-size:20px;
+                        font-family:'Outfit',sans-serif;
+                    ">
+                        Task Start Date and Time
+                    </h6>
+
+                    <div style="
+                        background:#d1d1d3;
+                        border-radius:12px;
+                        padding:10px 12px;
+                        display:flex;
+                        align-items:center;
+                        justify-content:space-between;
+                        gap:10px;
+                    ">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div style="position:relative; width:30px; height:30px;">
+                                <span style="position:absolute; top:2px; left:0; width:22px; height:22px; border-radius:5px; background:#a7ce2f; transform:rotate(6deg);"></span>
+                                <span style="position:absolute; right:0; bottom:0; width:22px; height:22px; border-radius:6px; background:#ececef; display:flex; align-items:center; justify-content:center;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7d84a0" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 7 12 12 15 15"></polyline>
+                                    </svg>
+                                </span>
+                            </div>
+
+                            <div style="
+                                background:#efeff1;
+                                border-radius:9px;
+                                padding:7px 14px;
+                                display:flex;
+                                align-items:center;
+                                justify-content:space-between;
+                                gap:12px;
+                                min-width:0;
+                                flex:1;
+                            ">
+                                <div style="font-family:'Outfit',sans-serif; font-size:16px; white-space:nowrap;">
+                                    <span style="color:#67b95d; font-weight:600;">Started:</span>
+                                    <span style="font-weight:600; color:#2f3c5f;">23.10.2024</span>
+                                </div>
+
+                                <div style="width:1px; height:26px; background:#c7ccd5;"></div>
+
+                                <div style="font-family:'Outfit',sans-serif; font-size:16px; white-space:nowrap;">
+                                    <span style="color:#67b95d; font-weight:600;">Time:</span>
+                                    <span style="font-weight:600; color:#2f3c5f;">12:45</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="
+                        text-align:center;
+                        margin-top:16px;
+                        font-size:16px;
+                        color:#2f3c5f;
+                        font-family:'Outfit',sans-serif;
+                    ">
+                        Task will move to the Section
+                        <span style="color:#8fb43c; font-weight:600;">"In Progress"</span>
+                    </div>
+                </div>
+
+                <div style="
+                    display:flex;
+                    gap:10px;
+                    width:min(100%,340px);
+                    margin:0 auto;
+                    background:#e9e9eb;
+                    border-radius:8px;
+                    padding:2px;
+                ">
+                    <button
+                        class="btn"
+                        data-bs-dismiss="modal"
+                        style="
+                            flex:1;
+                            padding:10px;
+                            border-radius:10px;
+                            background:#e3e4e6;
+                            color:#74808f;
+                            font-weight:600;
+                            border:none;
+                            font-family:'Outfit',sans-serif;
+                        "
+                    >
+                        Close
+                    </button>
+
+                    <button
+                        class="btn"
+                        style="
+                            flex:1;
+                            padding:10px;
+                            border-radius:10px;
+                            background:#e3e4e6;
+                            color:#74808f;
+                            font-weight:600;
+                            border:none;
+                            font-family:'Outfit',sans-serif;
+                        "
+                    >
+                        Move on
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
     {{--<!-- Add Task Modals (Keeping simplified placeholders or including existing ones if verified) -->--}}
     @include('Chats.partials.modals')
 
@@ -3391,5 +3612,10 @@
             if (window.buttonsToShow.continueTaskBtn && continueTaskBtnContainer) {
                 continueTaskBtnContainer.style.display = 'block';
             }
+        }
+
+        function openExtraActionModal() {
+            const modal = new bootstrap.Modal(document.getElementById('extraActionModal'));
+            modal.show();
         }
     </script>
