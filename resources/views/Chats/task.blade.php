@@ -627,8 +627,8 @@
             align-items: center;
             gap: 4px;
         }
-        .badge-new { background: #e0f2fe; color: #0ea5e9; }
-        .badge-id { background: #fee2e2; color: #ef4444; }
+        .badge-new { background: #e0f2fe; color: #1C274C; }
+        .badge-id { background: #fee2e2; color: #ED1C24; }
         .badge-low { background: #dcfce7; color: #22c55e; } /* Assuming Low priority from screenshot */
         .badge-checked { background: #f3e8ff; color: #a855f7; } /* Purple for checking status */
 
