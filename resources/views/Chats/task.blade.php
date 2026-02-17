@@ -540,17 +540,17 @@
 
         /* NEW: Task Detail Modal Specific Styles */
         .task-modal-content {
+            border: none;
             border-radius: 20px;
             overflow: hidden;
-            border: none;
-            font-family: 'Outfit', sans-serif;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            background: #f8fafc;
         }
         .task-modal-header {
-            background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 100%); /* Blue gradient */
-            padding: 20px;
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            padding: 20px 24px;
             position: relative;
             color: white;
-            height: 120px; /* Space for content + overlap */
         }
         .task-modal-close {
             position: absolute;
@@ -814,7 +814,7 @@
         .start-btn-container {
             text-align: center;
             position: relative;
-            padding-top: 10px;
+            padding-top: 13px;
         }
         /* Thread line */
         .timeline-line {
@@ -827,17 +827,20 @@
             z-index: 0;
         }
         .start-task-btn {
+            margin-bottom: -17px;
+            width: 240px;
             position: relative;
             z-index: 1;
-            background: #fff;
-            border: none;
+            background: #F2F2f2;
+            border: 20px;
             display: inline-flex;
             flex-direction: column;
             align-items: center;
             gap: 5px;
+            padding: 10px;
             color: #1e293b;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 700
         }
         .start-btn-icon {
             width: 40px;
@@ -1476,14 +1479,13 @@
 
                     <!-- Start Button (Initial State) -->
                     <div class="start-btn-container" id="startBtnContainer">
-                        <div class="timeline-line"></div>
                         <button class="start-task-btn" onclick="openStartConfirmationModal()">
                             <div class="start-btn-icon">
                                 <i class="ti ti-rocket"></i>
                             </div>
                             Start the Task
                         </button>
-                    </div>
+
 
                     <!-- Action Buttons (In Progress State) -->
                     <div class="action-buttons-container" id="actionButtonsContainer" style="display: none;">
@@ -1549,64 +1551,6 @@
                             <span style="font-weight: 700; font-size: 14px; color: #334155;">continue the task</span>
                         </button>
                     </div>
-
-                    <div style="margin-top:18px; width:100%;">
-
-                        <button
-                            type="button"
-                            onclick="openExtraActionModal()"
-                            style="
-                            width:100%;
-                            background:#f1f5f9;
-                            border:none;
-                            border-radius:14px;
-                            padding:12px 16px;
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
-                            gap:12px;
-                            box-shadow:0 2px 6px rgba(0,0,0,0.06);
-                            cursor:pointer;
-                        "
-                        >
-
-                            <!-- Green Icon Box -->
-                            <div style="
-                                    display:flex;
-                                    flex-direction:column;
-                                    align-items:center;
-                                    gap:6px;
-                                ">
-
-                                <!-- Icon Button -->
-                                <div style="
-                                    width:32px;
-                                    height:32px;
-                                    background:#22c55e;
-                                    border-radius:8px;
-                                    display:flex;
-                                    align-items:center;
-                                    justify-content:center;
-                                ">
-                                    <i class="ti ti-rocket" style="color:white; font-size:16px;"></i>
-                                </div>
-
-                                <!-- Text -->
-                                <span style="
-                                font-weight:600;
-                                font-size:14px;
-                                font-family:'Genos', sans-serif;
-                                color:#334155;
-                                text-transform:lowercase;
-                                text-align:center;
-                            ">
-                                start the task
-                            </span>
-
-                            </div>
-
-                        </button>
-
                     </div>
                 </div>
             </div>
@@ -3212,16 +3156,30 @@
             // Build markImageUrl
             let markImageUrl = '';
             const markImagePath = issue.mark_image_path || '';
+            const requiredBaseUrl = 'https://logiadmin.it-supportline.de/';
+
             if (markImagePath) {
-                if (markImagePath.startsWith('http://') || markImagePath.startsWith('https://')) {
+
+                // Agar already correct domain se start ho raha hai
+                if (markImagePath.startsWith(requiredBaseUrl)) {
                     markImageUrl = markImagePath;
-                } else if (markImagePath.startsWith('storage/')) {
-                    markImageUrl = window.location.origin + '/' + markImagePath;
-                } else {
+                }
+                // Agar http/https hai lekin required domain nahi hai
+                else if (markImagePath.startsWith('http://') || markImagePath.startsWith('https://')) {
+                    const cleanPath = markImagePath.replace(/^https?:\/\/[^\/]+/, '');
+                    markImageUrl = requiredBaseUrl.replace(/\/$/, '') + cleanPath;
+                }
+                // Agar storage/ se start ho raha hai
+                else if (markImagePath.startsWith('storage/')) {
+                    markImageUrl = requiredBaseUrl.replace(/\/$/, '') + '/' + markImagePath;
+                }
+                // Agar sirf relative path hai
+                else {
                     const cleanPath = markImagePath.replace(/^\/+/, '');
-                    markImageUrl = window.location.origin + '/storage/' + cleanPath;
+                    markImageUrl = requiredBaseUrl.replace(/\/$/, '') + '/storage/' + cleanPath;
                 }
             }
+
 
             console.log('markImageUrl:', markImageUrl);
 
@@ -3647,8 +3605,5 @@
             }
         }
 
-        function openExtraActionModal() {
-            const modal = new bootstrap.Modal(document.getElementById('extraActionModal'));
-            modal.show();
-        }
+
     </script>
