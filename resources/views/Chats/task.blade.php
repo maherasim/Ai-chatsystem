@@ -1377,13 +1377,13 @@
 
                     <!-- Meta Row -->
                     <div class="meta-row">
-                        <div class="meta-item">Task ID <span id="modalTaskIdDisplay">E5B4</span></div>
+                        <div class="meta-item fw-bold">Task ID:  <span id="modalTaskIdDisplay">E5B4</span></div>
                         <div class="meta-item">|</div>
-                        <div class="meta-item">Section <span id="modalSectionDisplay">Dev</span></div>
+                        <div class="meta-item fw-bold">Section: <span id="modalSectionDisplay">Dev</span></div>
+                        <div class="meta-item ">|</div>
+                        <div class="meta-item fw-bold">Start: <span id="modalStartDateDisplay">22.10</span></div>
                         <div class="meta-item">|</div>
-                        <div class="meta-item">Start <span id="modalStartDateDisplay">22.10</span></div>
-                        <div class="meta-item">|</div>
-                        <div class="meta-item">Deliver <span id="modalEndDateDisplay">23.10</span></div>
+                        <div class="meta-item fw-bold">Deliver: <span id="modalEndDateDisplay">23.10</span></div>
                     </div>
 
                     <!-- Issue Description -->
