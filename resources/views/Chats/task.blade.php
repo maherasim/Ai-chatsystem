@@ -628,8 +628,15 @@
             gap: 4px;
         }
         .badge-new { background: #e0f2fe; color: #1C274C; }
-        .badge-id { background: #fee2e2; color: #ED1C24; }
-        .badge-low { background: #dcfce7; color: #22c55e; } /* Assuming Low priority from screenshot */
+        .badge-id { background: #ED1C24; color: #fee2e2; }
+        .badge-low {
+            background: transparent;
+            color: #22c55e;
+            border: 1px solid #22c55e;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 500;
+        } /* Assuming Low priority from screenshot */
         .badge-checked { background: #f3e8ff; color: #a855f7; } /* Purple for checking status */
 
         .meta-row {
