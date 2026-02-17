@@ -627,8 +627,8 @@
             align-items: center;
             gap: 4px;
         }
-        .badge-new { background: #e0f2fe; color: #1C274C; }
-        .badge-id { background: #ED1C24; color: #fee2e2; }
+        .badge-new { background: #e0f2fe; color: #1C274C; font-weight: 500;}
+        .badge-id { background: #ED1C24; color: #fee2e2; font-weight: 500;}
         .badge-low {
             background: transparent;
             color: #22c55e;
@@ -2310,9 +2310,20 @@
             document.getElementById('modalTaskDescriptionDisplay').textContent = descriptionToShow;
 
             document.getElementById('modalTaskIdDisplay').textContent = taskId;
+
+            function formatDate(dateString) {
+                if (!dateString) return 'N/A';
+
+                const parts = dateString.split('.');
+                const day = parts[0];
+                const month = parts[1];
+                const year = parts[2];
+
+                return `${day}.${month}.${year}`;
+            }
             // document.getElementById('modalTicketId').textContent = ticketId;
-            document.getElementById('modalStartDateDisplay').textContent = startDate ? startDate.slice(0, 5) : 'N/A';
-            document.getElementById('modalEndDateDisplay').textContent = endDate ? endDate.slice(0, 5) : 'N/A';
+            document.getElementById('modalStartDateDisplay').textContent = formatDate(startDate);
+            document.getElementById('modalEndDateDisplay').textContent = formatDate(endDate);
             document.getElementById('modalIndexDisplay').textContent = "-" + index + "-";
 
             document.getElementById('modalProjectName').textContent = projectName;
