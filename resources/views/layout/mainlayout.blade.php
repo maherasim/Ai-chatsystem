@@ -22,6 +22,7 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="600">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link href="https://fonts.googleapis.com/css2?family=Genos:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <title>LogiConn</title>
     <!-- Favicon -->
     <link rel="icon" href="{{URL::asset('/build/img/AI-Logo.svg')}}">
