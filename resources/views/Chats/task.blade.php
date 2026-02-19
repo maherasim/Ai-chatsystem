@@ -3,7 +3,7 @@
 @section('content')
 
     @php
-        $baseUrl = config('https://logiadmin.it-supportline.de/');
+        $baseUrl = 'https://logiadmin.it-supportline.de/';
     @endphp
 
     <style>
@@ -1279,7 +1279,7 @@
                                         <div class="task-image-col">
                                             <div class="red-index-badge">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</div>
                                             @if(!empty($task->mark_image_path))
-                                                <img src="{{ asset('storage/' . $task->mark_image_path) }}"
+                                                <img src="{{ $baseUrl }} {{ asset('storage/' . $task->mark_image_path) }}"
                                                      alt="Task"
                                                      style="width: 100%; height: 100%; object-fit: cover; border-radius: 18px; cursor: pointer;"
                                                      onclick="event.stopPropagation(); openIssuesPopup(this, '{{ json_encode($issues) }}', '{{ $task->_id ?? $task->id }}');"
@@ -1300,8 +1300,10 @@
 
                                             <!-- IDs Row -->
                                             <div class="task-ids-row">
-                                                <span class="id-pill">Task ID {{ substr((string)($task->_id ?? $task->id), -4) }}</span>
-                                                <span class="id-pill">Ticket ID {{ substr((string)($task->ticket_id ?? '---'), -4) }}</span>
+                                             <span class="id-pill">
+                                                    Task ID: {{ 'TSK-' . str_pad($index + 1, 3, '0', STR_PAD_LEFT) }}
+                                                </span>
+                                                <span class="id-pill">Ticket ID: {{ substr((string)($task->ticket_id ?? '---'), -4) }}</span>
                                             </div>
 
                                             <!-- Description -->
@@ -2309,7 +2311,8 @@
             const descriptionToShow = issueDesc && issueDesc !== 'No description available.' ? issueDesc : (desc || "No description provided.");
             document.getElementById('modalTaskDescriptionDisplay').textContent = descriptionToShow;
 
-            document.getElementById('modalTaskIdDisplay').textContent = taskId;
+            const formattedTaskId = 'TSK-' + String(parseInt(index)).padStart(3, '0');
+            document.getElementById('modalTaskIdDisplay').textContent = formattedTaskId;
 
             function formatDate(dateString) {
                 if (!dateString) return 'N/A';
@@ -2717,36 +2720,63 @@
                 window.currentTaskIssues = [];
             }
 
-            // Check if imageSrc is valid (not empty and not just the storage path)
-            const baseUrl = '{{ config("app.url") }}';
-            const isValidImageSrc = imageSrc && imageSrc.trim() !== '' &&
-                imageSrc !== baseUrl + '/storage/' &&
-                imageSrc !== '/storage/' &&
-                !imageSrc.endsWith('/storage/');
+            const productionUrl = "https://logiadmin.it-supportline.de/";
+
+            function normalizeImageSrc(src) {
+                if (!src || src.trim() === '') return '';
+
+                // ✅ Local URLs ko production se replace karo
+                const localPatterns = [
+                    /^http:\/\/127\.0\.0\.1:\d+\//,
+                    /^http:\/\/localhost:\d+\//,
+                    /^http:\/\/localhost\//,
+                ];
+
+                for (const pattern of localPatterns) {
+                    if (pattern.test(src)) {
+                        // Local base URL hata ke production laga do
+                        return src.replace(pattern, productionUrl);
+                    }
+                }
+
+                // Agar already production URL hai
+                if (src.startsWith(productionUrl)) {
+                    return src;
+                }
+
+                // Relative path hai toh production laga do
+                const cleanSrc = src.startsWith('/') ? src.slice(1) : src;
+                return productionUrl + cleanSrc;
+            }
+
+            const normalizedImageSrc = normalizeImageSrc(imageSrc);
+
+            const isValidImageSrc = normalizedImageSrc !== '' &&
+                normalizedImageSrc !== productionUrl + 'storage/' &&
+                !normalizedImageSrc.endsWith('/storage/');
+
+            console.log('Original imageSrc:', imageSrc);
+            console.log('Normalized imageSrc:', normalizedImageSrc);
 
             if (isValidImageSrc) {
-                imgEl.src = imageSrc;
-                imgEl.title = imageSrc;
+                imgEl.src = normalizedImageSrc;  // ✅ Ab production URL use hoga
+                imgEl.title = normalizedImageSrc;
                 imgEl.style.display = 'block';
                 placeholderEl.style.display = 'none';
 
                 imgEl.onerror = function() {
-                    // If image fails to load, show placeholder
                     this.style.display = 'none';
                     placeholderEl.style.display = 'block';
                 };
 
                 imgEl.onload = function() {
-                    // Ensure image is visible
                     this.style.display = 'block';
                     placeholderEl.style.display = 'none';
-                    // Create issue badges on image load
                     setTimeout(function() {
                         createIssueBadges();
                     }, 300);
                 };
 
-                // Also create badges if image is already loaded
                 if (imgEl.complete && imgEl.naturalHeight !== 0) {
                     imgEl.style.display = 'block';
                     placeholderEl.style.display = 'none';
@@ -2758,7 +2788,6 @@
                 imgEl.style.display = 'none';
                 placeholderEl.style.display = 'block';
             }
-
             // Show task detail modal
             const myModal = new bootstrap.Modal(document.getElementById('taskDetailModal'));
 
