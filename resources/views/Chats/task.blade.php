@@ -1255,7 +1255,7 @@
                                 <div class="stats-icon-wrapper">
                                     <img src="{{ $baseUrl }}/build/img/progress.svg" alt="Progress" style="width: 24px; height: 24px;">
                                 </div>
-                                <div class="stats-title">In Progress as</div>
+                                <div class="stats-title">In Progress</div>
                                 <div class="stats-count">{{ $stats['in_progress'] ?? 0 }}</div>
                             </div>
 
@@ -1402,7 +1402,7 @@
                                          data-image="{{ $markImagePath }}"
                                          data-index="{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}"
                                          data-project-name="{{ $task->project->title ?? 'Project Name' }}"
-                                         data-section-name="{{ e(optional($task->ticket)->section_name ?? '') }}"
+                                         data-section-name="{{ e($task->section_name ?? optional($task->ticket)->section_name ?? '') }}"
                                          data-hold-reason="{{ $task->hold_reason ?? '' }}"
                                          data-rejection-reason="{{ $rejectionReason }}"
                                          data-video-link="{{ $task->video_link ?? '' }}"

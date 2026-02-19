@@ -48,19 +48,41 @@ class TaskController extends Controller
 
         $tasks = $tasks->map(function($t) use ($projectMap, $ticketMap){
             $t->project = $projectMap->get((string)($t->project_id ?? ''));
-            $t->ticket  = $ticketMap->get((string)($t->ticket_id ?? ''));
+            $ticket = $ticketMap->get((string)($t->ticket_id ?? ''));
+            $t->ticket = $ticket;
+            $t->section_name = $ticket ? ($ticket->section_name ?? '') : '';
             return $t;
         });
         $webtasks = $webtasks->map(function($t) use ($projectMap, $ticketMap){
             $t->project = $projectMap->get((string)($t->project_id ?? ''));
-            $t->ticket  = $ticketMap->get((string)($t->ticket_id ?? ''));
+            $ticket = $ticketMap->get((string)($t->ticket_id ?? ''));
+            $t->ticket = $ticket;
+            $t->section_name = $ticket ? ($ticket->section_name ?? '') : '';
             return $t;
         });
         $employeeTasks = $employeeTasks->map(function($t) use ($projectMap, $ticketMap){
             $t->project = $projectMap->get((string)($t->project_id ?? ''));
-            $t->ticket  = $ticketMap->get((string)($t->ticket_id ?? ''));
+            $ticket = $ticketMap->get((string)($t->ticket_id ?? ''));
+            $t->ticket = $ticket;
+            $t->section_name = $ticket ? ($ticket->section_name ?? '') : '';
             return $t;
         });
+
+        // Stats from all three models: Task, WebTask, EmployeeTask
+        $countByStatus = function ($model, array $statuses) {
+            return $model->whereIn('status', $statuses)->count();
+        };
+        $stats = [
+            'total'      => Task::count() + WebTask::count() + EmployeeTask::count(),
+            'new_task'   => $countByStatus(Task::query(), ['new', 'new_task', 'newtask']) + $countByStatus(WebTask::query(), ['new', 'new_task', 'newtask']) + $countByStatus(EmployeeTask::query(), ['new', 'new_task', 'newtask']),
+            'in_progress'=> $countByStatus(Task::query(), ['in_progress', 'progress', 'inprogress']) + $countByStatus(WebTask::query(), ['in_progress', 'progress', 'inprogress']) + $countByStatus(EmployeeTask::query(), ['in_progress', 'progress', 'inprogress']),
+            'on_hold'    => $countByStatus(Task::query(), ['in_hold', 'hold', 'inhold', 'on_hold']) + $countByStatus(WebTask::query(), ['in_hold', 'hold', 'inhold', 'on_hold']) + $countByStatus(EmployeeTask::query(), ['in_hold', 'hold', 'inhold', 'on_hold']),
+            'checked'    => $countByStatus(Task::query(), ['in_checked', 'checked', 'inchecked']) + $countByStatus(WebTask::query(), ['in_checked', 'checked', 'inchecked']) + $countByStatus(EmployeeTask::query(), ['in_checked', 'checked', 'inchecked']),
+            'delayed'    => $countByStatus(Task::query(), ['in_delayed', 'delayed', 'indelayed']) + $countByStatus(WebTask::query(), ['in_delayed', 'delayed', 'indelayed']) + $countByStatus(EmployeeTask::query(), ['in_delayed', 'delayed', 'indelayed']),
+            'rejected'   => $countByStatus(Task::query(), ['in_rejected', 'rejected', 'inrejected']) + $countByStatus(WebTask::query(), ['in_rejected', 'rejected', 'inrejected']) + $countByStatus(EmployeeTask::query(), ['in_rejected', 'rejected', 'inrejected']),
+            'done'       => $countByStatus(Task::query(), ['in_done', 'done', 'indone']) + $countByStatus(WebTask::query(), ['in_done', 'done', 'indone']) + $countByStatus(EmployeeTask::query(), ['in_done', 'done', 'indone']),
+        ];
+
         // Return with both camelCase and snakeCase variants for robustness in blade
         return view('Chats.task', [
             'headers'         => $headers,
@@ -73,6 +95,7 @@ class TaskController extends Controller
             'employeetasks'   => $employeeTasks,
             'employee_tasks'  => $employeeTasks,
             'projectsdone'    => $projectsdone,
+            'stats'           => $stats,
         ]);
     }
 
