@@ -3,7 +3,8 @@
 @section('content')
 
     @php
-        $baseUrl = config('app.url');
+        // Tasks page: always use static base URL for fetching images (e.g. when on logiteam, load from logiadmin)
+        $baseUrl = rtrim(config('app.storage_static_url') ?: 'https://logiadmin.it-supportline.de', '/');
     @endphp
 
     <style>
@@ -1358,9 +1359,9 @@
                                         $issueImagePath = $firstIssue['mark_image_path'] ?? $task->mark_image_path ?? null;
                                         // Use asset() helper for proper URL generation
                                         if (!empty($issueImagePath)) {
-                                            $markImagePath = asset('storage/' . $issueImagePath);
+                                            $markImagePath = $baseUrl . '/storage/' . ltrim($issueImagePath, '/');
                                         } elseif (!empty($task->mark_image_path)) {
-                                            $markImagePath = asset('storage/' . $task->mark_image_path);
+                                            $markImagePath = $baseUrl . '/storage/' . ltrim($task->mark_image_path, '/');
                                         } else {
                                             $markImagePath = '';
                                         }
@@ -1406,11 +1407,11 @@
                                         <div class="task-image-col">
                                             <div class="red-index-badge">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</div>
                                             @if(!empty($task->mark_image_path))
-                                                <img src="{{ $baseUrl }}{{ 'storage/' . $task->mark_image_path }}"
+                                                <img src="{{ $baseUrl . '/storage/' . ltrim($task->mark_image_path, '/') }}"
                                                      alt="Task"
                                                      style="width: 100%; height: 100%; object-fit: cover; border-radius: 18px; cursor: pointer;"
                                                      onclick="event.stopPropagation(); openIssuesPopup(this, '{{ json_encode($issues) }}', '{{ $task->_id ?? $task->id }}');"
-                                                     title="{{ asset('storage/' . $task->mark_image_path) }}"
+                                                     title="{{ $baseUrl . '/storage/' . ltrim($task->mark_image_path, '/') }}"
                                                      onerror="this.style.display='none';">
                                             @else
                                                 <!-- Transparent/Placeholder controlled by CSS pattern -->
@@ -2658,7 +2659,7 @@
                         attachmentFiles.forEach((filePath, index) => {
                             // filePath is a string path, need to get filename from it
                             const fileName = filePath.split('/').pop() || `File ${index + 1}.pdf`;
-                            const baseUrl = '{{ config("app.url") }}';
+                            const baseUrl = '{{ $baseUrl }}';
                             const fullPath = filePath.startsWith('http') ? filePath : baseUrl + '/storage/' + filePath;
 
                             // Determine file type from extension
@@ -2766,7 +2767,7 @@
                         fileAttachmentsList.innerHTML = '';
 
                         if (attachmentFiles && attachmentFiles.length > 0) {
-                            const baseUrl = '{{ config("app.url") }}';
+                            const baseUrl = '{{ $baseUrl }}';
                             attachmentFiles.forEach((filePath, index) => {
                                 const fileName = filePath.split('/').pop() || `File ${index + 1}.pdf`;
                                 const fullPath = filePath.startsWith('http') ? filePath : baseUrl + '/storage/' + filePath;
