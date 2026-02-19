@@ -1954,14 +1954,7 @@
                         </label>
                         <div class="d-flex gap-2 flex-wrap">
                             <!-- Existing File -->
-                            <div id="existingFileBox" style="background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 8px; min-width: 140px;">
-                                <i class="ti ti-file-type-pdf" style="font-size: 20px; color: #ef4444;"></i>
-                                <div style="font-size: 10px; flex: 1;">
-                                    <div style="font-weight: 600; color: #1e293b;">File Title.pdf</div>
-                                    <div style="color: #64748b;">94 KB of 94 KB</div>
-                                </div>
-                                <i class="ti ti-trash" style="font-size: 16px; color: #ef4444; cursor: pointer;" onclick="removeFile(this)"></i>
-                            </div>
+                           
 
                             <!-- Add File Box 1 -->
                             <div class="add-file-box" style="background: #f8fafc; border: 1px dashed #e2e8f0; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 140px; cursor: pointer; transition: all 0.2s;" onclick="triggerFileUpload(this)">
