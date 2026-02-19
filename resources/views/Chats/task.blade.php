@@ -932,6 +932,7 @@
                                                 $status = $task->status ?? 'progress';
                                             @endphp
                                             <div class="d-flex p-2 rounded mt-2 task-progress-item totaltask-item" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#totaltask"
+                                                data-id="{{ (string)($task->_id ?? $task->id ?? '') }}"
                                                 data-project-id="{{ (string) ($task->project_id ?? optional($task->project)->_id ?? optional($task->project)->id ?? '') }}"
                                                 data-task-id="{{ $taskId }}"
                                                 data-task-type="{{ $taskType }}"
@@ -1233,10 +1234,12 @@
                                                 $endDate = optional($task->end_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->end_date ?? null))->format('d.m.Y') ?: '--');
                                             @endphp
                                             <div class="d-flex p-2 rounded mt-2 task-rejected-item" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#inreject"
+                                                data-id="{{ (string)($task->_id ?? $task->id ?? '') }}"
                                                 data-project-id="{{ (string) ($task->project_id ?? optional($task->project)->_id ?? optional($task->project)->id ?? '') }}"
                                                 data-task-id="{{ $taskId }}"
                                                 data-task-type="{{ $taskType }}"
                                                 data-task-title="{{ $taskTitle }}"
+                                                onclick="window.removeTaskId=this.getAttribute('data-id');window.removeTaskType=this.getAttribute('data-task-type');"
                                                 data-project-name="{{ $projectName }}"
                                                 data-ticket-code="{{ $ticketCode }}"
                                                 data-ticket-title="{{ $ticketTitle }}"
@@ -1345,10 +1348,12 @@
                                             <div class="d-flex p-2 rounded mt-2 task-hold-item" style="background-color: #ebebeb;cursor:pointer" 
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#inhold"
+                                                data-id="{{ (string)($task->_id ?? $task->id ?? '') }}"
                                                 data-project-id="{{ (string) ($task->project_id ?? optional($task->project)->_id ?? optional($task->project)->id ?? '') }}"
                                                 data-task-id="{{ $taskId }}"
                                                 data-task-type="{{ $taskType }}"
                                                 data-task-title="{{ $taskTitle }}"
+                                                onclick="window.removeTaskId=this.getAttribute('data-id');window.removeTaskType=this.getAttribute('data-task-type');"
                                                 data-project-name="{{ $projectName }}"
                                                 data-ticket-code="{{ $ticketCode }}"
                                                 data-ticket-title="{{ $ticketTitle }}"
@@ -1529,10 +1534,13 @@
                                         @forelse ($doneTasks as $task)
                                             @php
                                                 $doneMarkImagePath = $task->mark_image_path ?? '';
+                                                $doneTaskType = $task instanceof \App\Models\WebTask ? 'webtask' : ($task instanceof \App\Models\EmployeeTask ? 'employeetask' : 'task');
                                             @endphp
                                             <div class="d-flex p-2 rounded mt-2 task-done-item" style="background-color: #ebebeb;cursor:pointer" 
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#indone"
+                                                data-id="{{ (string)($task->_id ?? $task->id ?? '') }}"
+                                                data-task-type="{{ $doneTaskType }}"
                                                 data-project-id="{{ (string) ($task->project_id ?? optional($task->project)->_id ?? optional($task->project)->id ?? '') }}"
                                                 data-mark-image-path="{{ $doneMarkImagePath }}">
                                                 <!-- Task Image -->
@@ -1679,6 +1687,7 @@
                                     <div class="d-flex p-2 rounded mt-2 totaltask-item" style="background-color: #ebebeb;cursor:pointer" 
                                         data-bs-toggle="modal" 
                                         data-bs-target="#totaltask"
+                                        data-id="{{ (string)($task->_id ?? $task->id ?? '') }}"
                                         data-project-id="{{ (string) ($task->project_id ?? optional($task->project)->_id ?? optional($task->project)->id ?? '') }}"
                                         data-task-id="{{ $taskId }}"
                                         data-task-type="{{ $taskType }}"
@@ -8910,7 +8919,7 @@
                                 </div>
 
                                 <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">
-                                    Remove The Project
+                                    Remove The task
                                 </div>
                             </div>
 
@@ -9097,7 +9106,7 @@
                                 </div>
 
                                 <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">
-                                    Remove The Project
+                                    Remove The Task
                                 </div>
                             </div>
 
@@ -9286,7 +9295,7 @@
                                 </div>
 
                                 <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">
-                                    Remove The Project
+                                    Remove The Task
                                 </div>
                             </div>
 
@@ -9474,7 +9483,7 @@
                                 </div>
 
                                 <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">
-                                    Remove The Project
+                                    Remove The Task
                                 </div>
                             </div>
 
@@ -9638,21 +9647,13 @@
                                 </div>
 
                                 <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">
-                                    Remove The Project
+                                    Remove The Task
                                 </div>
                             </div>
 
                         </div>
 
                     </div>
-
-
-
-
-
-
-
-
                 </div> <!-- End .p-3 -->
 
             </div> <!-- End .modal-body -->
@@ -10045,6 +10046,9 @@
                     document.getElementById('rejectTaskType').value = taskType;
                     document.getElementById('doneTaskId').value = taskId2;
                     document.getElementById('doneTaskType').value = taskType;
+                    // For Remove Task modal
+                    window.removeTaskId = this.getAttribute('data-id') || '';
+                    window.removeTaskType = taskType;
                 });
             });
             
@@ -10602,6 +10606,8 @@
             
             doneTaskItems.forEach(function(taskItem) {
                 taskItem.addEventListener('click', function() {
+                    window.removeTaskId = this.getAttribute('data-id') || '';
+                    window.removeTaskType = this.getAttribute('data-task-type') || 'task';
                     const markImagePath = this.getAttribute('data-mark-image-path') || '';
                     const markImageElement = document.getElementById('indone-mark-image');
                     if (markImageElement) {
@@ -10878,7 +10884,7 @@
                                 </div>
 
                                 <div style="margin-top: 6px; color: #1c2b48; font-size: 12px; font-weight: 600;">
-                                    Remove The Project
+                                    Remove The Task
                                 </div>
                             </div>
 
@@ -11109,6 +11115,9 @@
                         item.classList.remove('active');
                     });
                     this.classList.add('active');
+                    // For Remove Task modal
+                    window.removeTaskId = this.getAttribute('data-id') || '';
+                    window.removeTaskType = this.getAttribute('data-task-type') || 'task';
                     // Get task data from data attributes
                     const taskTitle = this.getAttribute('data-task-title') || 'Task Title';
                     const projectName = this.getAttribute('data-project-name') || 'Project Name';
@@ -12105,15 +12114,49 @@
                     style="justify-content: center; gap: 20px; border-top: none; padding-bottom: 30px;">
                     <button type="button" class="btn" data-bs-dismiss="modal"
                         style="background-color: #f1f1f1; color: #1c2b48; border: none; width: 100px;">Close</button>
-                    <button type="button" class="btn" data-bs-dismiss="modal"
-                        style="background-color: #f1f1f1; color: #1c2b48; border: none; width: 150px;">Save &
-                        Close</button>
+                    <button type="button" class="btn btn-danger" id="removeproject-confirm-btn"
+                        style="background-color: #f44336; color: #fff; border: none; width: 150px;">Remove Task</button>
                 </div>
 
             </div>
         </div>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var removeModal = document.getElementById('removeproject');
+            var confirmBtn = document.getElementById('removeproject-confirm-btn');
+            if (removeModal && confirmBtn) {
+                confirmBtn.addEventListener('click', function() {
+                    var id = window.removeTaskId;
+                    var type = (window.removeTaskType || 'task').toLowerCase();
+                    if (!id) {
+                        if (window.Swal && typeof Swal.fire === 'function') {
+                            Swal.fire({ icon: 'warning', title: 'No task selected', text: 'Please open a task first, then use Remove Task.' });
+                        } else {
+                            alert('No task selected. Please open a task first, then use Remove Task.');
+                        }
+                        return;
+                    }
+                    var Bootstrap = window.bootstrap || (typeof bootstrap !== 'undefined' ? bootstrap : null);
+                    if (Bootstrap && removeModal) {
+                        var m = Bootstrap.Modal.getInstance(removeModal);
+                        if (m) m.hide();
+                    }
+                    if (type === 'webtask') {
+                        if (typeof webTaskDelete === 'function') webTaskDelete(id);
+                        else window.location.reload();
+                    } else if (type === 'employeetask') {
+                        if (typeof emptaskDelete === 'function') emptaskDelete(id);
+                        else window.location.reload();
+                    } else {
+                        if (typeof taskDelete === 'function') taskDelete(id);
+                        else window.location.reload();
+                    }
+                });
+            }
+        });
+    </script>
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 
