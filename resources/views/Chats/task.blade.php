@@ -907,10 +907,50 @@
                                         @forelse ($progressTasks as $task)
                                             @php
                                                 $markImagePath = $task->mark_image_path ?? '';
+                                                $taskId = $getTaskId();
+                                                $taskType = $task instanceof \App\Models\WebTask ? 'webtask' : ($task instanceof \App\Models\EmployeeTask ? 'employeetask' : 'task');
+                                                $projectName = optional($task->project)->name ?? optional($task->project)->title ?? 'Project Name';
+                                                $ticketCode = optional($task->ticket)->code ?? '—';
+                                                $ticketTitle = $task->ticket_title ?? ($task->title ?? 'Ticket Title');
+                                                $taskTitle = $task->title ?? 'Task Title';
+                                                $projectLogo = optional($task->project)->logo_path;
+                                                $projectLogoUrl = $projectLogo ? asset('storage/' . ltrim($projectLogo, '/')) : asset('build/img/yekbon.svg');
+                                                $startDate = optional($task->start_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->start_date ?? null))->format('d.m.Y') ?: '--');
+                                                $endDate = optional($task->end_date)->format('d.m.Y') ?? (optional(\Carbon\Carbon::parse($task->end_date ?? null))->format('d.m.Y') ?: '--');
+                                                $videoLink = $task->video_link ?? null;
+                                                $attachments = $task->attachments ?? [];
+                                                if (is_string($attachments)) { $attachments = json_decode($attachments, true) ?? []; }
+                                                if (!is_array($attachments)) { $attachments = []; }
+                                                $issues = $task->issues ?? [];
+                                                if (is_string($issues)) { $issues = json_decode($issues, true) ?? []; }
+                                                if (!is_array($issues)) { $issues = []; }
+                                                $taskDescription = $task->description ?? '';
+                                                if (empty($taskDescription) && !empty($issues)) { $first = collect($issues)->first(); $taskDescription = $first['description'] ?? ''; }
+                                                $adminNotes = !empty($issues) ? (collect($issues)->pluck('notes')->filter()->first() ?? '') : '';
+                                                $sectionName = optional($task->ticket)->section_name ?? 'Section';
+                                                $priority = $task->priority ?? 'low';
+                                                $status = $task->status ?? 'progress';
                                             @endphp
-                                            <div class="d-flex p-2 rounded mt-2 task-progress-item" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#progressmodel"
+                                            <div class="d-flex p-2 rounded mt-2 task-progress-item totaltask-item" style="background-color: #ebebeb;cursor:pointer" data-bs-toggle="modal" data-bs-target="#totaltask"
                                                 data-project-id="{{ (string) ($task->project_id ?? optional($task->project)->_id ?? optional($task->project)->id ?? '') }}"
-                                                data-mark-image-path="{{ $markImagePath }}">
+                                                data-task-id="{{ $taskId }}"
+                                                data-task-type="{{ $taskType }}"
+                                                data-task-title="{{ $taskTitle }}"
+                                                data-project-name="{{ $projectName }}"
+                                                data-ticket-code="{{ $ticketCode }}"
+                                                data-ticket-title="{{ $ticketTitle }}"
+                                                data-project-logo="{{ $projectLogoUrl }}"
+                                                data-start-date="{{ $startDate }}"
+                                                data-end-date="{{ $endDate }}"
+                                                data-video-link="{{ $videoLink }}"
+                                                data-attachments="{{ json_encode($attachments) }}"
+                                                data-description="{{ $taskDescription }}"
+                                                data-admin-notes="{{ $adminNotes }}"
+                                                data-section="{{ $sectionName }}"
+                                                data-priority="{{ $priority }}"
+                                                data-status="{{ $status }}"
+                                                data-mark-image-path="{{ $markImagePath }}"
+                                                data-issues="{{ json_encode($issues) }}">
                                                 <!-- Task Image -->
                                                 <div class="me-2">
                                                     @php
@@ -1043,6 +1083,14 @@
                                                 $priority = $task->priority ?? 'low';
                                                 $status = $task->status ?? 'checked';
                                                 $markImagePath = $task->mark_image_path ?? '';
+                                                // Parse issues for modal (same as New Task – circle badges on image)
+                                                $issues = $task->issues ?? [];
+                                                if (is_string($issues)) {
+                                                    $issues = json_decode($issues, true) ?? [];
+                                                }
+                                                if (!is_array($issues)) {
+                                                    $issues = [];
+                                                }
                                             @endphp
                                             <div class="d-flex p-2 rounded mt-2 task-checked-item" style="background-color: #ebebeb;cursor:pointer" 
                                                 data-bs-toggle="modal" 
@@ -1065,12 +1113,13 @@
                                                 data-priority="{{ $priority }}"
                                                 data-status="{{ $status }}"
                                                 data-mark-image-path="{{ $markImagePath }}"
+                                                data-issues="{{ json_encode($issues) }}"
                                                 data-reliability="{{ $reliability }}"
                                                 data-punctuality="{{ $punctuality }}"
                                                 data-accuracy="{{ $accuracy }}"
                                                 data-quality="{{ $quality }}"
                                                 data-work-independently="{{ $workIndependently }}"
-                                                onclick="this.classList.add('active'); setTimeout(() => this.classList.remove('active'), 1000);">
+                                                onclick="document.querySelectorAll('.task-checked-item').forEach(function(el){el.classList.remove('active');}); this.classList.add('active');">
                                                 <!-- Task Image -->
                                                 <div class="me-2">
                                                     @php
@@ -9632,7 +9681,7 @@
                         <div
                             style="position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: white; border-radius: 50%; padding: 5px;">
                             <img id="incheck-project-logo" src="{{ URL::asset('/build/img/yekbon.svg') }}" alt="Logo"
-                                style="width: 60px; height: 60px; border-radius: 50%;">
+                                style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
                         </div>
 
                     </div>
@@ -9656,13 +9705,13 @@
                                 <!-- High Priority -->
                                 <span class="badge rounded-pill"
                                     style="background-color: #ff4d4d; color: white; font-size: 13px; padding: 8px 12px;">
-                                    <i class="bi bi-lightning-fill me-1"></i> 01
+                                    <i class="bi bi-lightning-fill me-1"></i> <span id="incheck-priority-badge">01</span>
                                 </span>
 
                                 <!-- Low Status -->
                                 <span class="badge rounded-pill"
                                     style="background-color: #f1fdf5; color: #22c55e; font-size: 13px; padding: 8px 12px;">
-                                    <i class="bi bi-circle-fill me-1" style="font-size: 8px;"></i> Low
+                                    <i class="bi bi-circle-fill me-1" style="font-size: 8px;"></i> <span id="incheck-status-badge">Low</span>
                                 </span>
                             </div>
 
@@ -9670,17 +9719,17 @@
                             <div class="d-flex flex-wrap justify-content-around text-center" style="font-size: 14px;">
                                 <div>
                                     <div class="text-muted">Task ID</div>
-                                    <div id="incheck-task-id" style="font-weight: 500; color: #1c2233;">{{ $taskId ?? 'N/A' }}</div>
+                                    <div id="incheck-task-id" style="font-weight: 500; color: #1c2233;">N/A</div>
                                 </div>
                                 <div>
                                     <div class="text-muted">Section</div>
                                     <div id="incheck-section" style="font-weight: 500; color: #1c2233;">Section</div>
                                 </div>
                                 <div>
-                                    <div><span class="text-success">Start:</span> <span id="incheck-start-date">22.10.2024</span></div>
+                                    <div><span class="text-success">Start:</span> <span id="incheck-start-date">--</span></div>
                                 </div>
                                 <div>
-                                    <div><span class="text-success">Deliver:</span> <span id="incheck-end-date">22.10.2024</span></div>
+                                    <div><span class="text-success">Deliver:</span> <span id="incheck-end-date">--</span></div>
                                 </div>
                             </div>
 
@@ -9692,17 +9741,14 @@
                                 No description available
                             </p>
                         </div>
-                        <!-- Task Image Display (replaces Sign-in Box) -->
-                        <div class="mx-auto my-4"
-                            style="border: 1px solid #ddd; border-radius: 12px; padding: 20px; background-color: #fefefe; text-align: center;">
+                        <!-- Task Image with issue badges (same as New Task popup) -->
+                        <div id="incheck-canvas" class="mx-auto my-4" style="position:relative; border: 1px solid #ddd; border-radius: 12px; background-color: #ffffff; text-align: center; overflow:hidden;">
                             <img id="incheck-mark-image" 
                                 src="{{ asset('build/img/dooted img.svg') }}"
                                 alt="Task Image"
-                                style="max-width: 100%; max-height: 400px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto;">
-                            
-                            <!-- Close Button (positioned lower) -->
-                          
-
+                                style="width:100%; height:auto; max-height:400px; object-fit:contain; border-radius:8px; display:block; margin:0 auto;">
+                            <div id="incheck-layer" style="position:absolute; inset:0; pointer-events:auto;"></div>
+                            <div id="incheck-focus" style="position:absolute; border:3px solid #e74c3c; border-radius:6px; box-shadow:0 4px 12px rgba(231,76,60,.35); pointer-events:none; display:none;"></div>
                         </div>
                         <!-- Notes -->
                         <!-- Notes Section-->
@@ -9889,6 +9935,12 @@
                         const sectionEl = document.getElementById('incheck-section');
                         if (sectionEl) sectionEl.textContent = section;
                         
+                        // Update priority and status badges (like New Task)
+                        const priorityBadge = document.getElementById('incheck-priority-badge');
+                        if (priorityBadge) priorityBadge.textContent = (this.getAttribute('data-priority') || '01').toString();
+                        const statusBadge = document.getElementById('incheck-status-badge');
+                        if (statusBadge) statusBadge.textContent = (this.getAttribute('data-status') || 'Low').toString();
+                        
                         // Update description
                         const descEl = document.getElementById('incheck-description');
                         if (descEl) descEl.textContent = description;
@@ -9995,6 +10047,155 @@
                     document.getElementById('doneTaskType').value = taskType;
                 });
             });
+            
+            // Draw issue badges on image when modal is shown (same as New Task #totaltask)
+            if (modal) {
+                modal.addEventListener('shown.bs.modal', function() {
+                    const maskLayer = document.getElementById('incheck-layer');
+                    const canvasElement = document.getElementById('incheck-canvas');
+                    const markImageElement = document.getElementById('incheck-mark-image');
+                    if (!maskLayer || !canvasElement || !markImageElement) return;
+                    const clickedItem = document.querySelector('.task-checked-item.active');
+                    if (!clickedItem) return;
+                    const issuesJson = clickedItem.getAttribute('data-issues') || '[]';
+                    let issues = [];
+                    try {
+                        const parsed = JSON.parse(issuesJson);
+                        if (Array.isArray(parsed)) issues = parsed;
+                    } catch (e) {}
+                    if (issues.length === 0) {
+                        maskLayer.innerHTML = '';
+                        return;
+                    }
+                    let savedW = (issues[0] && issues[0].layer && issues[0].layer.width) ? issues[0].layer.width : 0;
+                    let savedH = (issues[0] && issues[0].layer && issues[0].layer.height) ? issues[0].layer.height : 0;
+                    if (!savedW || savedW === 0) savedW = markImageElement.naturalWidth || 1;
+                    if (!savedH || savedH === 0) savedH = markImageElement.naturalHeight || 1;
+                    const rect = canvasElement.getBoundingClientRect();
+                    const sx = savedW > 0 ? (rect.width) / savedW : 1;
+                    const sy = savedH > 0 ? (rect.height) / savedH : 1;
+                    const used = {};
+                    maskLayer.innerHTML = '';
+                    issues.forEach(function(it, idx) {
+                        if (!it || !it.position || typeof it.position.left !== 'number' || typeof it.position.top !== 'number') return;
+                        const n = (it && it.number) ? it.number : (idx + 1);
+                        const badge = document.createElement('div');
+                        badge.textContent = String(n);
+                        badge.className = 'viewer-badge';
+                        const baseLeft = it.position.left;
+                        const baseTop = it.position.top;
+                        const lx = baseLeft * sx;
+                        const ly = baseTop * sy;
+                        const key = String(Math.round(lx)) + 'x' + String(Math.round(ly));
+                        if (used[key] === undefined) used[key] = 0; else used[key]++;
+                        const k = used[key];
+                        const dx = (k % 3 - 1) * 14;
+                        const dy = Math.floor(k / 3) * 14;
+                        badge.style.left = (lx + dx) + 'px';
+                        badge.style.top = (ly + dy) + 'px';
+                        badge.style.zIndex = 10 + idx;
+                        badge.style.pointerEvents = 'auto';
+                        const badgeColor = it.color || '#28c76f';
+                        badge.style.borderColor = badgeColor;
+                        badge.style.color = badgeColor;
+                        var issueShape = (it && it.shape) ? String(it.shape).toLowerCase() : 'circle';
+                        if (issueShape === 'square') {
+                            badge.style.borderRadius = '6px';
+                            badge.style.clipPath = 'none';
+                        } else if (issueShape === 'triangle') {
+                            badge.style.borderRadius = '0';
+                            badge.style.webkitClipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+                            badge.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+                        } else {
+                            badge.style.borderRadius = '999px';
+                            badge.style.clipPath = 'none';
+                        }
+                        badge.addEventListener('click', function(ev) {
+                            ev.stopPropagation();
+                            if (window.Swal && typeof Swal.fire === 'function') {
+                                const titleText = (it && it.title) ? it.title : 'Issue';
+                                const desc = (it && it.description) ? it.description : '-';
+                                const start = (it && it.start_date) ? it.start_date : '-';
+                                const end = (it && it.end_date) ? it.end_date : '-';
+                                const accent = (it && it.color) ? it.color : '#28c76f';
+                                const clicked = document.querySelector('.task-checked-item.active');
+                                let markImageUrl = '';
+                                if (clicked) {
+                                    const markImagePath = clicked.getAttribute('data-mark-image-path') || '';
+                                    if (markImagePath) {
+                                        if (markImagePath.startsWith('http://') || markImagePath.startsWith('https://')) {
+                                            markImageUrl = markImagePath;
+                                        } else if (markImagePath.startsWith('storage/')) {
+                                            markImageUrl = '{{ asset("") }}' + markImagePath;
+                                        } else {
+                                            markImageUrl = '{{ asset("storage") }}/' + markImagePath.replace(/^\/+/, '');
+                                        }
+                                    }
+                                }
+                                const issuePos = it.position || {};
+                                const issueShape = (it.shape && String(it.shape).toLowerCase()) || 'circle';
+                                const issueWidth = (it.position && it.position.width) ? it.position.width : 80;
+                                const issueHeight = (it.position && it.position.height) ? it.position.height : 80;
+                                const issueCenterX = issuePos.left || 0;
+                                const issueCenterY = issuePos.top || 0;
+                                const issueLeft = issueCenterX - (issueWidth / 2);
+                                const issueTop = issueCenterY - (issueHeight / 2);
+                                const layerW = (it.layer && it.layer.width) ? it.layer.width : (markImageElement ? markImageElement.naturalWidth : 800);
+                                const layerH = (it.layer && it.layer.height) ? it.layer.height : (markImageElement ? markImageElement.naturalHeight : 600);
+                                let imageHtml = '';
+                                if (markImageUrl) {
+                                    const displayWidth = 400;
+                                    const displayHeight = (displayWidth / layerW) * layerH;
+                                    const scaleX = displayWidth / layerW;
+                                    const scaleY = displayHeight / layerH;
+                                    const overlayLeft = issueLeft * scaleX;
+                                    const overlayTop = issueTop * scaleY;
+                                    const overlayWidth = issueWidth * scaleX;
+                                    const overlayHeight = issueHeight * scaleY;
+                                    let shapeOverlay = '';
+                                    if (issueShape === 'circle') {
+                                        const radius = Math.min(overlayWidth, overlayHeight) / 2;
+                                        shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + (radius * 2) + 'px; height:' + (radius * 2) + 'px; border:3px solid ' + accent + '; border-radius:50%; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
+                                    } else if (issueShape === 'square' || issueShape === 'rectangle') {
+                                        shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + overlayWidth + 'px; height:' + overlayHeight + 'px; border:3px solid ' + accent + '; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
+                                    } else if (issueShape === 'triangle') {
+                                        const centerX = overlayLeft + overlayWidth / 2;
+                                        const centerY = overlayTop + overlayHeight / 2;
+                                        const size = Math.max(overlayWidth, overlayHeight);
+                                        shapeOverlay = '<svg style="position:absolute; left:' + (centerX - size/2) + 'px; top:' + (centerY - size/2) + 'px; width:' + size + 'px; height:' + size + 'px; pointer-events:none;"><polygon points="' + (size/2) + ',0 ' + size + ',' + size + ' 0,' + size + '" fill="none" stroke="' + accent + '" stroke-width="3" style="filter:drop-shadow(0 0 2px rgba(0,0,0,0.3));"/></svg>';
+                                    } else {
+                                        const radius = Math.min(overlayWidth, overlayHeight) / 2;
+                                        shapeOverlay = '<div style="position:absolute; left:' + overlayLeft + 'px; top:' + overlayTop + 'px; width:' + (radius * 2) + 'px; height:' + (radius * 2) + 'px; border:3px solid ' + accent + '; border-radius:50%; box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.3); pointer-events:none;"></div>';
+                                    }
+                                    imageHtml = '<div style="margin-bottom:12px; border-radius:8px; overflow:hidden; border:1px solid #e5e7eb; background:#fff;">' +
+                                        '<div style="position:relative; width:' + displayWidth + 'px; height:' + displayHeight + 'px; max-width:100%;">' +
+                                        '<img src="' + markImageUrl + '" style="width:100%; height:100%; object-fit:contain; display:block;" onload="this.parentElement.style.height=this.offsetHeight+\'px\';">' +
+                                        shapeOverlay + '</div></div>';
+                                }
+                                Swal.fire({
+                                    title: '',
+                                    html: '<div style="text-align:left;">' +
+                                        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
+                                        '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+accent+';"></span>' +
+                                        '<div style="font-weight:700; font-size:15px; color:#111827;">' + titleText + '</div></div>' +
+                                        imageHtml +
+                                        '<div style="background:#f8fafc; border:1px solid #eef2f7; border-radius:10px; padding:10px; color:#334155; margin-bottom:10px; font-size:13px; line-height:1.5;">' + (String(desc||'').trim() || '-') + '</div>' +
+                                        '<div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:2px;">' +
+                                        '<span style="background:#ecfdf3; color:#16a34a; border:1px solid #bbf7d0; padding:4px 8px; border-radius:8px; font-weight:600; font-size:12px;">Start: ' + start + '</span>' +
+                                        '<span style="background:#ecfdf3; color:#16a34a; border:1px solid #bbf7d0; padding:4px 8px; border-radius:8px; font-weight:600; font-size:12px;">End: ' + end + '</span></div></div>',
+                                    width: 500,
+                                    showCloseButton: true,
+                                    focusConfirm: false,
+                                    confirmButtonText: 'Close',
+                                    confirmButtonColor: '#28c76f',
+                                    customClass: { popup: 'swal-compact' }
+                                });
+                            }
+                        });
+                        maskLayer.appendChild(badge);
+                    });
+                });
+            }
             
             // Also handle reject button click to ensure task ID is set
             const rejectBtn = document.querySelector('.reject-task-btn');
