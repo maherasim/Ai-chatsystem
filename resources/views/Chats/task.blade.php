@@ -1047,6 +1047,7 @@
                                             <div class="d-flex p-2 rounded mt-2 task-checked-item" style="background-color: #ebebeb;cursor:pointer" 
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#incheck"
+                                                data-id="{{ (string)($task->_id ?? $task->id ?? '') }}"
                                                 data-task-id="{{ $taskId }}"
                                                 data-task-type="{{ $taskType }}"
                                                 data-task-title="{{ $taskTitle }}"
@@ -9985,13 +9986,11 @@
                         // Silently handle parsing errors
                     }
                     
-                    // Store task ID and type for reject functionality
-                    const taskId2 = this.getAttribute('data-task-id') || '';
+                    // Store actual task ID (backend id) and type for reject and move-to-done
+                    const taskId2 = this.getAttribute('data-id') || this.getAttribute('data-task-id') || '';
                     const taskType = this.getAttribute('data-task-type') || 'task';
                     document.getElementById('rejectTaskId').value = taskId2;
                     document.getElementById('rejectTaskType').value = taskType;
-                    
-                    // Also store task ID and type for move to done functionality
                     document.getElementById('doneTaskId').value = taskId2;
                     document.getElementById('doneTaskType').value = taskType;
                 });
@@ -10007,7 +10006,7 @@
                         // Try to get from the last clicked task item
                         const lastClicked = document.querySelector('.task-checked-item.active');
                         if (lastClicked) {
-                            document.getElementById('rejectTaskId').value = lastClicked.getAttribute('data-task-id') || '';
+                            document.getElementById('rejectTaskId').value = lastClicked.getAttribute('data-id') || lastClicked.getAttribute('data-task-id') || '';
                             document.getElementById('rejectTaskType').value = lastClicked.getAttribute('data-task-type') || 'task';
                         }
                     }
@@ -10111,7 +10110,7 @@
                         // Fallback: try to get from active task item
                         const activeTaskItem = document.querySelector('.task-checked-item.active');
                         if (activeTaskItem) {
-                            document.getElementById('doneTaskId').value = activeTaskItem.getAttribute('data-task-id') || '';
+                            document.getElementById('doneTaskId').value = activeTaskItem.getAttribute('data-id') || activeTaskItem.getAttribute('data-task-id') || '';
                             document.getElementById('doneTaskType').value = activeTaskItem.getAttribute('data-task-type') || 'task';
                         }
                     }
@@ -10176,7 +10175,7 @@
                         // Try to get from the last clicked task item
                         const lastClicked = document.querySelector('.task-checked-item.active');
                         if (lastClicked) {
-                            document.getElementById('doneTaskId').value = lastClicked.getAttribute('data-task-id') || '';
+                            document.getElementById('doneTaskId').value = lastClicked.getAttribute('data-id') || lastClicked.getAttribute('data-task-id') || '';
                             document.getElementById('doneTaskType').value = lastClicked.getAttribute('data-task-type') || 'task';
                         }
                     }
