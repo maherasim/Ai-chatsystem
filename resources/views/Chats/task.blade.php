@@ -1434,9 +1434,9 @@
                                                 <span class="id-pill">Ticket ID: {{ substr((string)($task->ticket_id ?? '---'), -4) }}</span>
                                             </div>
 
-                                            <!-- Description -->
+                                            <!-- Description: from first issue or task -->
                                             <div class="task-desc-new">
-                                                {{ Str::limit($task->description ?? 'Task description will be here', 80) }}
+                                                {{ Str::limit($issueDescription ?? $task->description ?? 'Task description will be here', 80) }}
                                             </div>
 
                                             <!-- Footer: Dates -->
