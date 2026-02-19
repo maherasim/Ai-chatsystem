@@ -1396,6 +1396,7 @@
                                          data-image="{{ $markImagePath }}"
                                          data-index="{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}"
                                          data-project-name="{{ $task->project->title ?? 'Project Name' }}"
+                                         data-section-name="{{ e(optional($task->ticket)->section_name ?? '') }}"
                                          data-hold-reason="{{ $task->hold_reason ?? '' }}"
                                          data-rejection-reason="{{ $rejectionReason }}"
                                          data-video-link="{{ $task->video_link ?? '' }}"
@@ -1522,7 +1523,7 @@
                     <div class="meta-row">
                         <div class="meta-item">Task ID:  <span id="modalTaskIdDisplay">E5B4</span></div>
                         <div class="meta-divider"></div>
-                        <div class="meta-item">Section: <span id="modalSectionDisplay">Dev</span></div>
+                        <div class="meta-item">Section: <span id="modalSectionDisplay">—</span></div>
                         <div class="meta-divider"></div>
                         <div class="meta-item"><span class="meta-label">Start:</span> <span id="modalStartDateDisplay">22.10</span></div>
                         <div class="meta-divider"></div>
@@ -2481,6 +2482,9 @@
 
             document.getElementById('modalProjectName').textContent = projectName;
             document.getElementById('modalTicketNum').textContent = ticketId;
+            const sectionName = element.getAttribute('data-section-name') || '';
+            const sectionEl = document.getElementById('modalSectionDisplay');
+            if (sectionEl) sectionEl.textContent = sectionName || '—';
 
             document.getElementById('modalStartFull').textContent = startDate || 'N/A';
 
