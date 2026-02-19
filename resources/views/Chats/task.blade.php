@@ -547,6 +547,14 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
             background: #f8fafc;
         }
+        #taskDetailModal .modal-content.task-modal-content {
+            min-height: 500px;
+            max-height: 85vh;
+        }
+        #taskDetailModal .task-modal-body {
+            max-height: calc(85vh - 140px);
+            overflow-y: auto;
+        }
         .task-modal-header {
             background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
             padding: 20px 24px;
@@ -1477,8 +1485,8 @@
 
     <!-- Task Detail Modal (High Fidelity) -->
     <div class="modal fade" id="taskDetailModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-md modal-dialog-centered" style="max-width: 500px;"> <!-- Mobile like width -->
-            <div class="modal-content task-modal-content">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 720px; width: 90%; min-height: 520px;">
+            <div class="modal-content task-modal-content" style="min-height: 500px;">
 
                 <!-- Custom Header -->
                 <div class="task-modal-header">
