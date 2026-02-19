@@ -1247,7 +1247,7 @@
                                     <img src="{{ $baseUrl }}/build/img/newtask.svg" alt="New" style="width: 24px; height: 24px;">
                                 </div>
                                 <div class="stats-title">New Task</div>
-                                <div class="stats-count">{{ $stats['new'] ?? 0 }}</div>
+                                <div class="stats-count">{{ $stats['new_task'] ?? 0 }}</div>
                             </div>
 
                             <!-- In Progress -->
