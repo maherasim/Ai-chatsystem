@@ -3,7 +3,7 @@
 @section('content')
 
     @php
-        $baseUrl = 'https://logiadmin.it-supportline.de/';
+        $baseUrl = config('https://logiadmin.it-supportline.de/');
     @endphp
 
     <style>
@@ -598,15 +598,16 @@
 
         .task-modal-body {
             padding: 40px 20px 20px; /* Top padding for logo overlap */
-            background: #f8fafc;
             overflow: visible;
         }
 
         .modal-task-title {
+            font-family: Genos;
+            font-weight: 500;
+            font-size: 24px;
+            line-height: 100%;
             text-align: center;
-            font-size: 20px;
-            font-weight: 800;
-            color: #1e293b;
+            color: #1C274C;
             margin-bottom: 10px;
         }
 
@@ -619,59 +620,118 @@
         }
         .badge-custom {
             padding: 4px 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
+            font-family: Genos;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 14px;
+            text-align: center;
             display: flex;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
+            gap: 9px;
+            border-radius: 5px;
+
         }
         .badge-new { background: #e0f2fe; color: #1C274C; font-weight: 500;}
-        .badge-id { background: #ED1C24; color: #fee2e2; font-weight: 500;}
-        .badge-low {
-            background: transparent;
-            color: #22c55e;
-            border: 1px solid #22c55e;
-            padding: 4px 10px;
-            border-radius: 6px;
+        .badge-id {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        .badge-icon{
+            background: #F2F2F2;
+            padding: 4px 12px;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+        .badge-icon i{
+            color: #ED1C24;
+            font-size: 18px;
+        }
+        .badge-text{
+            background-color: #ED1C24;
+            padding: 7px 12px;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+        .badge-text span{
+            font-family: Genos;
             font-weight: 500;
-        } /* Assuming Low priority from screenshot */
+            font-size: 12px;
+            line-height: 12px;
+            color: #FFFFFF;
+        }
+        .badge-low {
+            background: #FFFFFF;
+            font-family: Genos;
+            font-weight: 400;
+            font-size: 14px !important;
+            line-height: 12px;
+            text-align: center;
+            padding: 4px 12px;
+            border-radius: 5px !important;
+            color: #64748B !important;
+        }
+        .badge-low i{
+            color: #1BC469 ;
+            font-size: 18px;
+        }
         .badge-checked { background: #f3e8ff; color: #a855f7; } /* Purple for checking status */
 
         .meta-row {
-            background: #fff;
-            border-radius: 12px;
-            padding: 10px;
+            background: #FFFFFF;
+            border-radius: 5px;
+            padding: 7px 5px;
             display: flex;
             justify-content: space-around;
             font-size: 12px;
             color: #64748b;
             margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-            border: 1px solid #f1f5f9;
         }
-        .meta-item span {
-            font-weight: 700;
-            color: #334155;
+        .meta-divider {
+            width: 2px;
+            height: 15px;
+            background: #64748B40;     /* light grey line */
+            position: relative;
+            border-radius: 2px;
+}
+
+        .meta-label{
+            color: #1BC469 !important;
+        }
+        .meta-item{
+            font-family: Genos;
+            font-weight: 500;
+            font-size: 15px;
+            line-height: 14px;
+            color: #1C274C !important;
         }
 
         .desc-box {
-            background: #fff;
+            background: #F2F2F280;
             padding: 15px;
-            border-radius: 12px;
+            border-radius: 7px;
             margin-bottom: 15px;
-            font-size: 13px;
-            color: #475569;
-            border: 1px solid #f1f5f9;
         }
         .desc-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: #64748b;
-            margin-bottom: 5px;
-            display: block;
-            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: Genos;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 100%;
+            color: #1C274C;
+            margin-bottom: 8px;
+        }
+        .desc-box p{
+            font-family: Genos;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 19px;
+            letter-spacing: 0%;
+            text-transform: lowercase;
+            color: #1C274C;
         }
 
         .image-preview-area {
@@ -767,32 +827,59 @@
         /* Notes List */
         .notes-section {
             margin-bottom: 20px;
+            background: #ECECEC;
+            border-radius: 7px;
+            padding: 15px;
+        }
+        .dot{
+            display: inline-block;
+            width: 4px !important;
+            height: 4px !important;
+            background-color: #00000066;
+            border-radius: 50%;
+        }
+        .notes-label{
+            display: flex;
+            align-items: center;
+            font-family: Genos;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 100%;
+            letter-spacing: 0px;
+            color: #1C274C;
+            gap: 6px;
         }
         .notes-list {
             display: flex;
             flex-direction: column;
             gap: 10px;
+            margin-top: 12px;
         }
         .note-item {
-            background: #fff;
-            border-radius: 12px;
+            background: #FFFFFF;
+            border-radius: 5px;
             padding: 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border: 1px solid #f1f5f9;
+            border: 1px solid #ECECEC;
         }
-        .note-content {
+        .note-content{
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 12px;
-            color: #94a3b8;
-            font-weight: 500;
+            gap: 20px;
         }
-        .note-icon {
-            color: #fca5a5; /* Light Red */
+        .note-content h5 {
+          font-family: Genos;
+            font-weight: 400;
             font-size: 16px;
+            line-height: 100%;
+            letter-spacing: 0px;
+            color: #929292;
+        }
+        .note-content img{
+            width: 24px;
+            height: 24px;
         }
 
         /* Form Switch Override */
@@ -803,21 +890,38 @@
         }
 
         .footer-alert {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            color: #ef4444;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 12px;
-            font-weight: 600;
+            background: #ED1C241A;
+            padding: 12px;
+            border-radius: 5px;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
+            gap: 20px;
         }
 
+         .footer-alert img{
+            width: 24px;
+            height: 24px;
+         }
+         .footer-center{
+            margin-left: 14px;
+            margin-right: 14px;
+         }
+         .footer-alert h5{
+            font-family: Genos;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 100%;
+            color: #929292;
+         }
+         .footer-alert h5 span{
+            font-family: Genos;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 100%;
+            letter-spacing: 0px;
+            color: #929292;
+         }
         .start-btn-container {
             text-align: center;
             position: relative;
@@ -834,7 +938,7 @@
             z-index: 0;
         }
         .start-task-btn {
-            margin-bottom: -17px;
+            margin-bottom: -20px;
             width: 240px;
             position: relative;
             z-index: 1;
@@ -844,24 +948,34 @@
             flex-direction: column;
             align-items: center;
             gap: 5px;
-            padding: 10px;
+            padding: 12px;
             color: #1e293b;
             font-size: 12px;
-            font-weight: 700
+            font-weight: 700;
+             border-top-left-radius: 10px;
+             border-top-right-radius: 10px;
         }
         .start-btn-icon {
-            width: 40px;
-            height: 40px;
-            background: #22c55e;
-            border-radius: 10px;
+            background: #1BC469;
+            border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 20px;
-            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+            padding: 5px;
         }
-
+         .start-btn-icon img{
+            width: 22px;
+            height: 22px;
+         }
+         .start-btn-text{
+            font-family: Genos;
+            font-weight: 500;
+            font-style: Medium;
+            font-size: 14px;
+            line-height: 100%;
+            letter-spacing: 2%;
+            color: #1C274C;
+         }
         /* In Progress State Override */
         .task-modal-header.in-progress {
             background: linear-gradient(180deg, #84cc16 0%, #22c55e 100%) !important;
@@ -1001,8 +1115,13 @@
 
         /* Toggle Customization */
         .form-check-input:checked {
-            background-color: #22c55e;
-            border-color: #22c55e;
+            background-color: #1DC9A0 !important;
+            border-color: #1DC9A0 !important;
+        }
+        .form-check-input:focus{
+            border-color: #C7C7CC !important;
+            outline: 0;
+            box-shadow: none !important;
         }
         .check-list-item {
             background: white;
@@ -1061,7 +1180,15 @@
             font-weight: 600;
             display: none; /* Hidden by default */
         }
-
+        .test-ticket{
+            background: #F2F2F280;
+            border-radius: 7px;
+            padding: 6px 12px;
+            margin-bottom: 15px;
+        }
+        .badge-new i{
+            font-size: 18px !important;
+        }
     </style>
 
     <div class="content main_content">
@@ -1279,7 +1406,7 @@
                                         <div class="task-image-col">
                                             <div class="red-index-badge">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</div>
                                             @if(!empty($task->mark_image_path))
-                                                <img src="{{ $baseUrl }} {{ asset('storage/' . $task->mark_image_path) }}"
+                                                <img src="{{ asset('storage/' . $task->mark_image_path) }}"
                                                      alt="Task"
                                                      style="width: 100%; height: 100%; object-fit: cover; border-radius: 18px; cursor: pointer;"
                                                      onclick="event.stopPropagation(); openIssuesPopup(this, '{{ json_encode($issues) }}', '{{ $task->_id ?? $task->id }}');"
@@ -1368,16 +1495,22 @@
 
                 <!-- Body -->
                 <div class="task-modal-body">
-
-                    <h3 class="modal-task-title" id="modalTaskTitleDisplay">Task Title</h3>
+                    <div class="test-ticket">
+                        <h3 class="modal-task-title" id="modalTaskTitleDisplay">Task Title</h3>
 
                     <!-- Badges -->
                     <div class="modal-tags" id="modalBadgesContainer">
                         <div class="badge-custom badge-new" id="badgeStatus">
                             <i class="ti ti-flag"></i> New Task
                         </div>
-                        <div class="badge-custom badge-id">
-                            <i class="ti ti-bolt"></i> <span id="modalIndexDisplay">-01-</span>
+                        <div class="badge-id">
+                            <div class="badge-icon">
+                                 <i class="ti ti-bolt"></i>
+                            </div>
+                            <div class="badge-text">
+                                <span id="modalIndexDisplay"> - 01 -</span>
+                            </div>
+
                         </div>
                         <div class="badge-custom badge-low">
                             <i class="ti ti-circle"></i> Low
@@ -1386,19 +1519,24 @@
 
                     <!-- Meta Row -->
                     <div class="meta-row">
-                        <div class="meta-item fw-bold">Task ID:  <span id="modalTaskIdDisplay">E5B4</span></div>
-                        <div class="meta-item">|</div>
-                        <div class="meta-item fw-bold">Section: <span id="modalSectionDisplay">Dev</span></div>
-                        <div class="meta-item ">|</div>
-                        <div class="meta-item fw-bold">Start: <span id="modalStartDateDisplay">22.10</span></div>
-                        <div class="meta-item">|</div>
-                        <div class="meta-item fw-bold">Deliver: <span id="modalEndDateDisplay">23.10</span></div>
+                        <div class="meta-item">Task ID:  <span id="modalTaskIdDisplay">E5B4</span></div>
+                        <div class="meta-divider"></div>
+                        <div class="meta-item">Section: <span id="modalSectionDisplay">Dev</span></div>
+                        <div class="meta-divider"></div>
+                        <div class="meta-item"><span class="meta-label">Start:</span> <span id="modalStartDateDisplay">22.10</span></div>
+                        <div class="meta-divider"></div>
+                        <div class="meta-item"><span class="meta-label">Deliver:</span> <span id="modalEndDateDisplay">23.10</span></div>
+                    </div>
                     </div>
 
                     <!-- Issue Description -->
                     <div class="desc-box">
-                        <span class="desc-label">Issue Description</span>
-                        <p id="modalTaskDescriptionDisplay" style="margin:0; line-height:1.4;">
+                        <h5 class="desc-label">
+                            <span class="dot"></span>
+                            <span>Issue Description</span>
+                            <span class="dot"></span>
+                        </h5>
+                        <p id="modalTaskDescriptionDisplay">
                             Move the close button more down due is to near on the popup.
                         </p>
                     </div>
@@ -1415,12 +1553,18 @@
 
                     <!-- Notes / Toggles (Default State) -->
                     <div class="notes-section" id="defaultNotesSection">
-                        <span class="desc-label">Notes</span>
+                        <h5 class="notes-label">
+                            <span class="dot"></span>
+                            <span>Notes</span>
+                            <span  class="dot"></span>
+
+                        </h5>
                         <div class="notes-list">
                             <!-- Static Checklist for demo/default, could be dynamic later -->
                             <div class="note-item">
                                 <div class="note-content">
-                                    <i class="ti ti-bolt note-icon"></i> Take Backup before start Development
+                                 <img src="/build/img/current.svg" alt="icon">
+                                <h5>Take Backup before start Development</h5>
                                 </div>
                                 <div class="form-check form-switch m-0">
                                     <input class="form-check-input required-checkbox" type="checkbox" checked>
@@ -1428,7 +1572,8 @@
                             </div>
                             <div class="note-item">
                                 <div class="note-content">
-                                    <i class="ti ti-bolt note-icon"></i> Work on your Local Server
+                                    <img src="/build/img/current.svg" alt="icon">
+                                   <h5>Work on your Local Server</h5>
                                 </div>
                                 <div class="form-check form-switch m-0">
                                     <input class="form-check-input required-checkbox" type="checkbox">
@@ -1436,7 +1581,8 @@
                             </div>
                             <div class="note-item">
                                 <div class="note-content">
-                                    <i class="ti ti-bolt note-icon"></i> Check your work before u deliver the work
+                                    <img src="/build/img/current.svg" alt="icon">
+                                    <h5>Check your work before u deliver the work</h5>
                                 </div>
                                 <div class="form-check form-switch m-0">
                                     <input class="form-check-input required-checkbox" type="checkbox">
@@ -1475,10 +1621,13 @@
                     </div>
 
                     <!-- Footer Alert (Default) -->
-                    <div class="footer-alert" id="defaultFooterAlert">
-                        <i class="ti ti-bolt"></i>
-                        You can Start this Project on <span id="modalStartFull">23.12.2025</span>
+                     <div class="footer-center">
+                         <div class="footer-alert" id="defaultFooterAlert">
+                        <img src="/build/img/current.svg" alt="icon">
+                        <h5>You can Start this Project on <span id="modalStartFull">23.12.2025</span></h5>
                     </div>
+                     </div>
+
 
                     <!-- Footer Alert (In Checking Status) -->
                     <div class="footer-alert" id="checkingFooterAlert" style="display: none;">
@@ -1490,9 +1639,9 @@
                     <div class="start-btn-container" id="startBtnContainer">
                         <button class="start-task-btn" onclick="openStartConfirmationModal()">
                             <div class="start-btn-icon">
-                                <i class="ti ti-rocket"></i>
+                                 <img src="/build/img/Rocket.svg" alt="icon">
                             </div>
-                            Start the Task
+                            <p class="start-btn-text">Start the Tasks</p>
                         </button>
 
 
@@ -2720,6 +2869,7 @@
                 window.currentTaskIssues = [];
             }
 
+            // Check if imageSrc is valid (not empty and not just the storage path)
             const productionUrl = "https://logiadmin.it-supportline.de/";
 
             function normalizeImageSrc(src) {
@@ -2788,6 +2938,7 @@
                 imgEl.style.display = 'none';
                 placeholderEl.style.display = 'block';
             }
+
             // Show task detail modal
             const myModal = new bootstrap.Modal(document.getElementById('taskDetailModal'));
 
