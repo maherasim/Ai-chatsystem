@@ -1255,7 +1255,7 @@
                                 <div class="stats-icon-wrapper">
                                     <img src="{{ $baseUrl }}/build/img/progress.svg" alt="Progress" style="width: 24px; height: 24px;">
                                 </div>
-                                <div class="stats-title">In Progress</div>
+                                <div class="stats-title">In Progress as</div>
                                 <div class="stats-count">{{ $stats['in_progress'] ?? 0 }}</div>
                             </div>
 
