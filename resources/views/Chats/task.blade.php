@@ -2992,8 +2992,8 @@
 
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-            fetch(`/tasks/update/${window.currentTaskIdForStart}`, {
-                method: 'POST',
+            fetch(`/tasks/${window.currentTaskIdForStart}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': csrfToken
@@ -3193,8 +3193,8 @@
                 ...extraData
             };
 
-            fetch(`/tasks/update/${window.currentTaskIdForStart}`, {
-                method: 'POST',
+            fetch(`/tasks/${window.currentTaskIdForStart}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': csrfToken
@@ -3238,11 +3238,10 @@
                     formData.append(`attachment_files[${index}]`, file);
                 });
 
-                fetch(`/tasks/update/${window.currentTaskIdForStart}`, {
-                    method: 'POST',
+                fetch(`/tasks/${window.currentTaskIdForStart}`, {
+                    method: 'PUT',
                     headers: {
                         'X-CSRF-TOKEN': csrfToken
-                        // Don't set Content-Type for FormData, browser will set it with boundary
                     },
                     body: formData
                 })
