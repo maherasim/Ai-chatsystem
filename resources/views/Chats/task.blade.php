@@ -3,7 +3,7 @@
 @section('content')
 
     @php
-        $baseUrl = config('https://logiadmin.it-supportline.de/');
+        $baseUrl = config('app.url');
     @endphp
 
     <style>
@@ -1406,7 +1406,7 @@
                                         <div class="task-image-col">
                                             <div class="red-index-badge">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</div>
                                             @if(!empty($task->mark_image_path))
-                                                <img src="{{ asset('storage/' . $task->mark_image_path) }}"
+                                                <img src="{{ $baseUrl }}{{ 'storage/' . $task->mark_image_path }}"
                                                      alt="Task"
                                                      style="width: 100%; height: 100%; object-fit: cover; border-radius: 18px; cursor: pointer;"
                                                      onclick="event.stopPropagation(); openIssuesPopup(this, '{{ json_encode($issues) }}', '{{ $task->_id ?? $task->id }}');"
