@@ -1151,6 +1151,19 @@
             font-size: 16px;
         }
 
+        /* Check modal: notes as distinct light gray cards */
+        #checkConfirmationModal .check-list-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+        }
+        #checkConfirmationModal .check-list-item:hover {
+            border-color: #cbd5e1;
+            background: #f1f5f9;
+        }
+
         /* Add file box hover effect */
         .add-file-box:hover {
             background: #f1f5f9 !important;
@@ -1874,7 +1887,6 @@
                     <div class="d-flex align-items-center justify-content-center gap-2 py-2 mb-4" style="background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 12px; padding: 10px 15px;">
                         <div style="width: 24px; height: 24px; background: #a855f7; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                             <i class="ti ti-folder" style="font-size: 12px; color: white;"></i>
-                            <div style="position: absolute; width: 8px; height: 8px; background: white; border-radius: 50%; margin-top: -8px; margin-left: 8px;"></div>
                         </div>
                         <div class="d-flex align-items-center gap-1" style="color: #22c55e; font-weight: 700;">
                             <span>Moved: <span id="checkDateDisplay" style="color: #1e293b;">23.10.2024</span></span>
@@ -1905,7 +1917,7 @@
                         <div class="check-list-item">
                             <div class="d-flex align-items-center">
                                 <i class="ti ti-bolt check-list-icon"></i>
-                                <span style="font-size: 12px; color: #334155;">Did u Chekcked your work</span>
+                                <span style="font-size: 12px; color: #334155;">Did u Checked your work</span>
                             </div>
                             <div class="form-check form-switch m-0">
                                 <input class="form-check-input" type="checkbox">
@@ -1982,7 +1994,7 @@
                     <!-- Action Buttons -->
                     <div class="d-flex gap-3 justify-content-center mt-4">
                         <button type="button" class="btn fw-bold px-4" data-bs-dismiss="modal" style="background: #fff; color: #64748b; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 20px;">Close</button>
-                        <button type="button" onclick="confirmMoveToCheck()" class="btn fw-bold px-4" style="background: #fff; color: #1e293b; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 20px;">Move on</button>
+                        <button type="button" onclick="confirmMoveToCheck()" class="btn fw-bold px-4" style="background: #f8fafc; color: #1e293b; border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px 20px;">Move on</button>
                     </div>
                 </div>
             </div>
