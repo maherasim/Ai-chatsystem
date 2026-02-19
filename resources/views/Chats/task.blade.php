@@ -1637,20 +1637,7 @@
                         <h5>You can Start this Project on <span id="modalStartFull">23.12.2025</span></h5>
                         
                     </div>
-                    <div class="action-buttons-container">
-                        <button class="action-btn" onclick="openHoldModal()">
-                            <div class="action-icon icon-hold">
-                                <i class="ti ti-folder-pause"></i>
-                            </div>
-                            <span>Move to in Hold</span>
-                        </button>
-                        <button class="action-btn" onclick="openCheckModal()">
-                            <div class="action-icon icon-check">
-                                <i class="ti ti-folder-check"></i>
-                            </div>
-                            <span>Move to in Check</span>
-                        </button>
-                    </div>
+                    
                     <div class="action-buttons-container" id="actionButtonsContainer" style="display: none;">
                         <button class="action-btn" onclick="openHoldModal()">
                             <div class="action-icon icon-hold">
