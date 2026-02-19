@@ -153,6 +153,11 @@
                         var overlay = document.getElementById('lockOverlay');
                         if (overlay) overlay.style.display = 'flex';
                         setLockedUrl();
+                        // Try to focus something so typing works immediately
+                        setTimeout(function() {
+                            var btn = document.getElementById('lockGoBtn');
+                            if (btn && overlay && overlay.getAttribute('data-step') === 'out') btn.focus();
+                        }, 200);
                     } else {
                         restoreUrl();
                     }
@@ -176,6 +181,32 @@
             });
         }
     })();
+
+    // Global focus handling for lock screen
+    window.addEventListener('focus', function() {
+        var overlay = document.getElementById('lockOverlay');
+        var pinInput = document.getElementById('pinHiddenInput');
+        if (overlay && overlay.style.display === 'flex') {
+            if (overlay.getAttribute('data-step') === 'pin' && pinInput) {
+                pinInput.focus();
+            } else {
+                var btn = document.getElementById('lockGoBtn');
+                if (btn) btn.focus();
+            }
+        }
+    });
+
+    // Allow typing to activate PIN step
+    document.addEventListener('keydown', function(e) {
+        var overlay = document.getElementById('lockOverlay');
+        var goBtn = document.getElementById('lockGoBtn');
+        if (overlay && overlay.style.display === 'flex' && overlay.getAttribute('data-step') === 'out') {
+            // If it's a character key or enter, switch to pin
+            if (e.key.length === 1 || e.key === 'Enter') {
+                if (goBtn) goBtn.click();
+            }
+        }
+    });
 </script>
 @php
     $overlaySetting = App\Models\Setting::first();
@@ -1011,12 +1042,13 @@
                 overlay.setAttribute('data-step', 'pin');
                 // Reset UI first
                 resetUI();
-                // Use multiple methods to ensure focus works
+                // Focus immediately to maximize reliable focus
+                pinInput.focus();
+                // Then use a fallback timeout for safety
                 setTimeout(function() {
-                    pinInput.focus();
-                    // Force focus with multiple attempts
                     if (document.activeElement !== pinInput) {
                         pinInput.focus();
+                        // One last attempt
                         setTimeout(function() {
                             if (document.activeElement !== pinInput) {
                                 pinInput.focus();
@@ -1024,7 +1056,7 @@
                             }
                         }, 50);
                     }
-                }, 100);
+                }, 50);
             });
         }
         
