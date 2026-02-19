@@ -2586,8 +2586,8 @@
             }
             else if (isInProgress) {
                 header.classList.add('in-progress');
-                // Don't show action buttons yet - wait for all checkboxes to be checked
-                actionBtns.style.display = 'none';
+                // Show action buttons (Move to Hold / Move to Check) for in-progress tasks
+                if (actionBtns) actionBtns.style.display = 'flex';
 
                 // Track which buttons should be shown
                 window.buttonsToShow = {
@@ -2605,7 +2605,7 @@
                     badgeStatus.innerHTML = '<i class="ti ti-flag"></i> In Progress';
                 }
 
-                // Set up checkbox validation for action buttons
+                // Set up checkbox validation (won't hide action buttons for in-progress)
                 setupCheckboxValidation();
             }
             else if (isChecked) {
@@ -3758,7 +3758,9 @@
             const goToTaskBtnContainer = document.getElementById('goToTaskBtnContainer');
             const continueTaskBtnContainer = document.getElementById('continueTaskBtnContainer');
 
-            if (actionButtonsContainer) actionButtonsContainer.style.display = 'none';
+            // Don't hide in-progress action buttons (Move to Hold / Move to Check)
+            if (actionButtonsContainer && !window.buttonsToShow.actionButtons) actionButtonsContainer.style.display = 'none';
+            else if (actionButtonsContainer && window.buttonsToShow.actionButtons) actionButtonsContainer.style.display = 'flex';
             if (startBtnContainer) startBtnContainer.style.display = 'none';
             if (rejectedStartBtnContainer) rejectedStartBtnContainer.style.display = 'none';
             if (goToTaskBtnContainer) goToTaskBtnContainer.style.display = 'none';
