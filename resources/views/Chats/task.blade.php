@@ -551,8 +551,9 @@
             min-height: 500px;
             max-height: 85vh;
         }
-        #taskDetailModal .task-modal-body {
-            max-height: calc(85vh - 140px);
+        /* Scroll only the content sub-section, not the whole modal body */
+        #taskDetailModal .task-modal-body .task-modal-scrollable {
+            max-height: calc(85vh - 220px);
             overflow-y: auto;
         }
         .task-modal-header {
@@ -608,6 +609,9 @@
         .task-modal-body {
             padding: 40px 20px 20px; /* Top padding for logo overlap */
             overflow: visible;
+        }
+        .task-modal-scrollable {
+            /* Sub-class: only this part scrolls; header/title/meta stay fixed */
         }
 
         .modal-task-title {
@@ -1539,6 +1543,8 @@
                     </div>
                     </div>
 
+                    <!-- Scrollable sub-section only (title + meta stay fixed) -->
+                    <div class="task-modal-scrollable">
                     <!-- Issue Description -->
                     <div class="desc-box">
                         <h5 class="desc-label">
@@ -1720,6 +1726,7 @@
                         </button>
                     </div>
                     </div>
+                    </div><!-- end .task-modal-scrollable -->
                 </div>
             </div>
         </div>
