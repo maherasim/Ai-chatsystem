@@ -548,13 +548,7 @@
             background: #f8fafc;
         }
         #taskDetailModal .modal-content.task-modal-content {
-            min-height: 500px;
-            max-height: 85vh;
-        }
-        /* Scroll only the content sub-section, not the whole modal body */
-        #taskDetailModal .task-modal-body .task-modal-scrollable {
-            max-height: calc(85vh - 220px);
-            overflow-y: auto;
+            min-height: 580px;
         }
         .task-modal-header {
             background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
@@ -1489,8 +1483,8 @@
 
     <!-- Task Detail Modal (High Fidelity) -->
     <div class="modal fade" id="taskDetailModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" style="max-width: 720px; width: 90%; min-height: 520px;">
-            <div class="modal-content task-modal-content" style="min-height: 500px;">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 720px; width: 90%; min-height: 680px;">
+            <div class="modal-content task-modal-content" style="min-height: 660px;">
 
                 <!-- Custom Header -->
                 <div class="task-modal-header">
