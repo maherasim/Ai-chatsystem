@@ -11607,70 +11607,7 @@
                 </div>
 
 
-                <!-- Developer Card -->
-                <div class="card text-center p-3 mt-2 mb-3"
-                    style="border-radius: 16px; border: none; background: #f9f9f9; ">
-                    <div
-                        style="width: 160px; margin: auto; background: #fdfdfd; border-radius: 20px; padding-bottom: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                        <div style="position: relative; height: 60px; overflow: hidden; border-radius: 20px 20px 0 0;">
-                            <img src="{{ URL::asset('/build/img/bgractangle.svg') }}" alt="Background"
-                                style="width: 100%; height: 100%; object-fit: cover;">
-                        </div>
-                        <div style="position: relative; margin-top: -25px;">
-                            <img src="{{ URL::asset('/build/img/profile.svg') }}" alt="Profile"
-                                class="rounded-circle"
-                                style="width: 50px; height: 50px; object-fit: cover; border: 3px solid white;">
-                        </div>
-                        <div class="mt-1">
-                            <h6 style="margin: 0; font-weight: 600; font-size: 13px;">Name Lastname</h6>
-                            <div style="font-size: 11px; color: #e74c3c; font-weight: 500;">Developer</div>
-                        </div>
-                    </div>
-
-                    <!-- Status -->
-                    <div class="my-2">
-                        <span
-                            style="background-color: #d4f4e1; color: #27ae60; font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 600;">On
-                            Time</span>
-                    </div>
-
-                    <!-- Timeline -->
-                    <div class="d-flex justify-content-between text-center mb-3 px-2"
-                        style="font-size: 12px; font-weight: 500;">
-                        <div>
-                            <div style="color: #7f8ea3;">Start:</div>
-                            <div style="color: #27ae60;">22.10.2025 - 12:30</div>
-                        </div>
-                        <div>
-                            <div style="color: #7f8ea3;">Deliver:</div>
-                            <div style="color: #27ae60;">22.10.2025 - 19:30</div>
-                        </div>
-                        <div>
-                            <div style="color: #7f8ea3;">Time Left:</div>
-                            <div style="color: #2ecc71;">0 day 7 Hr - 30 min</div>
-                        </div>
-                    </div>
-
-                    <!-- Footer Stats -->
-                    <div class="d-flex justify-content-around text-center pt-2 border-top" style="font-size: 12px;">
-                        <div>
-                            <div style="color: #2c3e50;">Meetings:</div>
-                            <div><span style="color: #2c3e50;">3</span> / <span style="color: red;">2 - 1</span></div>
-                        </div>
-                        <div>
-                            <div style="color: #2c3e50;">Trys:</div>
-                            <div style="color: #2c3e50;">3</div>
-                        </div>
-                        <div>
-                            <div style="color: #2c3e50;">In Hold:</div>
-                            <div style="color: orange;">1</div>
-                        </div>
-                        <div>
-                            <div style="color: #2c3e50;">In delayed:</div>
-                            <div style="color: red;">0</div>
-                        </div>
-                    </div>
-                </div>
+               
 
                 <!-- Rate the Developer -->
                 <div class="mt-3 text-left" style="background: #f9f9fb; padding: 16px; border-radius: 16px;">
