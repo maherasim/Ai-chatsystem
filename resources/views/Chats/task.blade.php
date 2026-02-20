@@ -1682,23 +1682,8 @@
                             </div>
                             <p class="start-btn-text">Start the Tasks</p>
                         </button>
-
-
-                    <!-- Action Buttons (In Progress State) -->
-                    <div class="action-buttons-container" id="actionButtonsContainer" style="display: none;">
-                        <button class="action-btn" onclick="openHoldModal()">
-                            <div class="action-icon icon-hold">
-                                <i class="ti ti-folder-pause"></i>
-                            </div>
-                            <span>Move to in Hold</span>
-                        </button>
-                        <button class="action-btn" onclick="openCheckModal()">
-                            <div class="action-icon icon-check">
-                                <i class="ti ti-folder-check"></i>
-                            </div>
-                            <span>Move to in Check</span>
-                        </button>
                     </div>
+                    <!-- Status-specific containers must be siblings of startBtnContainer so hiding startBtnContainer doesn't hide them -->
 
                     <!-- Hold Reason Display (On Hold State) -->
                     <div class="hold-reason-box" id="holdReasonContainer">
@@ -1718,36 +1703,32 @@
 
                     <!-- Start Task Button (Rejected State) -->
                     <div class="start-btn-container" id="rejectedStartBtnContainer" style="display: none;">
-                        <div class="timeline-line"></div>
                         <button class="start-task-btn" onclick="openStartConfirmationModal()">
                             <div class="start-btn-icon">
-                                <i class="ti ti-rocket"></i>
+                                <img src="/build/img/Rocket.svg" alt="icon">
                             </div>
-                            Start the Task
+                            <p class="start-btn-text">Start the Task</p>
                         </button>
                     </div>
 
                     <!-- Go To Task Button (On Hold State) -->
                     <div class="start-btn-container" id="goToTaskBtnContainer" style="display: none;">
-                        <div class="timeline-line"></div>
                         <button class="start-task-btn" onclick="openStartConfirmationModal()">
                             <div class="start-btn-icon">
-                                <i class="ti ti-rocket"></i>
+                                <img src="/build/img/Rocket.svg" alt="icon">
                             </div>
-                            Go to the task
+                            <p class="start-btn-text">Go to the task</p>
                         </button>
                     </div>
 
                     <!-- Continue Task Button (Checked State) -->
                     <div id="continueTaskBtnContainer" style="display: none; text-align: center; margin-top: 20px;">
-                        <div class="timeline-line"></div>
                         <button type="button" onclick="continueTask()" style="background: white; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-radius: 12px; padding: 15px 30px; display: inline-flex; flex-direction: column; align-items: center; gap: 8px; width: 100%;">
                             <div style="background: #22c55e; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
                                 <i class="ti ti-rocket" style="font-size: 24px; color: white;"></i>
                             </div>
                             <span style="font-weight: 700; font-size: 14px; color: #334155;">continue the task</span>
                         </button>
-                    </div>
                     </div>
                     </div><!-- end .task-modal-scrollable -->
                 </div>
