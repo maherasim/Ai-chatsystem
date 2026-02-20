@@ -2746,15 +2746,20 @@
                     badgeStatus.innerHTML = '<i class="ti ti-flag"></i> Rejected';
                 }
 
-                // Hide rejection reason box (user doesn't need it)
+                // Show rejection reason box and populate it
                 const rejectionReasonContainer = document.getElementById('rejectionReasonContainer');
+                const rejectionReasonTextEl = document.getElementById('rejectionReasonText');
                 if (rejectionReasonContainer) {
-                    rejectionReasonContainer.style.display = 'none';
+                    rejectionReasonContainer.style.display = 'block';
+                    const reason = element.getAttribute('data-rejection-reason') || '';
+                    if (rejectionReasonTextEl) {
+                        rejectionReasonTextEl.textContent = reason || 'No reason provided';
+                    }
                 }
 
-                // Don't show start task button yet - wait for all checkboxes to be checked
+                // Show Start Task button immediately for rejected (moves to in_progress)
                 if (rejectedStartBtn) {
-                    rejectedStartBtn.style.display = 'none';
+                    rejectedStartBtn.style.display = 'block';
                 }
 
                 // Track which button should be shown
@@ -2765,9 +2770,6 @@
                     goToTaskBtn: false,
                     continueTaskBtn: false
                 };
-
-                // Set up checkbox validation for buttons
-                setupCheckboxValidation();
             }
             else if (isDone) {
                 header.classList.add('done');
@@ -3818,7 +3820,7 @@
 
             const actionButtonsContainer = document.getElementById('actionButtonsContainer');
             const startBtnContainer = document.getElementById('startBtnContainer');
-            const rejectedStartBtnContainver = document.getElementById('rejectedStartBtnContainer');
+            const rejectedStartBtnContainer = document.getElementById('rejectedStartBtnContainer');
             const goToTaskBtnContainer = document.getElementById('goToTaskBtnContainer');
             const continueTaskBtnContainer = document.getElementById('continueTaskBtnContainer');
 
