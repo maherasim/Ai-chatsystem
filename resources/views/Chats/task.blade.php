@@ -1683,7 +1683,6 @@
                             <p class="start-btn-text">Start the Tasks</p>
                         </button>
                     </div>
-                    <!-- Status-specific containers must be siblings of startBtnContainer so hiding startBtnContainer doesn't hide them -->
 
                     <!-- Hold Reason Display (On Hold State) -->
                     <div class="hold-reason-box" id="holdReasonContainer">
