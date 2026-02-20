@@ -2746,9 +2746,6 @@
                     badgeStatus.innerHTML = '<i class="ti ti-flag"></i> Rejected';
                 }
 
-                // Hide notes/checkboxes section for rejected so only rejection reason + Start Task show
-                if (defaultNotesSection) defaultNotesSection.style.display = 'none';
-
                 // Show rejection reason box and populate it
                 const rejectionReasonContainer = document.getElementById('rejectionReasonContainer');
                 const rejectionReasonTextEl = document.getElementById('rejectionReasonText');
@@ -2760,12 +2757,12 @@
                     }
                 }
 
-                // Show Start Task button for rejected status (moves to in_progress)
+                // Show Start Task button immediately for rejected (moves to in_progress)
                 if (rejectedStartBtn) {
                     rejectedStartBtn.style.display = 'block';
                 }
 
-                // Track which button should be shown (used when modal is shown)
+                // Track which button should be shown
                 window.buttonsToShow = {
                     actionButtons: false,
                     startBtn: false,
@@ -2989,11 +2986,6 @@
                 setTimeout(function() {
                     createIssueBadges();
                 }, 200);
-                // Ensure Start Task button is visible when rejected popup opens (based on status filter)
-                if (window.buttonsToShow && window.buttonsToShow.rejectedStartBtn) {
-                    const rejectedStartBtnEl = document.getElementById('rejectedStartBtnContainer');
-                    if (rejectedStartBtnEl) rejectedStartBtnEl.style.display = 'block';
-                }
             }, { once: true });
 
             myModal.show();
