@@ -821,11 +821,11 @@
                             $norm = function($v) {
                                 return is_string($v) ? strtolower(str_replace([' ', '-'], '_', $v)) : $v;
                             };
-                            // Initialize global task counter for sequential Task IDs (Tk001, Tk002, etc.)
+                            // Initialize global task counter for sequential Task IDs (TSK-001, TSK-002, etc.)
                             $globalTaskCounter = 0;
                             $getTaskId = function() use (&$globalTaskCounter) {
                                 $globalTaskCounter++;
-                                return 'Tk' . str_pad($globalTaskCounter, 3, '0', STR_PAD_LEFT);
+                                return 'TSK-' . str_pad($globalTaskCounter, 3, '0', STR_PAD_LEFT);
                             };
                         @endphp
                         @if(request()->has('debug'))
@@ -927,7 +927,10 @@
                                                 $taskDescription = $task->description ?? '';
                                                 if (empty($taskDescription) && !empty($issues)) { $first = collect($issues)->first(); $taskDescription = $first['description'] ?? ''; }
                                                 $adminNotes = !empty($issues) ? (collect($issues)->pluck('notes')->filter()->first() ?? '') : '';
-                                                $sectionName = optional($task->ticket)->section_name ?? 'Section';
+                                                $sectionName = optional($task->ticket)->section_name
+                                                    ?? optional(\App\Models\Ticket::where('_id', (string) ($task->ticket_id ?? ''))->first())->section_name
+                                                    ?? optional(\App\Models\Ticket::find($task->ticket_id ?? null))->section_name
+                                                    ?? 'Section';
                                                 $priority = $task->priority ?? 'low';
                                                 $status = $task->status ?? 'progress';
                                             @endphp
@@ -1080,7 +1083,10 @@
                                                     // Try to get notes from issues array
                                                     $adminNotes = collect($task->issues)->pluck('notes')->filter()->first() ?? '';
                                                 }
-                                                $sectionName = optional($task->ticket)->section_name ?? 'Section';
+                                                $sectionName = optional($task->ticket)->section_name
+                                                    ?? optional(\App\Models\Ticket::where('_id', (string) ($task->ticket_id ?? ''))->first())->section_name
+                                                    ?? optional(\App\Models\Ticket::find($task->ticket_id ?? null))->section_name
+                                                    ?? 'Section';
                                                 $priority = $task->priority ?? 'low';
                                                 $status = $task->status ?? 'checked';
                                                 $markImagePath = $task->mark_image_path ?? '';
@@ -1675,7 +1681,10 @@
                                         if (!empty($issues) && is_array($issues)) {
                                             $adminNotes = collect($issues)->pluck('notes')->filter()->first() ?? '';
                                         }
-                                        $sectionName = optional($task->ticket)->section_name ?? 'Section';
+                                        $sectionName = optional($task->ticket)->section_name
+                                            ?? optional(\App\Models\Ticket::where('_id', (string) ($task->ticket_id ?? ''))->first())->section_name
+                                            ?? optional(\App\Models\Ticket::find($task->ticket_id ?? null))->section_name
+                                            ?? 'Section';
                                         $priority = $task->priority ?? 'low';
                                         $status = $task->status ?? 'new';
                                         $markImagePath = $task->mark_image_path ?? '';
@@ -5312,8 +5321,13 @@
                                         data-project-logo="{{ $logo }}"
                                         data-ticket-code="{{ e(optional($task->ticket)->code ?? '') }}"
                                         data-ticket-title="{{ e(optional($task->ticket)->title ?? '') }}"
-                                        data-task-id="{{ 'TSK-' . str_pad((string) (1000 + $loop->iteration), 4, '0', STR_PAD_LEFT) }}"
-                                        data-section="{{ e(optional($task->ticket)->section_name ?? 'Section') }}"
+                                        data-task-id="{{ 'TSK-' . str_pad((string) $loop->iteration, 3, '0', STR_PAD_LEFT) }}"
+                                        data-section="{{ e(
+                                            optional($task->ticket)->section_name
+                                            ?? optional(\App\Models\Ticket::where('_id', (string) ($task->ticket_id ?? ''))->first())->section_name
+                                            ?? optional(\App\Models\Ticket::find($task->ticket_id ?? null))->section_name
+                                            ?? 'Section'
+                                        ) }}"
                                         data-start="{{ optional($task->ticket)->start_date ? \Carbon\Carbon::parse(optional($task->ticket)->start_date)->toDateString() : ($task->start_date ? \Carbon\Carbon::parse($task->start_date)->toDateString() : '') }}"
                                         data-deliver="{{ optional($task->ticket)->end_date ? \Carbon\Carbon::parse(optional($task->ticket)->end_date)->toDateString() : ($task->end_date ? \Carbon\Carbon::parse($task->end_date)->toDateString() : '') }}"
                                         onclick="openTaskViewer(this)">
@@ -6080,7 +6094,12 @@
                                         data-ticket-code="{{ e(optional($task->ticket)->code ?? '') }}"
                                         data-ticket-title="{{ e(optional($task->ticket)->title ?? '') }}"
                                         data-task-id="{{ $getTaskId() }}"
-                                        data-section="{{ e(optional($task->ticket)->section_name ?? 'Section') }}"
+                                        data-section="{{ e(
+                                            optional($task->ticket)->section_name
+                                            ?? optional(\App\Models\Ticket::where('_id', (string) ($task->ticket_id ?? ''))->first())->section_name
+                                            ?? optional(\App\Models\Ticket::find($task->ticket_id ?? null))->section_name
+                                            ?? 'Section'
+                                        ) }}"
                                         data-start="{{ optional($task->ticket)->start_date ? \Carbon\Carbon::parse(optional($task->ticket)->start_date)->toDateString() : ($task->start_date ? \Carbon\Carbon::parse($task->start_date)->toDateString() : '') }}"
                                         data-deliver="{{ optional($task->ticket)->end_date ? \Carbon\Carbon::parse(optional($task->ticket)->end_date)->toDateString() : ($task->end_date ? \Carbon\Carbon::parse($task->end_date)->toDateString() : '') }}"
                                         onclick="openTaskViewer(this)">
@@ -10306,9 +10325,37 @@
         
         // Handle moveToDoneModal population when "Mark as Done" button is clicked
         document.addEventListener('DOMContentLoaded', function() {
+            function getActiveCheckedTaskItem() {
+                return document.querySelector('.task-checked-item.active') || document.querySelector('.task-checked-item');
+            }
+
+            function applyCheckedTaskInfoToModal(prefix) {
+                const activeTaskItem = getActiveCheckedTaskItem();
+                if (!activeTaskItem) return;
+
+                const taskTitle = activeTaskItem.getAttribute('data-task-title') || 'Task Title';
+                const section = activeTaskItem.getAttribute('data-section') || 'Section';
+                const startDate = activeTaskItem.getAttribute('data-start-date') || '--';
+                const endDate = activeTaskItem.getAttribute('data-end-date') || '--';
+                const taskId = activeTaskItem.getAttribute('data-task-id') || 'TSK-001';
+
+                const titleEl = document.getElementById(prefix + '-modal-task-title');
+                const taskIdEl = document.getElementById(prefix + '-modal-task-id');
+                const sectionEl = document.getElementById(prefix + '-modal-section');
+                const startDateEl = document.getElementById(prefix + '-modal-start-date');
+                const endDateEl = document.getElementById(prefix + '-modal-end-date');
+
+                if (titleEl) titleEl.textContent = taskTitle;
+                if (taskIdEl) taskIdEl.textContent = taskId;
+                if (sectionEl) sectionEl.textContent = section;
+                if (startDateEl) startDateEl.textContent = startDate;
+                if (endDateEl) endDateEl.textContent = endDate;
+            }
+
             const moveToDoneModal = document.getElementById('moveToDoneModal');
             if (moveToDoneModal) {
                 moveToDoneModal.addEventListener('show.bs.modal', function() {
+                    applyCheckedTaskInfoToModal('done');
                     // Task ID should already be set when task item was clicked, but verify
                     const taskId = document.getElementById('doneTaskId').value;
                     if (!taskId) {
@@ -10367,6 +10414,13 @@
                     if (accuracyGroup) accuracyGroup.setAttribute('data-current-rating', ratings.accuracy);
                     if (qualityGroup) qualityGroup.setAttribute('data-current-rating', ratings.quality);
                     if (workIndependentlyGroup) workIndependentlyGroup.setAttribute('data-current-rating', ratings.workIndependently);
+                });
+            }
+
+            const moveToRejectModal = document.getElementById('moveToRejectModal');
+            if (moveToRejectModal) {
+                moveToRejectModal.addEventListener('show.bs.modal', function() {
+                    applyCheckedTaskInfoToModal('reject');
                 });
             }
             
@@ -11570,7 +11624,7 @@
 
                     <!-- Task Title -->
                     <div class="text-center mb-2">
-                        <h5 style="font-weight: 700; color: #2c3e50;">Task Title</h5>
+                        <h5 id="done-modal-task-title" style="font-weight: 700; color: #2c3e50;">Task Title</h5>
                     </div>
 
                     <!-- Task Badges -->
@@ -11598,10 +11652,10 @@
 
                     <!-- Task Meta Info Row -->
                     <div class="d-flex justify-content-around text-center" style="font-size: 12px; font-weight: 500;">
-                        <div style="color: #2c3e50;"><strong>Task ID</strong></div>
-                        <div style="color: #2c3e50;"><strong>Section</strong></div>
-                        <div><span style="color: #27ae60;">Start:</span> 22.10.2024</div>
-                        <div><span style="color: #27ae60;">Deliver:</span> 22.10.2024</div>
+                        <div style="color: #2c3e50;"><strong>Task ID:</strong> <span id="done-modal-task-id">TSK-001</span></div>
+                        <div style="color: #2c3e50;"><strong>Section:</strong> <span id="done-modal-section">Section</span></div>
+                        <div><span style="color: #27ae60;">Start:</span> <span id="done-modal-start-date">22.10.2024</span></div>
+                        <div><span style="color: #27ae60;">Deliver:</span> <span id="done-modal-end-date">22.10.2024</span></div>
                     </div>
 
                 </div>
@@ -11704,7 +11758,7 @@
 
                     <!-- Task Title -->
                     <div class="text-center mb-2">
-                        <h5 style="font-weight: 700; color: #2c3e50;">Task Title</h5>
+                        <h5 id="reject-modal-task-title" style="font-weight: 700; color: #2c3e50;">Task Title</h5>
                     </div>
 
                     <!-- Task Badges -->
@@ -11732,10 +11786,10 @@
 
                     <!-- Task Meta Info Row -->
                     <div class="d-flex justify-content-around text-center" style="font-size: 12px; font-weight: 500;">
-                        <div style="color: #2c3e50;"><strong>Task ID</strong></div>
-                        <div style="color: #2c3e50;"><strong>Section</strong></div>
-                        <div><span style="color: #27ae60;">Start:</span> 22.10.2024</div>
-                        <div><span style="color: #27ae60;">Deliver:</span> 22.10.2024</div>
+                        <div style="color: #2c3e50;"><strong>Task ID:</strong> <span id="reject-modal-task-id">TSK-001</span></div>
+                        <div style="color: #2c3e50;"><strong>Section:</strong> <span id="reject-modal-section">Section</span></div>
+                        <div><span style="color: #27ae60;">Start:</span> <span id="reject-modal-start-date">22.10.2024</span></div>
+                        <div><span style="color: #27ae60;">Deliver:</span> <span id="reject-modal-end-date">22.10.2024</span></div>
                     </div>
 
                 </div>
